@@ -4,6 +4,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include "databasemanager.h"
+#include "buttonsshadowmanager.h"
 #include <QScrollArea>
 
 CustomersPage::CustomersPage(QWidget *parent)
@@ -14,6 +15,15 @@ CustomersPage::CustomersPage(QWidget *parent)
     ui->setupUi(this);
 
     SetCustomersCards();
+
+    ButtonsShadowManager::setSideBarButtonsShadow({
+                                       ui->dashboard_btn,
+                                       ui->customers_btn,
+                                       ui->employees_btn,
+                                       ui->tariffs_btn,
+                                       ui->requests_btn,
+                                       ui->log_out_btn
+    });
 
 }
 
@@ -27,7 +37,7 @@ void CustomersPage::SetCustomersCards(){
     QLayout* layout = ui->gridLayout;
     if(layout){
         QLayoutItem* item;
-        while(item = layout->itemAt(0)){
+        while((item = layout->itemAt(0))){
             delete item->widget();
             delete item;
         }
@@ -36,10 +46,9 @@ void CustomersPage::SetCustomersCards(){
     QSqlQuery query("SELECT *FROM Customers;");
     if(!query.exec()){
         qDebug() << "In SetCustomersCards Query fault!!!: " << query.lastError();
+        return;
     }
 
-    int x = 50;
-    int y = 50;
     int cols = 0;
     int rows = 0;
 
@@ -53,7 +62,7 @@ void CustomersPage::SetCustomersCards(){
         QPushButton* card = new QPushButton;
         card->setMinimumSize(350, 260);
         card->setMaximumSize(350, 260);
-        card->setStyleSheet("background-color:rgb(131, 131, 131);");
+        card->setStyleSheet("background-color:#1F2937;");
 
         innerGridLayout->addWidget(card, rows, cols);
         innerGridLayout->setHorizontalSpacing(50);

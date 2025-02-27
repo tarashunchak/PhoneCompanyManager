@@ -19,6 +19,9 @@ signals:
     void on_customers_btn_clicked();
     void on_employees_btn_clicked();
 
+private:/*Methods*/
+    void setSideBarButtonsShadow();
+
 private:
     Ui::Dashboard *ui;
 };

@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     buttonslogicmanager.cpp \
+    buttonsshadowmanager.cpp \
     customerspage.cpp \
     dashboard.cpp \
     databasemanager.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
 
 HEADERS += \
     buttonslogicmanager.h \
+    buttonsshadowmanager.h \
     customerspage.h \
     dashboard.h \
     databasemanager.h \
