@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/company_logo.png</file>
+        <file>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/company_name.svg</file>
+        <file>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/cust_btn.svg</file>
+        <file>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/home.svg</file>
+        <file>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/icons8-mobile-network-100.png</file>
+        <file>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/logo.png</file>
+        <file>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/logo.svg</file>
+    </qresource>
+</RCC>

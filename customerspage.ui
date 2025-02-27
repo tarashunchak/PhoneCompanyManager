@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomersPage</class>
+ <widget class="QWidget" name="CustomersPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgba(36, 36, 36, 1);</string>
+  </property>
+  <widget class="QWidget" name="side_bar_menu" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>250</width>
+     <height>1080</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgba(22, 23, 23, 1);</string>
+   </property>
+   <widget class="QLabel" name="side_menu_logo_2">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>70</y>
+      <width>120</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/logo.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="dashboard_btn">
+    <property name="geometry">
+     <rect>
+      <x>25</x>
+      <y>300</y>
+      <width>200</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Lato</family>
+      <pointsize>-1</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    font-family: Lato;
+	padding-left:0px;
+    border: none;
+    border-radius: 4px;
+    background-color:rgba(50, 50, 50, 1);
+    font-size: 24px;
+    color: white;
+    text-align: center;
+}
+
+QPushButton:hover {
+    background-color: rgba(52, 167, 42, 0.4);
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Dashboard</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>30</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="customers_btn">
+    <property name="geometry">
+     <rect>
+      <x>25</x>
+      <y>380</y>
+      <width>200</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    font-family: Lato;
+	padding-left:0px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(52, 167, 42, 0.6);
+    font-size: 24px;
+    color: white;
+    text-align: center;
+}
+
+QPushButton:hover {
+    background-color: rgba(52, 167, 42, 0.4);
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Customers</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/cust_btn.svg</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/cust_btn.svg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>30</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QLabel" name="side_menu_logo">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>190</y>
+      <width>190</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>img/company_name.svg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="employees_btn">
+    <property name="geometry">
+     <rect>
+      <x>25</x>
+      <y>460</y>
+      <width>200</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    font-family: Lato;
+	padding-left:0px;
+    border: none;
+    border-radius: 4px;
+    background-color:rgba(50, 50, 50, 1);
+    font-size: 24px;
+    color: white;
+    text-align: center;
+}
+
+QPushButton:hover {
+    background-color: rgba(52, 167, 42, 0.4);
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Employees</string>
+    </property>
+   </widget>
+   <zorder>dashboard_btn</zorder>
+   <zorder>customers_btn</zorder>
+   <zorder>side_menu_logo</zorder>
+   <zorder>employees_btn</zorder>
+   <zorder>side_menu_logo_2</zorder>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "buttonslogicmanager.h"
+#include <QStackedWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,5 +21,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QStackedWidget* sWidget;
+
+    ButtonsLogicManager* bManager;
+
 };
 #endif // MAINWINDOW_H
