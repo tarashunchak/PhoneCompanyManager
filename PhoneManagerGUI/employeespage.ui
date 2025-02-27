@@ -38,13 +38,10 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">background: url(&quot;./img/operator.png&quot;);</string>
     </property>
     <property name="text">
      <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/logo.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -80,7 +77,7 @@
 }
 
 QPushButton:hover {
-    background-color: rgba(52, 167, 42, 0.4);
+    background-color: rgba(39, 48, 141, 1);
 }
 </string>
     </property>
@@ -121,10 +118,6 @@ QPushButton:hover {
     </property>
     <property name="text">
      <string>Customers</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/cust_btn.svg</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/cust_btn.svg</iconset>
     </property>
     <property name="iconSize">
      <size>

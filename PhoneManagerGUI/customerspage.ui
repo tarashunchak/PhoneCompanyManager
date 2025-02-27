@@ -31,7 +31,7 @@
    <property name="styleSheet">
     <string notr="true">background-color:rgba(22, 23, 23, 1);</string>
    </property>
-   <widget class="QLabel" name="side_menu_logo_2">
+   <widget class="QLabel" name="side_menu_logo">
     <property name="geometry">
      <rect>
       <x>55</x>
@@ -41,13 +41,10 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">background: url(&quot;./img/operator.png&quot;);</string>
     </property>
     <property name="text">
      <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/logo.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -83,9 +80,8 @@
 }
 
 QPushButton:hover {
-    background-color: rgba(52, 167, 42, 0.4);
-}
-</string>
+    background-color: rgba(39, 48, 141, 1);
+}</string>
     </property>
     <property name="text">
      <string>Dashboard</string>
@@ -126,10 +122,6 @@ QPushButton:hover {
     <property name="text">
      <string>Customers</string>
     </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/cust_btn.svg</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/cust_btn.svg</iconset>
-    </property>
     <property name="iconSize">
      <size>
       <width>30</width>
@@ -137,7 +129,7 @@ QPushButton:hover {
      </size>
     </property>
    </widget>
-   <widget class="QLabel" name="side_menu_logo">
+   <widget class="QLabel" name="side_menu_name">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -188,9 +180,9 @@ QPushButton:hover {
    </widget>
    <zorder>dashboard_btn</zorder>
    <zorder>customers_btn</zorder>
-   <zorder>side_menu_logo</zorder>
+   <zorder>side_menu_name</zorder>
    <zorder>employees_btn</zorder>
-   <zorder>side_menu_logo_2</zorder>
+   <zorder>side_menu_logo</zorder>
   </widget>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
@@ -217,6 +209,7 @@ QPushButton:hover {
      <string notr="true">font-size:14px;
 color:black;
 text-align:left;
+padding-left:4px;
 padding-bottom:2px;
 border-radius:4px;
 background-color:rgb(151, 151, 151);</string>
@@ -235,13 +228,30 @@ background-color:rgb(151, 151, 151);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color:white;</string>
+     <string notr="true">color:white;
+background-color:rgba(37, 39, 58, 1);
+border-radius:2px;
+border: 1px  solid rgba(255, 255, 255, 0.1);</string>
     </property>
     <property name="text">
      <string>Search</string>
     </property>
    </widget>
   </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>-1</y>
+     <width>1671</width>
+     <height>1031</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout"/>
+  </widget>
+  <zorder>side_bar_menu</zorder>
+  <zorder>gridLayoutWidget</zorder>
+  <zorder>widget</zorder>
  </widget>
  <resources/>
  <connections/>

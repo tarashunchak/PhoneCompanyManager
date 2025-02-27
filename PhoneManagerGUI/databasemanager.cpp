@@ -4,7 +4,7 @@
 
 DatabaseManager::DatabaseManager() {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("./../../database/database.db");
+    db.setDatabaseName("./database/database.db");
 
     if (!db.open()) {
         qDebug() << "Database Connection Error:" << db.lastError().text();
