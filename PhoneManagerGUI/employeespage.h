@@ -19,6 +19,10 @@ signals:
     void on_dashboard_btn_clicked();
     void on_customers_btn_clicked();
 
+private:/*Methods*/
+    void SetEmployeesCards();
+    void FindEmployeesByName();
+
 private:
     Ui::EmployeesPage *ui;
 };

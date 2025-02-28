@@ -1,10 +1,8 @@
 #include "customerspage.h"
 #include "ui_customerspage.h"
 
-#include <QSqlQuery>
 #include <QSqlError>
 #include "databasemanager.h"
-#include "buttonsshadowmanager.h"
 #include <QScrollArea>
 
 CustomersPage::CustomersPage(QWidget *parent)
@@ -14,16 +12,14 @@ CustomersPage::CustomersPage(QWidget *parent)
 {
     ui->setupUi(this);
 
-    SetCustomersCards();
+    SetCustomersCards(QSqlQuery());
+    SetConnections();
 
-    ButtonsShadowManager::setSideBarButtonsShadow({
-            ui->dashboard_btn,
-            ui->customers_btn,
-            ui->employees_btn,
-            ui->tariffs_btn,
-            ui->requests_btn,
-            ui->log_out_btn
-    });
+    ui->dashboard_btn->setIcon(QIcon("./img/dashboards.png"));
+    ui->customers_btn->setIcon(QIcon("./img/customers.png"));
+    ui->employees_btn->setIcon(QIcon("./img/employee.png"));
+    ui->tariffs_btn->setIcon(QIcon("./img/tariffs.png"));
+    ui->requests_btn->setIcon(QIcon("./img/requests.png"));
 
 }
 
@@ -32,49 +28,88 @@ CustomersPage::~CustomersPage()
     delete ui;
 }
 
-void CustomersPage::SetCustomersCards(){
+void CustomersPage::SetConnections(){
+    connect(ui->pushButton, &QPushButton::clicked, this, &CustomersPage::FindCustomersByName);
+}
 
+void CustomersPage::SetCustomersCards(QSqlQuery query){
+
+    int cols = 0;
+    int rows = 0;
+    if(!ui->gridLayout){
+        qDebug() << "GridLayout is nullptr!";
+        return;
+    }
     QLayout* layout = ui->gridLayout;
     if(layout){
-        QLayoutItem* item;
-        while((item = layout->itemAt(0))){
-            delete item->widget();
+        while(QLayoutItem* item = layout->takeAt(0)){
+            if(QWidget* widget = item->widget()){
+                widget->deleteLater();
+            }else{
+                qDebug() << "Widget is invalid!";
+                return;
+            }
             delete item;
         }
     }
 
-    QSqlQuery query("SELECT *FROM Customers;");
     if(!query.exec()){
-        qDebug() << "SetCustomersCards Query fault!!!: " << query.lastError();
-        return;
+        query.prepare("SELECT *FROM Customers;");
+        if(!query.exec()){
+            qDebug() << "SetCustomersCards Query fault!!!: " << query.lastError();
+            return;
+        }
     }
 
-    int cols = 0;
-    int rows = 0;
 
     QScrollArea* scrollArea = new QScrollArea(this);
     scrollArea->setWidgetResizable(true);
     scrollArea->setStyleSheet("border:none;");
 
-    QWidget* mainWidget = new QWidget(this);
+    QWidget* mainWidget = new QWidget;
     QGridLayout* innerGridLayout = new QGridLayout(mainWidget);
     while(query.next()){
         QPushButton* card = new QPushButton;
-        card->setMinimumSize(350, 260);
-        card->setMaximumSize(350, 260);
-        card->setStyleSheet("background-color:#1F2937;");
+        card->setMinimumSize(290, 120);
+        card->setMaximumSize(290, 120);
+        card->setStyleSheet(
+            "QPushButton{"
+              "background-color:rgba(167, 175, 183, 1);"
+            "}"
+            "QPushButton:hover{"
+               "background-color:rgba(220, 220, 220, 1);"
+            "}");
+
+        QLabel* image = new QLabel(card);
+        image->setPixmap(QPixmap("./img/customer.png"));
+        image->setGeometry(20, 25, 50, 50);
+        image->setStyleSheet("background-color:transparent;");
+
+        QLabel* phone = new QLabel("Phone: " + query.value("phone").toString(), card);
+        phone->setGeometry(85, 35, 200, 20);
+        phone->setStyleSheet("background-color:transparent;color:black;font-size:18px;");
+
+        QLabel* full_name = new QLabel(query.value("full_name").toString(), card);
+        full_name->setGeometry(85, 60, 250, 20);
+        full_name->setStyleSheet("background-color:transparent;color:black;font-size:14px;");
 
         innerGridLayout->addWidget(card, rows, cols);
-        innerGridLayout->setHorizontalSpacing(50);
-        innerGridLayout->setVerticalSpacing(60);
-        innerGridLayout->setContentsMargins(50, 70, 50, 50);
+        innerGridLayout->setHorizontalSpacing(34);
+        innerGridLayout->setVerticalSpacing(40);
+        innerGridLayout->setContentsMargins(40, 70, 0, 0);
         cols++;
-        if(cols % 4 == 0){
+        if(cols % 5 == 0){
             cols = 0;
             rows++;
         }
     }
+    innerGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     mainWidget->setLayout(innerGridLayout);
     scrollArea->setWidget(mainWidget);
     ui->gridLayout->addWidget(scrollArea);
+}
+
+void CustomersPage::FindCustomersByName(){
+    QSqlQuery query("SELECT *FROM Customers WHERE full_name LIKE '" + ui->lineEdit->text() + "%';");
+    SetCustomersCards(std::move(query));
 }

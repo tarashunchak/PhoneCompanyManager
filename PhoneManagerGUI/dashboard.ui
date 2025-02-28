@@ -87,9 +87,8 @@ border:none;</string>
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-	padding-left:0px;
     border: none;
-    border-radius: 4px;
+    border-radius: 26px;
     background-color: rgba(39, 48, 141, 1);
     font-size: 24px;
     color: white;
@@ -98,12 +97,15 @@ border:none;</string>
 
 QPushButton:hover {
     background-color: rgba(87, 91, 129, 1);
-	font-size:26px;
 }
 </string>
     </property>
     <property name="text">
      <string>Dashboard</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/dashboards.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/dashboards.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -130,13 +132,13 @@ QPushButton:hover {
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-	padding-left:0px;
+	padding-left:35px;
     border-radius: 25px;
 	border:none;
-    background-color:#3B82F6;
+    background-color:rgba(80, 80, 80, 1);
     font-size: 24px;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 QPushButton:hover {
@@ -146,6 +148,10 @@ QPushButton:hover {
     </property>
     <property name="text">
      <string>Customers</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/customers.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/customers.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -188,13 +194,13 @@ QPushButton:hover {
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-	padding-left:0px;
+	padding-left:35px;
     border-radius: 25px;
 	border:none;
-    background-color:#3B82F6;
+    background-color:rgba(80, 80, 80, 1);
     font-size: 24px;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 QPushButton:hover {
@@ -204,6 +210,16 @@ QPushButton:hover {
     </property>
     <property name="text">
      <string>Employees</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/employee.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/employee.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>30</width>
+      <height>30</height>
+     </size>
     </property>
    </widget>
    <widget class="Line" name="line">
@@ -234,13 +250,13 @@ QPushButton:hover {
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-	padding-left:0px;
+	padding-left:35px;
     border-radius: 25px;
 	border:none;
-    background-color:#3B82F6;
+    background-color:rgba(80, 80, 80, 1);
     font-size: 24px;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 QPushButton:hover {
@@ -250,6 +266,10 @@ QPushButton:hover {
     </property>
     <property name="text">
      <string>Tariffs</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/tariffs.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/tariffs.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -270,13 +290,13 @@ QPushButton:hover {
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-	padding-left:0px;
+	padding-left:35px;
     border-radius: 25px;
 	border:none;
-    background-color:#3B82F6;
+    background-color:rgba(80, 80, 80, 1);
     font-size: 24px;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 QPushButton:hover {
@@ -286,6 +306,10 @@ QPushButton:hover {
     </property>
     <property name="text">
      <string>Requests</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/requests.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/requests.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -345,8 +369,8 @@ QPushButton:hover {
     <rect>
      <x>310</x>
      <y>50</y>
-     <width>300</width>
-     <height>150</height>
+     <width>480</width>
+     <height>440</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -356,10 +380,10 @@ QPushButton:hover {
   <widget class="QWidget" name="widget_3" native="true">
    <property name="geometry">
     <rect>
-     <x>680</x>
+     <x>850</x>
      <y>50</y>
-     <width>300</width>
-     <height>150</height>
+     <width>480</width>
+     <height>440</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -371,7 +395,7 @@ QPushButton:hover {
     <rect>
      <x>310</x>
      <y>540</y>
-     <width>1050</width>
+     <width>1020</width>
      <height>460</height>
     </rect>
    </property>
@@ -384,7 +408,7 @@ background-color:#1F2937;</string>
      <rect>
       <x>20</x>
       <y>50</y>
-      <width>1010</width>
+      <width>980</width>
       <height>390</height>
      </rect>
     </property>
@@ -399,14 +423,38 @@ background-color:#1F2937;</string>
 
 QHeaderView:section {
 	height: 40px;
-    background-color: rgba(200, 200, 200, 1);
+	border:1px solid rgba(30, 30, 30, 0.4);
+    background-color: rgba(225, 225, 225, 1);
     color: black;
     font-family: Lato;
     font-size: 18px;
     font-weight: bold;
-    border:1px solid rgba(28, 28, 69, 1);
+    
 }    
 </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>15</y>
+      <width>130</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;
+border:none;</string>
+    </property>
+    <property name="text">
+     <string>Last Customers</string>
     </property>
    </widget>
   </widget>
@@ -443,10 +491,20 @@ background-color:#1F2937;</string>
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>20</y>
-      <width>49</width>
-      <height>16</height>
+      <y>15</y>
+      <width>111</width>
+      <height>25</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;
+border:none;</string>
     </property>
     <property name="text">
      <string>Last Requests</string>
@@ -467,6 +525,19 @@ background-color:#1F2937;</string>
    </property>
    <property name="orientation">
     <enum>Qt::Orientation::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QWidget" name="widget_4" native="true">
+   <property name="geometry">
+    <rect>
+     <x>1400</x>
+     <y>50</y>
+     <width>470</width>
+     <height>440</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgba(255, 255, 255, 1);</string>
    </property>
   </widget>
  </widget>

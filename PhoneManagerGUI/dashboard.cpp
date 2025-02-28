@@ -1,7 +1,6 @@
 #include "dashboard.h"
 #include "ui_dashboard.h"
 
-#include "buttonsshadowmanager.h"
 #include "databasemanager.h"
 
 Dashboard::Dashboard(QWidget *parent)
@@ -13,14 +12,11 @@ Dashboard::Dashboard(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ButtonsShadowManager::setSideBarButtonsShadow({
-            ui->dashboard_btn,
-            ui->customers_btn,
-            ui->employees_btn,
-            ui->tariffs_btn,
-            ui->requests_btn,
-            ui->log_out_btn
-    });
+    ui->dashboard_btn->setIcon(QIcon("./img/dashboards.png"));
+    ui->customers_btn->setIcon(QIcon("./img/customers.png"));
+    ui->employees_btn->setIcon(QIcon("./img/employee.png"));
+    ui->tariffs_btn->setIcon(QIcon("./img/tariffs.png"));
+    ui->requests_btn->setIcon(QIcon("./img/requests.png"));
 
     setTableViewConnection();
 

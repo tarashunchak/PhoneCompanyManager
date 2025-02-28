@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 
 namespace Ui {
 class CustomersPage;
@@ -21,7 +22,9 @@ signals:
     void on_employees_btn_clicked();
 
 private: /*Methods*/
-    void SetCustomersCards();
+    void SetCustomersCards(QSqlQuery query);
+    void FindCustomersByName();
+    void SetConnections();
 
 private:
     Ui::CustomersPage *ui;

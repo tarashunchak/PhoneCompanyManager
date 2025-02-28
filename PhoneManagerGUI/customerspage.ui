@@ -34,9 +34,9 @@
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>1260</x>
+      <x>1336</x>
       <y>15</y>
-      <width>281</width>
+      <width>240</width>
       <height>30</height>
      </rect>
     </property>
@@ -56,7 +56,7 @@ background-color:rgb(151, 151, 151);</string>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>1540</x>
+      <x>1576</x>
       <y>15</y>
       <width>50</width>
       <height>30</height>
@@ -96,6 +96,22 @@ QPushButton:hover {
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout"/>
+  </widget>
+  <widget class="Line" name="line_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>325</y>
+     <width>230</width>
+     <height>1</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;</string>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Orientation::Horizontal</enum>
+   </property>
   </widget>
   <widget class="QWidget" name="side_bar_menu" native="true">
    <property name="geometry">
@@ -156,23 +172,25 @@ border:none;</string>
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-	padding-left:0px;
     border: none;
-    border-radius: 4px;
-    background-color: rgba(87, 91, 129, 1);
+    border-radius: 26px;
+    background-color:rgba(80, 80, 80, 1);
     font-size: 24px;
     color: white;
     text-align: center;
 }
 
 QPushButton:hover {
-	background-color: rgba(39, 48, 141, 1);
-	font-size:26px;
+    background-color: rgba(87, 91, 129, 1);
 }
 </string>
     </property>
     <property name="text">
      <string>Dashboard</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/dashboards.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/dashboards.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -199,23 +217,26 @@ QPushButton:hover {
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-	padding-left:0px;
+	padding-left:35px;
     border-radius: 25px;
 	border:none;
-    background-color:#278D43;
+    background-color: rgba(39, 48, 141, 1);
     font-size: 24px;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 QPushButton:hover {
     background-color: rgba(87, 91, 129, 1);
-	font-size: 26px;
 }
 </string>
     </property>
     <property name="text">
      <string>Customers</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/customers.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/customers.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -258,23 +279,32 @@ QPushButton:hover {
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-	padding-left:0px;
+	padding-left:35px;
     border-radius: 25px;
 	border:none;
-    background-color:#3B82F6;
+    background-color:rgba(80, 80, 80, 1);
     font-size: 24px;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 QPushButton:hover {
     background-color: rgba(87, 91, 129, 1);
-	font-size: 26px;
 }
 </string>
     </property>
     <property name="text">
      <string>Employees</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/employee.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/employee.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>30</width>
+      <height>30</height>
+     </size>
     </property>
    </widget>
    <widget class="Line" name="line">
@@ -305,23 +335,26 @@ QPushButton:hover {
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-	padding-left:0px;
+	padding-left:35px;
     border-radius: 25px;
 	border:none;
-    background-color:#3B82F6;
+    background-color:rgba(80, 80, 80, 1);
     font-size: 24px;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 QPushButton:hover {
     background-color: rgba(87, 91, 129, 1);
-	font-size: 26px;
 }
 </string>
     </property>
     <property name="text">
      <string>Tariffs</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/tariffs.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/tariffs.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -342,23 +375,26 @@ QPushButton:hover {
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-	padding-left:0px;
+	padding-left:35px;
     border-radius: 25px;
 	border:none;
-    background-color:#3B82F6;
+    background-color:rgba(80, 80, 80, 1);
     font-size: 24px;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 QPushButton:hover {
     background-color: rgba(87, 91, 129, 1);
-	font-size: 26px;
 }
 </string>
     </property>
     <property name="text">
      <string>Requests</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/requests.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/requests.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -412,22 +448,6 @@ QPushButton:hover {
    <zorder>tariffs_btn</zorder>
    <zorder>requests_btn</zorder>
    <zorder>log_out_btn</zorder>
-  </widget>
-  <widget class="Line" name="line_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>325</y>
-     <width>230</width>
-     <height>1</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:white;</string>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Horizontal</enum>
-   </property>
   </widget>
   <zorder>gridLayoutWidget</zorder>
   <zorder>widget</zorder>
