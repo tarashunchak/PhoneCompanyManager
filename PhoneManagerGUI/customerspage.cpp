@@ -4,6 +4,7 @@
 #include <QSqlError>
 #include "databasemanager.h"
 #include <QScrollArea>
+#include "buttonsstylemanager.h"
 
 CustomersPage::CustomersPage(QWidget *parent)
     : QWidget(parent)
@@ -15,11 +16,13 @@ CustomersPage::CustomersPage(QWidget *parent)
     SetCustomersCards(QSqlQuery());
     SetConnections();
 
-    ui->dashboard_btn->setIcon(QIcon("./img/dashboards.png"));
-    ui->customers_btn->setIcon(QIcon("./img/customers.png"));
-    ui->employees_btn->setIcon(QIcon("./img/employee.png"));
-    ui->tariffs_btn->setIcon(QIcon("./img/tariffs.png"));
-    ui->requests_btn->setIcon(QIcon("./img/requests.png"));
+    ButtonsStyleManager::SetLeftMenuIcons({
+        ui->dashboard_btn,
+        ui->customers_btn,
+        ui->employees_btn,
+        ui->tariffs_btn,
+        ui->requests_btn
+    });
 
 }
 
@@ -29,7 +32,7 @@ CustomersPage::~CustomersPage()
 }
 
 void CustomersPage::SetConnections(){
-    connect(ui->pushButton, &QPushButton::clicked, this, &CustomersPage::FindCustomersByName);
+    connect(ui->lineEdit, &QLineEdit::textEdited, this, &CustomersPage::FindCustomersByName);
 }
 
 void CustomersPage::SetCustomersCards(QSqlQuery query){
@@ -103,6 +106,10 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
 }
 
 void CustomersPage::FindCustomersByName(){
-    QSqlQuery query("SELECT *FROM Customers WHERE full_name LIKE '" + ui->lineEdit->text() + "%';");
+    QSqlQuery query;
+    query.prepare("SELECT *FROM Customers WHERE full_name LIKE :name "
+                    "OR phone LIKE :phone;");
+    query.bindValue(":name", ui->lineEdit->text() + "%");
+    query.bindValue(":phone", ui->lineEdit->text() + "%");
     SetCustomersCards(std::move(query));
 }

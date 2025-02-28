@@ -10,26 +10,34 @@ CONFIG += c++17
 
 SOURCES += \
     buttonslogicmanager.cpp \
+    buttonsstylemanager.cpp \
     customerspage.cpp \
     dashboard.cpp \
     databasemanager.cpp \
     employeespage.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    tariffcard.cpp \
+    tariffspage.cpp
 
 HEADERS += \
     buttonslogicmanager.h \
+    buttonsstylemanager.h \
     customerspage.h \
     dashboard.h \
     databasemanager.h \
     employeespage.h \
-    mainwindow.h
+    mainwindow.h \
+    tariffcard.h \
+    tariffspage.h
 
 FORMS += \
     customerspage.ui \
     dashboard.ui \
     employeespage.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    tariffcard.ui \
+    tariffspage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

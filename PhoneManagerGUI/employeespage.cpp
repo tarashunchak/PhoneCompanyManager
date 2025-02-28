@@ -4,6 +4,7 @@
 #include "databasemanager.h"
 #include <QSqlError>
 #include <QScrollArea>
+#include "buttonsstylemanager.h"
 
 EmployeesPage::EmployeesPage(QWidget *parent)
     : QWidget(parent)
@@ -11,12 +12,13 @@ EmployeesPage::EmployeesPage(QWidget *parent)
     , db(&DatabaseManager::instance().getDatabase())
 {
     ui->setupUi(this);
-
-    ui->dashboard_btn->setIcon(QIcon("./img/dashboards.png"));
-    ui->customers_btn->setIcon(QIcon("./img/customers.png"));
-    ui->employees_btn->setIcon(QIcon("./img/employee.png"));
-    ui->tariffs_btn->setIcon(QIcon("./img/tariffs.png"));
-    ui->requests_btn->setIcon(QIcon("./img/requests.png"));
+    ButtonsStyleManager::SetLeftMenuIcons({
+        ui->dashboard_btn,
+        ui->customers_btn,
+        ui->employees_btn,
+        ui->tariffs_btn,
+        ui->requests_btn
+    });
 
     SetEmployeesCards(QSqlQuery());
 
@@ -55,7 +57,7 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
     QWidget* mainWidget = new QWidget;
     QGridLayout* innerGridLayout = new QGridLayout(mainWidget);
 
-    for(int i = 0; i < 220; i++){
+    while(query.next()){
         QPushButton* card = new QPushButton;
         card->setMinimumSize(290, 120);
         card->setMaximumSize(290, 120);
@@ -71,6 +73,10 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         image->setPixmap(QPixmap("./img/employees.png"));
         image->setGeometry(20, 25, 50, 50);
         image->setStyleSheet("background-color:transparent;");
+
+        QLabel* full_name = new QLabel(query.value("full_name").toString(), card);
+        full_name->setGeometry(85, 35, 250, 20);
+        full_name->setStyleSheet("background-color:transparent;color:black;font-size:18px;");
 
         innerGridLayout->addWidget(card, rows, cols);
 

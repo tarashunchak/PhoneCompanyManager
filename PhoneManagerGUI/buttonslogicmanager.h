@@ -7,6 +7,7 @@
 #include "dashboard.h"
 #include "customerspage.h"
 #include "employeespage.h"
+#include "tariffspage.h"
 
 class ButtonsLogicManager : public QObject
 {
@@ -18,8 +19,9 @@ public slots:
     void showDashboardPage()const;
     void showCustomersPage()const;
     void showEmployeesPage()const;
+    void showTariffsPage()const;
 
-private: /*Functions*/
+private: /*Methods*/
     void setUpNavigation();
 
 private:
@@ -28,6 +30,7 @@ private:
     Dashboard* dashboard;
     CustomersPage* customersP;
     EmployeesPage* employeesP;
+    TariffsPage* tariffsP;
 
 };
 

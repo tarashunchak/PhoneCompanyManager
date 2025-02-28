@@ -20,6 +20,8 @@ public:
 signals:
     void on_customers_btn_clicked();
     void on_employees_btn_clicked();
+    void on_tariffs_btn_clicked();
+    void on_requests_btn_clicked();
 
 private:/*Methods*/
     void setTableViewConnection();

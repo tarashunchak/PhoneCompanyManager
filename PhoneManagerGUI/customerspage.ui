@@ -36,7 +36,7 @@
      <rect>
       <x>1336</x>
       <y>15</y>
-      <width>240</width>
+      <width>291</width>
       <height>30</height>
      </rect>
     </property>
@@ -50,39 +50,7 @@ border:none;
 background-color:rgb(151, 151, 151);</string>
     </property>
     <property name="placeholderText">
-     <string>Search Customers by name</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>1576</x>
-      <y>15</y>
-      <width>50</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Segoe UI</family>
-      <pointsize>11</pointsize>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-	color:white;
-	background-color:rgba(37, 39, 58, 1);
-	border: 1px  solid rgba(255, 255, 255, 0.1);
-}
-
-QPushButton:hover {
-	color:black;
-	background-color:rgba(82, 84, 105, 1);
-}</string>
-    </property>
-    <property name="text">
-     <string>Search</string>
+     <string>Search Customers by name or phone</string>
     </property>
    </widget>
   </widget>
@@ -459,7 +427,7 @@ QPushButton:hover {
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">borde:none;
+    <string notr="true">border:none;
 background-color:rgba(22, 23, 23, 0.6);</string>
    </property>
    <property name="frameShape">
