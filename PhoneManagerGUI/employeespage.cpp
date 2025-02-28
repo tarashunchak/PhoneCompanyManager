@@ -10,12 +10,12 @@ EmployeesPage::EmployeesPage(QWidget *parent)
     ui->setupUi(this);
 
     ButtonsShadowManager::setSideBarButtonsShadow({
-                                       ui->dashboard_btn,
-                                       ui->customers_btn,
-                                       ui->employees_btn,
-                                       ui->tariffs_btn,
-                                       ui->requests_btn,
-                                       ui->log_out_btn
+            ui->dashboard_btn,
+            ui->customers_btn,
+            ui->employees_btn,
+            ui->tariffs_btn,
+            ui->requests_btn,
+            ui->log_out_btn
     });
 }
 

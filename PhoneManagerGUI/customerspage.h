@@ -25,7 +25,7 @@ private: /*Methods*/
 
 private:
     Ui::CustomersPage *ui;
-    QSqlDatabase& db;
+    QSqlDatabase* db;
 };
 
 #endif // CUSTOMERSPAGE_H

@@ -2,6 +2,8 @@
 #define DASHBOARD_H
 
 #include <QWidget>
+#include <QSqlDatabase>
+#include <QSqlQueryModel>
 
 namespace Ui {
 class Dashboard;
@@ -20,10 +22,13 @@ signals:
     void on_employees_btn_clicked();
 
 private:/*Methods*/
-    void setSideBarButtonsShadow();
+    void setTableViewConnection();
 
 private:
     Ui::Dashboard *ui;
+    QSqlDatabase* db;
+    QSqlQueryModel* qmodel;
+
 };
 
 #endif // DASHBOARD_H

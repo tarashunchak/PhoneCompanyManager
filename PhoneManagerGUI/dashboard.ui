@@ -90,7 +90,7 @@ border:none;</string>
 	padding-left:0px;
     border: none;
     border-radius: 4px;
-    background-color: rgba(39, 48, 141, 1);;
+    background-color: rgba(39, 48, 141, 1);
     font-size: 24px;
     color: white;
     text-align: center;
@@ -157,10 +157,10 @@ QPushButton:hover {
    <widget class="QLabel" name="side_menu_logo">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>220</y>
-      <width>190</width>
-      <height>50</height>
+      <x>25</x>
+      <y>230</y>
+      <width>200</width>
+      <height>55</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -370,29 +370,88 @@ QPushButton:hover {
    <property name="geometry">
     <rect>
      <x>310</x>
-     <y>550</y>
+     <y>540</y>
      <width>1050</width>
-     <height>430</height>
+     <height>460</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgba(255, 255, 255, 1);
-box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-</string>
+    <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
+background-color:#1F2937;</string>
    </property>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>1010</width>
+      <height>390</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableView{
+	font-size:16px;
+	background-color: rgba(225, 225, 225, 1);
+	color:black;
+	border:none;
+	border-radius:0px;
+}
+
+QHeaderView:section {
+	height: 40px;
+    background-color: rgba(200, 200, 200, 1);
+    color: black;
+    font-family: Lato;
+    font-size: 18px;
+    font-weight: bold;
+    border:1px solid rgba(28, 28, 69, 1);
+}    
+</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QWidget" name="widget_5" native="true">
    <property name="geometry">
     <rect>
      <x>1400</x>
-     <y>550</y>
+     <y>540</y>
      <width>470</width>
-     <height>430</height>
+     <height>460</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgba(255, 255, 255, 1);</string>
+    <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
+background-color:#1F2937;</string>
    </property>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>430</width>
+      <height>390</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QWidget {
+	border:none;
+	background-color: rgba(225, 225, 225, 1);
+}</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>49</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Last Requests</string>
+    </property>
+   </widget>
   </widget>
   <widget class="Line" name="line_2">
    <property name="geometry">

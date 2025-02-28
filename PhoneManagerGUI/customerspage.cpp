@@ -10,19 +10,19 @@
 CustomersPage::CustomersPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CustomersPage)
-    , db(DatabaseManager::instance().getDatabase())
+    , db(&DatabaseManager::instance().getDatabase())
 {
     ui->setupUi(this);
 
     SetCustomersCards();
 
     ButtonsShadowManager::setSideBarButtonsShadow({
-                                       ui->dashboard_btn,
-                                       ui->customers_btn,
-                                       ui->employees_btn,
-                                       ui->tariffs_btn,
-                                       ui->requests_btn,
-                                       ui->log_out_btn
+            ui->dashboard_btn,
+            ui->customers_btn,
+            ui->employees_btn,
+            ui->tariffs_btn,
+            ui->requests_btn,
+            ui->log_out_btn
     });
 
 }
@@ -45,7 +45,7 @@ void CustomersPage::SetCustomersCards(){
 
     QSqlQuery query("SELECT *FROM Customers;");
     if(!query.exec()){
-        qDebug() << "In SetCustomersCards Query fault!!!: " << query.lastError();
+        qDebug() << "SetCustomersCards Query fault!!!: " << query.lastError();
         return;
     }
 
