@@ -400,8 +400,7 @@ QPushButton:hover {
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
-background-color:#1F2937;</string>
+    <string notr="true">background-color:#1F2937;</string>
    </property>
    <widget class="QTableView" name="tableView">
     <property name="geometry">
@@ -468,8 +467,7 @@ border:none;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
-background-color:#1F2937;</string>
+    <string notr="true">background-color:#1F2937;</string>
    </property>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">

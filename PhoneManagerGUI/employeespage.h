@@ -2,6 +2,8 @@
 #define EMPLOYEESPAGE_H
 
 #include <QWidget>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 namespace Ui {
 class EmployeesPage;
@@ -20,11 +22,14 @@ signals:
     void on_customers_btn_clicked();
 
 private:/*Methods*/
-    void SetEmployeesCards();
+    void SetEmployeesCards(QSqlQuery);
     void FindEmployeesByName();
 
 private:
     Ui::EmployeesPage *ui;
+
+    QSqlDatabase* db;
+
 };
 
 #endif // EMPLOYEESPAGE_H

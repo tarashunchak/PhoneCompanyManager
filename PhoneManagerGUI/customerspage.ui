@@ -449,10 +449,31 @@ QPushButton:hover {
    <zorder>requests_btn</zorder>
    <zorder>log_out_btn</zorder>
   </widget>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>990</y>
+     <width>1671</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">borde:none;
+background-color:rgba(22, 23, 23, 0.6);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Shape::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Shadow::Raised</enum>
+   </property>
+  </widget>
   <zorder>gridLayoutWidget</zorder>
   <zorder>widget</zorder>
   <zorder>side_bar_menu</zorder>
   <zorder>line_2</zorder>
+  <zorder>frame</zorder>
  </widget>
  <resources/>
  <connections/>

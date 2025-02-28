@@ -34,21 +34,10 @@ void CustomersPage::SetConnections(){
 
 void CustomersPage::SetCustomersCards(QSqlQuery query){
 
-    int cols = 0;
-    int rows = 0;
-    if(!ui->gridLayout){
-        qDebug() << "GridLayout is nullptr!";
-        return;
-    }
     QLayout* layout = ui->gridLayout;
     if(layout){
         while(QLayoutItem* item = layout->takeAt(0)){
-            if(QWidget* widget = item->widget()){
-                widget->deleteLater();
-            }else{
-                qDebug() << "Widget is invalid!";
-                return;
-            }
+            delete item->widget();
             delete item;
         }
     }
@@ -61,6 +50,8 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         }
     }
 
+    int cols = 0;
+    int rows = 0;
 
     QScrollArea* scrollArea = new QScrollArea(this);
     scrollArea->setWidgetResizable(true);
@@ -94,9 +85,7 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         full_name->setStyleSheet("background-color:transparent;color:black;font-size:14px;");
 
         innerGridLayout->addWidget(card, rows, cols);
-        innerGridLayout->setHorizontalSpacing(34);
-        innerGridLayout->setVerticalSpacing(40);
-        innerGridLayout->setContentsMargins(40, 70, 0, 0);
+
         cols++;
         if(cols % 5 == 0){
             cols = 0;
@@ -104,6 +93,10 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         }
     }
     innerGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    innerGridLayout->setHorizontalSpacing(34);
+    innerGridLayout->setVerticalSpacing(40);
+    innerGridLayout->setContentsMargins(40, 70, 0, 0);
+
     mainWidget->setLayout(innerGridLayout);
     scrollArea->setWidget(mainWidget);
     ui->gridLayout->addWidget(scrollArea);
