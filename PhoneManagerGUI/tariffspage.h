@@ -24,6 +24,8 @@ signals:
 
 private:/*Methods*/
     void SetTariffsCards(QSqlQuery);
+    void FindTariffInDB();
+    void SetConnections()const;
 
 private:
     Ui::TariffsPage *ui;

@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgba(150, 150, 150, 1);</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="side_bar_menu" native="true">
    <property name="geometry">

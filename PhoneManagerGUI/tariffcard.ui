@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>TariffCard</class>
  <widget class="QWidget" name="TariffCard">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,10 +16,14 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color:rgba(49, 49, 49, 1);</string>
+  <property name="autoFillBackground">
+   <bool>false</bool>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <property name="styleSheet">
+   <string notr="true">border-radius:5px;
+background-color:rgba(51, 51, 51, 1);</string>
+  </property>
+  <widget class="QPushButton" name="monthly_btn">
    <property name="geometry">
     <rect>
      <x>16</x>
@@ -25,17 +32,25 @@
      <height>51</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
    <property name="styleSheet">
-    <string notr="true">border-radius:6px;
-background-color:transparent;
+    <string notr="true">border-top-right-radius:0px;
+border-bottom-right-radius:0px;
 border:1px solid rgb(255, 255, 255);
 color:white;</string>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Monthly</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="daily_btn">
    <property name="geometry">
     <rect>
      <x>151</x>
@@ -44,17 +59,26 @@ color:white;</string>
      <height>51</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
    <property name="styleSheet">
-    <string notr="true">border-radius:6px;
+    <string notr="true">border-top-left-radius:0px;
+border-bottom-left-radius:0px;
 background-color:white;
 border:1px solid rgb(255, 255, 255);
 color:black;</string>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Daily</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="tariff_name">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -62,6 +86,17 @@ color:black;</string>
      <width>251</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Lato</family>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:white;
+font-family:Lato;
+font-size:16px;</string>
    </property>
    <property name="text">
     <string>TextLabel</string>

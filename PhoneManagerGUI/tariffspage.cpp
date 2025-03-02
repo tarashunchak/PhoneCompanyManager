@@ -22,7 +22,7 @@ TariffsPage::TariffsPage(QWidget *parent)
         ui->tariffs_btn,
         ui->requests_btn
     });
-
+    SetConnections();
     SetTariffsCards(QSqlQuery());
 
 }
@@ -30,6 +30,10 @@ TariffsPage::TariffsPage(QWidget *parent)
 TariffsPage::~TariffsPage()
 {
     delete ui;
+}
+
+void TariffsPage::SetConnections()const{
+    connect(ui->lineEdit, &QLineEdit::textChanged, this, &TariffsPage::FindTariffInDB);
 }
 
 void TariffsPage::SetTariffsCards(QSqlQuery query){
@@ -55,15 +59,15 @@ void TariffsPage::SetTariffsCards(QSqlQuery query){
     scrollArea->setWidgetResizable(true);
     scrollArea->setStyleSheet("border:none;");
 
-    QWidget* mainWidget = new QWidget;
+    QWidget* mainWidget = new QWidget();
     QGridLayout* innerGridLayout = new QGridLayout(mainWidget);
     while(query.next()){
         TariffCard* card = new TariffCard();
-        card->setMinimumSize(300, 360);
-        card->setStyleSheet("background-color:rgba(49, 49, 49, 1);");
+        card->setMinimumSize(296, 510);
+        card->setTariffNameLabelText(query.value("tariff_name").toString());
 
         innerGridLayout->addWidget(card, rows, cols);
-
+        qDebug() << card->styleSheet();
         cols++;
         if(cols % 4 == 0){
             cols = 0;
@@ -71,12 +75,21 @@ void TariffsPage::SetTariffsCards(QSqlQuery query){
         }
     }
     innerGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    innerGridLayout->setHorizontalSpacing(60);
+    innerGridLayout->setHorizontalSpacing(100);
     innerGridLayout->setVerticalSpacing(50);
-    innerGridLayout->setContentsMargins(60, 70, 0, 0);
+    innerGridLayout->setContentsMargins(84, 70, 0, 0);
 
     mainWidget->setLayout(innerGridLayout);
+
     scrollArea->setWidget(mainWidget);
     ui->gridLayout->addWidget(scrollArea);
 
+}
+
+void TariffsPage::FindTariffInDB(){
+    QSqlQuery query;
+    query.prepare("SELECT *FROM Tariffs WHERE tariff_name LIKE :name OR id LIKE :id;");
+    query.bindValue(":name", ui->lineEdit->text() + "%");
+    query.bindValue(":id", ui->lineEdit->text() + "%");
+    SetTariffsCards(std::move(query));
 }
