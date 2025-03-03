@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgba(36, 36, 36, 1);</string>
+   <string notr="true"/>
   </property>
   <widget class="Line" name="line_2">
    <property name="geometry">

@@ -63,10 +63,10 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         card->setMaximumSize(290, 120);
         card->setStyleSheet(
             "QPushButton{"
-              "background-color:rgba(167, 175, 183, 1);"
+              "background-color:rgba(51, 51, 51, 1);;"
             "}"
             "QPushButton:hover{"
-               "background-color:rgba(220, 220, 220, 1);"
+               "background-color:rgba(71, 71, 71, 1);;"
             "}");
 
         QLabel* image = new QLabel(card);
@@ -76,7 +76,12 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
 
         QLabel* full_name = new QLabel(query.value("full_name").toString(), card);
         full_name->setGeometry(85, 35, 250, 20);
-        full_name->setStyleSheet("background-color:transparent;color:black;font-size:18px;");
+        full_name->setStyleSheet("background-color:transparent;color:white;font-size:18px;");
+
+        QLabel* empl_id = new QLabel("ID:" + query.value("id").toString(), card);
+        
+        empl_id->setGeometry(85, 60, 100, 20);
+        empl_id->setStyleSheet("background-color:transparent;color:white;font-size:16px;");
 
         innerGridLayout->addWidget(card, rows, cols);
 

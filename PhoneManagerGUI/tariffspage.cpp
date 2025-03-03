@@ -67,7 +67,6 @@ void TariffsPage::SetTariffsCards(QSqlQuery query){
         card->setTariffNameLabelText(query.value("tariff_name").toString());
 
         innerGridLayout->addWidget(card, rows, cols);
-        qDebug() << card->styleSheet();
         cols++;
         if(cols % 4 == 0){
             cols = 0;

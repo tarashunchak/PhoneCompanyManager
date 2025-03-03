@@ -6,8 +6,9 @@ TariffCard::TariffCard(QFrame *parent)
     , ui(new Ui::TariffCard)
 {
     ui->setupUi(this);
-    qDebug() << "Tariff card is constructed!";
     setConnections();
+    ui->money_pic->setPixmap(QPixmap("./img/money@2x.png"));
+    ui->money_pic->setStyleSheet("background-color:white;");
 }
 
 TariffCard::~TariffCard()
