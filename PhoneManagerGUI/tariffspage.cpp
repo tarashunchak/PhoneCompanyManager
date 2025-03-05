@@ -12,6 +12,7 @@ TariffsPage::TariffsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::TariffsPage)
     , db(&DatabaseManager::instance().getDatabase())
+    , insertT_Dialog(new InsertTariffDialog())
 {
     ui->setupUi(this);
 
@@ -34,6 +35,7 @@ TariffsPage::~TariffsPage()
 
 void TariffsPage::SetConnections()const{
     connect(ui->lineEdit, &QLineEdit::textChanged, this, &TariffsPage::FindTariffInDB);
+    connect(ui->add_tariff_btn, &QPushButton::clicked, insertT_Dialog, &InsertTariffDialog::exec);
 }
 
 void TariffsPage::SetTariffsCards(QSqlQuery query){
@@ -92,3 +94,4 @@ void TariffsPage::FindTariffInDB(){
     query.bindValue(":id", ui->lineEdit->text() + "%");
     SetTariffsCards(std::move(query));
 }
+

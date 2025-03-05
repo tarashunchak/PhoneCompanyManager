@@ -402,6 +402,24 @@ background-color:rgb(151, 151, 151);</string>
      <string>Search Tariff by name or id</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="add_tariff_btn">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>15</y>
+      <width>90</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-family:Lato;
+font-size:14px;
+color:white;</string>
+    </property>
+    <property name="text">
+     <string>Add tariff</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QFrame" name="frame">
    <property name="geometry">

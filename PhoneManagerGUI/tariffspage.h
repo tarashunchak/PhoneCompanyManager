@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSqlDatabase>
+#include "inserttariffdialog.h"
 
 namespace Ui {
 class TariffsPage;
@@ -22,15 +23,18 @@ signals:
     void on_employees_btn_clicked();
     void on_requests_btn_clicked();
 
+private slots:
+    void FindTariffInDB();
+
 private:/*Methods*/
     void SetTariffsCards(QSqlQuery);
-    void FindTariffInDB();
     void SetConnections()const;
 
 private:
     Ui::TariffsPage *ui;
 
     QSqlDatabase* db;
+    InsertTariffDialog* insertT_Dialog;
 };
 
 #endif // TARIFFSPAGE_H
