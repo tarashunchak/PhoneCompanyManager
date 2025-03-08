@@ -18,6 +18,7 @@ TariffCard::~TariffCard()
 
 void TariffCard::setConnections()const{
     connect(ui->monthly_btn, &QPushButton::clicked, this, [this](){
+        ui->daily_price->setText("Monthly price");
         ui->monthly_btn->setStyleSheet(
             "QPushButton{"
             "border-top-right-radius:0px;"
@@ -38,7 +39,8 @@ void TariffCard::setConnections()const{
             );
     });
     connect(ui->daily_btn, &QPushButton::clicked, this, [this](){
-         ui->daily_btn->setStyleSheet(
+        ui->daily_price->setText("Daily price");
+        ui->daily_btn->setStyleSheet(
             "QPushButton{"
             "border-top-left-radius:0px;"
             "border-bottom-left-radius:0px;"
@@ -59,6 +61,16 @@ void TariffCard::setConnections()const{
     });
 }
 
-void TariffCard::setTariffNameLabelText(const QString& text){
-    ui->tariff_name->setText(text);
+void TariffCard::setTariffInfoFromQuery(QSqlRecord record){
+    ui->tariff_name->setText(record.value("tariff_name").toString());
+    ui->id_label->setText("ID:" + record.value("id").toString());
+    ui->id_label->setAlignment(Qt::AlignRight);
+    ui->price_label->setText(record.value("monthly_price").toString() + "$");
+    connect(ui->daily_btn, &QPushButton::clicked, this, [this, record](){
+        ui->price_label->setText(record.value("daily_price").toString() + "$");
+    });
+    connect(ui->monthly_btn, &QPushButton::clicked, this, [this, record](){
+        ui->price_label->setText(record.value("monthly_price").toString() + "$");
+    });
+    ui->price_label->setAlignment(Qt::AlignRight);
 }

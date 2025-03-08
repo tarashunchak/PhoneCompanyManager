@@ -5,6 +5,7 @@
 #include "databasemanager.h"
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QSqlRecord>
 #include <QScrollArea>
 #include "tariffcard.h"
 
@@ -66,7 +67,7 @@ void TariffsPage::SetTariffsCards(QSqlQuery query){
     while(query.next()){
         TariffCard* card = new TariffCard();
         card->setMinimumSize(296, 510);
-        card->setTariffNameLabelText(query.value("tariff_name").toString());
+        card->setTariffInfoFromQuery(query.record());
 
         innerGridLayout->addWidget(card, rows, cols);
         cols++;
@@ -94,4 +95,3 @@ void TariffsPage::FindTariffInDB(){
     query.bindValue(":id", ui->lineEdit->text() + "%");
     SetTariffsCards(std::move(query));
 }
-

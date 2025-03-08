@@ -2,6 +2,7 @@
 #define TARIFFCARD_H
 
 #include <QFrame>
+#include <QSqlRecord>
 
 namespace Ui {
 class TariffCard;
@@ -14,7 +15,7 @@ class TariffCard : public QFrame
 public:
     explicit TariffCard(QFrame *parent = nullptr);
     ~TariffCard();
-    void setTariffNameLabelText(const QString&);
+    void setTariffInfoFromQuery(QSqlRecord);
 
 private slots:
     void setConnections()const;

@@ -16,8 +16,10 @@ SOURCES += \
     databasemanager.cpp \
     employeespage.cpp \
     inserttariffdialog.cpp \
+    loginpage.cpp \
     main.cpp \
     mainwindow.cpp \
+    requestspage.cpp \
     tariffcard.cpp \
     tariffspage.cpp
 
@@ -29,7 +31,9 @@ HEADERS += \
     databasemanager.h \
     employeespage.h \
     inserttariffdialog.h \
+    loginpage.h \
     mainwindow.h \
+    requestspage.h \
     tariffcard.h \
     tariffspage.h
 
@@ -38,7 +42,9 @@ FORMS += \
     dashboard.ui \
     employeespage.ui \
     inserttariffdialog.ui \
+    loginpage.ui \
     mainwindow.ui \
+    requestspage.ui \
     tariffcard.ui \
     tariffspage.ui
 

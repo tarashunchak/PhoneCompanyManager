@@ -4,10 +4,12 @@
 #include <QObject>
 #include <QStackedWidget>
 
+#include "loginpage.h"
 #include "dashboard.h"
 #include "customerspage.h"
 #include "employeespage.h"
 #include "tariffspage.h"
+#include "requestspage.h"
 
 class ButtonsLogicManager : public QObject
 {
@@ -20,6 +22,7 @@ public slots:
     void showCustomersPage()const;
     void showEmployeesPage()const;
     void showTariffsPage()const;
+    void showRequestsPage()const;
 
 private: /*Methods*/
     void setUpNavigation();
@@ -27,10 +30,12 @@ private: /*Methods*/
 private:
     QStackedWidget* sWidget;
 
-    Dashboard* dashboard;
-    CustomersPage* customersP;
-    EmployeesPage* employeesP;
-    TariffsPage* tariffsP;
+    LoginPage* loginPage;
+    Dashboard* dashboardPage;
+    CustomersPage* customersPage;
+    EmployeesPage* employeesPage;
+    TariffsPage* tariffsPage;
+    RequestsPage* requestsPage;
 
 };
 
