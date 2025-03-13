@@ -1,5 +1,5 @@
-#ifndef BUTTONSLOGICMANAGER_H
-#define BUTTONSLOGICMANAGER_H
+#ifndef NAVIGATION_MANAGER_H
+#define NAVIGATION_MANAGER_H
 
 #include <QObject>
 #include <QStackedWidget>
@@ -11,13 +11,14 @@
 #include "tariffspage.h"
 #include "requestspage.h"
 
-class ButtonsLogicManager : public QObject
+class NavigationManager: public QObject
 {
     Q_OBJECT
 public:
-    ButtonsLogicManager(QStackedWidget*, QObject*);
+    NavigationManager(QStackedWidget*, QObject*);
 
-public slots:
+protected slots:
+    void showLoginPage()const;
     void showDashboardPage()const;
     void showCustomersPage()const;
     void showEmployeesPage()const;
@@ -39,4 +40,4 @@ private:
 
 };
 
-#endif // BUTTONSLOGICMANAGER_H
+#endif //

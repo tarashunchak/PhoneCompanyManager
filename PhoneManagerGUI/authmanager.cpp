@@ -2,7 +2,7 @@
 #include "databasemanager.h"
 #include <QSqlQuery>
 
-QSqlDatabase* AuthManager::db = nullptr;
+AuthManager::AuthManager():db(&DatabaseManager::instance().getDatabase()){}
 
 void AuthManager::aunthenticate(const QString username, const QString password){
     db = &DatabaseManager::instance().getDatabase();
@@ -11,6 +11,8 @@ void AuthManager::aunthenticate(const QString username, const QString password){
     query.bindValue(":user", username);
     query.bindValue(":pass", password);
     if(!query.exec()){
-
+        qDebug() << "There is no User with this username or pass in DB!\n";
+        emit incorrect_login_data();
     }
+
 }

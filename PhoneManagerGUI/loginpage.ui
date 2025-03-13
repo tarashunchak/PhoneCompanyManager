@@ -16,7 +16,7 @@
   <property name="styleSheet">
    <string notr="true">background-color:rgb(60, 60, 60);</string>
   </property>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="username_LineEdit">
    <property name="geometry">
     <rect>
      <x>800</x>
@@ -39,7 +39,7 @@ color:black;</string>
     <string>Username</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="password_LineEdit">
    <property name="geometry">
     <rect>
      <x>800</x>
@@ -62,17 +62,22 @@ color:black;</string>
     <string>Password</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="confirm_btn">
    <property name="geometry">
     <rect>
-     <x>930</x>
-     <y>590</y>
-     <width>80</width>
-     <height>24</height>
+     <x>800</x>
+     <y>585</y>
+     <width>320</width>
+     <height>32</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color:white;
+font-size:16px;
+font-family:Lato;</string>
+   </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Confirm</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -113,17 +118,21 @@ font-size:80px;</string>
     <string>TextLabel</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="incorrect_data_Label">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>780</y>
-     <width>49</width>
-     <height>16</height>
+     <x>860</x>
+     <y>560</y>
+     <width>211</width>
+     <height>21</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:transparent;
+font-size:14px;</string>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>Incorrect Username or Password!</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">

@@ -1,6 +1,5 @@
 #include "databasemanager.h"
 #include <QSqlError>
-#include <QDebug>
 
 DatabaseManager::DatabaseManager() {
     db = QSqlDatabase::addDatabase("QSQLITE");

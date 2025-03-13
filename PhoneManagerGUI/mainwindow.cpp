@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     sWidget = new QStackedWidget(this);
     setCentralWidget(sWidget);
 
-    bManager = new ButtonsLogicManager(sWidget, this);
+    nManager = new NavigationManager(sWidget, this);
 
 }
 

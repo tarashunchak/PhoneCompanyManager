@@ -18,6 +18,7 @@ public:
     ~Dashboard();
 
 signals:
+    void on_dashboard_btn_clicked();
     void on_customers_btn_clicked();
     void on_employees_btn_clicked();
     void on_tariffs_btn_clicked();

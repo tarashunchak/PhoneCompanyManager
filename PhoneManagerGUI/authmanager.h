@@ -4,14 +4,18 @@
 #include <QString>
 #include <QSqlDatabase>
 
-class AuthManager : QObject
+class AuthManager : public QObject
 {
     Q_OBJECT
 public:
-    static void aunthenticate(const QString, const QString);
+    AuthManager();
+    void aunthenticate(const QString, const QString);
+
+signals:
+    void incorrect_login_data();
 
 private:
-    static QSqlDatabase* db;
+    QSqlDatabase* db;
 
 };
 

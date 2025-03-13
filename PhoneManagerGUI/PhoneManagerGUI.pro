@@ -10,7 +10,6 @@ CONFIG += c++17
 
 SOURCES += \
     authmanager.cpp \
-    buttonslogicmanager.cpp \
     buttonsstylemanager.cpp \
     customerspage.cpp \
     dashboard.cpp \
@@ -20,13 +19,13 @@ SOURCES += \
     loginpage.cpp \
     main.cpp \
     mainwindow.cpp \
+    navigationmanager.cpp \
     requestspage.cpp \
     tariffcard.cpp \
     tariffspage.cpp
 
 HEADERS += \
     authmanager.h \
-    buttonslogicmanager.h \
     buttonsstylemanager.h \
     customerspage.h \
     dashboard.h \
@@ -35,6 +34,7 @@ HEADERS += \
     inserttariffdialog.h \
     loginpage.h \
     mainwindow.h \
+    navigationmanager.h \
     requestspage.h \
     tariffcard.h \
     tariffspage.h

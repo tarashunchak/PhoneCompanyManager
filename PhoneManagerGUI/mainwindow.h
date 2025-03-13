@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "buttonslogicmanager.h"
+#include "navigationmanager.h"
 #include <QStackedWidget>
 
 QT_BEGIN_NAMESPACE
@@ -23,7 +23,7 @@ private:
     Ui::MainWindow *ui;
     QStackedWidget* sWidget;
 
-    ButtonsLogicManager* bManager;
+    NavigationManager* nManager;
 
 };
 #endif // MAINWINDOW_H

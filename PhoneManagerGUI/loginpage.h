@@ -2,6 +2,7 @@
 #define LOGINPAGE_H
 
 #include <QWidget>
+#include "authmanager.h"
 
 namespace Ui {
 class LoginPage;
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::LoginPage *ui;
+    AuthManager* authManager;
 };
 
 #endif // LOGINPAGE_H
