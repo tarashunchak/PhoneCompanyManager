@@ -1,14 +1,15 @@
 #include "navigationmanager.h"
 
-NavigationManager::NavigationManager(QStackedWidget* widget, QObject* parent)
+NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
     : QObject(parent)
-    , sWidget(widget)
+    , sWidget(sWidget)
     , loginPage(new LoginPage)
     , dashboardPage(new Dashboard())
     , customersPage(new CustomersPage())
     , employeesPage(new EmployeesPage())
     , tariffsPage(new TariffsPage())
     , requestsPage(new RequestsPage())
+    , registrationPage(new RegistrationPage())
 
 {
 
@@ -18,6 +19,7 @@ NavigationManager::NavigationManager(QStackedWidget* widget, QObject* parent)
     sWidget->addWidget(employeesPage);
     sWidget->addWidget(tariffsPage);
     sWidget->addWidget(requestsPage);
+    sWidget->addWidget(registrationPage);
 
     sWidget->setCurrentWidget(loginPage);
 
@@ -25,8 +27,11 @@ NavigationManager::NavigationManager(QStackedWidget* widget, QObject* parent)
 
 }
 
-
 void NavigationManager::setUpNavigation(){
+
+    //Login Page Signals/Slots connections
+    connect(loginPage, &LoginPage::login_succsess, this, &NavigationManager::showDashboardPage);
+    connect(loginPage, &LoginPage::on_registration_Link_linkActivated, this, &NavigationManager::showRegistrationPage);
 
     //Dashboard Page Signals/Slots connections
     connect(dashboardPage, &Dashboard::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
@@ -34,18 +39,23 @@ void NavigationManager::setUpNavigation(){
     connect(dashboardPage, &Dashboard::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
     connect(dashboardPage, &Dashboard::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
     connect(dashboardPage, &Dashboard::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
+    connect(dashboardPage, &Dashboard::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
 
     //Customers Page Signals/Slots connections
     connect(customersPage, &CustomersPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
+    connect(customersPage, &CustomersPage::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
     connect(customersPage, &CustomersPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
     connect(customersPage, &CustomersPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
     connect(customersPage, &CustomersPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
+    connect(customersPage, &CustomersPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
 
     //Employees Page Signals/Slots connections
     connect(employeesPage, &EmployeesPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
     connect(employeesPage, &EmployeesPage::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
+    connect(employeesPage, &EmployeesPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
     connect(employeesPage, &EmployeesPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
     connect(employeesPage, &EmployeesPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
+    connect(employeesPage, &EmployeesPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
 
     //Tariffs Page Signals/Slots connections
     connect(tariffsPage, &TariffsPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
@@ -53,6 +63,7 @@ void NavigationManager::setUpNavigation(){
     connect(tariffsPage, &TariffsPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
     connect(tariffsPage, &TariffsPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
     connect(tariffsPage, &TariffsPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
+    connect(tariffsPage, &TariffsPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
 
     //Requests Page Signals/Slots connections
     connect(requestsPage, &RequestsPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
@@ -68,22 +79,30 @@ void NavigationManager::showLoginPage()const{
 }
 
 void NavigationManager::showDashboardPage()const{
+    dashboardPage->setCurrentUser();
     sWidget->setCurrentWidget(dashboardPage);
 }
 
 void NavigationManager::showCustomersPage()const{
+    customersPage->SetCustomersCards();
     sWidget->setCurrentWidget(customersPage);
 }
 
 void NavigationManager::showEmployeesPage()const{
+    employeesPage->SetEmployeesCards();
     sWidget->setCurrentWidget(employeesPage);
 }
 
 void NavigationManager::showTariffsPage()const{
-    tariffsPage->SetTariffsCards();
+    tariffsPage->setCurrentUser();
+    tariffsPage->setTariffsCards();
     sWidget->setCurrentWidget(tariffsPage);
 }
 
 void NavigationManager::showRequestsPage()const{
     sWidget->setCurrentWidget(requestsPage);
+}
+
+void NavigationManager::showRegistrationPage()const{
+    sWidget->setCurrentWidget(registrationPage);
 }

@@ -24,5 +24,6 @@ RequestsPage::RequestsPage(QWidget *parent)
 
 RequestsPage::~RequestsPage()
 {
+    db = nullptr;
     delete ui;
 }

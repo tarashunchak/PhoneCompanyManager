@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     nManager = new NavigationManager(sWidget, this);
 
+    qApp->setStyleSheet("QPushButton:focus { outline: none; border: none; }");
 }
 
 MainWindow::~MainWindow()

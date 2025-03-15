@@ -20,6 +20,7 @@ InsertTariffDialog::InsertTariffDialog(QWidget *parent)
 
 InsertTariffDialog::~InsertTariffDialog()
 {
+    db = nullptr;
     delete ui;
 }
 
@@ -41,7 +42,16 @@ void InsertTariffDialog::InsertTariffToDB(){
         if(!query.exec()){
             qDebug() << "Insert tariff to DB fault!" << query.lastError();
         }else{
+            ClearWidgets();
             this->close();
         }
     }
+}
+
+void InsertTariffDialog::ClearWidgets()const{
+    ui->tariff_call_minutes->clear();
+    ui->tariff_daily_price->clear();
+    ui->tariff_monthly_price->clear();
+    ui->tariff_name->clear();
+    ui->tariff_internet_GB->clear();
 }

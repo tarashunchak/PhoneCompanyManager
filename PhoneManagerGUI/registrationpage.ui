@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LoginPage</class>
- <widget class="QWidget" name="LoginPage">
+ <class>RegistrationPage</class>
+ <widget class="QWidget" name="RegistrationPage">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -16,6 +16,19 @@
   <property name="styleSheet">
    <string notr="true">background-color:rgb(60, 60, 60);</string>
   </property>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>1440</y>
+     <width>49</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
   <widget class="QLineEdit" name="username_LineEdit">
    <property name="geometry">
     <rect>
@@ -39,6 +52,62 @@ color:black;</string>
     <string>Username</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="confirm_btn">
+   <property name="geometry">
+    <rect>
+     <x>800</x>
+     <y>670</y>
+     <width>320</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:white;
+font-size:16px;
+font-family:Lato;</string>
+   </property>
+   <property name="text">
+    <string>Confirm</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>1310</y>
+     <width>49</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>300</y>
+     <width>420</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Lato</family>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:transparent;
+color:black;
+font-family:Lato;
+font-size:80px;</string>
+   </property>
+   <property name="text">
+    <string>Registration</string>
+   </property>
+  </widget>
   <widget class="QLineEdit" name="password_LineEdit">
    <property name="geometry">
     <rect>
@@ -58,87 +127,15 @@ color:black;</string>
 background-color:white;
 color:black;</string>
    </property>
-   <property name="echoMode">
-    <enum>QLineEdit::EchoMode::Password</enum>
-   </property>
    <property name="placeholderText">
     <string>Password</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="confirm_btn">
-   <property name="geometry">
-    <rect>
-     <x>800</x>
-     <y>585</y>
-     <width>320</width>
-     <height>34</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border:none;
-border-radius:4px;
-color:white;
-font-size:16px;
-font-family:Lato;
-background-color:rgb(140, 140, 140);</string>
-   </property>
-   <property name="text">
-    <string>Confirm</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>845</x>
-     <y>300</y>
-     <width>230</width>
-     <height>101</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>-1</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:transparent;
-color:black;
-font-family:Lato;
-font-size:80px;</string>
-   </property>
-   <property name="text">
-    <string>Log In</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="registration_Link">
-   <property name="geometry">
-    <rect>
-     <x>930</x>
-     <y>650</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">text-decoration:underline;
-background-color:transparent;
-color:rgb(47, 85, 255);
-font-size:14px;
-font-family:Lato;</string>
-   </property>
-   <property name="text">
-    <string>Registration</string>
-   </property>
-   <property name="openExternalLinks">
-    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="incorrect_data_Label">
    <property name="geometry">
     <rect>
-     <x>860</x>
-     <y>560</y>
+     <x>1090</x>
+     <y>1140</y>
      <width>211</width>
      <height>21</height>
     </rect>
@@ -151,17 +148,27 @@ font-size:14px;</string>
     <string>Incorrect Username or Password!</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_4">
+  <widget class="QLineEdit" name="password_LineEdit_2">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>860</y>
-     <width>49</width>
-     <height>16</height>
+     <x>800</x>
+     <y>600</y>
+     <width>320</width>
+     <height>36</height>
     </rect>
    </property>
-   <property name="text">
-    <string>TextLabel</string>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:4px;
+background-color:white;
+color:black;</string>
+   </property>
+   <property name="placeholderText">
+    <string>Password</string>
    </property>
   </widget>
  </widget>

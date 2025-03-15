@@ -16,6 +16,13 @@ public:
     explicit LoginPage(QWidget *parent = nullptr);
     ~LoginPage();
 
+signals:
+    void login_succsess();
+    void on_registration_Link_linkActivated(const QString &link);
+
+private: /*Methods*/
+    void setConnections();
+
 private:
     Ui::LoginPage *ui;
     AuthManager* authManager;

@@ -3,6 +3,7 @@
 
 #include "buttonsstylemanager.h"
 #include "databasemanager.h"
+#include "currentuser.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlRecord>
@@ -13,7 +14,7 @@ TariffsPage::TariffsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::TariffsPage)
     , db(&DatabaseManager::instance().getDatabase())
-    , insertT_Dialog(new InsertTariffDialog())
+
 {
     ui->setupUi(this);
 
@@ -25,24 +26,52 @@ TariffsPage::TariffsPage(QWidget *parent)
         ui->requests_btn
     });
     SetConnections();
-    SetTariffsCards(QSqlQuery());
+    setTariffsCards(QSqlQuery());
 
 }
 
 TariffsPage::~TariffsPage()
 {
+    db = nullptr;
     delete ui;
 }
 
-void TariffsPage::SetConnections()const{
-    connect(ui->lineEdit, &QLineEdit::textChanged, this, &TariffsPage::FindTariffInDB);
-    connect(ui->add_tariff_btn, &QPushButton::clicked, insertT_Dialog, &InsertTariffDialog::exec);
+void TariffsPage::setCurrentUser(){
+    QSqlQuery query;
+    query.prepare("SELECT Employees.full_name AS name, "
+                  "Positions.position_name AS position "
+                  "FROM Employees "
+                  "JOIN Positions ON Positions.id = Employees.position_id "
+                  "WHERE Employees.id = :empl_id;");
+    const int empl_id = CurrentUser::getCurrentUserID();
+    query.bindValue(":empl_id", empl_id);
+    if(query.exec() && query.next()){
+        ui->name_label->setText(query.value("name").toString());
+        if(query.value("position").toString() == "Administrator"){
+            ui->add_tariff_btn->setVisible(true);
+        }else{
+            ui->add_tariff_btn->setVisible(false);
+        }
+    }else{
+        qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
+        return;
+    }
+
 }
 
-void TariffsPage::SetTariffsCards(QSqlQuery query){
+void TariffsPage::SetConnections()const{
+
+    connect(ui->lineEdit, &QLineEdit::textChanged
+            , this, &TariffsPage::FindTariffInDB);
+
+    connect(this, &TariffsPage::on_add_tariff_btn_clicked
+            , &insertT_Dialog, &InsertTariffDialog::exec);
+}
+
+void TariffsPage::setTariffsCards(QSqlQuery query){
     if(!query.exec()){
         query.prepare("SELECT *FROM Tariffs;");
-        if(query.exec()){
+        if(!query.exec()){
             qDebug() << "SetTariffsCards query fault!" << query.lastError();
         }
     }
@@ -93,5 +122,5 @@ void TariffsPage::FindTariffInDB(){
     query.prepare("SELECT *FROM Tariffs WHERE tariff_name LIKE :name OR id LIKE :id;");
     query.bindValue(":name", ui->lineEdit->text() + "%");
     query.bindValue(":id", ui->lineEdit->text() + "%");
-    SetTariffsCards(std::move(query));
+    setTariffsCards(std::move(query));
 }

@@ -20,12 +20,13 @@ EmployeesPage::EmployeesPage(QWidget *parent)
         ui->requests_btn
     });
 
-    SetEmployeesCards(QSqlQuery());
+    SetEmployeesCards();
 
 }
 
 EmployeesPage::~EmployeesPage()
 {
+    db = nullptr;
     delete ui;
 }
 

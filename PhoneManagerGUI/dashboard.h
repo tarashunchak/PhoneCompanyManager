@@ -16,6 +16,7 @@ class Dashboard : public QWidget
 public:
     explicit Dashboard(QWidget *parent = nullptr);
     ~Dashboard();
+    void setCurrentUser();
 
 signals:
     void on_dashboard_btn_clicked();
@@ -23,6 +24,7 @@ signals:
     void on_employees_btn_clicked();
     void on_tariffs_btn_clicked();
     void on_requests_btn_clicked();
+    void on_log_out_btn_clicked();
 
 private:/*Methods*/
     void setTableViewConnection();

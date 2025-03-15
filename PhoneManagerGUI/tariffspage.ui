@@ -151,8 +151,8 @@ QPushButton:hover {
    <widget class="QLabel" name="side_menu_logo">
     <property name="geometry">
      <rect>
-      <x>25</x>
-      <y>230</y>
+      <x>20</x>
+      <y>830</y>
       <width>200</width>
       <height>55</height>
      </rect>
@@ -342,6 +342,30 @@ QPushButton:hover {
      </size>
     </property>
    </widget>
+   <widget class="QLabel" name="name_label">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>270</y>
+      <width>150</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:none;
+color:white;
+padding-left:10px;
+text-align:center;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
    <zorder>dashboard_btn</zorder>
    <zorder>customers_btn</zorder>
    <zorder>side_menu_logo</zorder>
@@ -351,6 +375,7 @@ QPushButton:hover {
    <zorder>tariffs_btn</zorder>
    <zorder>requests_btn</zorder>
    <zorder>log_out_btn</zorder>
+   <zorder>name_label</zorder>
   </widget>
   <widget class="Line" name="line_2">
    <property name="geometry">

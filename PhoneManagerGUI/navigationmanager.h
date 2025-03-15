@@ -10,6 +10,7 @@
 #include "employeespage.h"
 #include "tariffspage.h"
 #include "requestspage.h"
+#include "registrationpage.h"
 
 class NavigationManager: public QObject
 {
@@ -17,13 +18,14 @@ class NavigationManager: public QObject
 public:
     NavigationManager(QStackedWidget*, QObject*);
 
-protected slots:
+private slots:
     void showLoginPage()const;
     void showDashboardPage()const;
     void showCustomersPage()const;
     void showEmployeesPage()const;
     void showTariffsPage()const;
     void showRequestsPage()const;
+    void showRegistrationPage()const;
 
 private: /*Methods*/
     void setUpNavigation();
@@ -37,6 +39,7 @@ private:
     EmployeesPage* employeesPage;
     TariffsPage* tariffsPage;
     RequestsPage* requestsPage;
+    RegistrationPage* registrationPage;
 
 };
 

@@ -21,6 +21,7 @@ private slots:
 
 private: /*Methods*/
     void SetConnections()const;
+    void ClearWidgets()const;
 
 private:
     Ui::InsertTariffDialog *ui;

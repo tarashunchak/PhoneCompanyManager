@@ -354,7 +354,7 @@ QPushButton:hover {
      </size>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="name_label">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -387,7 +387,7 @@ text-align:center;</string>
    <zorder>tariffs_btn</zorder>
    <zorder>requests_btn</zorder>
    <zorder>log_out_btn</zorder>
-   <zorder>label_3</zorder>
+   <zorder>name_label</zorder>
   </widget>
   <widget class="QWidget" name="widget_2" native="true">
    <property name="geometry">

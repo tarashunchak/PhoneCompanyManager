@@ -9,11 +9,12 @@ class AuthManager : public QObject
     Q_OBJECT
 public:
     AuthManager();
+    ~AuthManager();
     void aunthenticate(const QString, const QString);
 
 signals:
     void incorrect_login_data();
-
+    void authSuccess();
 private:
     QSqlDatabase* db;
 

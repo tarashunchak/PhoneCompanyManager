@@ -17,7 +17,8 @@ class TariffsPage : public QWidget
 public:
     explicit TariffsPage(QWidget *parent = nullptr);
     ~TariffsPage();
-    void SetTariffsCards(QSqlQuery query = QSqlQuery());
+    void setTariffsCards(QSqlQuery query = QSqlQuery());
+    void setCurrentUser();
 
 signals:
     void on_dashboard_btn_clicked();
@@ -25,6 +26,8 @@ signals:
     void on_employees_btn_clicked();
     void on_requests_btn_clicked();
     void on_tariffs_btn_clicked();
+    void on_log_out_btn_clicked();
+    void on_add_tariff_btn_clicked();
 
 private slots:
     void FindTariffInDB();
@@ -36,7 +39,7 @@ private:
     Ui::TariffsPage *ui;
 
     QSqlDatabase* db;
-    InsertTariffDialog* insertT_Dialog;
+    InsertTariffDialog insertT_Dialog;
 };
 
 #endif // TARIFFSPAGE_H

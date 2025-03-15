@@ -1,8 +1,11 @@
 #include "dashboard.h"
 #include "ui_dashboard.h"
 
+#include <QSqlQuery>
+#include <QSqlError>
 #include "databasemanager.h"
 #include "buttonsstylemanager.h"
+#include "currentuser.h"
 
 Dashboard::Dashboard(QWidget *parent)
     : QWidget(parent)
@@ -26,7 +29,22 @@ Dashboard::Dashboard(QWidget *parent)
 
 Dashboard::~Dashboard()
 {
+    db = nullptr;
     delete ui;
+}
+
+void Dashboard::setCurrentUser(){
+    QSqlQuery query;
+    query.prepare("SELECT *FROM Employees WHERE id = :empl_id;");
+    const int empl_id = CurrentUser::getCurrentUserID();
+    query.bindValue(":empl_id", empl_id);
+    if(query.exec() && query.next()){
+        ui->name_label->setText(query.value("full_name").toString());
+    }else{
+        qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
+        return;
+    }
+
 }
 
 void Dashboard::setTableViewConnection(){

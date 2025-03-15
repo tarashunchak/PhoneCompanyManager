@@ -16,15 +16,17 @@ class CustomersPage : public QWidget
 public:
     explicit CustomersPage(QWidget *parent = nullptr);
     ~CustomersPage();
+    void SetCustomersCards(QSqlQuery query = QSqlQuery());
 
 signals:
     void on_dashboard_btn_clicked();
+    void on_customers_btn_clicked();
     void on_employees_btn_clicked();
     void on_tariffs_btn_clicked();
     void on_requests_btn_clicked();
+    void on_log_out_btn_clicked();
 
 private: /*Methods*/
-    void SetCustomersCards(QSqlQuery query);
     void FindCustomersByName();
     void SetConnections();
 

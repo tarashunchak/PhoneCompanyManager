@@ -13,7 +13,7 @@ CustomersPage::CustomersPage(QWidget *parent)
 {
     ui->setupUi(this);
 
-    SetCustomersCards(QSqlQuery());
+    SetCustomersCards();
     SetConnections();
 
     ButtonsStyleManager::SetLeftMenuIcons({
@@ -28,6 +28,7 @@ CustomersPage::CustomersPage(QWidget *parent)
 
 CustomersPage::~CustomersPage()
 {
+    db = nullptr;
     delete ui;
 }
 
