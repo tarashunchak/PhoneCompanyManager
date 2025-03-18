@@ -4,11 +4,49 @@
 RegistrationPage::RegistrationPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::RegistrationPage)
+    , reg_manager(new RegistrationManager)
 {
     ui->setupUi(this);
+    ui->confirmed_widget->setVisible(false);
+    ui->error_message->setVisible(false);
+
+    SetConnections();
+
 }
 
 RegistrationPage::~RegistrationPage()
 {
     delete ui;
+}
+
+void RegistrationPage::SetConnections(){
+    connect(ui->email_LineEdit, &QLineEdit::textEdited, ui->error_message, &QLabel::clear);
+    connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
+        if(ui->confirmed_widget->isVisible()){
+            if(ui->password_LineEdit->text() == ui->rep_password_LineEdit->text()){
+                reg_manager->registerNewUser(ui->username_LineEdit->text()
+                                            , ui->password_LineEdit->text());
+            }else{
+                ui->error_message->setText("Passwords did not match!");
+                ui->error_message->setVisible(true);
+            }
+        }else{
+            reg_manager->is_exist(ui->email_LineEdit->text());
+        }
+    });
+    connect(reg_manager, &RegistrationManager::employee_not_founded, this, [this](){
+        if(ui->confirmed_widget->isVisible() == false){
+            ui->error_message->setText("There is no employee with this email!");
+            ui->error_message->setVisible(true);
+        }
+    });
+    connect(reg_manager, &RegistrationManager::employee_is_founded, this, [this](){
+        ui->confirm_btn->setGeometry(800, 700, 320, 34);
+        ui->error_message->setVisible(false);
+        ui->confirmed_widget->setVisible(true);
+    });
+    connect(reg_manager, &RegistrationManager::not_allowed_to_registration, this, [this](){
+        ui->error_message->setText("You are not allowed to registration!");
+        ui->error_message->setVisible(true);
+    });
 }

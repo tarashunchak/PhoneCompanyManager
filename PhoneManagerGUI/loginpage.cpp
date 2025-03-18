@@ -38,4 +38,3 @@ void LoginPage::setConnections(){
     });
 
 }
-

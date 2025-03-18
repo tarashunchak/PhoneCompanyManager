@@ -111,29 +111,6 @@ font-size:80px;</string>
     <string>Log In</string>
    </property>
   </widget>
-  <widget class="QLabel" name="registration_Link">
-   <property name="geometry">
-    <rect>
-     <x>930</x>
-     <y>650</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">text-decoration:underline;
-background-color:transparent;
-color:rgb(47, 85, 255);
-font-size:14px;
-font-family:Lato;</string>
-   </property>
-   <property name="text">
-    <string>Registration</string>
-   </property>
-   <property name="openExternalLinks">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="incorrect_data_Label">
    <property name="geometry">
     <rect>
@@ -162,6 +139,26 @@ font-size:14px;</string>
    </property>
    <property name="text">
     <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="registration_btn">
+   <property name="geometry">
+    <rect>
+     <x>920</x>
+     <y>640</y>
+     <width>80</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-decoration:underline;
+background-color:transparent;
+color:rgb(47, 85, 255);
+font-size:14px;
+font-family:Lato;</string>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
    </property>
   </widget>
  </widget>

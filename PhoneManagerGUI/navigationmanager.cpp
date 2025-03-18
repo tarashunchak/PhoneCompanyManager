@@ -3,7 +3,7 @@
 NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
     : QObject(parent)
     , sWidget(sWidget)
-    , loginPage(new LoginPage)
+    , loginPage(new LoginPage())
     , dashboardPage(new Dashboard())
     , customersPage(new CustomersPage())
     , employeesPage(new EmployeesPage())
@@ -31,7 +31,7 @@ void NavigationManager::setUpNavigation(){
 
     //Login Page Signals/Slots connections
     connect(loginPage, &LoginPage::login_succsess, this, &NavigationManager::showDashboardPage);
-    connect(loginPage, &LoginPage::on_registration_Link_linkActivated, this, &NavigationManager::showRegistrationPage);
+    connect(loginPage, &LoginPage::on_registration_btn_clicked, this, &NavigationManager::showRegistrationPage);
 
     //Dashboard Page Signals/Slots connections
     connect(dashboardPage, &Dashboard::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
@@ -71,6 +71,7 @@ void NavigationManager::setUpNavigation(){
     connect(requestsPage, &RequestsPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
     connect(requestsPage, &RequestsPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
     connect(requestsPage, &RequestsPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
+    connect(requestsPage, &RequestsPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
 
 }
 

@@ -18,7 +18,7 @@ public:
 
 signals:
     void login_succsess();
-    void on_registration_Link_linkActivated(const QString &link);
+    void on_registration_btn_clicked();
 
 private: /*Methods*/
     void setConnections();

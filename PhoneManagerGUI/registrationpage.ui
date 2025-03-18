@@ -29,11 +29,11 @@
     <string>TextLabel</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="username_LineEdit">
+  <widget class="QLineEdit" name="email_LineEdit">
    <property name="geometry">
     <rect>
      <x>800</x>
-     <y>440</y>
+     <y>520</y>
      <width>320</width>
      <height>36</height>
     </rect>
@@ -49,25 +49,7 @@ background-color:white;
 color:black;</string>
    </property>
    <property name="placeholderText">
-    <string>Username</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="confirm_btn">
-   <property name="geometry">
-    <rect>
-     <x>800</x>
-     <y>670</y>
-     <width>320</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:white;
-font-size:16px;
-font-family:Lato;</string>
-   </property>
-   <property name="text">
-    <string>Confirm</string>
+    <string>Email</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -87,7 +69,7 @@ font-family:Lato;</string>
    <property name="geometry">
     <rect>
      <x>750</x>
-     <y>300</y>
+     <y>370</y>
      <width>420</width>
      <height>100</height>
     </rect>
@@ -108,29 +90,6 @@ font-size:80px;</string>
     <string>Registration</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="password_LineEdit">
-   <property name="geometry">
-    <rect>
-     <x>800</x>
-     <y>520</y>
-     <width>320</width>
-     <height>36</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:4px;
-background-color:white;
-color:black;</string>
-   </property>
-   <property name="placeholderText">
-    <string>Password</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="incorrect_data_Label">
    <property name="geometry">
     <rect>
@@ -148,27 +107,126 @@ font-size:14px;</string>
     <string>Incorrect Username or Password!</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="password_LineEdit_2">
+  <widget class="QWidget" name="confirmed_widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>470</y>
+     <width>411</width>
+     <height>351</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:transparent;</string>
+   </property>
+   <widget class="QLineEdit" name="username_LineEdit">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>50</y>
+      <width>320</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:4px;
+background-color:white;
+color:black;</string>
+    </property>
+    <property name="placeholderText">
+     <string>Username</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="password_LineEdit">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>110</y>
+      <width>320</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:4px;
+background-color:white;
+color:black;</string>
+    </property>
+    <property name="placeholderText">
+     <string>Password</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="rep_password_LineEdit">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>170</y>
+      <width>320</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:4px;
+background-color:white;
+color:black;</string>
+    </property>
+    <property name="placeholderText">
+     <string>Repeat password</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="error_message">
+   <property name="geometry">
+    <rect>
+     <x>840</x>
+     <y>559</y>
+     <width>231</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-align:center;
+background-color:transparent;
+font-size:14px;
+color:red;</string>
+   </property>
+   <property name="text">
+    <string>There is no employee with this email!</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="confirm_btn">
    <property name="geometry">
     <rect>
      <x>800</x>
-     <y>600</y>
+     <y>581</y>
      <width>320</width>
-     <height>36</height>
+     <height>34</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
    <property name="styleSheet">
-    <string notr="true">border-radius:4px;
-background-color:white;
-color:black;</string>
+    <string notr="true">border:none;
+border-radius:4px;
+color:white;
+font-size:16px;
+font-family:Lato;
+background-color:rgb(140, 140, 140);</string>
    </property>
-   <property name="placeholderText">
-    <string>Password</string>
+   <property name="text">
+    <string>Confirm</string>
    </property>
   </widget>
  </widget>
