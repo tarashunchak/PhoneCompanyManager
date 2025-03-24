@@ -20,8 +20,8 @@ private slots:
     void InsertTariffToDB();
 
 private: /*Methods*/
-    void SetConnections()const;
-    void ClearWidgets()const;
+    void setConnections()const;
+    void clearWidgets()const;
 
 private:
     Ui::InsertTariffDialog *ui;

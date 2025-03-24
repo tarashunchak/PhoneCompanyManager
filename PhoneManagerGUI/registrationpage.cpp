@@ -11,7 +11,6 @@ RegistrationPage::RegistrationPage(QWidget *parent)
     ui->error_message->setVisible(false);
 
     SetConnections();
-
 }
 
 RegistrationPage::~RegistrationPage()

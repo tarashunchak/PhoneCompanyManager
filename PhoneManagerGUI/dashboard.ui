@@ -389,7 +389,7 @@ text-align:center;</string>
    <zorder>log_out_btn</zorder>
    <zorder>name_label</zorder>
   </widget>
-  <widget class="QWidget" name="widget_2" native="true">
+  <widget class="QWidget" name="requests_statistic" native="true">
    <property name="geometry">
     <rect>
      <x>310</x>
@@ -402,7 +402,7 @@ text-align:center;</string>
     <string notr="true">background-color:rgba(255, 255, 255, 1);</string>
    </property>
   </widget>
-  <widget class="QWidget" name="widget_3" native="true">
+  <widget class="QWidget" name="customers_statistic" native="true">
    <property name="geometry">
     <rect>
      <x>850</x>

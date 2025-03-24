@@ -29,12 +29,11 @@ void LoginPage::setConnections(){
         ui->incorrect_data_Label->setVisible(true);
     });
     connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
-        authManager->aunthenticate(ui->username_LineEdit->text(), ui->password_LineEdit->text());
+        authManager->authenticate(ui->username_LineEdit->text(), ui->password_LineEdit->text());
     });
     connect(authManager, &AuthManager::authSuccess, this, [this](){
         ui->username_LineEdit->clear();
         ui->password_LineEdit->clear();
         emit login_succsess();
     });
-
 }

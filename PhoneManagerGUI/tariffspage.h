@@ -33,7 +33,7 @@ private slots:
     void FindTariffInDB();
 
 private:/*Methods*/
-    void SetConnections()const;
+    void setConnections()const;
 
 private:
     Ui::TariffsPage *ui;

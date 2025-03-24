@@ -20,6 +20,7 @@ EmployeesPage::EmployeesPage(QWidget *parent)
         ui->requests_btn
     });
 
+    SetConnections();
     SetEmployeesCards();
 
 }
@@ -28,6 +29,17 @@ EmployeesPage::~EmployeesPage()
 {
     db = nullptr;
     delete ui;
+}
+
+void EmployeesPage::SetConnections(){
+    connect(ui->lineEdit, &QLineEdit::textEdited, this, &EmployeesPage::FindEmployeesByName);
+}
+
+void EmployeesPage::FindEmployeesByName(){
+    QSqlQuery query;
+    query.prepare("SELECT *FROM Employees WHERE full_name LIKE :name;");
+    query.bindValue(":name", ui->lineEdit->text() + "%");
+    SetEmployeesCards(std::move(query));
 }
 
 void EmployeesPage::SetEmployeesCards(QSqlQuery query){
@@ -43,7 +55,7 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
     if(!query.exec()){
         query.prepare("SELECT *FROM Employees;");
         if(!query.exec()){
-            qDebug() << "SetEmployeesCards query falt!" << query.lastError();
+            qDebug() << "SetEmployeesCards query fault!" << query.lastError();
             return;
         }
     }

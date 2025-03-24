@@ -12,6 +12,8 @@ Dashboard::Dashboard(QWidget *parent)
     , ui(new Ui::Dashboard)
     , db(&DatabaseManager::instance().getDatabase())
     , qmodel(new QSqlQueryModel(this))
+    , cust_chart_view(new QChartView)
+    , req_chart_view(new QChartView)
 
 {
     ui->setupUi(this);
@@ -24,6 +26,8 @@ Dashboard::Dashboard(QWidget *parent)
         ui->requests_btn
     });
     setTableViewConnection();
+    setCustomersStatictics();
+    setRequestsStatictics();
 
 }
 

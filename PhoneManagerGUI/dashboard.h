@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
+#include <QChartView>
+#include <QBarSet>
 
 namespace Ui {
 class Dashboard;
@@ -28,12 +30,16 @@ signals:
 
 private:/*Methods*/
     void setTableViewConnection();
+    void setCustomersStatictics();
+    void setRequestsStatictics()const;
 
 private:
     Ui::Dashboard *ui;
     QSqlDatabase* db;
     QSqlQueryModel* qmodel;
-
+    QChartView* cust_chart_view;
+    QChartView* req_chart_view;
+    QList<std::pair<QBarSet*, bool>>* bar_set_arr = nullptr;
 };
 
 #endif // DASHBOARD_H

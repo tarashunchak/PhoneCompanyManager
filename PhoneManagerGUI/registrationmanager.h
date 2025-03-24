@@ -20,7 +20,7 @@ signals:
     void not_allowed_to_registration();
 
 private:/*Methods*/
-    void SetConnections();
+    void setConnections();
 
 private:
     QSqlDatabase* db;

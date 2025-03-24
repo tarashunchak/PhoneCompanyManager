@@ -15,7 +15,7 @@ InsertTariffDialog::InsertTariffDialog(QWidget *parent)
     setMinimumSize(440, 320);
     setMaximumSize(440, 320);
 
-    SetConnections();
+    setConnections();
 }
 
 InsertTariffDialog::~InsertTariffDialog()
@@ -24,7 +24,7 @@ InsertTariffDialog::~InsertTariffDialog()
     delete ui;
 }
 
-void InsertTariffDialog::SetConnections()const{
+void InsertTariffDialog::setConnections()const{
     connect(ui->confirm_addition, &QPushButton::clicked, this, &InsertTariffDialog::InsertTariffToDB);
 }
 
@@ -42,13 +42,13 @@ void InsertTariffDialog::InsertTariffToDB(){
         if(!query.exec()){
             qDebug() << "Insert tariff to DB fault!" << query.lastError();
         }else{
-            ClearWidgets();
+            clearWidgets();
             this->close();
         }
     }
 }
 
-void InsertTariffDialog::ClearWidgets()const{
+void InsertTariffDialog::clearWidgets()const{
     ui->tariff_call_minutes->clear();
     ui->tariff_daily_price->clear();
     ui->tariff_monthly_price->clear();

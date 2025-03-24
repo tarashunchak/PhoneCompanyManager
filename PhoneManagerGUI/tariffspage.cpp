@@ -25,7 +25,7 @@ TariffsPage::TariffsPage(QWidget *parent)
         ui->tariffs_btn,
         ui->requests_btn
     });
-    SetConnections();
+    setConnections();
     setTariffsCards(QSqlQuery());
 
 }
@@ -59,7 +59,7 @@ void TariffsPage::setCurrentUser(){
 
 }
 
-void TariffsPage::SetConnections()const{
+void TariffsPage::setConnections()const{
 
     connect(ui->lineEdit, &QLineEdit::textChanged
             , this, &TariffsPage::FindTariffInDB);

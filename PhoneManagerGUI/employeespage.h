@@ -28,6 +28,7 @@ signals:
 
 private:/*Methods*/
     void FindEmployeesByName();
+    void SetConnections();
 
 private:
     Ui::EmployeesPage *ui;

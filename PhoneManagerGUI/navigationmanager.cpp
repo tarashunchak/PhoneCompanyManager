@@ -1,5 +1,7 @@
 #include "navigationmanager.h"
 
+#include "currentuser.h"
+
 NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
     : QObject(parent)
     , sWidget(sWidget)
@@ -76,6 +78,7 @@ void NavigationManager::setUpNavigation(){
 }
 
 void NavigationManager::showLoginPage()const{
+    CurrentUser::setCurrentUserID(0);
     sWidget->setCurrentWidget(loginPage);
 }
 
