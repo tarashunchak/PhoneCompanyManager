@@ -1,4 +1,4 @@
-#include "registrationpage.h"
+#include "includes/registrationpage.h"
 #include "ui_registrationpage.h"
 
 RegistrationPage::RegistrationPage(QWidget *parent)
@@ -9,6 +9,9 @@ RegistrationPage::RegistrationPage(QWidget *parent)
     ui->setupUi(this);
     ui->confirmed_widget->setVisible(false);
     ui->error_message->setVisible(false);
+    ui->error_message->setAlignment(Qt::AlignCenter);
+
+    ui->return_to_login_btn->setStyleSheet("background-color:transparent;background: url(./img/exit.png);");
 
     SetConnections();
 }
@@ -47,5 +50,13 @@ void RegistrationPage::SetConnections(){
     connect(reg_manager, &RegistrationManager::not_allowed_to_registration, this, [this](){
         ui->error_message->setText("You are not allowed to registration!");
         ui->error_message->setVisible(true);
+    });
+    connect(reg_manager, &RegistrationManager::successful_registration, this, [this](){
+        emit successful_registration();
+    });
+    connect(this, &RegistrationPage::on_return_to_login_btn_clicked, this, [this](){
+        ui->email_LineEdit->clear();
+        ui->password_LineEdit->clear();
+        ui->rep_password_LineEdit->clear();
     });
 }

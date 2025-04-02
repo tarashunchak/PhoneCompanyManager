@@ -1,10 +1,10 @@
-#include "customerspage.h"
+#include "includes/customerspage.h"
 #include "ui_customerspage.h"
 
 #include <QSqlError>
-#include "databasemanager.h"
+#include "includes/databasemanager.h"
 #include <QScrollArea>
-#include "buttonsstylemanager.h"
+#include "includes/buttonsstylemanager.h"
 
 CustomersPage::CustomersPage(QWidget *parent)
     : QWidget(parent)
@@ -89,6 +89,8 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         full_name->setStyleSheet("background-color:transparent;color:white;font-size:14px;");
 
         innerGridLayout->addWidget(card, rows, cols);
+        const int id = query.value("id").toInt();
+        connect(card, &QPushButton::clicked, this, [this, id](){emit customer_selected(id);});
 
         cols++;
         if(cols % 5 == 0){

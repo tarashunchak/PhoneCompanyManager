@@ -12,6 +12,7 @@ SOURCES += \
     authmanager.cpp \
     buttonsstylemanager.cpp \
     currentuser.cpp \
+    customersdetailspage.cpp \
     customerspage.cpp \
     dashboard.cpp \
     dashboard_barcharts.cpp \
@@ -29,24 +30,26 @@ SOURCES += \
     tariffspage.cpp
 
 HEADERS += \
-    authmanager.h \
-    buttonsstylemanager.h \
-    currentuser.h \
-    customerspage.h \
-    dashboard.h \
-    databasemanager.h \
-    employeespage.h \
-    inserttariffdialog.h \
-    loginpage.h \
-    mainwindow.h \
-    navigationmanager.h \
-    registrationmanager.h \
-    registrationpage.h \
-    requestspage.h \
-    tariffcard.h \
-    tariffspage.h
+    includes/authmanager.h \
+    includes/buttonsstylemanager.h \
+    includes/currentuser.h \
+    includes/customersdetailspage.h \
+    includes/customerspage.h \
+    includes/dashboard.h \
+    includes/databasemanager.h \
+    includes/employeespage.h \
+    includes/inserttariffdialog.h \
+    includes/loginpage.h \
+    includes/mainwindow.h \
+    includes/navigationmanager.h \
+    includes/registrationmanager.h \
+    includes/registrationpage.h \
+    includes/requestspage.h \
+    includes/tariffcard.h \
+    includes/tariffspage.h
 
 FORMS += \
+    customersdetailspage.ui \
     customerspage.ui \
     dashboard.ui \
     employeespage.ui \

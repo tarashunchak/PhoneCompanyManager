@@ -18,6 +18,8 @@ public:
 
 signals:
     void on_confirm_btn_clicked();
+    void successful_registration();
+    void on_return_to_login_btn_clicked();
 
 private:/*Methods*/
     void SetConnections();

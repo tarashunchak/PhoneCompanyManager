@@ -1,9 +1,9 @@
-#include "authmanager.h"
-#include "databasemanager.h"
+#include "includes/authmanager.h"
+#include "includes/databasemanager.h"
 #include <QSqlQuery>
 #include <QByteArray>
 #include <QCryptographicHash>
-#include "currentuser.h"
+#include "includes/currentuser.h"
 
 AuthManager::AuthManager():db(&DatabaseManager::instance().getDatabase()){}
 

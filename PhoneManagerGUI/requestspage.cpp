@@ -1,8 +1,8 @@
-#include "requestspage.h"
+#include "includes/requestspage.h"
 #include "ui_requestspage.h"
 
-#include "databasemanager.h"
-#include "buttonsstylemanager.h"
+#include "includes/databasemanager.h"
+#include "includes/buttonsstylemanager.h"
 
 RequestsPage::RequestsPage(QWidget *parent)
     : QWidget(parent)

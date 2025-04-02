@@ -1,11 +1,11 @@
-#include "dashboard.h"
+#include "includes/dashboard.h"
 #include "ui_dashboard.h"
 
 #include <QSqlQuery>
 #include <QSqlError>
-#include "databasemanager.h"
-#include "buttonsstylemanager.h"
-#include "currentuser.h"
+#include "includes/databasemanager.h"
+#include "includes/buttonsstylemanager.h"
+#include "includes/currentuser.h"
 
 Dashboard::Dashboard(QWidget *parent)
     : QWidget(parent)
@@ -48,11 +48,10 @@ void Dashboard::setCurrentUser(){
         qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
         return;
     }
-
 }
 
 void Dashboard::setTableViewConnection(){
-    qmodel->setQuery("SELECT *FROM Customers ORDER BY registration_date DESC LIMIT 10;");
+    qmodel->setQuery("SELECT *FROM Customers ORDER BY registration_Date DESC LIMIT 10;");
     ui->tableView->setModel(qmodel);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);

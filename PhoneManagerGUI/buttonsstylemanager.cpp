@@ -1,4 +1,4 @@
-#include "buttonsstylemanager.h"
+#include "includes/buttonsstylemanager.h"
 
 void ButtonsStyleManager::SetLeftMenuIcons(QList<QPushButton*> buttons){
 

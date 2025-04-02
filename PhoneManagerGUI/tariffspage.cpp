@@ -1,14 +1,14 @@
-#include "tariffspage.h"
+#include "includes/tariffspage.h"
 #include "ui_tariffspage.h"
 
-#include "buttonsstylemanager.h"
-#include "databasemanager.h"
-#include "currentuser.h"
+#include "includes/buttonsstylemanager.h"
+#include "includes/databasemanager.h"
+#include "includes/currentuser.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QScrollArea>
-#include "tariffcard.h"
+#include "includes/tariffcard.h"
 
 TariffsPage::TariffsPage(QWidget *parent)
     : QWidget(parent)

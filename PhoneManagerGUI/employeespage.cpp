@@ -1,10 +1,10 @@
-#include "employeespage.h"
+#include "includes/employeespage.h"
 #include "ui_employeespage.h"
 
-#include "databasemanager.h"
+#include "includes/databasemanager.h"
 #include <QSqlError>
 #include <QScrollArea>
-#include "buttonsstylemanager.h"
+#include "includes/buttonsstylemanager.h"
 
 EmployeesPage::EmployeesPage(QWidget *parent)
     : QWidget(parent)
@@ -75,26 +75,23 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         card->setMinimumSize(290, 120);
         card->setMaximumSize(290, 120);
         card->setStyleSheet(
-            "QPushButton{"
-              "background-color:rgba(51, 51, 51, 1);;"
-            "}"
-            "QPushButton:hover{"
-               "background-color:rgba(71, 71, 71, 1);;"
-            "}");
+            "QPushButton{background-color:rgba(51, 51, 51, 1);}"
+            "QPushButton:hover{background-color:rgba(71, 71, 71, 1);}"
+        );
 
         QLabel* image = new QLabel(card);
         image->setPixmap(QPixmap("./img/employees.png"));
         image->setGeometry(20, 25, 50, 50);
-        image->setStyleSheet("background-color:transparent;");
+        image->setStyleSheet("QPushButton{background-color:transparent;}");
 
         QLabel* full_name = new QLabel(query.value("full_name").toString(), card);
         full_name->setGeometry(85, 35, 250, 20);
-        full_name->setStyleSheet("background-color:transparent;color:white;font-size:18px;");
+        full_name->setStyleSheet("QPushButton{background-color:transparent;color:white;font-size:18px;}");
 
         QLabel* empl_id = new QLabel("ID:" + query.value("id").toString(), card);
         
         empl_id->setGeometry(85, 60, 100, 20);
-        empl_id->setStyleSheet("background-color:transparent;color:white;font-size:16px;");
+        empl_id->setStyleSheet("QPushButton{background-color:transparent;color:white;font-size:16px;}");
 
         innerGridLayout->addWidget(card, rows, cols);
 

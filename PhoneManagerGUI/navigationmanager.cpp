@@ -1,17 +1,17 @@
-#include "navigationmanager.h"
-
-#include "currentuser.h"
+#include "includes/navigationmanager.h"
+#include "includes/currentuser.h"
 
 NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
     : QObject(parent)
     , sWidget(sWidget)
-    , loginPage(new LoginPage())
-    , dashboardPage(new Dashboard())
-    , customersPage(new CustomersPage())
-    , employeesPage(new EmployeesPage())
-    , tariffsPage(new TariffsPage())
-    , requestsPage(new RequestsPage())
-    , registrationPage(new RegistrationPage())
+    , loginPage(new LoginPage{})
+    , dashboardPage(new Dashboard{})
+    , customersPage(new CustomersPage{})
+    , employeesPage(new EmployeesPage{})
+    , tariffsPage(new TariffsPage{})
+    , requestsPage(new RequestsPage{})
+    , registrationPage(new RegistrationPage{})
+    , customersDetailsPage(new CustomersDetailsPage{})
 
 {
 
@@ -22,6 +22,7 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
     sWidget->addWidget(tariffsPage);
     sWidget->addWidget(requestsPage);
     sWidget->addWidget(registrationPage);
+    sWidget->addWidget(customersDetailsPage);
 
     sWidget->setCurrentWidget(loginPage);
 
@@ -34,6 +35,10 @@ void NavigationManager::setUpNavigation(){
     //Login Page Signals/Slots connections
     connect(loginPage, &LoginPage::login_succsess, this, &NavigationManager::showDashboardPage);
     connect(loginPage, &LoginPage::on_registration_btn_clicked, this, &NavigationManager::showRegistrationPage);
+
+    //RegistrationPage Signals/Slots connections
+    connect(registrationPage, &RegistrationPage::successful_registration, this, &NavigationManager::showLoginPage);
+    connect(registrationPage, &RegistrationPage::on_return_to_login_btn_clicked, this, &NavigationManager::showLoginPage);
 
     //Dashboard Page Signals/Slots connections
     connect(dashboardPage, &Dashboard::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
@@ -50,6 +55,15 @@ void NavigationManager::setUpNavigation(){
     connect(customersPage, &CustomersPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
     connect(customersPage, &CustomersPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
     connect(customersPage, &CustomersPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
+    connect(customersPage, &CustomersPage::customer_selected, this, &NavigationManager::showCustomersDetailsPage);
+
+    //Customers Details Page Signals/Slots connections
+    connect(customersDetailsPage, &CustomersDetailsPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
+    connect(customersDetailsPage, &CustomersDetailsPage::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
+    connect(customersDetailsPage, &CustomersDetailsPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
+    connect(customersDetailsPage, &CustomersDetailsPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
+    connect(customersDetailsPage, &CustomersDetailsPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
+    connect(customersDetailsPage, &CustomersDetailsPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
 
     //Employees Page Signals/Slots connections
     connect(employeesPage, &EmployeesPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
@@ -109,4 +123,9 @@ void NavigationManager::showRequestsPage()const{
 
 void NavigationManager::showRegistrationPage()const{
     sWidget->setCurrentWidget(registrationPage);
+}
+
+void NavigationManager::showCustomersDetailsPage(const int id)const{
+    customersDetailsPage->SetCustomerInfo(id);
+    sWidget->setCurrentWidget(customersDetailsPage);
 }

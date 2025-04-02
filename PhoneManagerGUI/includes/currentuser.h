@@ -13,7 +13,6 @@ public:
     static void setCurrentUserID(const int);
 private:
     static int UID;
-
 };
 
 #endif // CURRENTUSER_H

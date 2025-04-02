@@ -1,4 +1,4 @@
-#include "tariffcard.h"
+#include "includes/tariffcard.h"
 #include "ui_tariffcard.h"
 
 TariffCard::TariffCard(QFrame *parent)

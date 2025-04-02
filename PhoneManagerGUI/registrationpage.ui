@@ -69,7 +69,7 @@ color:black;</string>
    <property name="geometry">
     <rect>
      <x>750</x>
-     <y>370</y>
+     <y>320</y>
      <width>420</width>
      <height>100</height>
     </rect>
@@ -111,7 +111,7 @@ font-size:14px;</string>
    <property name="geometry">
     <rect>
      <x>750</x>
-     <y>470</y>
+     <y>420</y>
      <width>411</width>
      <height>351</height>
     </rect>
@@ -142,29 +142,6 @@ color:black;</string>
      <string>Username</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="password_LineEdit">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>110</y>
-      <width>320</width>
-      <height>36</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>14</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:4px;
-background-color:white;
-color:black;</string>
-    </property>
-    <property name="placeholderText">
-     <string>Password</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="rep_password_LineEdit">
     <property name="geometry">
      <rect>
@@ -186,6 +163,29 @@ color:black;</string>
     </property>
     <property name="placeholderText">
      <string>Repeat password</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="password_LineEdit">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>110</y>
+      <width>320</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:4px;
+background-color:white;
+color:black;</string>
+    </property>
+    <property name="placeholderText">
+     <string>Password</string>
     </property>
    </widget>
   </widget>
@@ -227,6 +227,28 @@ background-color:rgb(140, 140, 140);</string>
    </property>
    <property name="text">
     <string>Confirm</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="return_to_login_btn">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>40</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>50</width>
+     <height>50</height>
+    </size>
    </property>
   </widget>
  </widget>

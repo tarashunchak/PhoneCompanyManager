@@ -17,6 +17,7 @@ signals:
     void employee_not_founded();
     void employee_is_founded();
     void unsuccessful_registration();
+    void successful_registration();
     void not_allowed_to_registration();
 
 private:/*Methods*/

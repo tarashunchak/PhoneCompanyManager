@@ -25,6 +25,7 @@ signals:
     void on_tariffs_btn_clicked();
     void on_requests_btn_clicked();
     void on_log_out_btn_clicked();
+    void customer_selected(const int);
 
 private: /*Methods*/
     void FindCustomersByName();
