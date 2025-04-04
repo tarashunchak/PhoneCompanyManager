@@ -365,23 +365,28 @@ QPushButton:hover {
     <string notr="true">background-color:rgb(106, 106, 111);</string>
    </property>
    <widget class="QTableView" name="tableView">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>511</y>
-      <width>981</width>
-      <height>451</height>
+      <y>439</y>
+      <width>1491</width>
+      <height>521</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgb(51, 53, 50);</string>
+     <string notr="true">background-color:rgb(51, 53, 50);
+color:white;
+font-size:12px;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>300</y>
+      <x>60</x>
+      <y>230</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -399,8 +404,8 @@ font-size:24px;</string>
    <widget class="QLabel" name="full_name_Label">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>305</y>
+      <x>190</x>
+      <y>235</y>
       <width>241</width>
       <height>16</height>
      </rect>
@@ -413,6 +418,115 @@ font-size:20px;</string>
     </property>
     <property name="text">
      <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>60</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;
+color:black;
+font-family:Lato;
+font-size:18px;</string>
+    </property>
+    <property name="text">
+     <string>Registration date:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>280</y>
+      <width>75</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;
+color:black;
+font-family:Lato;
+font-size:24px;</string>
+    </property>
+    <property name="text">
+     <string>Phone:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="phone_Label">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>285</y>
+      <width>241</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;
+color:black;
+font-family:Lato;
+font-size:20px;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="reg_date_Label">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>60</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;
+color:black;
+font-family:Lato;
+font-size:18px;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>50</y>
+      <width>150</width>
+      <height>150</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: url(./img/userEmployee.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="return_btn">
+    <property name="geometry">
+     <rect>
+      <x>1450</x>
+      <y>40</y>
+      <width>80</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent;
+background: url(./img/exit.png);</string>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

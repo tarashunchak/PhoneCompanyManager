@@ -45,7 +45,7 @@
    </property>
    <property name="styleSheet">
     <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
-background-color:#1F2937;</string>
+background-color:#A3ABB3;</string>
    </property>
    <widget class="QLabel" name="side_menu_logo_2">
     <property name="geometry">
@@ -370,7 +370,7 @@ QPushButton:hover {
     </property>
     <property name="styleSheet">
      <string notr="true">border:none;
-color:white;
+color:#2B3645;
 padding-left:10px;
 text-align:center;</string>
     </property>

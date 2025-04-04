@@ -111,7 +111,7 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
 void CustomersPage::FindCustomersByName(){
     QSqlQuery query;
     query.prepare("SELECT *FROM Customers WHERE full_name LIKE :name "
-                    "OR phone LIKE :phone;");
+                  "OR phone LIKE :phone;");
     query.bindValue(":name", ui->lineEdit->text() + "%");
     query.bindValue(":phone", ui->lineEdit->text() + "%");
     SetCustomersCards(std::move(query));

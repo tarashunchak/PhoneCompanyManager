@@ -64,6 +64,7 @@ void NavigationManager::setUpNavigation(){
     connect(customersDetailsPage, &CustomersDetailsPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
     connect(customersDetailsPage, &CustomersDetailsPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
     connect(customersDetailsPage, &CustomersDetailsPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
+    connect(customersDetailsPage, &CustomersDetailsPage::on_return_btn_clicked, this, &NavigationManager::showCustomersPage);
 
     //Employees Page Signals/Slots connections
     connect(employeesPage, &EmployeesPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
@@ -98,6 +99,7 @@ void NavigationManager::showLoginPage()const{
 
 void NavigationManager::showDashboardPage()const{
     dashboardPage->setCurrentUser();
+    dashboardPage->setCustomersStatictics();
     sWidget->setCurrentWidget(dashboardPage);
 }
 

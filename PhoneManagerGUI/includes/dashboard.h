@@ -19,6 +19,7 @@ public:
     explicit Dashboard(QWidget *parent = nullptr);
     ~Dashboard();
     void setCurrentUser();
+    void setCustomersStatictics();
 
 signals:
     void on_dashboard_btn_clicked();
@@ -30,7 +31,6 @@ signals:
 
 private:/*Methods*/
     void setTableViewConnection();
-    void setCustomersStatictics();
     void setRequestsStatictics()const;
 
 private:

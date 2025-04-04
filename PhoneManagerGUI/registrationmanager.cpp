@@ -15,7 +15,7 @@ void RegistrationManager::is_exist(const QString& email){
                   "FROM Employees "
                   "JOIN Positions ON Positions.id = Employees.position_id "
                   "WHERE email = :email;");
-    query.bindValue(":email", std::move(email));
+    query.bindValue(":email", email);
     if(!query.exec() || !query.next()){
         qDebug() << "Employee is not exist!";
         emit employee_not_founded();
@@ -39,8 +39,8 @@ void RegistrationManager::registerNewUser(const QString& user, const QString& pa
     query.prepare("INSERT INTO Users(empl_id, username, pass_hash) "
                   "VALUES(:e_id, :username, :pass);");
     query.bindValue(":e_id", empl_id);
-    query.bindValue(":username", std::move(user));
-    query.bindValue(":pass", std::move(pass));
+    query.bindValue(":username", user);
+    query.bindValue(":pass", pass);
     empl_id = 0;
     if(query.exec()){
         emit successful_registration();

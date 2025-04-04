@@ -27,6 +27,10 @@ signals:
     void on_tariffs_btn_clicked();
     void on_requests_btn_clicked();
     void on_log_out_btn_clicked();
+    void on_return_btn_clicked();
+
+private:
+    void SetConnections();
 
 private:
     Ui::CustomersDetailsPage *ui;
