@@ -4,8 +4,7 @@
 #include <QWidget>
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
-#include <QChartView>
-#include <QBarSet>
+#include "barchart.h"
 
 namespace Ui {
 class Dashboard;
@@ -19,7 +18,8 @@ public:
     explicit Dashboard(QWidget *parent = nullptr);
     ~Dashboard();
     void setCurrentUser();
-    void setCustomersStatictics();
+    void setCustomersStatistics();
+    void setRequestsStatistics();
 
 signals:
     void on_dashboard_btn_clicked();
@@ -31,15 +31,13 @@ signals:
 
 private:/*Methods*/
     void setTableViewConnection();
-    void setRequestsStatictics()const;
 
 private:
     Ui::Dashboard *ui;
     QSqlDatabase* db;
     QSqlQueryModel* qmodel;
-    QChartView* cust_chart_view;
-    QChartView* req_chart_view;
-    QList<std::pair<QBarSet*, bool>>* bar_sets_list = nullptr;
+    BarChart* cust_bar_chart;
+    BarChart* req_bar_chart;
 };
 
 #endif // DASHBOARD_H

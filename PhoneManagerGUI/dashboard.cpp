@@ -12,11 +12,14 @@ Dashboard::Dashboard(QWidget *parent)
     , ui(new Ui::Dashboard)
     , db(&DatabaseManager::instance().getDatabase())
     , qmodel(new QSqlQueryModel(this))
-    , cust_chart_view(new QChartView)
-    , req_chart_view(new QChartView)
+    , cust_bar_chart(new BarChart{})
+    , req_bar_chart(new BarChart{})
 
 {
     ui->setupUi(this);
+
+    req_bar_chart->setParent(ui->requests_statistic);
+    cust_bar_chart->setParent(ui->customers_statistic);
 
     ButtonsStyleManager::SetLeftMenuIcons({
         ui->dashboard_btn,
@@ -26,8 +29,14 @@ Dashboard::Dashboard(QWidget *parent)
         ui->requests_btn
     });
     setTableViewConnection();
-    setCustomersStatictics();
-    setRequestsStatictics();
+    setCustomersStatistics();
+    setRequestsStatistics();
+
+    ui->name_label->setAlignment(Qt::AlignCenter);
+
+
+    connect(ui->req_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsStatistics);
+    connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
 
 }
 
@@ -57,4 +66,6 @@ void Dashboard::setTableViewConnection(){
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->setVisible(false);
+    ui->tableView->horizontalHeader()->setStyleSheet("background-color:rgb(50,50,50);");
+
 }

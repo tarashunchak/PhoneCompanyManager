@@ -33,7 +33,7 @@
    </property>
    <property name="styleSheet">
     <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
-background-color:#1F2937;</string>
+background-color:#16171C;</string>
    </property>
    <widget class="QLabel" name="side_menu_logo_2">
     <property name="geometry">

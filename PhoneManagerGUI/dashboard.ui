@@ -28,6 +28,140 @@
   <property name="styleSheet">
    <string notr="true">background-color:rgba(150, 150, 150, 1);</string>
   </property>
+  <widget class="QWidget" name="last_reg_cust" native="true">
+   <property name="geometry">
+    <rect>
+     <x>289</x>
+     <y>520</y>
+     <width>1051</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:5px;
+background-color:#16171C;</string>
+   </property>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>1011</width>
+      <height>410</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableView{
+	font-size:16px;
+	background-color: rgba(225, 225, 225, 1);
+	color:black;
+	border:none;
+	border-radius:0px;
+}
+
+QHeaderView:section {
+	height: 40px;
+	border:1px solid rgba(30, 30, 30, 0.4);
+    background-color: rgba(225, 225, 225, 1);
+    color: black;
+    font-family: Lato;
+    font-size: 18px;
+    font-weight: bold;
+    
+}    
+</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>15</y>
+      <width>130</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;
+border:none;</string>
+    </property>
+    <property name="text">
+     <string>Last Customers</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="widget_5" native="true">
+   <property name="geometry">
+    <rect>
+     <x>1400</x>
+     <y>520</y>
+     <width>470</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:5px;
+background-color:#16171C;</string>
+   </property>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>430</width>
+      <height>390</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QWidget {
+	border:none;
+	background-color: rgba(225, 225, 225, 1);
+}</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>15</y>
+      <width>111</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;
+border:none;</string>
+    </property>
+    <property name="text">
+     <string>Last Requests</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="widget_4" native="true">
+   <property name="geometry">
+    <rect>
+     <x>1400</x>
+     <y>30</y>
+     <width>470</width>
+     <height>440</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgba(255, 255, 255, 1);</string>
+   </property>
+  </widget>
   <widget class="QWidget" name="side_bar_menu" native="true">
    <property name="geometry">
     <rect>
@@ -45,7 +179,7 @@
    </property>
    <property name="styleSheet">
     <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
-background-color:#A3ABB3;</string>
+background-color:#16171C;</string>
    </property>
    <widget class="QLabel" name="side_menu_logo_2">
     <property name="geometry">
@@ -357,9 +491,9 @@ QPushButton:hover {
    <widget class="QLabel" name="name_label">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>0</x>
       <y>270</y>
-      <width>150</width>
+      <width>250</width>
       <height>30</height>
      </rect>
     </property>
@@ -370,12 +504,28 @@ QPushButton:hover {
     </property>
     <property name="styleSheet">
      <string notr="true">border:none;
-color:#2B3645;
+color:white;
 padding-left:10px;
 text-align:center;</string>
     </property>
     <property name="text">
      <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>325</y>
+      <width>230</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;</string>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
    <zorder>dashboard_btn</zorder>
@@ -388,180 +538,129 @@ text-align:center;</string>
    <zorder>requests_btn</zorder>
    <zorder>log_out_btn</zorder>
    <zorder>name_label</zorder>
+   <zorder>line_2</zorder>
   </widget>
-  <widget class="QWidget" name="requests_statistic" native="true">
+  <widget class="QWidget" name="requests_statistic_2" native="true">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>289</x>
      <y>30</y>
-     <width>480</width>
-     <height>440</height>
+     <width>511</width>
+     <height>461</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgba(255, 255, 255, 1);</string>
+    <string notr="true">border-radius: 10px;
+background-color:#16171C;</string>
    </property>
-  </widget>
-  <widget class="QWidget" name="customers_statistic" native="true">
-   <property name="geometry">
-    <rect>
-     <x>850</x>
-     <y>30</y>
-     <width>480</width>
-     <height>440</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:rgba(255, 255, 255, 1);</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="last_reg_cust" native="true">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>520</y>
-     <width>1020</width>
-     <height>480</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:#1F2937;</string>
-   </property>
-   <widget class="QTableView" name="tableView">
+   <widget class="QWidget" name="requests_statistic" native="true">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>0</x>
       <y>50</y>
-      <width>980</width>
-      <height>410</height>
+      <width>511</width>
+      <height>411</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QTableView{
-	font-size:16px;
-	background-color: rgba(225, 225, 225, 1);
-	color:black;
-	border:none;
-	border-radius:0px;
-}
-
-QHeaderView:section {
-	height: 40px;
-	border:1px solid rgba(30, 30, 30, 0.4);
-    background-color: rgba(225, 225, 225, 1);
-    color: black;
-    font-family: Lato;
-    font-size: 18px;
-    font-weight: bold;
-    
-}    
-</string>
+     <string notr="true">border-radius: 0px;
+background-color:transparent;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QComboBox" name="req_date_comboBox">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>15</y>
-      <width>130</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>14</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color:white;
-background-color:transparent;
-border:none;</string>
-    </property>
-    <property name="text">
-     <string>Last Customers</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QWidget" name="widget_5" native="true">
-   <property name="geometry">
-    <rect>
-     <x>1400</x>
-     <y>520</y>
-     <width>470</width>
-     <height>480</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:#1F2937;</string>
-   </property>
-   <widget class="QWidget" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>430</width>
-      <height>390</height>
+      <x>411</x>
+      <y>10</y>
+      <width>81</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QWidget {
-	border:none;
-	background-color: rgba(225, 225, 225, 1);
-}</string>
+     <string notr="true">padding-left: 10px;
+font-size:13px;
+border-radius:0px;
+border:none;
+color:black;
+background-color:white;</string>
     </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>15</y>
-      <width>111</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>14</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color:white;
-background-color:transparent;
-border:none;</string>
-    </property>
-    <property name="text">
-     <string>Last Requests</string>
-    </property>
+    <item>
+     <property name="text">
+      <string>Today</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>3 days</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>7 days</string>
+     </property>
+    </item>
    </widget>
   </widget>
-  <widget class="Line" name="line_2">
+  <widget class="QWidget" name="customers_statistic_2" native="true">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>325</y>
-     <width>230</width>
-     <height>1</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:white;</string>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Horizontal</enum>
-   </property>
-  </widget>
-  <widget class="QWidget" name="widget_4" native="true">
-   <property name="geometry">
-    <rect>
-     <x>1400</x>
+     <x>830</x>
      <y>30</y>
-     <width>470</width>
-     <height>440</height>
+     <width>511</width>
+     <height>461</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgba(255, 255, 255, 1);</string>
+    <string notr="true">border-radius: 10px;
+background-color:#16171C;</string>
    </property>
+   <widget class="QWidget" name="customers_statistic" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>50</y>
+      <width>511</width>
+      <height>411</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 0px;
+background-color:transparent;</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cust_date_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>411</x>
+      <y>10</y>
+      <width>81</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">padding-left: 10px;
+font-size:13px;
+border-radius:0px;
+border:none;
+color:black;
+background-color:white;</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Today</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>3 days</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>7 days</string>
+     </property>
+    </item>
+   </widget>
   </widget>
  </widget>
  <resources/>

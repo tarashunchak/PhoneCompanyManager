@@ -10,6 +10,7 @@ CONFIG += c++20
 
 SOURCES += \
     authmanager.cpp \
+    barchart.cpp \
     buttonsstylemanager.cpp \
     currentuser.cpp \
     customersdetailspage.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
     tariffspage.cpp
 
 HEADERS += \
+    barchart.h \
     includes/authmanager.h \
     includes/buttonsstylemanager.h \
     includes/currentuser.h \

@@ -99,7 +99,8 @@ void NavigationManager::showLoginPage()const{
 
 void NavigationManager::showDashboardPage()const{
     dashboardPage->setCurrentUser();
-    dashboardPage->setCustomersStatictics();
+    dashboardPage->setCustomersStatistics();
+    dashboardPage->setRequestsStatistics();
     sWidget->setCurrentWidget(dashboardPage);
 }
 
