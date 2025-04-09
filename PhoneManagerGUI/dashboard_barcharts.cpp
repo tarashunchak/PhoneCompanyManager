@@ -18,7 +18,7 @@ void Dashboard::setCustomersStatistics(){
                 "GROUP BY registration_Date ORDER BY registration_Date;");
     }
 
-    cust_bar_chart->setQuery(std::move(query), "cust_count");
+    cust_bar_chart->setQuery(query, "cust_count");
     cust_bar_chart->resize(ui->customers_statistic->size());
 }
 
@@ -36,7 +36,7 @@ void Dashboard::setRequestsStatistics(){
                 "GROUP BY date ORDER BY date;");
     }
 
-    req_bar_chart->setQuery(std::move(query), "req_count");
+    req_bar_chart->setQuery(query, "req_count");
     req_bar_chart->resize(ui->requests_statistic->size());
 
 }

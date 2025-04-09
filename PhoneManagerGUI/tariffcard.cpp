@@ -7,8 +7,17 @@ TariffCard::TariffCard(QFrame *parent)
 {
     ui->setupUi(this);
     setConnections();
-    ui->money_pic->setPixmap(QPixmap("./img/money@2x.png"));
-    ui->money_pic->setStyleSheet("background-color:white;");
+    ui->money_pic->setPixmap(QPixmap("./img/money.svg"));
+    ui->internet_per_day->setPixmap(QPixmap("./img/internet.svg"));
+    ui->SMS->setPixmap(QPixmap("./img/SMS.svg"));
+    ui->calls_per_day->setPixmap(QPixmap("./img/call.svg"));
+
+    ui->id_label->setAlignment(Qt::AlignRight);
+    ui->price_label->setAlignment(Qt::AlignRight);
+    ui->internet_label->setAlignment(Qt::AlignRight);
+    ui->calls_label->setAlignment(Qt::AlignRight);
+    ui->SMS_label->setAlignment(Qt::AlignRight);
+
 }
 
 TariffCard::~TariffCard()
@@ -64,13 +73,15 @@ void TariffCard::setConnections()const{
 void TariffCard::setTariffInfoFromQuery(QSqlRecord record){
     ui->tariff_name->setText(record.value("tariff_name").toString());
     ui->id_label->setText("ID:" + record.value("id").toString());
-    ui->id_label->setAlignment(Qt::AlignRight);
     ui->price_label->setText(record.value("monthly_price").toString() + "$");
+    ui->internet_label->setText(record.value("internet_GB").toString());
+    ui->calls_label->setText(record.value("call_minutes").toString());
+    ui->SMS_label->setText(record.value("messages").toString());
+
     connect(ui->daily_btn, &QPushButton::clicked, this, [this, record](){
         ui->price_label->setText(record.value("daily_price").toString() + "$");
     });
     connect(ui->monthly_btn, &QPushButton::clicked, this, [this, record](){
         ui->price_label->setText(record.value("monthly_price").toString() + "$");
     });
-    ui->price_label->setAlignment(Qt::AlignRight);
-}
+   }

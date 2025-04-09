@@ -16,10 +16,11 @@ public:
     [[nodiscard]] BarChart();
     ~BarChart();
     void resize(const QSize&);
-    void setQuery(QSqlQuery, const QString&);
+    void setQuery(QSqlQuery&, const QString&);
 private:
-    QChartView* chart_view;
-    QBarSeries* bar_series;
+    QChartView* chart_view = nullptr;
+    QBarSeries* bar_series = nullptr;
+    QChart* chart = nullptr;
 };
 
 #endif // BARCHART_H
