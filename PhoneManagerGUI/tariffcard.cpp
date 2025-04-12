@@ -84,4 +84,4 @@ void TariffCard::setTariffInfoFromQuery(QSqlRecord record){
     connect(ui->monthly_btn, &QPushButton::clicked, this, [this, record](){
         ui->price_label->setText(record.value("monthly_price").toString() + "$");
     });
-   }
+}

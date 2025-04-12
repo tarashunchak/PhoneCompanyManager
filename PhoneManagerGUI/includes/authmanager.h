@@ -10,7 +10,7 @@ class AuthManager : public QObject
 public:
     AuthManager();
     ~AuthManager();
-    void authenticate(const QString, const QString);
+    void authenticate(const QString&, const QString&);
 
 signals:
     void incorrect_login_data();

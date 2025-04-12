@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QTimer>
 #include <QScreen>
-#include <QVBoxLayout>
+//#include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

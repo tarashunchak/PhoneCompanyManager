@@ -16,7 +16,7 @@ SOURCES += \
     customersdetailspage.cpp \
     customerspage.cpp \
     dashboard.cpp \
-    dashboard_barcharts.cpp \
+    dashboard_series.cpp \
     databasemanager.cpp \
     employeespage.cpp \
     inserttariffdialog.cpp \
@@ -24,6 +24,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     navigationmanager.cpp \
+    piechart.cpp \
     registrationmanager.cpp \
     registrationpage.cpp \
     requestspage.cpp \
@@ -31,8 +32,8 @@ SOURCES += \
     tariffspage.cpp
 
 HEADERS += \
-    barchart.h \
     includes/authmanager.h \
+    includes/barchart.h \
     includes/buttonsstylemanager.h \
     includes/currentuser.h \
     includes/customersdetailspage.h \
@@ -48,7 +49,8 @@ HEADERS += \
     includes/registrationpage.h \
     includes/requestspage.h \
     includes/tariffcard.h \
-    includes/tariffspage.h
+    includes/tariffspage.h \
+    piechart.h
 
 FORMS += \
     customersdetailspage.ui \

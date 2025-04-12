@@ -1,4 +1,4 @@
-#include "barchart.h"
+#include "includes/barchart.h"
 #include <QChart>
 #include <QSqlError>
 
@@ -10,11 +10,10 @@ BarChart::BarChart()
     bar_series->setBarWidth(1);
     chart->setTheme(QChart::ChartThemeHighContrast);
     chart->setAnimationOptions(QChart::AllAnimations);
-    chart->addSeries(bar_series);
 
     chart_view->setChart(chart);
     chart_view->setParent(this);
-
+    chart->addSeries(bar_series);
 }
 
 BarChart::BarChart(QWidget* parent)
@@ -23,17 +22,17 @@ BarChart::BarChart(QWidget* parent)
         , bar_series(new QBarSeries{})
         , chart(new QChart{})
 {
-
     bar_series->setBarWidth(1);
     chart->setTheme(QChart::ChartThemeHighContrast);
     chart->setAnimationOptions(QChart::AllAnimations);
 
     chart_view->setChart(chart);
     chart_view->setParent(this);
-
+    chart->addSeries(bar_series);
 }
 
 BarChart::~BarChart(){
+    chart->removeSeries(bar_series);
     delete bar_series;
     delete chart;
     delete chart_view;
@@ -43,8 +42,7 @@ void BarChart::resize(const QSize& size){
     chart_view->resize(size);
 }
 
-void BarChart::setQuery(QSqlQuery& query, const QString& counter){
-
+void BarChart::setQuery(QSqlQuery query, const QString& counter){
     if(!query.exec()){
         qDebug() << "Sql query error in BarChart(): " << query.lastError();
         return;
@@ -66,15 +64,14 @@ void BarChart::setQuery(QSqlQuery& query, const QString& counter){
 
             }
         });
-
         bar_set->setBorderColor("");
         *bar_set << query.value(counter).toInt();
-        bar_series->append(bar_set);
+        if(!bar_series->append(bar_set)){
+            qDebug() << "bar_series cannot append bar_set!";
+        }
         bar_set = nullptr;
     }
-
     chart->removeSeries(bar_series);
     chart->addSeries(bar_series);
     chart_view->setChart(chart);
-
 }

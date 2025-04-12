@@ -99,9 +99,9 @@ border:none;</string>
   <widget class="QWidget" name="widget_5" native="true">
    <property name="geometry">
     <rect>
-     <x>1400</x>
+     <x>1370</x>
      <y>520</y>
-     <width>470</width>
+     <width>511</width>
      <height>480</height>
     </rect>
    </property>
@@ -114,8 +114,8 @@ background-color:#16171C;</string>
      <rect>
       <x>20</x>
       <y>50</y>
-      <width>430</width>
-      <height>390</height>
+      <width>471</width>
+      <height>411</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -149,19 +149,6 @@ border:none;</string>
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="widget_4" native="true">
-   <property name="geometry">
-    <rect>
-     <x>1400</x>
-     <y>30</y>
-     <width>470</width>
-     <height>440</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:rgba(255, 255, 255, 1);</string>
-   </property>
-  </widget>
   <widget class="QWidget" name="side_bar_menu" native="true">
    <property name="geometry">
     <rect>
@@ -181,7 +168,7 @@ border:none;</string>
     <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
 background-color:#16171C;</string>
    </property>
-   <widget class="QLabel" name="side_menu_logo_2">
+   <widget class="QLabel" name="profile_pic">
     <property name="geometry">
      <rect>
       <x>55</x>
@@ -191,7 +178,7 @@ background-color:#16171C;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background: url(&quot;./img/operator.png&quot;);
+     <string notr="true">background: url(&quot;./img/profile_photo.svg&quot;);
 border:none;</string>
     </property>
     <property name="text">
@@ -532,7 +519,7 @@ text-align:center;</string>
    <zorder>customers_btn</zorder>
    <zorder>side_menu_logo</zorder>
    <zorder>employees_btn</zorder>
-   <zorder>side_menu_logo_2</zorder>
+   <zorder>profile_pic</zorder>
    <zorder>line</zorder>
    <zorder>tariffs_btn</zorder>
    <zorder>requests_btn</zorder>
@@ -540,7 +527,7 @@ text-align:center;</string>
    <zorder>name_label</zorder>
    <zorder>line_2</zorder>
   </widget>
-  <widget class="QWidget" name="requests_statistic_2" native="true">
+  <widget class="QWidget" name="requests_statistic_box" native="true">
    <property name="geometry">
     <rect>
      <x>289</x>
@@ -571,7 +558,7 @@ background-color:transparent;</string>
     <property name="geometry">
      <rect>
       <x>411</x>
-      <y>10</y>
+      <y>14</y>
       <width>81</width>
       <height>24</height>
      </rect>
@@ -579,8 +566,6 @@ background-color:transparent;</string>
     <property name="styleSheet">
      <string notr="true">padding-left: 10px;
 font-size:13px;
-border-radius:0px;
-border:none;
 color:black;
 background-color:white;</string>
     </property>
@@ -600,8 +585,31 @@ background-color:white;</string>
      </property>
     </item>
    </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>10</y>
+      <width>150</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Lato</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+font-family: Lato;</string>
+    </property>
+    <property name="text">
+     <string>Request Activity</string>
+    </property>
+   </widget>
   </widget>
-  <widget class="QWidget" name="customers_statistic_2" native="true">
+  <widget class="QWidget" name="customers_statistic_box" native="true">
    <property name="geometry">
     <rect>
      <x>830</x>
@@ -631,8 +639,8 @@ background-color:transparent;</string>
    <widget class="QComboBox" name="cust_date_comboBox">
     <property name="geometry">
      <rect>
-      <x>411</x>
-      <y>10</y>
+      <x>412</x>
+      <y>14</y>
       <width>81</width>
       <height>24</height>
      </rect>
@@ -640,8 +648,6 @@ background-color:transparent;</string>
     <property name="styleSheet">
      <string notr="true">padding-left: 10px;
 font-size:13px;
-border-radius:0px;
-border:none;
 color:black;
 background-color:white;</string>
     </property>
@@ -660,6 +666,80 @@ background-color:white;</string>
       <string>7 days</string>
      </property>
     </item>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>10</y>
+      <width>311</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Lato</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+font-family: Lato;</string>
+    </property>
+    <property name="text">
+     <string>Customers Registration Overview</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="tariffs_statistic_box" native="true">
+   <property name="geometry">
+    <rect>
+     <x>1370</x>
+     <y>30</y>
+     <width>511</width>
+     <height>461</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius: 10px;
+background-color:#16171C;</string>
+   </property>
+   <widget class="QWidget" name="tariff_statistics" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>50</y>
+      <width>511</width>
+      <height>411</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 0px;
+background-color:transparent;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>153</x>
+      <y>10</y>
+      <width>205</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Lato</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+font-family: Lato;</string>
+    </property>
+    <property name="text">
+     <string>Tariff Usage Overview</string>
+    </property>
    </widget>
   </widget>
  </widget>

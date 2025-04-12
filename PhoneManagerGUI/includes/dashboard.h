@@ -4,7 +4,8 @@
 #include <QWidget>
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
-#include "barchart.h"
+#include "includes/barchart.h"
+#include "piechart.h"
 
 namespace Ui {
 class Dashboard;
@@ -20,6 +21,7 @@ public:
     void setCurrentUser();
     void setCustomersStatistics();
     void setRequestsStatistics();
+    void setTariffsStatistics();
 
 signals:
     void on_dashboard_btn_clicked();
@@ -38,6 +40,7 @@ private:
     QSqlQueryModel* qmodel;
     BarChart* cust_bar_chart;
     BarChart* req_bar_chart;
+    PieChart* tariff_pie_chart;
 };
 
 #endif // DASHBOARD_H

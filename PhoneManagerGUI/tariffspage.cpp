@@ -60,7 +60,6 @@ void TariffsPage::setCurrentUser(){
 }
 
 void TariffsPage::setConnections()const{
-
     connect(ui->lineEdit, &QLineEdit::textChanged
             , this, &TariffsPage::FindTariffInDB);
 

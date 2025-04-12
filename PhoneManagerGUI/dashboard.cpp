@@ -14,12 +14,13 @@ Dashboard::Dashboard(QWidget *parent)
     , qmodel(new QSqlQueryModel(this))
     , cust_bar_chart(new BarChart{})
     , req_bar_chart(new BarChart{})
-
+    , tariff_pie_chart(new PieChart{})
 {
     ui->setupUi(this);
 
     req_bar_chart->setParent(ui->requests_statistic);
     cust_bar_chart->setParent(ui->customers_statistic);
+    tariff_pie_chart->setParent(ui->tariff_statistics);
 
     ButtonsStyleManager::SetLeftMenuIcons({
         ui->dashboard_btn,
@@ -31,7 +32,8 @@ Dashboard::Dashboard(QWidget *parent)
     setTableViewConnection();
     setCustomersStatistics();
     setRequestsStatistics();
-
+    setTariffsStatistics();
+    ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->name_label->setAlignment(Qt::AlignCenter);
 
 
@@ -60,7 +62,7 @@ void Dashboard::setCurrentUser(){
 }
 
 void Dashboard::setTableViewConnection(){
-    qmodel->setQuery("SELECT *FROM Customers ORDER BY registration_Date DESC LIMIT 10;");
+    qmodel->setQuery("SELECT *FROM Customers ORDER BY date DESC LIMIT 10;");
     ui->tableView->setModel(qmodel);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);

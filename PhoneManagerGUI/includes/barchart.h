@@ -12,11 +12,11 @@ class BarChart : public QWidget
 {
     Q_OBJECT
 public:
-    [[nodiscard]] BarChart(QWidget* parent);
+    [[nodiscard]] BarChart(QWidget*);
     [[nodiscard]] BarChart();
     ~BarChart();
     void resize(const QSize&);
-    void setQuery(QSqlQuery&, const QString&);
+    void setQuery(QSqlQuery, const QString&);
 private:
     QChartView* chart_view = nullptr;
     QBarSeries* bar_series = nullptr;
