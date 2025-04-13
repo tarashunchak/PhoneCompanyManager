@@ -6,8 +6,11 @@ PieChart::PieChart()
     , pie_series(new QPieSeries{})
     , chart(new QChart{})
 {
-    chart->setTheme(QChart::ChartThemeHighContrast);
+    //chart->setTheme(QChart::ChartThemeHighContrast);
+    chart->setTheme(QChart::ChartThemeDark);
+    chart->setTheme(QChart::ChartThemeQt);
     chart->setAnimationOptions(QChart::AllAnimations);
+    chart->setAnimationOptions(QChart::GridAxisAnimations);
     chart_view->setChart(chart);
     chart_view->setParent(this);
     chart->addSeries(pie_series);
@@ -19,8 +22,9 @@ PieChart::PieChart(QWidget* parent)
     , pie_series(new QPieSeries{})
     , chart(new QChart{})
 {
-    chart->setTheme(QChart::ChartThemeHighContrast);
-    chart->setAnimationOptions(QChart::AllAnimations);
+    //chart->setTheme(QChart::ChartThemeHighContrast);
+    chart->setTheme(QChart::ChartThemeQt);
+    chart->setAnimationOptions(QChart::GridAxisAnimations);
     chart_view->setChart(chart);
     chart_view->setParent(this);
     chart->addSeries(pie_series);
@@ -38,23 +42,25 @@ void PieChart::resize(const QSize& size){
 }
 
 void PieChart::setQuery(QSqlQuery query, QString label_for_query, QString value_for_query){
+    pie_series->clear();
     if(!query.exec()){
         qDebug() << "in PieChart::setQuery() fault: " << query.lastError();
         return;
     }
-    pie_series->clear();
     QString tmp_label;
     qreal tmp_value;
     while(query.next()){
         tmp_label = query.value(label_for_query).toString();
         tmp_value = query.value(value_for_query).toInt();
         QPieSlice* slice = new QPieSlice{tmp_label, tmp_value};
+        slice->setLabelPosition(QPieSlice::LabelInsideHorizontal);
         connect(slice, &QPieSlice::hovered, this, [slice](bool is_hovered){
             QColor color = slice->color();
-            slice->setColor(is_hovered ? QColor(color.red() + 30, color.blue() + 30, color.green() + 30)
-                                       : QColor(color.red() - 30, color.blue() - 30, color.green() - 30));
+            slice->setColor(is_hovered ? QColor(color.red() + 40, color.blue() + 40, color.green() + 40)
+                                       : QColor(color.red() - 40, color.blue() - 40, color.green() - 40));
         });
-        slice->setBorderColor("");
+        slice->setBorderColor(QColor{255, 255, 255});
+        slice->setBorderWidth(0);
         if(!pie_series->append(slice)){
             qDebug() << "pie_series cannot append slice!";
         }

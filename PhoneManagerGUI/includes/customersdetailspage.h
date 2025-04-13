@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
+#include "piechart.h"
 
 namespace Ui {
 class CustomersDetailsPage;
@@ -18,7 +19,7 @@ public:
     ~CustomersDetailsPage();
 
 public slots:
-    void SetCustomerInfo(const int id);
+    void SetCustomerInfo(const int);
 
 signals:
     void on_dashboard_btn_clicked();
@@ -31,11 +32,14 @@ signals:
 
 private:
     void SetConnections();
+    void SetTableViewStyle();
+    void SetCharts(const int);
 
 private:
     Ui::CustomersDetailsPage *ui;
     QSqlDatabase* db;
     QSqlTableModel* qmodel;
+    PieChart* tariff_chart;
 };
 
 #endif // CUSTOMERSDETAILSPAGE_H

@@ -35,7 +35,7 @@
     <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
 background-color:#16171C;</string>
    </property>
-   <widget class="QLabel" name="side_menu_logo_2">
+   <widget class="QLabel" name="profile_pic">
     <property name="geometry">
      <rect>
       <x>55</x>
@@ -45,8 +45,7 @@ background-color:#16171C;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background: url(&quot;./img/operator.png&quot;);
-border:none;</string>
+     <string notr="true">border:none;</string>
     </property>
     <property name="text">
      <string/>
@@ -346,7 +345,7 @@ QPushButton:hover {
    <zorder>customers_btn</zorder>
    <zorder>side_menu_logo</zorder>
    <zorder>employees_btn</zorder>
-   <zorder>side_menu_logo_2</zorder>
+   <zorder>profile_pic</zorder>
    <zorder>line</zorder>
    <zorder>tariffs_btn</zorder>
    <zorder>requests_btn</zorder>
@@ -362,7 +361,7 @@ QPushButton:hover {
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(106, 106, 111);</string>
+    <string notr="true">background-color:rgb(145, 145, 145);</string>
    </property>
    <widget class="QTableView" name="tableView">
     <property name="enabled">
@@ -370,10 +369,10 @@ QPushButton:hover {
     </property>
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>439</y>
-      <width>1491</width>
-      <height>521</height>
+      <x>60</x>
+      <y>530</y>
+      <width>1001</width>
+      <height>450</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -496,7 +495,7 @@ font-size:18px;</string>
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QLabel" name="cust_profile_pic">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -506,7 +505,7 @@ font-size:18px;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background: url(./img/userEmployee.png);</string>
+     <string notr="true">border:none;</string>
     </property>
     <property name="text">
      <string/>
@@ -515,18 +514,85 @@ font-size:18px;</string>
    <widget class="QPushButton" name="return_btn">
     <property name="geometry">
      <rect>
-      <x>1450</x>
-      <y>40</y>
+      <x>1490</x>
+      <y>20</y>
       <width>80</width>
       <height>80</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:transparent;
-background: url(./img/exit.png);</string>
+</string>
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QWidget" name="tariffs_history" native="true">
+    <property name="geometry">
+     <rect>
+      <x>1110</x>
+      <y>530</y>
+      <width>450</width>
+      <height>450</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>1260</x>
+      <y>490</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Lato</family>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:black;
+background-color:transparent;
+font-family: Lato;
+</string>
+    </property>
+    <property name="text">
+     <string>Tariffs History</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="tariffs_history_2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>40</y>
+      <width>450</width>
+      <height>450</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="tariffs_history_3" native="true">
+    <property name="geometry">
+     <rect>
+      <x>1110</x>
+      <y>40</y>
+      <width>450</width>
+      <height>450</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;</string>
     </property>
    </widget>
   </widget>
