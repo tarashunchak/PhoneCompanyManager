@@ -2,6 +2,7 @@
 #include "ui_customersdetailspage.h"
 #include "includes/databasemanager.h"
 #include "includes/buttonsstylemanager.h"
+#include "includes/currentuser.h"
 #include <QSqlQuery>
 #include <QSqlError>
 
@@ -11,11 +12,15 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     , db(&DatabaseManager::instance().getDatabase())
     , qmodel(new QSqlTableModel{})
     , tariff_chart(new PieChart{})
+    , usage_chart(new LineChart{})
 {
     ui->setupUi(this);
 
     tariff_chart->setParent(ui->tariffs_history);
     tariff_chart->resize(ui->tariffs_history->size());
+
+    usage_chart->setParent(ui->usage_history);
+    usage_chart->resize(ui->usage_history->size());
 
     ButtonsStyleManager::SetLeftMenuIcons({
         ui->dashboard_btn,
@@ -27,6 +32,7 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
 
     SetTableViewStyle();
 
+    ui->name_label->setAlignment(Qt::AlignCenter);
     ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->return_btn->setIcon(QIcon{"./img/return.svg"});
@@ -36,6 +42,19 @@ CustomersDetailsPage::~CustomersDetailsPage()
 {
     db = nullptr;
     delete ui;
+}
+
+void CustomersDetailsPage::setCurrentUser(){
+    QSqlQuery query;
+    query.prepare("SELECT *FROM Employees WHERE id = :empl_id;");
+    const int empl_id = CurrentUser::getCurrentUserID();
+    query.bindValue(":empl_id", empl_id);
+    if(query.exec() && query.next()){
+        ui->name_label->setText(query.value("full_name").toString());
+    }else{
+        qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
+        return;
+    }
 }
 
 void CustomersDetailsPage::SetConnections(){
@@ -64,7 +83,7 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
 }
 
 void CustomersDetailsPage::SetTableViewStyle(){
-    ui->tableView->setGeometry(50, 510, 980, 450);
+    ui->tableView->setGeometry(60, 530, 1000, 450);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->setVisible(false);
@@ -78,15 +97,21 @@ void CustomersDetailsPage::SetTableViewStyle(){
 }
 
 void CustomersDetailsPage::SetCharts(const int id){
-    QSqlQuery chart_query;
-    chart_query.prepare("SELECT Tariffs.tariff_name AS name, Tariffs.id AS id FROM Customers "
+    QSqlQuery tariff_query{};
+    tariff_query.prepare("SELECT Tariffs.tariff_name AS name, Tariffs.id AS id FROM Customers "
                   "JOIN Tariffs ON Tariffs.id = Customers.tariff_id "
                   "WHERE Customers.id = :id;");
-    chart_query.bindValue(":id", id);
-    if(!chart_query.exec() || !chart_query.next()){
-        qDebug() << "In CustomersDetailsPage::SetCustomersInfo fault!!!: " << chart_query.lastError();
+    tariff_query.bindValue(":id", id);
+    if(!tariff_query.exec()){
+        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::tariff_query fault!!!: " << tariff_query.lastError();
         return;
     }
+    tariff_chart->setQuery(std::move(tariff_query), "name", "id");
 
-    tariff_chart->setQuery(std::move(chart_query), "name", "id");
+    QSqlQuery usage_query{};
+    usage_query.prepare("SELECT date(date) AS usage_date, COUNT(*) AS count FROM Usage "
+                        "WHERE cust_id = :id AND date(date) >= date('now', '-6 days') "
+                        "GROUP BY usage_date ORDER BY usage_date ASC;");
+    usage_query.bindValue(":id", id);
+    usage_chart->setQuery(std::move(usage_query), "count", "usage_date");
 }

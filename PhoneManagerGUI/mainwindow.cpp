@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     sWidget = new QStackedWidget(this);
     setCentralWidget(sWidget);
-
+    setStatusBar(nullptr);
     nManager = new NavigationManager(sWidget, this);
 
     qApp->setStyleSheet("QPushButton:focus { outline: none; border: none; }");

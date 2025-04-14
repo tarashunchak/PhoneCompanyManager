@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include "piechart.h"
+#include "linechart.h"
 
 namespace Ui {
 class CustomersDetailsPage;
@@ -17,6 +18,7 @@ class CustomersDetailsPage : public QWidget
 public:
     explicit CustomersDetailsPage(QWidget *parent = nullptr);
     ~CustomersDetailsPage();
+    void setCurrentUser();
 
 public slots:
     void SetCustomerInfo(const int);
@@ -40,6 +42,7 @@ private:
     QSqlDatabase* db;
     QSqlTableModel* qmodel;
     PieChart* tariff_chart;
+    LineChart* usage_chart;
 };
 
 #endif // CUSTOMERSDETAILSPAGE_H

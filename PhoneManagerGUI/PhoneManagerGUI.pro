@@ -20,6 +20,7 @@ SOURCES += \
     databasemanager.cpp \
     employeespage.cpp \
     inserttariffdialog.cpp \
+    linechart.cpp \
     loginpage.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -50,6 +51,7 @@ HEADERS += \
     includes/requestspage.h \
     includes/tariffcard.h \
     includes/tariffspage.h \
+    linechart.h \
     piechart.h
 
 FORMS += \

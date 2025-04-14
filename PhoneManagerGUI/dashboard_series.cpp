@@ -5,7 +5,7 @@
 #include <QSqlError>
 
 void Dashboard::setCustomersStatistics(){
-    QSqlQuery query;
+    QSqlQuery query{};
     if(ui->cust_date_comboBox->currentIndex()){
         query.prepare("SELECT COUNT(*) AS cust_count FROM Customers "
             "WHERE date >= DATE(CURRENT_DATE, :date) "
@@ -22,7 +22,7 @@ void Dashboard::setCustomersStatistics(){
 }
 
 void Dashboard::setRequestsStatistics(){
-    QSqlQuery query;
+    QSqlQuery query{};
     if(ui->req_date_comboBox->currentIndex()){
         query.prepare("SELECT COUNT(*) AS req_count FROM Requests "
             "WHERE date >= DATE(CURRENT_DATE, :date) "
@@ -43,7 +43,7 @@ void Dashboard::setTariffsStatistics(){
                     "FROM Tariffs "
                     "JOIN Customers ON Customers.tariff_id = Tariffs.id "
                     "GROUP BY Tariffs.tariff_name;"};
-    if(!query.exec() || !query.next()){
+    if(!query.exec()){
         qDebug() << "SetTariffsStatistics() fault: " << query.lastError();
         return;
     }

@@ -15,6 +15,7 @@ public:
     ~PieChart();
     void resize(const QSize&);
     void setQuery(QSqlQuery, QString, QString);
+
 private:
     QChartView* chart_view;
     QPieSeries* pie_series;

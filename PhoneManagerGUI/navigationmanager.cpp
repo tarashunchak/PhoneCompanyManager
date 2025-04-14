@@ -129,6 +129,7 @@ void NavigationManager::showRegistrationPage()const{
 }
 
 void NavigationManager::showCustomersDetailsPage(const int id)const{
+    customersDetailsPage->setCurrentUser();
     customersDetailsPage->SetCustomerInfo(id);
     sWidget->setCurrentWidget(customersDetailsPage);
 }

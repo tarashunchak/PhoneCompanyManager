@@ -8,6 +8,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     DatabaseManager::instance();
     MainWindow w;
-    w.showMaximized();
+    w.showFullScreen();
     return a.exec();
 }

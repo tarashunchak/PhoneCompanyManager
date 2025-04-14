@@ -6,11 +6,8 @@ PieChart::PieChart()
     , pie_series(new QPieSeries{})
     , chart(new QChart{})
 {
-    //chart->setTheme(QChart::ChartThemeHighContrast);
-    chart->setTheme(QChart::ChartThemeDark);
     chart->setTheme(QChart::ChartThemeQt);
     chart->setAnimationOptions(QChart::AllAnimations);
-    chart->setAnimationOptions(QChart::GridAxisAnimations);
     chart_view->setChart(chart);
     chart_view->setParent(this);
     chart->addSeries(pie_series);
@@ -22,9 +19,8 @@ PieChart::PieChart(QWidget* parent)
     , pie_series(new QPieSeries{})
     , chart(new QChart{})
 {
-    //chart->setTheme(QChart::ChartThemeHighContrast);
     chart->setTheme(QChart::ChartThemeQt);
-    chart->setAnimationOptions(QChart::GridAxisAnimations);
+    chart->setAnimationOptions(QChart::AllAnimations);
     chart_view->setChart(chart);
     chart_view->setParent(this);
     chart->addSeries(pie_series);
@@ -66,6 +62,7 @@ void PieChart::setQuery(QSqlQuery query, QString label_for_query, QString value_
         }
         slice = nullptr;
     }
+    pie_series->setPieSize(100);
     chart->removeSeries(pie_series);
     chart->addSeries(pie_series);
     chart_view->setChart(chart);

@@ -284,8 +284,8 @@ QPushButton:hover {
    <widget class="QLabel" name="side_menu_logo">
     <property name="geometry">
      <rect>
-      <x>25</x>
-      <y>945</y>
+      <x>20</x>
+      <y>210</y>
       <width>200</width>
       <height>50</height>
      </rect>
