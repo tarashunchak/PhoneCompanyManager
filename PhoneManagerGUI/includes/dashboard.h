@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QSqlDatabase>
-#include <QSqlQueryModel>
+#include <QSqlTableModel>
 #include "includes/barchart.h"
 #include "piechart.h"
 
@@ -22,6 +22,7 @@ public:
     void setCustomersStatistics();
     void setRequestsStatistics();
     void setTariffsStatistics();
+    void setRequestsHistory();
 
 signals:
     void on_dashboard_btn_clicked();
@@ -37,7 +38,8 @@ private:/*Methods*/
 private:
     Ui::Dashboard *ui;
     QSqlDatabase* db;
-    QSqlQueryModel* qmodel;
+    QSqlTableModel* cust_qmodel;
+    QSqlTableModel* req_qmodel;
     BarChart* cust_bar_chart;
     BarChart* req_bar_chart;
     PieChart* tariff_pie_chart;

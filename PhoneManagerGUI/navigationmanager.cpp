@@ -121,6 +121,8 @@ void NavigationManager::showTariffsPage()const{
 }
 
 void NavigationManager::showRequestsPage()const{
+    requestsPage->setCurrentUser();
+    requestsPage->setTableView();
     sWidget->setCurrentWidget(requestsPage);
 }
 

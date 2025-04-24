@@ -35,7 +35,8 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     ui->name_label->setAlignment(Qt::AlignCenter);
     ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
-    ui->return_btn->setIcon(QIcon{"./img/return.svg"});
+    ui->return_btn->setIcon(QIcon{"./img/exit.png"});
+
 }
 
 CustomersDetailsPage::~CustomersDetailsPage()
@@ -83,7 +84,6 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
 }
 
 void CustomersDetailsPage::SetTableViewStyle(){
-    ui->tableView->setGeometry(60, 530, 1000, 450);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->setVisible(false);

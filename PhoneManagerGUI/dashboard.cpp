@@ -11,7 +11,8 @@ Dashboard::Dashboard(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Dashboard)
     , db(&DatabaseManager::instance().getDatabase())
-    , qmodel(new QSqlQueryModel(this))
+    , cust_qmodel(new QSqlTableModel(this))
+    , req_qmodel(new QSqlTableModel(this))
     , cust_bar_chart(new BarChart{})
     , req_bar_chart(new BarChart{})
     , tariff_pie_chart(new PieChart{})
@@ -29,17 +30,18 @@ Dashboard::Dashboard(QWidget *parent)
         ui->tariffs_btn,
         ui->requests_btn
     });
+
     setTableViewConnection();
     setCustomersStatistics();
     setRequestsStatistics();
     setTariffsStatistics();
+    setRequestsHistory();
+
     ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->name_label->setAlignment(Qt::AlignCenter);
 
-
     connect(ui->req_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsStatistics);
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
-
 }
 
 Dashboard::~Dashboard()
@@ -62,12 +64,11 @@ void Dashboard::setCurrentUser(){
 }
 
 void Dashboard::setTableViewConnection(){
-    qmodel->setQuery("SELECT *FROM Customers ORDER BY date DESC LIMIT 10;");
-    ui->tableView->setModel(qmodel);
+    cust_qmodel->setQuery("SELECT *FROM Customers ORDER BY date DESC LIMIT 10;");
+    ui->tableView->setModel(cust_qmodel);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->setVisible(false);
     ui->tableView->horizontalHeader()->setStyleSheet("background-color:rgb(50,50,50);");
-
 }

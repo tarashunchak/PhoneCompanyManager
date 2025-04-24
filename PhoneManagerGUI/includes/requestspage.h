@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include <QSqlDatabase>
+#include <QSqlTableModel>
 
 namespace Ui {
 class RequestsPage;
@@ -16,6 +17,8 @@ class RequestsPage : public QWidget
 public:
     explicit RequestsPage(QWidget *parent = nullptr);
     ~RequestsPage();
+    void setTableView();
+    void setCurrentUser();
 
 signals:
     void on_dashboard_btn_clicked();
@@ -29,6 +32,7 @@ private:
     Ui::RequestsPage *ui;
 
     QSqlDatabase* db;
+    QSqlTableModel* qmodel;
 
 };
 

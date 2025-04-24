@@ -50,3 +50,18 @@ void Dashboard::setTariffsStatistics(){
     tariff_pie_chart->setQuery(std::move(query), "name", "count");
     tariff_pie_chart->resize(ui->tariff_statistics->size());
 }
+
+void Dashboard::setRequestsHistory(){
+    QSqlQuery query{"SELECT Requests.id AS ID, Customers.phone AS Phone,"
+                    "Requests.date AS Date FROM Requests "
+                    "JOIN Customers ON Customers.id = Requests.cust_id "
+                    "ORDER BY Requests.id DESC LIMIT 15;"};
+    if(!query.exec()){
+        qDebug() << "setRequestsHistory() fault: " << query.lastError();
+        return;
+    }
+    req_qmodel->setQuery(std::move(query));
+    ui->requests_statistic_tableView->setModel(req_qmodel);
+    ui->requests_statistic_tableView->verticalHeader()->setVisible(false);
+    ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+}

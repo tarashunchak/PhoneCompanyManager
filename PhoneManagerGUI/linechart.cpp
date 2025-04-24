@@ -60,28 +60,29 @@ void LineChart::setQuery(QSqlQuery query, QString str, QString strY){
     if(!query.exec()){
         qDebug() << "in LineChart::setQuery() fault: " << query.lastError();
         return;
-    }
+    }else if(query.isValid()){
 
-    //int x{0};
-    int y{};
-    while(query.next()){
+        //int x{0};
+        int y{};
+        while(query.next()){
         y = query.value(str).toInt();
         line_series->append(QDateTime::fromString(query.value(strY).toString()
-                                                  , "yyyy-MM-dd").toMSecsSinceEpoch(), y);
-    }
-    axisX->setFormat("yyyy-MM-dd");
-    axisX->setTitleText("Date");
+                              , "yyyy-MM-dd").toMSecsSinceEpoch(), y);
+        }
+        axisX->setFormat("yyyy-MM-dd");
+        axisX->setTitleText("Date");
 
-    connect(line_series, &QSplineSeries::hovered, this, [this](const QPointF&, bool is_hovered){
+        connect(line_series, &QSplineSeries::hovered, this, [this](const QPointF&, bool is_hovered){
         QPen pen{};
         pen.setWidth(5);
         pen.setColor(is_hovered ? Qt::lightGray : Qt::black);
         line_series->setPen(pen);
-    });
+        });
 
-    chart->removeSeries(line_series);
-    chart->addSeries(line_series);
-    chart->createDefaultAxes();
-    chart_view->setChart(chart);
-    chart_view->setContentsMargins(0, 0, 0, 0);
+        chart->removeSeries(line_series);
+        chart->addSeries(line_series);
+        chart->createDefaultAxes();
+        chart_view->setChart(chart);
+        chart_view->setContentsMargins(0, 0, 0, 0);
+    }
 }

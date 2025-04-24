@@ -12,6 +12,7 @@ SOURCES += \
     authmanager.cpp \
     barchart.cpp \
     buttonsstylemanager.cpp \
+    comboboxdelegate.cpp \
     currentuser.cpp \
     customersdetailspage.cpp \
     customerspage.cpp \
@@ -29,10 +30,12 @@ SOURCES += \
     registrationmanager.cpp \
     registrationpage.cpp \
     requestspage.cpp \
+    table_view_for_requestpage.cpp \
     tariffcard.cpp \
     tariffspage.cpp
 
 HEADERS += \
+    comboboxdelegate.h \
     includes/authmanager.h \
     includes/barchart.h \
     includes/buttonsstylemanager.h \
