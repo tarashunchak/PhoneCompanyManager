@@ -12,6 +12,7 @@ SOURCES += \
     authmanager.cpp \
     barchart.cpp \
     buttonsstylemanager.cpp \
+    chatui.cpp \
     comboboxdelegate.cpp \
     currentuser.cpp \
     customersdetailspage.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
     tariffspage.cpp
 
 HEADERS += \
+    chatui.h \
     comboboxdelegate.h \
     includes/authmanager.h \
     includes/barchart.h \
@@ -58,6 +60,7 @@ HEADERS += \
     piechart.h
 
 FORMS += \
+    chatui.ui \
     customersdetailspage.ui \
     customerspage.ui \
     dashboard.ui \

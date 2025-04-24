@@ -6,6 +6,7 @@
 #include <QSqlTableModel>
 #include "includes/barchart.h"
 #include "piechart.h"
+#include "chatui.h"
 
 namespace Ui {
 class Dashboard;
@@ -43,6 +44,7 @@ private:
     BarChart* cust_bar_chart;
     BarChart* req_bar_chart;
     PieChart* tariff_pie_chart;
+    ChatUI* chat;
 };
 
 #endif // DASHBOARD_H

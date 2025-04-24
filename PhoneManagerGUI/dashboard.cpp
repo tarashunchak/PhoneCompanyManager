@@ -6,6 +6,7 @@
 #include "includes/databasemanager.h"
 #include "includes/buttonsstylemanager.h"
 #include "includes/currentuser.h"
+#include "chatui.h"
 
 Dashboard::Dashboard(QWidget *parent)
     : QWidget(parent)
@@ -16,6 +17,7 @@ Dashboard::Dashboard(QWidget *parent)
     , cust_bar_chart(new BarChart{})
     , req_bar_chart(new BarChart{})
     , tariff_pie_chart(new PieChart{})
+    , chat(new ChatUI{})
 {
     ui->setupUi(this);
 
@@ -40,8 +42,16 @@ Dashboard::Dashboard(QWidget *parent)
     ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->name_label->setAlignment(Qt::AlignCenter);
 
+    chat->setParent(this);
+    chat->setGeometry(this->size().width() - chat->size().width()
+                      ,this->size().height() - chat->size().height()
+                      ,chat->size().width(), chat->size().height());
+
     connect(ui->req_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsStatistics);
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
+    connect(ui->close_open_chat_btn, &QPushButton::clicked, this, [this](){
+        chat->setVisible(!chat->isVisible());
+    });
 }
 
 Dashboard::~Dashboard()
