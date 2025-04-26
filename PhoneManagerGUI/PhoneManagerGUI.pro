@@ -62,19 +62,19 @@ HEADERS += \
     piechart.h
 
 FORMS += \
-    chatui.ui \
-    customersdetailspage.ui \
-    customerspage.ui \
-    dashboard.ui \
-    employeespage.ui \
-    inserttariffdialog.ui \
-    loginpage.ui \
-    mainwindow.ui \
-    passwordrecoverypage.ui \
-    registrationpage.ui \
-    requestspage.ui \
-    tariffcard.ui \
-    tariffspage.ui
+    ui/chatui.ui \
+    ui/customersdetailspage.ui \
+    ui/customerspage.ui \
+    ui/dashboard.ui \
+    ui/employeespage.ui \
+    ui/inserttariffdialog.ui \
+    ui/loginpage.ui \
+    ui/mainwindow.ui \
+    ui/passwordrecoverypage.ui \
+    ui/registrationpage.ui \
+    ui/requestspage.ui \
+    ui/tariffcard.ui \
+    ui/tariffspage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
