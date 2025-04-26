@@ -42,11 +42,14 @@
 background-color:#16171C;</string>
    </property>
    <widget class="QTableView" name="tableView">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>50</y>
-      <width>1011</width>
+      <width>1010</width>
       <height>410</height>
      </rect>
     </property>
@@ -137,8 +140,8 @@ border:none;</string>
      <rect>
       <x>20</x>
       <y>50</y>
-      <width>471</width>
-      <height>401</height>
+      <width>470</width>
+      <height>410</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -288,7 +291,7 @@ QPushButton:hover {
       <x>20</x>
       <y>210</y>
       <width>200</width>
-      <height>50</height>
+      <height>55</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -453,7 +456,7 @@ QPushButton:hover {
      <string notr="true">QPushButton {
     font-family: Lato;
 	padding-left:0px;
-    border-radius: 20px;
+    border-radius: 5px;
 	border:none;
     background-color:rgba(174, 62, 62, 1);
     font-size: 18px;
@@ -519,22 +522,6 @@ text-align:center;</string>
      <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="close_open_chat_btn">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>760</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color:white;</string>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
    <zorder>dashboard_btn</zorder>
    <zorder>customers_btn</zorder>
    <zorder>side_menu_logo</zorder>
@@ -546,7 +533,6 @@ text-align:center;</string>
    <zorder>log_out_btn</zorder>
    <zorder>name_label</zorder>
    <zorder>line_2</zorder>
-   <zorder>close_open_chat_btn</zorder>
   </widget>
   <widget class="QWidget" name="requests_statistic_box" native="true">
    <property name="geometry">
@@ -648,8 +634,8 @@ background-color:#16171C;</string>
      <rect>
       <x>0</x>
       <y>50</y>
-      <width>511</width>
-      <height>411</height>
+      <width>510</width>
+      <height>410</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -762,6 +748,38 @@ font-family: Lato;</string>
      <string>Tariff Usage Overview</string>
     </property>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="close_open_chat_btn">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>1840</x>
+     <y>1000</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	border-radius:4px;
+	background-color:rgb(57, 135, 57);
+}
+
+QPushButton:hover{
+	background-color:rgb(57, 155, 57);
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
+   </property>
   </widget>
  </widget>
  <resources/>

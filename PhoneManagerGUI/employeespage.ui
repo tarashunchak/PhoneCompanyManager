@@ -91,9 +91,9 @@ border:none;</string>
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-    border: none;
-    border-radius: 26px;
-    background-color:rgba(80, 80, 80, 1);
+    border-radius: 5px;
+	border:none;
+    background-color:rgba(80, 80, 80, 0.6);
     font-size: 24px;
     color: white;
     text-align: center;
@@ -128,7 +128,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>400</y>
+      <y>405</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -137,9 +137,9 @@ QPushButton:hover {
      <string notr="true">QPushButton {
     font-family: Lato;
 	padding-left:35px;
-    border-radius: 25px;
+    border-radius: 5px;
 	border:none;
-    background-color:rgba(80, 80, 80, 1);
+    background-color:rgba(80, 80, 80, 0.6);
     font-size: 24px;
     color: white;
     text-align: left;
@@ -164,33 +164,11 @@ QPushButton:hover {
      </size>
     </property>
    </widget>
-   <widget class="QLabel" name="side_menu_logo">
-    <property name="geometry">
-     <rect>
-      <x>25</x>
-      <y>230</y>
-      <width>200</width>
-      <height>55</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border:none;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>img/company_name.svg</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QPushButton" name="employees_btn">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>460</y>
+      <y>470</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -199,7 +177,7 @@ QPushButton:hover {
      <string notr="true">QPushButton {
     font-family: Lato;
 	padding-left:35px;
-    border-radius: 25px;
+    border-radius: 5px;
 	border:none;
     background-color: rgba(39, 48, 141, 1);
     font-size: 24px;
@@ -246,7 +224,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>520</y>
+      <y>535</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -255,9 +233,9 @@ QPushButton:hover {
      <string notr="true">QPushButton {
     font-family: Lato;
 	padding-left:35px;
-    border-radius: 25px;
+    border-radius: 5px;
 	border:none;
-    background-color:rgba(80, 80, 80, 1);
+    background-color:rgba(80, 80, 80, 0.6);
     font-size: 24px;
     color: white;
     text-align: left;
@@ -286,7 +264,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>580</y>
+      <y>600</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -295,9 +273,9 @@ QPushButton:hover {
      <string notr="true">QPushButton {
     font-family: Lato;
 	padding-left:35px;
-    border-radius: 25px;
+    border-radius: 5px;
 	border:none;
-    background-color:rgba(80, 80, 80, 1);
+    background-color:rgba(80, 80, 80, 0.6);
     font-size: 24px;
     color: white;
     text-align: left;
@@ -358,15 +336,65 @@ QPushButton:hover {
      </size>
     </property>
    </widget>
+   <widget class="QLabel" name="name_label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>270</y>
+      <width>250</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:none;
+color:white;
+padding-left:10px;
+text-align:center;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="side_menu_logo_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>210</y>
+      <width>200</width>
+      <height>55</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:none;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>img/company_name.svg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>dashboard_btn</zorder>
    <zorder>customers_btn</zorder>
-   <zorder>side_menu_logo</zorder>
    <zorder>employees_btn</zorder>
    <zorder>side_menu_logo_2</zorder>
    <zorder>line</zorder>
    <zorder>tariffs_btn</zorder>
    <zorder>requests_btn</zorder>
    <zorder>log_out_btn</zorder>
+   <zorder>name_label</zorder>
+   <zorder>side_menu_logo_3</zorder>
   </widget>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">

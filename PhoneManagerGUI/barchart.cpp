@@ -42,10 +42,10 @@ void BarChart::resize(const QSize& size){
     chart_view->resize(size);
 }
 
-void BarChart::setQuery(QSqlQuery query, const QString& counter){
+bool BarChart::setQuery(QSqlQuery query, const QString& counter){
     if(!query.exec()){
         qDebug() << "Sql query error in BarChart(): " << query.lastError();
-        return;
+        return false;
     }
 
     bar_series->clear();
@@ -53,7 +53,7 @@ void BarChart::setQuery(QSqlQuery query, const QString& counter){
     while(query.next()){
         QBarSet* bar_set = new QBarSet{query.value(counter).toString()};
 
-        connect(bar_set, &QBarSet::hovered, this, [bar_set](bool is_hovered){
+        /*connect(bar_set, &QBarSet::hovered, this, [bar_set](bool is_hovered){
             QColor color = bar_set->color();
             if(color.red() + 30 < 255){
                 bar_set->setColor(is_hovered ? QColor(color.red() + 30, color.green() + 30, color.blue() + 30)
@@ -61,17 +61,19 @@ void BarChart::setQuery(QSqlQuery query, const QString& counter){
             }else{
                 bar_set->setColor(is_hovered ? QColor(255 - 30, color.green() + 30, color.blue() + 30)
                                          : QColor(color.red() - 30, color.green() - 30, color.blue() - 30));
-
             }
-        });
+        });*/
         bar_set->setBorderColor("");
         *bar_set << query.value(counter).toInt();
         if(!bar_series->append(bar_set)){
             qDebug() << "bar_series cannot append bar_set!";
         }
-        bar_set = nullptr;
+    }
+    if(!bar_series->count()){
+        return false;
     }
     chart->removeSeries(bar_series);
     chart->addSeries(bar_series);
     chart_view->setChart(chart);
+    return true;
 }

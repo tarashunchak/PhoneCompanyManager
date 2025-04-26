@@ -75,12 +75,17 @@ color:black;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border:none;
-border-radius:4px;
-color:white;
-font-size:16px;
-font-family:Lato;
-background-color:rgb(140, 140, 140);</string>
+    <string notr="true">QPushButton{
+	border:none;
+	border-radius:4px;
+	color:white;
+	font-size:16px;
+	font-family:Lato;
+	background-color:rgb(100, 100, 100);
+}
+QPushButton:hover{
+	background-color:rgb(140, 140, 140);
+}</string>
    </property>
    <property name="text">
     <string>Confirm</string>
@@ -128,37 +133,63 @@ font-size:14px;</string>
     <string>Incorrect Username or Password!</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>860</y>
-     <width>49</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="registration_btn">
    <property name="geometry">
     <rect>
-     <x>920</x>
+     <x>910</x>
      <y>640</y>
-     <width>80</width>
-     <height>24</height>
+     <width>110</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">text-decoration:underline;
-background-color:transparent;
 color:rgb(47, 85, 255);
 font-size:14px;
-font-family:Lato;</string>
+font-family:Lato;
+background-color:transparent;</string>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Create Account?</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pass_rec_btn">
+   <property name="geometry">
+    <rect>
+     <x>910</x>
+     <y>680</y>
+     <width>110</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">text-decoration:underline;
+color:rgb(47, 85, 255);
+font-size:14px;
+font-family:Lato;
+background-color:transparent;</string>
+   </property>
+   <property name="text">
+    <string>Forgot Password?</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>960</x>
+     <y>663</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(47, 85, 255);
+font-size:14px;
+font-family:Lato;
+background-color:transparent;</string>
+   </property>
+   <property name="text">
+    <string>or</string>
    </property>
   </widget>
  </widget>

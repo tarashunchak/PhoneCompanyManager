@@ -6,6 +6,7 @@ ChatUI::ChatUI(QWidget *parent)
     , ui(new Ui::ChatUI)
 {
     ui->setupUi(this);
+    ui->send_btn->setIcon(QIcon{"./img/paper-plane.svg"});
 }
 
 ChatUI::~ChatUI()

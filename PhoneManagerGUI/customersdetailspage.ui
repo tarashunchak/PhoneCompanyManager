@@ -74,9 +74,9 @@ background-color:#16171C;</string>
     <property name="styleSheet">
      <string notr="true">QPushButton {
     font-family: Lato;
-    border: none;
-    border-radius: 26px;
-    background-color:rgba(80, 80, 80, 1);
+    border-radius: 5px;
+	border:none;
+    background-color:rgba(80, 80, 80, 0.6);
     font-size: 24px;
     color: white;
     text-align: center;
@@ -111,7 +111,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>400</y>
+      <y>405</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -120,7 +120,7 @@ QPushButton:hover {
      <string notr="true">QPushButton {
     font-family: Lato;
 	padding-left:35px;
-    border-radius: 25px;
+    border-radius: 5px;
 	border:none;
     background-color: rgba(39, 48, 141, 1);
     font-size: 24px;
@@ -173,7 +173,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>460</y>
+      <y>470</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -182,9 +182,9 @@ QPushButton:hover {
      <string notr="true">QPushButton {
     font-family: Lato;
 	padding-left:35px;
-    border-radius: 25px;
+    border-radius: 5px;
 	border:none;
-    background-color:rgba(80, 80, 80, 1);
+    background-color:rgba(80, 80, 80, 0.6);
     font-size: 24px;
     color: white;
     text-align: left;
@@ -229,7 +229,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>520</y>
+      <y>535</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -238,9 +238,9 @@ QPushButton:hover {
      <string notr="true">QPushButton {
     font-family: Lato;
 	padding-left:35px;
-    border-radius: 25px;
+    border-radius: 5px;
 	border:none;
-    background-color:rgba(80, 80, 80, 1);
+    background-color:rgba(80, 80, 80, 0.6);
     font-size: 24px;
     color: white;
     text-align: left;
@@ -269,7 +269,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>580</y>
+      <y>600</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -278,9 +278,9 @@ QPushButton:hover {
      <string notr="true">QPushButton {
     font-family: Lato;
 	padding-left:35px;
-    border-radius: 25px;
+    border-radius: 5px;
 	border:none;
-    background-color:rgba(80, 80, 80, 1);
+    background-color:rgba(80, 80, 80, 0.6);
     font-size: 24px;
     color: white;
     text-align: left;
@@ -318,7 +318,7 @@ QPushButton:hover {
      <string notr="true">QPushButton {
     font-family: Lato;
 	padding-left:0px;
-    border-radius: 20px;
+    border-radius: 5px;
 	border:none;
     background-color:rgba(174, 62, 62, 1);
     font-size: 18px;
@@ -358,6 +358,9 @@ QPushButton:hover {
     </property>
    </widget>
    <widget class="QLabel" name="name_label">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -379,6 +382,9 @@ text-align:center;</string>
     </property>
     <property name="text">
      <string>TextLabel</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <zorder>dashboard_btn</zorder>

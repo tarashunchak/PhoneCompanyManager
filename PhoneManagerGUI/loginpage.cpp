@@ -10,7 +10,6 @@ LoginPage::LoginPage(QWidget *parent)
     ui->incorrect_data_Label->setVisible(false);
 
     setConnections();
-
 }
 
 LoginPage::~LoginPage()

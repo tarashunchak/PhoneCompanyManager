@@ -21,9 +21,17 @@ Dashboard::Dashboard(QWidget *parent)
 {
     ui->setupUi(this);
 
+    if(!is_empty_label){
+        is_empty_label = new QLabel{"No Info"};
+        is_empty_label->setStyleSheet("color: black; font-size: 40px;");
+        is_empty_label->setAlignment(Qt::AlignCenter);
+    }
+
     req_bar_chart->setParent(ui->requests_statistic);
     cust_bar_chart->setParent(ui->customers_statistic);
     tariff_pie_chart->setParent(ui->tariff_statistics);
+
+    ui->close_open_chat_btn->setIcon(QIcon{"./img/chat.svg"});
 
     ButtonsStyleManager::SetLeftMenuIcons({
         ui->dashboard_btn,
@@ -41,10 +49,11 @@ Dashboard::Dashboard(QWidget *parent)
 
     ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->name_label->setAlignment(Qt::AlignCenter);
-
+    chat->setStyleSheet("border-radius:8px;");
     chat->setParent(this);
-    chat->setGeometry(this->size().width() - chat->size().width()
-                      ,this->size().height() - chat->size().height()
+    chat->setVisible(false);
+    chat->setGeometry(this->size().width()-60 - chat->size().width()
+                      ,this->size().height()-60 - chat->size().height()
                       ,chat->size().width(), chat->size().height());
 
     connect(ui->req_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsStatistics);
@@ -54,8 +63,11 @@ Dashboard::Dashboard(QWidget *parent)
     });
 }
 
+QLabel* Dashboard::is_empty_label = nullptr;
+
 Dashboard::~Dashboard()
 {
+    is_empty_label->setParent(nullptr);
     db = nullptr;
     delete ui;
 }

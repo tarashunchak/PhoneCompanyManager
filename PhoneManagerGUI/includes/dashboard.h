@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
+#include <QLabel>
 #include "includes/barchart.h"
 #include "piechart.h"
 #include "chatui.h"
@@ -45,6 +46,7 @@ private:
     BarChart* req_bar_chart;
     PieChart* tariff_pie_chart;
     ChatUI* chat;
+    static QLabel* is_empty_label;
 };
 
 #endif // DASHBOARD_H

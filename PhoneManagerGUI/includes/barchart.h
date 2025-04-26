@@ -16,7 +16,7 @@ public:
     [[nodiscard]] BarChart();
     ~BarChart();
     void resize(const QSize&);
-    void setQuery(QSqlQuery, const QString&);
+    [[nodiscard]] bool setQuery(QSqlQuery, const QString&);
 private:
     QChartView* chart_view = nullptr;
     QBarSeries* bar_series = nullptr;

@@ -19,6 +19,7 @@ public:
 signals:
     void login_succsess();
     void on_registration_btn_clicked();
+    void on_pass_rec_btn_clicked();
 
 private: /*Methods*/
     void setConnections();

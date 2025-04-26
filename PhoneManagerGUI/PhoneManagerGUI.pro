@@ -27,6 +27,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     navigationmanager.cpp \
+    passwordrecoverypage.cpp \
     piechart.cpp \
     registrationmanager.cpp \
     registrationpage.cpp \
@@ -57,6 +58,7 @@ HEADERS += \
     includes/tariffcard.h \
     includes/tariffspage.h \
     linechart.h \
+    passwordrecoverypage.h \
     piechart.h
 
 FORMS += \
@@ -68,6 +70,7 @@ FORMS += \
     inserttariffdialog.ui \
     loginpage.ui \
     mainwindow.ui \
+    passwordrecoverypage.ui \
     registrationpage.ui \
     requestspage.ui \
     tariffcard.ui \

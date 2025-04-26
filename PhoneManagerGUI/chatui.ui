@@ -14,7 +14,9 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(55, 55, 55);</string>
+   <string notr="true">color:white;
+background-color:rgb(55, 55, 55);
+border-radius:5px;</string>
   </property>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
@@ -27,7 +29,9 @@
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(45, 45, 45);
-border:none;</string>
+border:none;
+border-bottom-right-radius:0px;
+border-bottom-left-radius:0px;</string>
    </property>
   </widget>
   <widget class="QWidget" name="widget_2" native="true">
@@ -41,7 +45,8 @@ border:none;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(56, 56, 56);
-border:none;</string>
+border:none;
+border-radius:0px;</string>
    </property>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
@@ -58,7 +63,8 @@ border:none;</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgb(66, 66, 66);
+     <string notr="true">color:white;
+background-color:rgb(66, 66, 66);
 border:1px solid rgb(146, 146, 146);
 border-radius:18px;
 padding-left:10px;</string>
@@ -67,7 +73,10 @@ padding-left:10px;</string>
      <string>Message</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="send_btn">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -83,6 +92,12 @@ border-radius:18px;</string>
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>22</width>
+      <height>22</height>
+     </size>
     </property>
    </widget>
    <widget class="Line" name="line">
@@ -129,6 +144,9 @@ border-radius:18px;</string>
      <height>491</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:0px;</string>
+   </property>
    <property name="widgetResizable">
     <bool>true</bool>
    </property>
@@ -137,8 +155,8 @@ border-radius:18px;</string>
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>349</width>
-      <height>489</height>
+      <width>351</width>
+      <height>491</height>
      </rect>
     </property>
    </widget>
