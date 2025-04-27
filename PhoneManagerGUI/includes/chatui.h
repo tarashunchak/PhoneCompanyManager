@@ -2,6 +2,7 @@
 #define CHATUI_H
 
 #include <QWidget>
+#include "messagebox.h"
 
 namespace Ui {
 class ChatUI;
@@ -15,8 +16,12 @@ public:
     explicit ChatUI(QWidget *parent = nullptr);
     ~ChatUI();
 
+private slots:
+    void SendMessage()const;
+
 private:
     Ui::ChatUI *ui;
+
 };
 
 

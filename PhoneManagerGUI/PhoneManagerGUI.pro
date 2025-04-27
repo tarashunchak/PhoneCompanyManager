@@ -26,6 +26,7 @@ SOURCES += \
     loginpage.cpp \
     main.cpp \
     mainwindow.cpp \
+    messagebox.cpp \
     navigationmanager.cpp \
     passwordrecoverypage.cpp \
     piechart.cpp \
@@ -59,7 +60,8 @@ HEADERS += \
     includes/tariffspage.h \
     includes/linechart.h \
     includes/passwordrecoverypage.h \
-    includes/piechart.h
+    includes/piechart.h \
+    messagebox.h
 
 FORMS += \
     ui/chatui.ui \

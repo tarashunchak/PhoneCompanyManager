@@ -6,7 +6,6 @@
 #include "includes/databasemanager.h"
 #include "includes/buttonsstylemanager.h"
 #include "includes/currentuser.h"
-#include "includes/chatui.h"
 
 Dashboard::Dashboard(QWidget *parent)
     : QWidget(parent)
