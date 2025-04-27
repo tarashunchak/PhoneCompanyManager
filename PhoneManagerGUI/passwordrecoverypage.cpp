@@ -1,4 +1,4 @@
-#include "passwordrecoverypage.h"
+#include "includes/passwordrecoverypage.h"
 #include "ui_passwordrecoverypage.h"
 
 PasswordRecoveryPage::PasswordRecoveryPage(QWidget *parent)

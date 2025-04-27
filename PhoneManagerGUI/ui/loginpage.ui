@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(60, 60, 60);</string>
+   <string notr="true">background-color:transparent;</string>
   </property>
   <widget class="QLineEdit" name="username_LineEdit">
    <property name="geometry">
@@ -145,6 +145,7 @@ font-size:14px;</string>
    <property name="styleSheet">
     <string notr="true">text-decoration:underline;
 color:rgb(47, 85, 255);
+border:none;
 font-size:14px;
 font-family:Lato;
 background-color:transparent;</string>
@@ -165,6 +166,7 @@ background-color:transparent;</string>
    <property name="styleSheet">
     <string notr="true">text-decoration:underline;
 color:rgb(47, 85, 255);
+border:none;
 font-size:14px;
 font-family:Lato;
 background-color:transparent;</string>

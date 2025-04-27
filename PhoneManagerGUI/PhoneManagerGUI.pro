@@ -37,8 +37,8 @@ SOURCES += \
     tariffspage.cpp
 
 HEADERS += \
-    chatui.h \
-    comboboxdelegate.h \
+    includes/chatui.h \
+    includes/comboboxdelegate.h \
     includes/authmanager.h \
     includes/barchart.h \
     includes/buttonsstylemanager.h \
@@ -57,9 +57,9 @@ HEADERS += \
     includes/requestspage.h \
     includes/tariffcard.h \
     includes/tariffspage.h \
-    linechart.h \
-    passwordrecoverypage.h \
-    piechart.h
+    includes/linechart.h \
+    includes/passwordrecoverypage.h \
+    includes/piechart.h
 
 FORMS += \
     ui/chatui.ui \

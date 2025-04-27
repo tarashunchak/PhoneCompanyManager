@@ -1,4 +1,4 @@
-#include "linechart.h"
+#include "includes/linechart.h"
 #include <QSqlError>
 #include <QEasingCurve>
 #include <QDateTime>

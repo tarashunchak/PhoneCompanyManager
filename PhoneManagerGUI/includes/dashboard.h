@@ -6,8 +6,8 @@
 #include <QSqlTableModel>
 #include <QLabel>
 #include "includes/barchart.h"
-#include "piechart.h"
-#include "chatui.h"
+#include "includes/piechart.h"
+#include "includes/chatui.h"
 
 namespace Ui {
 class Dashboard;

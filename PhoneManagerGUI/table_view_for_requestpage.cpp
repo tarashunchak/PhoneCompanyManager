@@ -2,7 +2,7 @@
 #include "ui_requestspage.h"
 #include <QSqlQuery>
 #include <QSqlError>
-#include "comboboxdelegate.h"
+#include "includes/comboboxdelegate.h"
 #include <QStandardItemModel>
 
 void RequestsPage::setTableView(){

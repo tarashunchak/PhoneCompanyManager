@@ -1,4 +1,4 @@
-#include "piechart.h"
+#include "includes/piechart.h"
 #include <QSqlError>
 
 PieChart::PieChart()
