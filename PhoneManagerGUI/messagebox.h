@@ -2,18 +2,25 @@
 #define MESSAGEBOX_H
 
 #include <QWidget>
-#include <QDateTime>
-#include <QString>
+#include <QLabel>
+#include <QVBoxLayout>
 
-class MessageBox : public QWidget
+class MessageBox : public QFrame
 {
     Q_OBJECT
 public:
-    MessageBox(QWidget* parent = nullptr);
+    [[nodiscard]] MessageBox(QFrame* parent = nullptr);
+    //Attach message data to message-box.
+    void SetMessageText(QString);
+    void SetMessageDateTime(QString);
 
 private:
-    QString message;
-    QDateTime message_date_time;
+    void setMessageStyle();
+
+private:
+    QLabel* message_text;
+    QLabel* message_date_time;
+    QVBoxLayout* verticalLayout;
 
 };
 

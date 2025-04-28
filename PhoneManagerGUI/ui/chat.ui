@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>ChatUI</class>
  <widget class="QWidget" name="ChatUI">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -24,7 +27,7 @@ border-radius:5px;</string>
      <x>0</x>
      <y>0</y>
      <width>350</width>
-     <height>50</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -33,6 +36,42 @@ border:none;
 border-bottom-right-radius:0px;
 border-bottom-left-radius:0px;</string>
    </property>
+   <widget class="QLineEdit" name="phone_lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>290</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:black;
+font-size:16px;
+font-family:Lato;
+background-color:rgb(140, 140, 140);
+border:none;
+border-radius:5px;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="phone_btn">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>290</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size:14px;
+font-family:Lato;
+color:white;</string>
+    </property>
+    <property name="text">
+     <string>Chose phone number</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QWidget" name="widget_2" native="true">
    <property name="geometry">
@@ -75,7 +114,7 @@ padding-left:10px;</string>
    </widget>
    <widget class="QPushButton" name="send_btn">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -86,9 +125,14 @@ padding-left:10px;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:gray;
-border:1px solid rgb(160, 160, 160);
-border-radius:18px;</string>
+     <string notr="true">QPushButton{
+	background-color:gray;
+	border:1px solid rgb(160, 160, 160);
+	border-radius:18px;
+}
+QPushButton:hover{
+	background-color:rgb(140, 140, 140);
+}</string>
     </property>
     <property name="text">
      <string/>
@@ -140,12 +184,9 @@ border-radius:18px;</string>
     <rect>
      <x>0</x>
      <y>50</y>
-     <width>351</width>
-     <height>491</height>
+     <width>350</width>
+     <height>490</height>
     </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:0px;</string>
    </property>
    <property name="widgetResizable">
     <bool>true</bool>
@@ -155,10 +196,21 @@ border-radius:18px;</string>
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>351</width>
-      <height>491</height>
+      <width>350</width>
+      <height>490</height>
      </rect>
     </property>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>-1</x>
+       <y>-1</y>
+       <width>351</width>
+       <height>491</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout"/>
+    </widget>
    </widget>
   </widget>
  </widget>

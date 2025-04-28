@@ -37,6 +37,7 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
 
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 CustomersDetailsPage::~CustomersDetailsPage()

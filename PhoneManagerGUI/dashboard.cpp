@@ -59,6 +59,7 @@ Dashboard::Dashboard(QWidget *parent)
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
     connect(ui->close_open_chat_btn, &QPushButton::clicked, this, [this](){
         chat->setVisible(!chat->isVisible());
+        chat->DisplayAllMessages();
     });
 }
 
@@ -91,5 +92,5 @@ void Dashboard::setTableViewConnection(){
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->setVisible(false);
-    ui->tableView->horizontalHeader()->setStyleSheet("background-color:rgb(50,50,50);");
+    ui->tableView->horizontalHeader()->setStyleSheet("border-top-right-radius:10px;background-color:rgb(50,50,50);");
 }

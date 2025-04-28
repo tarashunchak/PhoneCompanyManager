@@ -751,7 +751,7 @@ font-family: Lato;</string>
   </widget>
   <widget class="QPushButton" name="close_open_chat_btn">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>

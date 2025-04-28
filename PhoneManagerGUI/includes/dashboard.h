@@ -7,7 +7,7 @@
 #include <QLabel>
 #include "includes/barchart.h"
 #include "includes/piechart.h"
-#include "includes/chatui.h"
+#include "includes/chat.h"
 
 namespace Ui {
 class Dashboard;
