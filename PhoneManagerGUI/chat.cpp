@@ -37,9 +37,24 @@ void ChatUI::SendMessage(){
     if(ui->lineEdit->text().isEmpty()){
         return;
     }
+    if(ui->phone_btn->text().isEmpty()){
+        return;
+    }
 
     int i = 0;
     for(const auto& ch : ui->lineEdit->text().toStdString()){
+        if(ch != ' '){
+            break;
+        }
+        else{
+            ++i;
+        }
+    }
+    //if all of characters is empty -> return!
+    if(i == ui->lineEdit->text().length()){
+        return;
+    }
+    for(const auto& ch : current_number.toStdString()){
         if(ch != ' '){
             break;
         }
@@ -63,7 +78,7 @@ void ChatUI::SendMessage(){
     if(!query.exec()){
         qDebug() << "SendMessaget()const fault!: " << query.lastError();
     }
-    DisplayAllMessages();
+    DisplayLastMessage();
 }
 
 void ChatUI::DisplayAllMessages(QSqlQuery query){
@@ -90,7 +105,22 @@ void ChatUI::DisplayAllMessages(QSqlQuery query){
 }
 
 void ChatUI::DisplayLastMessage()const{
-
+    QSqlQuery query;
+    query.prepare("SELECT * FROM Messages WHERE origin = :origin AND destination = :dest "
+                  "ORDER BY id DESC LIMIT 1;");
+    query.bindValue(":origin", CurrentUser::getCurrentUserID());
+    query.bindValue(":dest", current_number);
+    if(!query.exec() || !query.next()){
+        qDebug() << "DisplayLastMessage()const query fault!: " << query.lastError();
+        return;
+    }
+    QString message_text{query.value("message_text").toString()};
+    QString message_date_time{query.value("date_time").toString()};
+    MessageBox* message= new MessageBox{};
+    message->SetMessageText(message_text);
+    message->SetMessageDateTime(message_date_time);
+    innerVBoxLayout->addWidget(message);
+    scrollArea->verticalScrollBar()->setValue(scrollArea->verticalScrollBar()->maximum());
 }
 
 void ChatUI::phone_choose_handler(){
@@ -98,6 +128,7 @@ void ChatUI::phone_choose_handler(){
         ui->phone_btn->setVisible(false);
         ui->phone_btn->setText("Chose phone number");
         ui->phone_lineEdit->setVisible(true);
+        ui->phone_lineEdit->setFocus();
     });
     connect(ui->phone_lineEdit, &QLineEdit::editingFinished, this, [this](){
         if(is_exist(ui->phone_lineEdit->text())){
@@ -116,7 +147,7 @@ void ChatUI::phone_choose_handler(){
 
 bool ChatUI::is_exist(QString dest_number){
     QSqlQuery query;
-    query.prepare("SELECT *FROM Messages WHERE destination = :dest AND origin = :origin;");
+    query.prepare("SELECT * FROM Messages WHERE destination = :dest AND origin = :origin;");
     query.bindValue(":dest", dest_number);
     query.bindValue(":origin", CurrentUser::getCurrentUserID());
     if(!query.exec()){
