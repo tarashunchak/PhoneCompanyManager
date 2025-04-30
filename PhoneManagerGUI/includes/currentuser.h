@@ -4,8 +4,8 @@
 class CurrentUser
 {
 private:
-    CurrentUser() = default;
-    ~CurrentUser() = default;
+    CurrentUser() = delete;
+    ~CurrentUser() = delete;
     CurrentUser(const CurrentUser&) = delete;
     CurrentUser& operator=(const CurrentUser&) = delete;
 public:

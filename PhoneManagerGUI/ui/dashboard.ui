@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
+    <width>1680</width>
     <height>1080</height>
    </rect>
   </property>
@@ -31,8 +31,8 @@
   <widget class="QWidget" name="last_reg_cust" native="true">
    <property name="geometry">
     <rect>
-     <x>289</x>
-     <y>550</y>
+     <x>39</x>
+     <y>540</y>
      <width>1051</width>
      <height>480</height>
     </rect>
@@ -55,6 +55,7 @@ background-color:#16171C;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QTableView{
+	font-family:Lato;
 	font-size:16px;
 	background-color: rgba(225, 225, 225, 1);
 	color:black;
@@ -80,17 +81,19 @@ QHeaderView:section {
      <rect>
       <x>20</x>
       <y>15</y>
-      <width>130</width>
+      <width>141</width>
       <height>25</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Lato</family>
       <pointsize>14</pointsize>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color:white;
+     <string notr="true">font-family:Lato;
+color:white;
 background-color:transparent;
 border:none;</string>
     </property>
@@ -102,8 +105,8 @@ border:none;</string>
   <widget class="QWidget" name="request_history_box" native="true">
    <property name="geometry">
     <rect>
-     <x>1370</x>
-     <y>550</y>
+     <x>1120</x>
+     <y>540</y>
      <width>511</width>
      <height>480</height>
     </rect>
@@ -117,17 +120,19 @@ background-color:#16171C;</string>
      <rect>
       <x>20</x>
       <y>15</y>
-      <width>111</width>
+      <width>126</width>
       <height>25</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Lato</family>
       <pointsize>14</pointsize>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color:white;
+     <string notr="true">font-family:Lato;
+color:white;
 background-color:transparent;
 border:none;</string>
     </property>
@@ -149,396 +154,15 @@ border:none;</string>
 background-color:white;
 color:black;
 font-size:16px;
-font-family:Arial;</string>
+font-family:Lato;</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QWidget" name="side_bar_menu" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>250</width>
-     <height>1080</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
-background-color:#16171C;</string>
-   </property>
-   <widget class="QLabel" name="profile_pic">
-    <property name="geometry">
-     <rect>
-      <x>55</x>
-      <y>70</y>
-      <width>140</width>
-      <height>140</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background: url(&quot;./img/profile_photo.svg&quot;);
-border:none;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="dashboard_btn">
-    <property name="geometry">
-     <rect>
-      <x>25</x>
-      <y>330</y>
-      <width>200</width>
-      <height>55</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Lato</family>
-      <pointsize>-1</pointsize>
-      <italic>false</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-    font-family: Lato;
-    border: none;
-    border-radius: 5px;
-    background-color: rgba(39, 48, 141, 1);
-    font-size: 24px;
-    color: white;
-    text-align: center;
-}
-
-QPushButton:hover {
-    background-color: rgba(87, 91, 129, 1);
-}
-</string>
-    </property>
-    <property name="text">
-     <string>Dashboard</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/dashboards.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/dashboards.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>30</width>
-      <height>30</height>
-     </size>
-    </property>
-    <property name="autoExclusive">
-     <bool>false</bool>
-    </property>
-    <property name="flat">
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="customers_btn">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>405</y>
-      <width>230</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-    font-family: Lato;
-	padding-left:35px;
-    border-radius: 5px;
-	border:none;
-    background-color:rgba(80, 80, 80, 0.6);
-    font-size: 24px;
-    color: white;
-    text-align: left;
-}
-
-QPushButton:hover {
-    background-color: rgba(87, 91, 129, 1);
-}
-</string>
-    </property>
-    <property name="text">
-     <string>Customers</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/customers.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/customers.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>30</width>
-      <height>30</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QLabel" name="side_menu_logo">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>210</y>
-      <width>200</width>
-      <height>55</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border:none;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>img/company_name.svg</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="employees_btn">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>470</y>
-      <width>230</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-    font-family: Lato;
-	padding-left:35px;
-    border-radius: 5px;
-	border:none;
-    background-color:rgba(80, 80, 80, 0.6);
-    font-size: 24px;
-    color: white;
-    text-align: left;
-}
-
-QPushButton:hover {
-    background-color: rgba(87, 91, 129, 1);
-}
-</string>
-    </property>
-    <property name="text">
-     <string>Employees</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/employee.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/employee.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>30</width>
-      <height>30</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="Line" name="line">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>390</y>
-      <width>230</width>
-      <height>1</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color:white;</string>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Orientation::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="tariffs_btn">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>535</y>
-      <width>230</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-    font-family: Lato;
-	padding-left:35px;
-    border-radius: 5px;
-	border:none;
-    background-color:rgba(80, 80, 80, 0.6);
-    font-size: 24px;
-    color: white;
-    text-align: left;
-}
-
-QPushButton:hover {
-    background-color: rgba(87, 91, 129, 1);
-}
-</string>
-    </property>
-    <property name="text">
-     <string>Tariffs</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/tariffs.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/tariffs.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>30</width>
-      <height>30</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="requests_btn">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>600</y>
-      <width>230</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-    font-family: Lato;
-	padding-left:35px;
-    border-radius: 5px;
-	border:none;
-    background-color:rgba(80, 80, 80, 0.6);
-    font-size: 24px;
-    color: white;
-    text-align: left;
-}
-
-QPushButton:hover {
-    background-color: rgba(87, 91, 129, 1);
-}
-</string>
-    </property>
-    <property name="text">
-     <string>Requests</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/requests.png</normaloff>build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/requests.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>30</width>
-      <height>30</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="log_out_btn">
-    <property name="geometry">
-     <rect>
-      <x>35</x>
-      <y>980</y>
-      <width>180</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-    font-family: Lato;
-	padding-left:0px;
-    border-radius: 5px;
-	border:none;
-    background-color:rgba(174, 62, 62, 1);
-    font-size: 18px;
-    color: white;
-    text-align: center;
-}
-
-QPushButton:hover {
-    background-color: rgba(87, 91, 129, 1);
-}
-</string>
-    </property>
-    <property name="text">
-     <string>Log Out</string>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>30</width>
-      <height>30</height>
-     </size>
-    </property>
-   </widget>
-   <widget class="QLabel" name="name_label">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>270</y>
-      <width>250</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border:none;
-color:white;
-padding-left:10px;
-text-align:center;</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="Line" name="line_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>325</y>
-      <width>230</width>
-      <height>1</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color:white;</string>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Orientation::Horizontal</enum>
-    </property>
-   </widget>
-   <zorder>dashboard_btn</zorder>
-   <zorder>customers_btn</zorder>
-   <zorder>side_menu_logo</zorder>
-   <zorder>employees_btn</zorder>
-   <zorder>profile_pic</zorder>
-   <zorder>line</zorder>
-   <zorder>tariffs_btn</zorder>
-   <zorder>requests_btn</zorder>
-   <zorder>log_out_btn</zorder>
-   <zorder>name_label</zorder>
-   <zorder>line_2</zorder>
   </widget>
   <widget class="QWidget" name="requests_statistic_box" native="true">
    <property name="geometry">
     <rect>
-     <x>289</x>
-     <y>40</y>
+     <x>39</x>
+     <y>30</y>
      <width>511</width>
      <height>461</height>
     </rect>
@@ -557,7 +181,8 @@ background-color:#16171C;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-radius: 0px;
+     <string notr="true">font-family:Lato;
+border-radius: 0px;
 background-color:transparent;</string>
     </property>
    </widget>
@@ -572,9 +197,11 @@ background-color:transparent;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">padding-left: 10px;
+font-family:Robotic;
 font-size:13px;
 color:black;
-background-color:white;</string>
+background-color:white;
+border-radius:0px;</string>
     </property>
     <item>
      <property name="text">
@@ -597,7 +224,7 @@ background-color:white;</string>
      <rect>
       <x>180</x>
       <y>10</y>
-      <width>150</width>
+      <width>161</width>
       <height>31</height>
      </rect>
     </property>
@@ -619,8 +246,8 @@ font-family: Lato;</string>
   <widget class="QWidget" name="customers_statistic_box" native="true">
    <property name="geometry">
     <rect>
-     <x>830</x>
-     <y>40</y>
+     <x>580</x>
+     <y>30</y>
      <width>511</width>
      <height>461</height>
     </rect>
@@ -639,7 +266,8 @@ background-color:#16171C;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-radius: 0px;
+     <string notr="true">font-family:Lato;
+border-radius: 0px;
 background-color:transparent;</string>
     </property>
    </widget>
@@ -654,9 +282,11 @@ background-color:transparent;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">padding-left: 10px;
+font-family:Robotic;
 font-size:13px;
 color:black;
-background-color:white;</string>
+background-color:white;
+border-radius:0px;</string>
     </property>
     <item>
      <property name="text">
@@ -677,9 +307,9 @@ background-color:white;</string>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>70</x>
       <y>10</y>
-      <width>311</width>
+      <width>331</width>
       <height>31</height>
      </rect>
     </property>
@@ -701,8 +331,8 @@ font-family: Lato;</string>
   <widget class="QWidget" name="tariffs_statistic_box" native="true">
    <property name="geometry">
     <rect>
-     <x>1370</x>
-     <y>40</y>
+     <x>1120</x>
+     <y>30</y>
      <width>511</width>
      <height>461</height>
     </rect>
@@ -721,16 +351,17 @@ background-color:#16171C;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-radius: 0px;
+     <string notr="true">font-family:Lato;
+border-radius: 0px;
 background-color:transparent;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>153</x>
+      <x>165</x>
       <y>10</y>
-      <width>205</width>
+      <width>191</width>
       <height>31</height>
      </rect>
     </property>
@@ -745,41 +376,9 @@ background-color:transparent;</string>
 font-family: Lato;</string>
     </property>
     <property name="text">
-     <string>Tariff Usage Overview</string>
+     <string>Top Tariff By Usage</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QPushButton" name="close_open_chat_btn">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>1840</x>
-     <y>1000</y>
-     <width>50</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton{
-	border-radius:4px;
-	background-color:rgb(57, 135, 57);
-}
-
-QPushButton:hover{
-	background-color:rgb(57, 155, 57);
-}</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>40</width>
-     <height>40</height>
-    </size>
-   </property>
   </widget>
  </widget>
  <resources/>

@@ -25,6 +25,7 @@ SOURCES += \
     linechart.cpp \
     loginpage.cpp \
     main.cpp \
+    mainwidget.cpp \
     mainwindow.cpp \
     messagebox.cpp \
     navigationmanager.cpp \
@@ -61,9 +62,11 @@ HEADERS += \
     includes/linechart.h \
     includes/passwordrecoverypage.h \
     includes/piechart.h \
+    mainwidget.h \
     messagebox.h
 
 FORMS += \
+    mainwidget.ui \
     ui/chat.ui \
     ui/customersdetailspage.ui \
     ui/customerspage.ui \

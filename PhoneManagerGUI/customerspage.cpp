@@ -4,6 +4,7 @@
 #include <QSqlError>
 #include "includes/databasemanager.h"
 #include <QScrollArea>
+#include <QLabel>
 #include "includes/buttonsstylemanager.h"
 
 CustomersPage::CustomersPage(QWidget *parent)
@@ -15,15 +16,6 @@ CustomersPage::CustomersPage(QWidget *parent)
 
     SetCustomersCards();
     SetConnections();
-
-    ButtonsStyleManager::SetLeftMenuIcons({
-        ui->dashboard_btn,
-        ui->customers_btn,
-        ui->employees_btn,
-        ui->tariffs_btn,
-        ui->requests_btn
-    });
-
 }
 
 CustomersPage::~CustomersPage()

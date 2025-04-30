@@ -1,5 +1,9 @@
 #include "includes/buttonsstylemanager.h"
 
+ButtonsStyleManager::ButtonsStyleManager(QList<QPushButton*> buttons) : buttons_list(new QList(buttons)){
+    SetLeftMenuIcons(buttons);
+}
+
 void ButtonsStyleManager::SetLeftMenuIcons(QList<QPushButton*> buttons){
 
     //Dashboard Button
@@ -12,5 +16,76 @@ void ButtonsStyleManager::SetLeftMenuIcons(QList<QPushButton*> buttons){
     buttons[3]->setIcon(QIcon("./img/tariffs.png"));
     //Requests Button
     buttons[4]->setIcon(QIcon("./img/requests.png"));
+}
 
+void ButtonsStyleManager::SetActiveButton(LEFT_SIDE_MENU active_button){
+    for(int i = 0; i < buttons_list->size(); ++i){
+        if(i == static_cast<int>(LEFT_SIDE_MENU::DASHBOARD_BTN)){
+            if(i == static_cast<int>(active_button)){
+                buttons_list->at(i)->setStyleSheet(
+                    "QPushButton { "
+                        "font-family: Lato;"
+                        "border: none;"
+                        "border-radius: 5px;"
+                        "background-color: rgba(39, 48, 141, 1);"
+                        "font-size: 24px;"
+                        "color: white;"
+                        "text-align: center;"
+                    "}"
+                    "QPushButton:hover {"
+                        "background-color: rgba(87, 91, 129, 1);"
+                    "}"
+                );
+            }else{
+                buttons_list->at(i)->setStyleSheet(
+                    "QPushButton { "
+                        "font-family: Lato;"
+                        "border: none;"
+                        "border-radius: 5px;"
+                        "background-color:rgba(80, 80, 80, 0.6);"
+                        "font-size: 24px;"
+                        "color: white;"
+                        "text-align: center;"
+                        "}"
+                    "QPushButton:hover {"
+                        "background-color: rgba(87, 91, 129, 1);"
+                    "}"
+                );
+            }
+        }else{
+            if(i == static_cast<int>(active_button)){
+                buttons_list->at(i)->setStyleSheet(
+                "QPushButton { "
+                    "font-family: Lato;"
+                    "padding-left:35px;"
+                    "border: none;"
+                    "border-radius: 5px;"
+                    "background-color: rgba(39, 48, 141, 1);"
+                    "font-size: 24px;"
+                    "color: white;"
+                    "text-align: left;"
+                "}"
+                "QPushButton:hover {"
+                    "background-color: rgba(87, 91, 129, 1);"
+                "}"
+                );
+            }else{
+                buttons_list->at(i)->setStyleSheet(
+                "QPushButton {"
+                    "font-family: Lato;"
+                    "padding-left:35px;"
+                    "border-radius: 5px;"
+                    "border:none;"
+                    "background-color:rgba(80, 80, 80, 0.6);"
+                    "font-size: 24px;"
+                    "color: white;"
+                    "text-align: left;"
+                "}"
+                "QPushButton:hover {"
+                    "background-color: rgba(87, 91, 129, 1);"
+                "}"
+                );
+            }
+        }
+    }
 }

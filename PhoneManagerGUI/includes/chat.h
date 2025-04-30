@@ -10,13 +10,13 @@ namespace Ui {
 class ChatUI;
 }
 
-class ChatUI : public QWidget
+class Chat : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ChatUI(QWidget *parent = nullptr);
-    ~ChatUI();
+    explicit Chat(QWidget *parent = nullptr);
+    ~Chat();
 
 public slots:
     void SendMessage();

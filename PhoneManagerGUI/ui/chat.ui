@@ -19,7 +19,8 @@
   <property name="styleSheet">
    <string notr="true">color:white;
 background-color:rgb(55, 55, 55);
-border-radius:5px;</string>
+border-radius:5px;
+font-family:Robotic;</string>
   </property>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
@@ -64,8 +65,10 @@ border-radius:5px;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font-size:14px;
-font-family:Lato;
+     <string notr="true">font-size:16px;
+font-family:Robotic;
+background-color:rgb(50, 50, 50);
+border-radius:5px;
 color:white;</string>
     </property>
     <property name="text">
@@ -98,6 +101,7 @@ border-radius:0px;</string>
     </property>
     <property name="font">
      <font>
+      <family>Robotic</family>
       <pointsize>14</pointsize>
      </font>
     </property>
@@ -179,39 +183,16 @@ border-radius:18px;</string>
     </property>
    </widget>
   </widget>
-  <widget class="QScrollArea" name="scrollArea">
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>50</y>
-     <width>350</width>
-     <height>490</height>
+     <x>-1</x>
+     <y>49</y>
+     <width>351</width>
+     <height>491</height>
     </rect>
    </property>
-   <property name="widgetResizable">
-    <bool>true</bool>
-   </property>
-   <widget class="QWidget" name="scrollAreaWidgetContents">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>350</width>
-      <height>490</height>
-     </rect>
-    </property>
-    <widget class="QWidget" name="verticalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>-1</x>
-       <y>-1</y>
-       <width>351</width>
-       <height>491</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout"/>
-    </widget>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout"/>
   </widget>
  </widget>
  <resources/>

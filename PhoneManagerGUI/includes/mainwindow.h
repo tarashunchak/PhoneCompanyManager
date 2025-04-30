@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "mainwidget.h"
 #include "navigationmanager.h"
 #include <QStackedWidget>
 
@@ -18,12 +19,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    MainWidget* getMainWidget()const;
 
 private:
     Ui::MainWindow *ui;
-    QStackedWidget* sWidget;
+    //QStackedWidget* sWidget;
+    MainWidget* mainWidget;
 
-    NavigationManager* nManager;
+    //NavigationManager* nManager;
 
 };
 #endif // MAINWINDOW_H

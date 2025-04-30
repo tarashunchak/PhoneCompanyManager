@@ -18,9 +18,10 @@ class NavigationManager: public QObject
 {
     Q_OBJECT
 public:
-    NavigationManager(QStackedWidget*, QObject*);
+    NavigationManager(QStackedWidget*, QObject*, QWidget*);
+    ~NavigationManager();
 
-private slots:
+public slots:
     void showLoginPage()const;
     void showRegistrationPage()const;
     void showPasswordRecoveryPage()const;
@@ -46,7 +47,7 @@ private:
     TariffsPage* tariffsPage;
     RequestsPage* requestsPage;
     CustomersDetailsPage* customersDetailsPage;
-
+    QWidget* left_side_menu;
 };
 
 #endif //

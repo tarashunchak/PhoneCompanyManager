@@ -1,7 +1,7 @@
 #include "includes/navigationmanager.h"
 #include "includes/currentuser.h"
 
-NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
+NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent, QWidget* side_menu)
     : QObject(parent)
     , sWidget(sWidget)
     , loginPage(new LoginPage{})
@@ -13,7 +13,7 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
     , tariffsPage(new TariffsPage{})
     , requestsPage(new RequestsPage{})
     , customersDetailsPage(new CustomersDetailsPage{})
-
+    , left_side_menu(side_menu)
 {
 
     sWidget->addWidget(loginPage);
@@ -29,7 +29,9 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
     sWidget->setCurrentWidget(loginPage);
 
     setUpNavigation();
+}
 
+NavigationManager::~NavigationManager(){
 }
 
 void NavigationManager::setUpNavigation(){
@@ -47,14 +49,14 @@ void NavigationManager::setUpNavigation(){
     connect(passwordRecoveryPage, &PasswordRecoveryPage::on_return_to_login_btn_clicked, this, &NavigationManager::showLoginPage);
 
     //Dashboard Page Signals/Slots connections
-    connect(dashboardPage, &Dashboard::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
+    /*connect(dashboardPage, &Dashboard::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
     connect(dashboardPage, &Dashboard::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
     connect(dashboardPage, &Dashboard::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
     connect(dashboardPage, &Dashboard::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
     connect(dashboardPage, &Dashboard::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
-    connect(dashboardPage, &Dashboard::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
+    connect(dashboardPage, &Dashboard::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);*/
 
-    //Customers Page Signals/Slots connections
+    /*Customers Page Signals/Slots connections
     connect(customersPage, &CustomersPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
     connect(customersPage, &CustomersPage::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
     connect(customersPage, &CustomersPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
@@ -62,6 +64,7 @@ void NavigationManager::setUpNavigation(){
     connect(customersPage, &CustomersPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
     connect(customersPage, &CustomersPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
     connect(customersPage, &CustomersPage::customer_selected, this, &NavigationManager::showCustomersDetailsPage);
+    */
 
     //Customers Details Page Signals/Slots connections
     connect(customersDetailsPage, &CustomersDetailsPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
@@ -99,11 +102,15 @@ void NavigationManager::setUpNavigation(){
 }
 
 void NavigationManager::showLoginPage()const{
+    sWidget->setGeometry(0, 0, 1920, 1080);
+    left_side_menu->setVisible(false);
     CurrentUser::setCurrentUserID(0);
     sWidget->setCurrentWidget(loginPage);
 }
 
 void NavigationManager::showDashboardPage()const{
+    sWidget->setGeometry(250, 0, 1670, 1080);
+    left_side_menu->setVisible(true);
     dashboardPage->setCurrentUser();
     dashboardPage->setCustomersStatistics();
     dashboardPage->setRequestsStatistics();
@@ -111,37 +118,51 @@ void NavigationManager::showDashboardPage()const{
 }
 
 void NavigationManager::showCustomersPage()const{
+    sWidget->setGeometry(250, 0, 1670, 1080);
+    left_side_menu->setVisible(true);
     customersPage->SetCustomersCards();
     sWidget->setCurrentWidget(customersPage);
 }
 
 void NavigationManager::showEmployeesPage()const{
+    sWidget->setGeometry(250, 0, 1670, 1080);
+    left_side_menu->setVisible(true);
     employeesPage->SetEmployeesCards();
     sWidget->setCurrentWidget(employeesPage);
 }
 
 void NavigationManager::showTariffsPage()const{
+    sWidget->setGeometry(250, 0, 1670, 1080);
+    left_side_menu->setVisible(true);
     tariffsPage->setCurrentUser();
     tariffsPage->setTariffsCards();
     sWidget->setCurrentWidget(tariffsPage);
 }
 
 void NavigationManager::showRequestsPage()const{
+    sWidget->setGeometry(250, 0, 1670, 1080);
+    left_side_menu->setVisible(true);
     requestsPage->setCurrentUser();
     requestsPage->setTableView();
     sWidget->setCurrentWidget(requestsPage);
 }
 
 void NavigationManager::showRegistrationPage()const{
+    sWidget->setGeometry(0, 0, 1920, 1080);
+    left_side_menu->setVisible(false);
     sWidget->setCurrentWidget(registrationPage);
 }
 
 void NavigationManager::showCustomersDetailsPage(const int id)const{
+    left_side_menu->setVisible(true);
+    sWidget->setGeometry(250, 0, 1670, 1080);
     customersDetailsPage->setCurrentUser();
     customersDetailsPage->SetCustomerInfo(id);
     sWidget->setCurrentWidget(customersDetailsPage);
 }
 
 void NavigationManager::showPasswordRecoveryPage()const{
+    sWidget->setGeometry(0, 0, 1920, 1080);
+    left_side_menu->setVisible(false);
     sWidget->setCurrentWidget(passwordRecoveryPage);
 }
