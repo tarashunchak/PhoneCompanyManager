@@ -4,6 +4,7 @@
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::MainWidget)
+    , chat(new Chat{})
 {
     ui->setupUi(this);
     ui->close_open_chat_btn->setIcon(QIcon{"./img/chat.svg"});
@@ -22,6 +23,12 @@ MainWidget::MainWidget(QWidget *parent)
     ui->side_bar_menu->setVisible(false);
     ui->stackedWidget->setGeometry(0, 0, 1920, 1080);
     navigation_manager->showLoginPage();
+
+    chat->setStyleSheet("border-radius:8px;");
+    chat->setVisible(false);
+    chat->setGeometry(this->size().width()-60 - chat->size().width()
+                      ,this->size().height()-60 - chat->size().height()
+                      ,chat->size().width(), chat->size().height());
 }
 
 MainWidget::~MainWidget()
@@ -30,6 +37,10 @@ MainWidget::~MainWidget()
 }
 
 void MainWidget::SetupConnections(){
+    connect(ui->close_open_chat_btn, &QPushButton::clicked, this, [this](){
+        chat->setVisible(!chat->isVisible());
+        chat->DisplayAllMessages();
+    });
     connect(this, &MainWidget::on_dashboard_btn_clicked, this, [this](){
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::DASHBOARD_BTN);
         navigation_manager->showDashboardPage();

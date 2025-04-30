@@ -5,6 +5,7 @@
 #include <QStackedWidget>
 #include "includes/navigationmanager.h"
 #include "includes/buttonsstylemanager.h"
+#include "includes/chat.h"
 
 namespace Ui {
 class MainWidget;
@@ -29,6 +30,7 @@ signals:
 
 private:
     Ui::MainWidget *ui;
+    Chat* chat;
     NavigationManager* navigation_manager;
     ButtonsStyleManager* buttons_style_manager;
 };

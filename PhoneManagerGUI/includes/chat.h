@@ -10,12 +10,12 @@ namespace Ui {
 class ChatUI;
 }
 
-class Chat : public QWidget
+class Chat : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit Chat(QWidget *parent = nullptr);
+    explicit Chat(QFrame *parent = nullptr);
     ~Chat();
 
 public slots:

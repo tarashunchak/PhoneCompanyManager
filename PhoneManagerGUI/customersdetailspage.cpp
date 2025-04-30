@@ -22,18 +22,8 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     usage_chart->setParent(ui->usage_history);
     usage_chart->resize(ui->usage_history->size());
 
-    ButtonsStyleManager::SetLeftMenuIcons({
-        ui->dashboard_btn,
-        ui->customers_btn,
-        ui->employees_btn,
-        ui->tariffs_btn,
-        ui->requests_btn
-    });
-
     SetTableViewStyle();
 
-    ui->name_label->setAlignment(Qt::AlignCenter);
-    ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
 
@@ -52,7 +42,7 @@ void CustomersDetailsPage::setCurrentUser(){
     const int empl_id = CurrentUser::getCurrentUserID();
     query.bindValue(":empl_id", empl_id);
     if(query.exec() && query.next()){
-        ui->name_label->setText(query.value("full_name").toString());
+    //   ui->name_label->setText(query.value("full_name").toString());
     }else{
         qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
         return;

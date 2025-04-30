@@ -61,6 +61,7 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         card->setMaximumSize(290, 120);
         card->setStyleSheet(
             "QPushButton{"
+            "font-family:Lato;"
             "background-color:rgba(51, 51, 51, 1);;"
             "}"
             "QPushButton:hover{"

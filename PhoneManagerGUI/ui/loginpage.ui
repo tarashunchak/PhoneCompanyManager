@@ -14,7 +14,8 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:transparent;</string>
+   <string notr="true">font-family:Lato;
+background-color:transparent;</string>
   </property>
   <widget class="QLineEdit" name="username_LineEdit">
    <property name="geometry">
@@ -27,6 +28,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -50,6 +52,7 @@ color:black;</string>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -119,7 +122,7 @@ font-size:80px;</string>
   <widget class="QLabel" name="incorrect_data_Label">
    <property name="geometry">
     <rect>
-     <x>860</x>
+     <x>858</x>
      <y>560</y>
      <width>211</width>
      <height>21</height>
@@ -157,9 +160,9 @@ background-color:transparent;</string>
   <widget class="QPushButton" name="pass_rec_btn">
    <property name="geometry">
     <rect>
-     <x>910</x>
+     <x>905</x>
      <y>680</y>
-     <width>110</width>
+     <width>120</width>
      <height>25</height>
     </rect>
    </property>

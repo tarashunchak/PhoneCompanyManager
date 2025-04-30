@@ -1,7 +1,6 @@
 #include "includes/requestspage.h"
 #include "ui_requestspage.h"
 #include "includes/databasemanager.h"
-#include "includes/buttonsstylemanager.h"
 #include "includes/currentuser.h"
 #include <QSqlQuery>
 #include <QSqlError>
@@ -15,15 +14,6 @@ RequestsPage::RequestsPage(QWidget *parent)
     ui->setupUi(this);
 
     ui->scrollArea->setWidgetResizable(true);
-    ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
-
-    ButtonsStyleManager::SetLeftMenuIcons({
-        ui->dashboard_btn,
-        ui->customers_btn,
-        ui->employees_btn,
-        ui->tariffs_btn,
-        ui->requests_btn
-    });
 
     setTableView();
 }
@@ -40,7 +30,7 @@ void RequestsPage::setCurrentUser(){
     const int empl_id = CurrentUser::getCurrentUserID();
     query.bindValue(":empl_id", empl_id);
     if(query.exec() && query.next()){
-        ui->name_label->setText(query.value("full_name").toString());
+ //       ui->name_label->setText(query.value("full_name").toString());
     }else{
         qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
         return;

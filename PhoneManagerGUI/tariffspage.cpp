@@ -18,16 +18,8 @@ TariffsPage::TariffsPage(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ButtonsStyleManager::SetLeftMenuIcons({
-        ui->dashboard_btn,
-        ui->customers_btn,
-        ui->employees_btn,
-        ui->tariffs_btn,
-        ui->requests_btn
-    });
     setConnections();
     setTariffsCards(QSqlQuery());
-
 }
 
 TariffsPage::~TariffsPage()
@@ -46,7 +38,7 @@ void TariffsPage::setCurrentUser(){
     const int empl_id = CurrentUser::getCurrentUserID();
     query.bindValue(":empl_id", empl_id);
     if(query.exec() && query.next()){
-        ui->name_label->setText(query.value("name").toString());
+ //       ui->name_label->setText(query.value("name").toString());
         if(query.value("position").toString() == "Administrator"){
             ui->add_tariff_btn->setVisible(true);
         }else{

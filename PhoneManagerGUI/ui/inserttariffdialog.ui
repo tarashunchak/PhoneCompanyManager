@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(25, 30, 35);
+font-family:Lato;</string>
+  </property>
   <widget class="QPushButton" name="confirm_addition">
    <property name="geometry">
     <rect>
@@ -36,13 +40,13 @@ border:none;</string>
     <rect>
      <x>145</x>
      <y>30</y>
-     <width>150</width>
+     <width>161</width>
      <height>30</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Yu Gothic UI</family>
+     <family>Lato</family>
      <pointsize>26</pointsize>
     </font>
    </property>
@@ -105,12 +109,13 @@ border:none;</string>
     <rect>
      <x>60</x>
      <y>75</y>
-     <width>80</width>
+     <width>88</width>
      <height>20</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -123,12 +128,13 @@ border:none;</string>
     <rect>
      <x>60</x>
      <y>130</y>
-     <width>101</width>
+     <width>105</width>
      <height>20</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -147,6 +153,7 @@ border:none;</string>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -165,6 +172,7 @@ border:none;</string>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -177,12 +185,13 @@ border:none;</string>
     <rect>
      <x>250</x>
      <y>180</y>
-     <width>91</width>
+     <width>97</width>
      <height>20</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>12</pointsize>
     </font>
    </property>

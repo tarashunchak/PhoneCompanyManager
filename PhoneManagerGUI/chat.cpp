@@ -8,8 +8,8 @@
 #include "includes/currentuser.h"
 #include <QTimer>
 
-Chat::Chat(QWidget *parent)
-    : QWidget(parent)
+Chat::Chat(QFrame *parent)
+    : QFrame (parent)
     , ui(new Ui::ChatUI)
     , scrollArea(new QScrollArea{})
     , mainWidget(new QWidget{})
@@ -19,13 +19,14 @@ Chat::Chat(QWidget *parent)
     ui->phone_lineEdit->setVisible(false);
     ui->send_btn->setIcon(QIcon{"./img/paper-plane.svg"});
     connect(ui->send_btn, &QPushButton::clicked, this, &Chat::SendMessage);
+    connect(ui->lineEdit, &QLineEdit::editingFinished, this, &Chat::SendMessage);
     innerVBoxLayout->setAlignment(Qt::AlignBottom | Qt::AlignRight);
     mainWidget->setLayout(innerVBoxLayout);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(mainWidget);
     scrollArea->verticalScrollBar()->setVisible(true);
     ui->verticalLayout->addWidget(scrollArea);
-
+    this->setWindowTitle("Interactive Chat");
     phone_choose_handler();
 }
 
@@ -34,11 +35,11 @@ Chat::~Chat()
     delete ui;
 }
 
-inline static void ScrollDown_ScrollBar(QScrollBar* sb){
+static void ScrollDown_ScrollBar(QScrollBar* sb){
     sb->setValue(sb->maximum());
 }
 
-inline static bool is_all_chars_empty(QString str){
+static bool is_all_chars_empty(QString str){
     if(str.isEmpty()){
         return false;
     }else{

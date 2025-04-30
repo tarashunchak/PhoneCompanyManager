@@ -4,7 +4,7 @@
 #include "includes/databasemanager.h"
 #include <QSqlError>
 #include <QScrollArea>
-#include "includes/buttonsstylemanager.h"
+#include <QLabel>
 
 EmployeesPage::EmployeesPage(QWidget *parent)
     : QWidget(parent)
@@ -12,17 +12,8 @@ EmployeesPage::EmployeesPage(QWidget *parent)
     , db(&DatabaseManager::instance().getDatabase())
 {
     ui->setupUi(this);
-    ButtonsStyleManager::SetLeftMenuIcons({
-        ui->dashboard_btn,
-        ui->customers_btn,
-        ui->employees_btn,
-        ui->tariffs_btn,
-        ui->requests_btn
-    });
-
     SetConnections();
     SetEmployeesCards();
-
 }
 
 EmployeesPage::~EmployeesPage()
@@ -52,7 +43,6 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
             delete item;
         }
     }
-
     if(!query.exec()){
         query.prepare("SELECT *FROM Employees;");
         if(!query.exec()){
@@ -60,7 +50,6 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
             return;
         }
     }
-
     int rows = 0;
     int cols = 0;
 
