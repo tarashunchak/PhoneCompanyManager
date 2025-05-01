@@ -2,7 +2,6 @@
 #define TARIFFSPAGE_H
 
 #include <QWidget>
-#include <QSqlDatabase>
 #include "inserttariffdialog.h"
 #include <QSqlQuery>
 
@@ -32,7 +31,6 @@ private:/*Methods*/
 private:
     Ui::TariffsPage *ui;
 
-    QSqlDatabase* db;
     InsertTariffDialog insertT_Dialog;
 };
 

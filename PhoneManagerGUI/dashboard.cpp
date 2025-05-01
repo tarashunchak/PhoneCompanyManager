@@ -3,14 +3,11 @@
 
 #include <QSqlQuery>
 #include <QSqlError>
-#include "includes/databasemanager.h"
-#include "includes/buttonsstylemanager.h"
 #include "includes/currentuser.h"
 
 Dashboard::Dashboard(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Dashboard)
-    , db(&DatabaseManager::instance().getDatabase())
     , cust_qmodel(new QSqlTableModel(this))
     , req_qmodel(new QSqlTableModel(this))
     , cust_bar_chart(new BarChart{})
@@ -30,24 +27,12 @@ Dashboard::Dashboard(QWidget *parent)
     cust_bar_chart->setParent(ui->customers_statistic);
     tariff_pie_chart->setParent(ui->tariff_statistics);
 
-
-    /*ButtonsStyleManager::SetLeftMenuIcons({
-        ui->dashboard_btn,
-        ui->customers_btn,
-        ui->employees_btn,
-        ui->tariffs_btn,
-        ui->requests_btn
-    });*/
-
     setTableViewConnection();
     setCustomersStatistics();
     setRequestsStatistics();
     setTariffsStatistics();
     setRequestsHistory();
 
-    /*ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
-    ui->name_label->setAlignment(Qt::AlignCenter);
-    */
     chat->setStyleSheet("border-radius:8px;");
     chat->setParent(this);
     chat->setVisible(false);
@@ -57,10 +42,6 @@ Dashboard::Dashboard(QWidget *parent)
 
     connect(ui->req_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsStatistics);
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
-    /*connect(ui->close_open_chat_btn, &QPushButton::clicked, this, [this](){
-        chat->setVisible(!chat->isVisible());
-        chat->DisplayAllMessages();
-    });*/
 }
 
 QLabel* Dashboard::is_empty_label = nullptr;
@@ -68,7 +49,6 @@ QLabel* Dashboard::is_empty_label = nullptr;
 Dashboard::~Dashboard()
 {
     is_empty_label->setParent(nullptr);
-    db = nullptr;
     delete ui;
 }
 

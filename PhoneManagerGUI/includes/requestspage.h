@@ -2,8 +2,6 @@
 #define REQUESTSPAGE_H
 
 #include <QWidget>
-
-#include <QSqlDatabase>
 #include <QSqlTableModel>
 
 namespace Ui {
@@ -24,8 +22,6 @@ signals:
 
 private:
     Ui::RequestsPage *ui;
-
-    QSqlDatabase* db;
     QSqlTableModel* qmodel;
 
 };

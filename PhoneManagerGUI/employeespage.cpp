@@ -1,7 +1,5 @@
 #include "includes/employeespage.h"
 #include "ui_employeespage.h"
-
-#include "includes/databasemanager.h"
 #include <QSqlError>
 #include <QScrollArea>
 #include <QLabel>
@@ -9,7 +7,6 @@
 EmployeesPage::EmployeesPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::EmployeesPage)
-    , db(&DatabaseManager::instance().getDatabase())
 {
     ui->setupUi(this);
     SetConnections();
@@ -18,7 +15,6 @@ EmployeesPage::EmployeesPage(QWidget *parent)
 
 EmployeesPage::~EmployeesPage()
 {
-    db = nullptr;
     delete ui;
 }
 

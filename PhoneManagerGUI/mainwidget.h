@@ -29,6 +29,9 @@ signals:
     void on_log_out_btn_clicked();
 
 private:
+    void SetCurrentUserInfo();
+
+private:
     Ui::MainWidget *ui;
     Chat* chat;
     NavigationManager* navigation_manager;

@@ -1,12 +1,10 @@
 #include "includes/registrationmanager.h"
-#include "includes/databasemanager.h"
 
 #include <QSqlQuery>
 
-RegistrationManager::RegistrationManager(): db(&DatabaseManager::instance().getDatabase()) {}
+RegistrationManager::RegistrationManager(){}
 
 RegistrationManager::~RegistrationManager(){
-    db = nullptr;
 }
 
 void RegistrationManager::is_exist(const QString& email){

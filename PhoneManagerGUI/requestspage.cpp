@@ -1,6 +1,5 @@
 #include "includes/requestspage.h"
 #include "ui_requestspage.h"
-#include "includes/databasemanager.h"
 #include "includes/currentuser.h"
 #include <QSqlQuery>
 #include <QSqlError>
@@ -8,7 +7,6 @@
 RequestsPage::RequestsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::RequestsPage)
-    , db(&DatabaseManager::instance().getDatabase())
     , qmodel(new QSqlTableModel{})
 {
     ui->setupUi(this);
@@ -20,7 +18,6 @@ RequestsPage::RequestsPage(QWidget *parent)
 
 RequestsPage::~RequestsPage()
 {
-    db = nullptr;
     delete ui;
 }
 

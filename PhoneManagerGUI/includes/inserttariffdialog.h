@@ -2,7 +2,6 @@
 #define INSERTTARIFFDIALOG_H
 
 #include <QDialog>
-#include <QSqlDatabase>
 
 namespace Ui {
 class InsertTariffDialog;
@@ -25,8 +24,6 @@ private: /*Methods*/
 
 private:
     Ui::InsertTariffDialog *ui;
-
-    QSqlDatabase* db;
 
 };
 

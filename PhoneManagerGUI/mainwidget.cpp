@@ -1,5 +1,7 @@
 #include "mainwidget.h"
 #include "ui_mainwidget.h"
+#include "includes/currentuser.h"
+#include <QSqlError>
 
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent)
@@ -36,28 +38,43 @@ MainWidget::~MainWidget()
     delete ui;
 }
 
+void MainWidget::SetCurrentUserInfo(){
+    QSqlQuery query;
+    query.prepare("SELECT full_name AS name FROM Employees WHERE id = :id;");
+    query.bindValue(":id", CurrentUser::getCurrentUserID());
+    if(!query.exec() || !query.next()){
+        qDebug() << "MainWidget::SetCurrentUserInfo() query fault!: " << query.lastError();
+    }
+    ui->name_label->setText(query.value("name").toString());
+}
+
 void MainWidget::SetupConnections(){
     connect(ui->close_open_chat_btn, &QPushButton::clicked, this, [this](){
         chat->setVisible(!chat->isVisible());
         chat->DisplayAllMessages();
     });
     connect(this, &MainWidget::on_dashboard_btn_clicked, this, [this](){
+        SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::DASHBOARD_BTN);
         navigation_manager->showDashboardPage();
     });
     connect(this, &MainWidget::on_customers_btn_clicked, this, [this](){
+        SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
         navigation_manager->showCustomersPage();
     });
     connect(this, &MainWidget::on_employees_btn_clicked, this, [this](){
+        SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::EMPLOYEES_BTN);
         navigation_manager->showEmployeesPage();
     });
     connect(this, &MainWidget::on_tariffs_btn_clicked, this, [this](){
+        SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TARIFFS_BTN);
         navigation_manager->showTariffsPage();
     });
     connect(this, &MainWidget::on_requests_btn_clicked, this, [this](){
+        SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
         navigation_manager->showRequestsPage();
     });

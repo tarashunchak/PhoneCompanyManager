@@ -1,7 +1,5 @@
 #include "includes/customersdetailspage.h"
 #include "ui_customersdetailspage.h"
-#include "includes/databasemanager.h"
-#include "includes/buttonsstylemanager.h"
 #include "includes/currentuser.h"
 #include <QSqlQuery>
 #include <QSqlError>
@@ -9,7 +7,6 @@
 CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CustomersDetailsPage)
-    , db(&DatabaseManager::instance().getDatabase())
     , qmodel(new QSqlTableModel{})
     , tariff_chart(new PieChart{})
     , usage_chart(new LineChart{})
@@ -32,7 +29,6 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
 
 CustomersDetailsPage::~CustomersDetailsPage()
 {
-    db = nullptr;
     delete ui;
 }
 

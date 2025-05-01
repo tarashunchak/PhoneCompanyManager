@@ -2,7 +2,6 @@
 #define CUSTOMERSDETAILSPAGE_H
 
 #include <QWidget>
-#include <QSqlDatabase>
 #include <QSqlTableModel>
 #include "piechart.h"
 #include "linechart.h"
@@ -33,7 +32,6 @@ private:
 
 private:
     Ui::CustomersDetailsPage *ui;
-    QSqlDatabase* db;
     QSqlTableModel* qmodel;
     PieChart* tariff_chart;
     LineChart* usage_chart;

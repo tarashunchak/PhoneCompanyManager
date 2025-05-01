@@ -8,7 +8,6 @@
 InsertTariffDialog::InsertTariffDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::InsertTariffDialog)
-    , db(&DatabaseManager::instance().getDatabase())
 {
     ui->setupUi(this);
     setModal(true);
@@ -20,7 +19,6 @@ InsertTariffDialog::InsertTariffDialog(QWidget *parent)
 
 InsertTariffDialog::~InsertTariffDialog()
 {
-    db = nullptr;
     delete ui;
 }
 

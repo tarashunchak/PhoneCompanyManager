@@ -1,8 +1,5 @@
 #include "includes/tariffspage.h"
 #include "ui_tariffspage.h"
-
-#include "includes/buttonsstylemanager.h"
-#include "includes/databasemanager.h"
 #include "includes/currentuser.h"
 #include <QSqlQuery>
 #include <QSqlError>
@@ -13,7 +10,6 @@
 TariffsPage::TariffsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::TariffsPage)
-    , db(&DatabaseManager::instance().getDatabase())
 
 {
     ui->setupUi(this);
@@ -24,7 +20,6 @@ TariffsPage::TariffsPage(QWidget *parent)
 
 TariffsPage::~TariffsPage()
 {
-    db = nullptr;
     delete ui;
 }
 

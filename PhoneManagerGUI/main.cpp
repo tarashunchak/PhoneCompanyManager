@@ -2,7 +2,6 @@
 
 #include <QApplication>
 #include "includes/databasemanager.h"
-#include "mainwidget.h"
 
 int main(int argc, char *argv[])
 {

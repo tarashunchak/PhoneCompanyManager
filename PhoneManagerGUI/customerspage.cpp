@@ -1,16 +1,13 @@
 #include "includes/customerspage.h"
 #include "ui_customerspage.h"
-
 #include <QSqlError>
-#include "includes/databasemanager.h"
 #include <QScrollArea>
+#include <QPushButton>
 #include <QLabel>
-#include "includes/buttonsstylemanager.h"
 
 CustomersPage::CustomersPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CustomersPage)
-    , db(&DatabaseManager::instance().getDatabase())
 {
     ui->setupUi(this);
 
@@ -20,7 +17,6 @@ CustomersPage::CustomersPage(QWidget *parent)
 
 CustomersPage::~CustomersPage()
 {
-    db = nullptr;
     delete ui;
 }
 
@@ -29,7 +25,6 @@ void CustomersPage::SetConnections(){
 }
 
 void CustomersPage::SetCustomersCards(QSqlQuery query){
-
     QLayout* layout = ui->gridLayout;
     if(layout){
         while(QLayoutItem* item = layout->takeAt(0)){
@@ -37,7 +32,6 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
             delete item;
         }
     }
-
     if(!query.exec()){
         query.prepare("SELECT *FROM Customers;");
         if(!query.exec()){
