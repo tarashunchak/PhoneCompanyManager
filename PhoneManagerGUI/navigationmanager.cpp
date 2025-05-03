@@ -35,7 +35,6 @@ NavigationManager::~NavigationManager(){
 }
 
 void NavigationManager::setUpNavigation(){
-
     //Login Page Signals/Slots connections
     connect(loginPage, &LoginPage::login_succsess, this, &NavigationManager::showDashboardPage);
     connect(loginPage, &LoginPage::on_registration_btn_clicked, this, &NavigationManager::showRegistrationPage);
@@ -71,16 +70,17 @@ static void show_side_menu(QWidget* menu, QStackedWidget* sWidget){
 
 void NavigationManager::showLoginPage()const{
     hide_side_menu(left_side_menu, sWidget);
-    CurrentUser::setCurrentUserID(0);
+    CurrentUser::setCurrentUserID(-1);
     sWidget->setCurrentWidget(loginPage);
+    emit hide_Chat_widget();
 }
 
 void NavigationManager::showDashboardPage()const{
     show_side_menu(left_side_menu, sWidget);
-    dashboardPage->setCurrentUser();
     dashboardPage->setCustomersStatistics();
     dashboardPage->setRequestsStatistics();
     sWidget->setCurrentWidget(dashboardPage);
+    emit show_Chat_widget();
 }
 
 void NavigationManager::showCustomersPage()const{

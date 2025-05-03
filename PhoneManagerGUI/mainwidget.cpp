@@ -2,6 +2,9 @@
 #include "ui_mainwidget.h"
 #include "includes/currentuser.h"
 #include <QSqlError>
+#include "customersreport.h"
+
+#include <QTextEdit>
 
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent)
@@ -25,12 +28,20 @@ MainWidget::MainWidget(QWidget *parent)
     ui->side_bar_menu->setVisible(false);
     ui->stackedWidget->setGeometry(0, 0, 1920, 1080);
     navigation_manager->showLoginPage();
-
+    ui->close_open_chat_btn->setVisible(false);
     chat->setStyleSheet("border-radius:8px;");
     chat->setVisible(false);
     chat->setGeometry(this->size().width()-60 - chat->size().width()
                       ,this->size().height()-60 - chat->size().height()
                       ,chat->size().width(), chat->size().height());
+    CustomersReport* report = new CustomersReport{};
+    report->generate();
+    QTextEdit* textEdit = new QTextEdit{};
+    textEdit->setHtml(report->getHtml());
+    textEdit->setStyleSheet("color:black;");
+    ui->stackedWidget->addWidget(textEdit);
+    ui->stackedWidget->setCurrentWidget(textEdit);
+    textEdit = nullptr;
 }
 
 MainWidget::~MainWidget()
@@ -80,5 +91,12 @@ void MainWidget::SetupConnections(){
     });
     connect(this, &MainWidget::on_log_out_btn_clicked, this, [this](){
         navigation_manager->showLoginPage();
+    });
+    connect(navigation_manager, &NavigationManager::show_Chat_widget, ui->close_open_chat_btn, [this](){
+        SetCurrentUserInfo();
+        ui->close_open_chat_btn->setVisible(true);
+    });
+    connect(navigation_manager, &NavigationManager::hide_Chat_widget, ui->close_open_chat_btn, [this](){
+        ui->close_open_chat_btn->setVisible(false);
     });
 }

@@ -1,15 +1,8 @@
 #include "includes/authmanager.h"
-#include "includes/databasemanager.h"
 #include <QSqlQuery>
 #include <QByteArray>
 #include <QCryptographicHash>
 #include "includes/currentuser.h"
-
-AuthManager::AuthManager():db(&DatabaseManager::instance().getDatabase()){}
-
-AuthManager::~AuthManager(){
-    db = nullptr;
-}
 
 void AuthManager::authenticate(const QString& username, const QString& password){
     QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
@@ -25,5 +18,4 @@ void AuthManager::authenticate(const QString& username, const QString& password)
         qDebug() << "There is no User with this username or pass in DB!\n";
         emit incorrect_login_data();
     }
-
 }

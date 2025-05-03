@@ -20,7 +20,6 @@ class Dashboard : public QWidget
 public:
     explicit Dashboard(QWidget *parent = nullptr);
     ~Dashboard();
-    void setCurrentUser();
     void setCustomersStatistics();
     void setRequestsStatistics();
     void setTariffsStatistics();

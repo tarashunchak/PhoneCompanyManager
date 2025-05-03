@@ -3,7 +3,6 @@
 
 #include <QSqlQuery>
 #include <QSqlError>
-#include "includes/currentuser.h"
 
 Dashboard::Dashboard(QWidget *parent)
     : QWidget(parent)
@@ -44,26 +43,11 @@ Dashboard::Dashboard(QWidget *parent)
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
 }
 
-QLabel* Dashboard::is_empty_label = nullptr;
-
-Dashboard::~Dashboard()
-{
-    is_empty_label->setParent(nullptr);
+Dashboard::~Dashboard(){
     delete ui;
 }
 
-void Dashboard::setCurrentUser(){
-    QSqlQuery query;
-    query.prepare("SELECT *FROM Employees WHERE id = :empl_id;");
-    const int empl_id = CurrentUser::getCurrentUserID();
-    query.bindValue(":empl_id", empl_id);
-    if(query.exec() && query.next()){
-        // ui->name_label->setText(query.value("full_name").toString());
-    }else{
-        qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
-        return;
-    }
-}
+QLabel* Dashboard::is_empty_label = nullptr;
 
 void Dashboard::setTableViewConnection(){
     cust_qmodel->setQuery("SELECT *FROM Customers ORDER BY date DESC LIMIT 10;");

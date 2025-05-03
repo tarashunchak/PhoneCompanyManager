@@ -35,6 +35,10 @@ public slots:
 private: /*Methods*/
     void setUpNavigation();
 
+signals:
+    void show_Chat_widget()const;
+    void hide_Chat_widget()const;
+
 private:
     QStackedWidget* sWidget;
 

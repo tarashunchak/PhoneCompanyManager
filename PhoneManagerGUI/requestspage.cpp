@@ -27,8 +27,6 @@ void RequestsPage::setCurrentUser(){
     const int empl_id = CurrentUser::getCurrentUserID();
     query.bindValue(":empl_id", empl_id);
     if(query.exec() && query.next()){
- //       ui->name_label->setText(query.value("full_name").toString());
-    }else{
         qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
         return;
     }

@@ -1,4 +1,4 @@
-QT       += core gui sql charts
+QT       += core gui sql charts printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,10 +17,12 @@ SOURCES += \
     currentuser.cpp \
     customersdetailspage.cpp \
     customerspage.cpp \
+    customersreport.cpp \
     dashboard.cpp \
     dashboard_series.cpp \
     databasemanager.cpp \
     employeespage.cpp \
+    employeesreport.cpp \
     inserttariffdialog.cpp \
     linechart.cpp \
     loginpage.cpp \
@@ -33,12 +35,15 @@ SOURCES += \
     piechart.cpp \
     registrationmanager.cpp \
     registrationpage.cpp \
+    report.cpp \
     requestspage.cpp \
     table_view_for_requestpage.cpp \
     tariffcard.cpp \
     tariffspage.cpp
 
 HEADERS += \
+    customersreport.h \
+    employeesreport.h \
     includes/chat.h \
     includes/comboboxdelegate.h \
     includes/authmanager.h \
@@ -63,7 +68,8 @@ HEADERS += \
     includes/passwordrecoverypage.h \
     includes/piechart.h \
     mainwidget.h \
-    messagebox.h
+    messagebox.h \
+    report.h
 
 FORMS += \
     mainwidget.ui \
