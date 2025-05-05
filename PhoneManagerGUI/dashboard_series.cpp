@@ -9,14 +9,13 @@ void Dashboard::setCustomersStatistics(){
     if(ui->cust_date_comboBox->currentIndex()){
         query.prepare("SELECT COUNT(*) AS cust_count FROM Customers "
             "WHERE date >= DATE(CURRENT_DATE, :date) "
-            "GROUP BY date ORDER BY date;");
+            "GROUP BY date ORDER BY date DESC;");
         query.bindValue(":date", ui->cust_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days");
     }else{
         query.prepare("SELECT COUNT(*) AS cust_count FROM Customers "
                 "WHERE date = DATE(CURRENT_DATE) "
-                "GROUP BY date ORDER BY date;");
+                "GROUP BY date ORDER BY date DESC;");
     }
-
     bool is_not_empty = cust_bar_chart->setQuery(std::move(query), "cust_count");
 
     if(is_not_empty == false){
@@ -52,10 +51,11 @@ void Dashboard::setRequestsStatistics(){
 }
 
 void Dashboard::setTariffsStatistics(){
-    QSqlQuery query{"SELECT COUNT(Customers.id) AS count, Tariffs.tariff_name AS name "
-                    "FROM Tariffs "
-                    "JOIN Customers ON Customers.tariff_id = Tariffs.id "
-                    "GROUP BY Tariffs.tariff_name;"};
+    QSqlQuery query{};
+    query.prepare("SELECT COUNT(Customers.id) AS count, Tariffs.tariff_name AS name "
+                  "FROM Tariffs "
+                  "JOIN Customers ON Customers.tariff_id = Tariffs.id "
+                  "GROUP BY Tariffs.tariff_name;");
     if(!query.exec()){
         qDebug() << "SetTariffsStatistics() fault: " << query.lastError();
         return;
@@ -65,10 +65,11 @@ void Dashboard::setTariffsStatistics(){
 }
 
 void Dashboard::setRequestsHistory(){
-    QSqlQuery query{"SELECT Requests.id AS ID, Customers.phone AS Phone,"
+    QSqlQuery query{};
+    query.prepare("SELECT Requests.id AS ID, Customers.phone AS Phone,"
                     "Requests.date AS Date FROM Requests "
                     "JOIN Customers ON Customers.id = Requests.cust_id "
-                    "ORDER BY Requests.id DESC LIMIT 15;"};
+                  "ORDER BY Requests.id DESC LIMIT 15;");
     if(!query.exec()){
         qDebug() << "setRequestsHistory() fault: " << query.lastError();
         return;

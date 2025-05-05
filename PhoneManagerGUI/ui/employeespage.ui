@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">font-family:Lato;</string>
   </property>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
@@ -26,14 +26,15 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgba(22, 23, 23, 0.6);</string>
+    <string notr="true">border:none;
+background-color:rgba(42, 42, 42, 0.4);</string>
    </property>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>1086</x>
+      <x>1365</x>
       <y>15</y>
-      <width>240</width>
+      <width>290</width>
       <height>30</height>
      </rect>
     </property>
@@ -61,7 +62,7 @@ background-color:rgb(151, 151, 151);</string>
     </property>
     <property name="font">
      <font>
-      <family>Segoe UI</family>
+      <family>Lato</family>
       <pointsize>11</pointsize>
       <bold>false</bold>
      </font>
@@ -89,7 +90,7 @@ QPushButton:hover {
      <x>0</x>
      <y>0</y>
      <width>1671</width>
-     <height>1031</height>
+     <height>1081</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout"/>
@@ -98,14 +99,14 @@ QPushButton:hover {
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>990</y>
-     <width>1671</width>
+     <y>1029</y>
+     <width>1670</width>
      <height>91</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">border:none;
-background-color:rgba(22, 23, 23, 0.6);</string>
+background-color:rgba(42, 42, 42, 0.4);</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::Shape::StyledPanel</enum>

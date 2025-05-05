@@ -27,7 +27,7 @@ MainWidget::MainWidget(QWidget *parent)
     SetupConnections();
     ui->side_bar_menu->setVisible(false);
     ui->stackedWidget->setGeometry(0, 0, 1920, 1080);
-    navigation_manager->showLoginPage();
+    //navigation_manager->showLoginPage();
     ui->close_open_chat_btn->setVisible(false);
     chat->setStyleSheet("border-radius:8px;");
     chat->setVisible(false);
@@ -39,9 +39,9 @@ MainWidget::MainWidget(QWidget *parent)
     QTextEdit* textEdit = new QTextEdit{};
     textEdit->setHtml(report->getHtml());
     textEdit->setStyleSheet("color:black;");
-    ui->stackedWidget->addWidget(textEdit);
-    ui->stackedWidget->setCurrentWidget(textEdit);
-    textEdit = nullptr;
+    //ui->stackedWidget->addWidget(textEdit);
+    //ui->stackedWidget->setCurrentWidget(textEdit);
+    //textEdit = nullptr;
 }
 
 MainWidget::~MainWidget()
@@ -62,7 +62,7 @@ void MainWidget::SetCurrentUserInfo(){
 void MainWidget::SetupConnections(){
     connect(ui->close_open_chat_btn, &QPushButton::clicked, this, [this](){
         chat->setVisible(!chat->isVisible());
-        chat->DisplayAllMessages();
+        //chat->DisplayAllMessages();
     });
     connect(this, &MainWidget::on_dashboard_btn_clicked, this, [this](){
         SetCurrentUserInfo();

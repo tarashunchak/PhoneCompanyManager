@@ -4,7 +4,9 @@
 #include "report.h"
 #include <QSqlQuery>
 #include <QDateTime>
+#include <QDate>
 #include <QPrinter>
+#include <QFileDialog>
 
 class CustomersReport : public Report
 {
@@ -13,38 +15,39 @@ public:
     //template <typename... Args>
     void generate(/*report_filters<Args...> filters*/){
         QSqlQuery query{};
-        query.prepare("SELECT *FROM Customers;");
+        query.prepare("SELECT id, phone, COUNT(*) as count FROM Customers;");
         if(!query.exec()){
             qDebug() << "CustomersReport::generate(T) query fault!";
             return;
         }
-        QString buff{"<h1 style='font-size:16pt;"
+        QString buff{"<h1 style='font-size:12pt;"
                      "color:black;"
                      "font-family:Consolas;"
                      "white-space: pre;'>"
-                     "Customers Report : " + QDateTime::currentDateTime().toString() + "</h1><br>"};
-        buff += "<h2 style='font-size:14pt;"
+                     "Customers Report : " + QDate::currentDate().toString() + "</h1><br>"
+                     "Customers quantity: " + query.value("count").toString()};
+        buff += "<h2 style='font-size:10pt;"
                 "color:black;"
                 "font-family:Consolas;"
                 "white-space: pre;'>"
-                "  id\tFull Name"
+                "  id\tPhone"
                 "</h2>";
         while(query.next()){
-            for(int i = 0; i < 100; ++i){
+            for(int i = 0; i < 60; ++i){
                 buff += '-';
             }
-            QString name = query.value("full_name").toString();
-            size_t len = name.length();
-            name += QString(QString{" "}.repeated(30 - len));
+            QString phone = query.value("phone").toString();
             QString id = query.value("id").toString();
-            id += QString{" "}.repeated(7 - id.length());
-            buff += "<div style='font-size:10pt; color:black; font-family:Consolas; white-space: pre;'>"
-                    "|" + id + "| " + name + " |"
+            id += QString{" "}.repeated(6 - id.length());
+            buff += "<div style='font-size:8pt; color:black; font-family:Consolas; white-space: pre;'>"
+                    "|" + id + "| " + phone + " |"
                              "</div><br>";
         }
         report_document->setHtml(buff);
+        QFileDialog file_dialog{};
+        QString file = file_dialog.getSaveFileName();
         QPrinter printer{};
-        printer.setOutputFileName("MyFile");
+        printer.setOutputFileName(file);
         report_document->print(&printer);
     }
     QString getHtml(){

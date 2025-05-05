@@ -17,6 +17,9 @@
    <string notr="true">background-color:rgb(25, 30, 35);
 font-family:Lato;</string>
   </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <widget class="QPushButton" name="confirm_addition">
    <property name="geometry">
     <rect>

@@ -13,11 +13,11 @@ private:
 
 public:
     static DatabaseManager& instance();
-    QSqlDatabase& getDatabase();
-    bool isConnected();
+    static QSqlDatabase& getDatabase();
+    static bool isConnected();
 
 private:
-    QSqlDatabase db;
+    static QSqlDatabase db;
 
 };
 

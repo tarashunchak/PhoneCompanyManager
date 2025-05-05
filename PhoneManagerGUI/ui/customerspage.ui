@@ -17,7 +17,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">font-family:Lato;</string>
   </property>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
@@ -35,9 +35,9 @@ background-color:rgba(42, 42, 42, 0.4);</string>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>1336</x>
+      <x>1335</x>
       <y>15</y>
-      <width>291</width>
+      <width>290</width>
       <height>30</height>
      </rect>
     </property>
@@ -72,7 +72,7 @@ background-color:rgb(151, 151, 151);</string>
      <x>0</x>
      <y>1030</y>
      <width>1670</width>
-     <height>51</height>
+     <height>50</height>
     </rect>
    </property>
    <property name="styleSheet">

@@ -66,18 +66,18 @@ void Chat::SendMessage(){
     query.prepare("INSERT INTO Messages(message_text, date_time, origin, destination) "
                   "VALUES(:message, :date, :origin, :dest);");
     query.bindValue(":message", ui->lineEdit->text());
-    query.bindValue(":date", QDateTime::currentDateTime().toString());
+    query.bindValue(":date", QDateTime::currentDateTimeUtc().toString());
     query.bindValue(":origin", CurrentUser::getCurrentUserID());
     query.bindValue(":dest", current_number);
-    ui->lineEdit->clear();
     if(!query.exec()){
         qDebug() << "SendMessaget()const fault!: " << query.lastError();
         return;
     }
+    ui->lineEdit->clear();
     DisplayLastMessage();
 }
 
-void Chat::DisplayAllMessages(QSqlQuery query){
+void Chat::DisplayAllMessages(QSqlQuery& query){
     if(!query.exec()){
         qDebug() << "DisplayAllMessages()const fault!: " << query.lastError();
         return;
@@ -159,11 +159,12 @@ bool Chat::is_exist(QString dest_number){
         ui->phone_btn->setText("Chose phone number");
         ui->phone_lineEdit->setVisible(true);
         current_number.clear();
-        return false;
+        current_number = ui->phone_lineEdit->text();
+        return true;
     }
     current_number = dest_number;
     scrollArea->verticalScrollBar()->setVisible(true);
-    DisplayAllMessages(std::move(query));
+    DisplayAllMessages(query);
     scrollArea->verticalScrollBar()->setValue(ui->verticalLayout->count());
     scrollArea->verticalScrollBar()->setVisible(false);
     return true;

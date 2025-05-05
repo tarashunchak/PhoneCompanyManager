@@ -64,15 +64,15 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
 
         QLabel* image = new QLabel(card);
         image->setPixmap(QPixmap("./img/customer.png"));
-        image->setGeometry(20, 25, 50, 50);
+        image->setGeometry(16, 25, 50, 50);
         image->setStyleSheet("background-color:transparent;");
 
         QLabel* phone = new QLabel("Phone: " + query.value("phone").toString(), card);
-        phone->setGeometry(85, 35, 200, 20);
+        phone->setGeometry(80, 35, 200, 20);
         phone->setStyleSheet("background-color:transparent;color:white;font-size:18px;");
 
         QLabel* full_name = new QLabel(query.value("full_name").toString(), card);
-        full_name->setGeometry(85, 60, 250, 20);
+        full_name->setGeometry(80, 60, 250, 20);
         full_name->setStyleSheet("background-color:transparent;color:white;font-size:14px;");
 
         innerGridLayout->addWidget(card, rows, cols);

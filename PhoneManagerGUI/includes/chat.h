@@ -20,7 +20,7 @@ public:
 
 public slots:
     void SendMessage();
-    void DisplayAllMessages(QSqlQuery query = QSqlQuery{});
+    void DisplayAllMessages(QSqlQuery& query);
     void DisplayLastMessage()const;
 
 private:

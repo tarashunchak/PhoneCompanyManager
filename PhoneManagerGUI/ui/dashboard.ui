@@ -26,7 +26,8 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgba(150, 150, 150, 1);</string>
+   <string notr="true">font-family:Lato;
+background-color:rgba(150, 150, 150, 1);</string>
   </property>
   <widget class="QWidget" name="last_reg_cust" native="true">
    <property name="geometry">

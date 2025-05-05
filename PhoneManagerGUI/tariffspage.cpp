@@ -13,9 +13,9 @@ TariffsPage::TariffsPage(QWidget *parent)
 
 {
     ui->setupUi(this);
-
+    insertT_Dialog.setModal(true);
     setConnections();
-    setTariffsCards(QSqlQuery());
+    setTariffsCards();
 }
 
 TariffsPage::~TariffsPage()
@@ -54,12 +54,15 @@ void TariffsPage::setConnections()const{
             , &insertT_Dialog, &InsertTariffDialog::exec);
 }
 
-void TariffsPage::setTariffsCards(QSqlQuery query){
-    if(!query.exec()){
-        query.prepare("SELECT *FROM Tariffs;");
+void TariffsPage::setTariffsCards(QString str_query){
+    QSqlQuery query{};
+    if(str_query.isEmpty()){
+        query.prepare("SELECT * FROM Tariffs;");
         if(!query.exec()){
             qDebug() << "SetTariffsCards query fault!" << query.lastError();
         }
+    }else{
+        query.prepare(str_query);
     }
 
     QLayout* layout = ui->gridLayout;
@@ -104,9 +107,9 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
 }
 
 void TariffsPage::FindTariffInDB(){
-    QSqlQuery query;
-    query.prepare("SELECT *FROM Tariffs WHERE tariff_name LIKE :name OR id LIKE :id;");
-    query.bindValue(":name", ui->lineEdit->text() + "%");
-    query.bindValue(":id", ui->lineEdit->text() + "%");
-    setTariffsCards(std::move(query));
+    QString query{"SELECT * FROM Tariffs "
+                  "WHERE tariff_name LIKE " +
+                  ui->lineEdit->text() + "% "
+                  "OR id LIKE " + ui->lineEdit->text() + "%;"};
+    setTariffsCards(query);
 }
