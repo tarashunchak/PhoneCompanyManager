@@ -15,7 +15,7 @@ void AuthManager::authenticate(const QString& username, const QString& password)
 
     //QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
     QSqlQuery query(DatabaseManager::getDatabase());
-    query.prepare("SELECT * FROM Users WHERE username = :user AND pass_hash = :pass"); // без ;
+    query.prepare("SELECT * FROM Users WHERE username = :user AND pass_hash = :pass");
     query.bindValue(":user", username);
     query.bindValue(":pass", password);
 

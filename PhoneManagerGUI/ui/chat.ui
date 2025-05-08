@@ -186,13 +186,40 @@ border-radius:18px;</string>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>-1</x>
-     <y>49</y>
+     <x>0</x>
+     <y>50</y>
      <width>351</width>
      <height>491</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout"/>
+  </widget>
+  <widget class="QLabel" name="empty_chat_label">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>260</y>
+     <width>160</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:white;
+font-family:Lato;
+font-size:20px;</string>
+   </property>
+   <property name="text">
+    <string>Empty chat...</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
   </widget>
  </widget>
  <resources/>

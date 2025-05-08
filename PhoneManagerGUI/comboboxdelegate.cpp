@@ -10,7 +10,8 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
         const QModelIndex&)const
 {
     QComboBox* combo_box = new QComboBox{parent};
-    combo_box->addItems({"Confirm", "Reject"});
+    combo_box->setStyleSheet("background-color:gray;color:black;");
+    combo_box->addItems({"Do nothing", "Confirm", "Reject"});
     return combo_box;
 }
 

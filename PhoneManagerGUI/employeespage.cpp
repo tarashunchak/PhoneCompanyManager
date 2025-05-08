@@ -3,6 +3,7 @@
 #include <QSqlError>
 #include <QScrollArea>
 #include <QLabel>
+#include "includes/currentuser.h"
 
 EmployeesPage::EmployeesPage(QWidget *parent)
     : QWidget(parent)
@@ -20,6 +21,23 @@ EmployeesPage::~EmployeesPage()
 
 void EmployeesPage::SetConnections(){
     connect(ui->lineEdit, &QLineEdit::textEdited, this, &EmployeesPage::FindEmployeesByName);
+
+}
+
+void EmployeesPage::setCurrentUser()const{
+    QSqlQuery query;
+    query.prepare("SELECT positions.position_name AS POS_NAME "
+                  "FROM users "
+                  "JOIN employees ON employees.id = users.empl_id "
+                  "JOIN positions ON positions.id = employees.position_id "
+                  "WHERE users.id = :id");
+
+    query.bindValue(":id", CurrentUser::getCurrentUserID());
+
+    if(!query.exec() || !query.next())
+        qDebug() << "EmployeesPage::setCurrentUser() query fault!" << query.lastError();
+    else
+        ui->add_empl_btn->setVisible(query.value("POS_NAME").toString() == "Administrator");
 }
 
 void EmployeesPage::FindEmployeesByName(){
@@ -53,7 +71,7 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
     scrollArea->setWidgetResizable(true);
     scrollArea->setStyleSheet("border:none;");
 
-    QWidget* mainWidget = new QWidget;
+    QFrame* mainWidget = new QFrame;
     QGridLayout* innerGridLayout = new QGridLayout(mainWidget);
 
     while(query.next()){
@@ -91,7 +109,7 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
     innerGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     innerGridLayout->setHorizontalSpacing(34);
     innerGridLayout->setVerticalSpacing(40);
-    innerGridLayout->setContentsMargins(40, 70, 0, 0);
+    innerGridLayout->setContentsMargins(40, 40, 0, 0);
 
     mainWidget->setLayout(innerGridLayout);
     scrollArea->setWidget(mainWidget);

@@ -15,7 +15,7 @@ public:
     //template <typename... Args>
     void generate(/*report_filters<Args...> filters*/){
         QSqlQuery query{};
-        query.prepare("SELECT id, phone, COUNT(*) as count FROM Customers;");
+        query.prepare("SELECT * FROM Customers;");
         if(!query.exec()){
             qDebug() << "CustomersReport::generate(T) query fault!";
             return;

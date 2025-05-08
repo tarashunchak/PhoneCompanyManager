@@ -10,12 +10,14 @@ MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::MainWidget)
     , chat(new Chat{})
+    , calculator(new Calculator{})
 {
     ui->setupUi(this);
     ui->close_open_chat_btn->setIcon(QIcon{"./img/chat.svg"});
+    ui->close_open_calc_btn->setIcon(QIcon{"./img/calculator.svg"});
     ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     navigation_manager = new NavigationManager{ui->stackedWidget, this, ui->side_bar_menu};
-    buttons_style_manager = new ButtonsStyleManager(
+    buttons_style_manager = new ButtonsStyleManager{
         {
          ui->dashboard_btn,
          ui->customers_btn,
@@ -23,25 +25,28 @@ MainWidget::MainWidget(QWidget *parent)
          ui->tariffs_btn,
          ui->requests_btn
         }
-    );
+    };
     SetupConnections();
     ui->side_bar_menu->setVisible(false);
     ui->stackedWidget->setGeometry(0, 0, 1920, 1080);
     //navigation_manager->showLoginPage();
     ui->close_open_chat_btn->setVisible(false);
+    ui->close_open_calc_btn->setVisible(false);
     chat->setStyleSheet("border-radius:8px;");
     chat->setVisible(false);
     chat->setGeometry(this->size().width()-60 - chat->size().width()
                       ,this->size().height()-60 - chat->size().height()
                       ,chat->size().width(), chat->size().height());
-    CustomersReport* report = new CustomersReport{};
+    calculator->setVisible(false);
+    connect(ui->close_open_calc_btn, &QPushButton::clicked, this, [this](){calculator->setVisible(!calculator->isVisible());});
+    /*CustomersReport* report = new CustomersReport{};
     report->generate();
     QTextEdit* textEdit = new QTextEdit{};
     textEdit->setHtml(report->getHtml());
     textEdit->setStyleSheet("color:black;");
-    //ui->stackedWidget->addWidget(textEdit);
-    //ui->stackedWidget->setCurrentWidget(textEdit);
-    //textEdit = nullptr;
+    ui->stackedWidget->addWidget(textEdit);
+    ui->stackedWidget->setCurrentWidget(textEdit);
+    textEdit = nullptr;*/
 }
 
 MainWidget::~MainWidget()
@@ -62,7 +67,6 @@ void MainWidget::SetCurrentUserInfo(){
 void MainWidget::SetupConnections(){
     connect(ui->close_open_chat_btn, &QPushButton::clicked, this, [this](){
         chat->setVisible(!chat->isVisible());
-        //chat->DisplayAllMessages();
     });
     connect(this, &MainWidget::on_dashboard_btn_clicked, this, [this](){
         SetCurrentUserInfo();
@@ -92,11 +96,13 @@ void MainWidget::SetupConnections(){
     connect(this, &MainWidget::on_log_out_btn_clicked, this, [this](){
         navigation_manager->showLoginPage();
     });
-    connect(navigation_manager, &NavigationManager::show_Chat_widget, ui->close_open_chat_btn, [this](){
+    connect(navigation_manager, &NavigationManager::show_small_buttons, ui->close_open_chat_btn, [this](){
         SetCurrentUserInfo();
         ui->close_open_chat_btn->setVisible(true);
+        ui->close_open_calc_btn->setVisible(true);
     });
-    connect(navigation_manager, &NavigationManager::hide_Chat_widget, ui->close_open_chat_btn, [this](){
+    connect(navigation_manager, &NavigationManager::hide_small_buttons, ui->close_open_chat_btn, [this](){
         ui->close_open_chat_btn->setVisible(false);
+        ui->close_open_calc_btn->setVisible(false);
     });
 }

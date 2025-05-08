@@ -20,6 +20,9 @@ public:
 
 signals:
 
+public slots:
+    void setCurrentUser()const;
+
 private:/*Methods*/
     void FindEmployeesByName();
     void SetConnections();

@@ -21,6 +21,9 @@ public:
 signals:
 
 private:
+    //void contextMenuEvent(QContextMenuEvent* event) override;
+
+private:
     Ui::RequestsPage *ui;
     QSqlTableModel* qmodel;
 

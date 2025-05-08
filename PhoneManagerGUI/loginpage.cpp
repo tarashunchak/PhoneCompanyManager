@@ -1,5 +1,6 @@
 #include "includes/loginpage.h"
 #include "ui_loginpage.h"
+#include <QGridLayout>
 
 LoginPage::LoginPage(QWidget *parent)
     : QWidget(parent)
@@ -8,7 +9,7 @@ LoginPage::LoginPage(QWidget *parent)
 {
     ui->setupUi(this);
     ui->incorrect_data_Label->setVisible(false);
-
+    this->setLayout(new QGridLayout{});
     setConnections();
 }
 

@@ -36,8 +36,8 @@ private: /*Methods*/
     void setUpNavigation();
 
 signals:
-    void show_Chat_widget()const;
-    void hide_Chat_widget()const;
+    void show_small_buttons()const;
+    void hide_small_buttons()const;
 
 private:
     QStackedWidget* sWidget;

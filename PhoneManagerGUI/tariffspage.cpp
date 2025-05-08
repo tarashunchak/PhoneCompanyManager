@@ -13,7 +13,6 @@ TariffsPage::TariffsPage(QWidget *parent)
 
 {
     ui->setupUi(this);
-    insertT_Dialog.setModal(true);
     setConnections();
     setTariffsCards();
 }

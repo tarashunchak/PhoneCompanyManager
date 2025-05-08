@@ -55,6 +55,7 @@ void NavigationManager::setUpNavigation(){
 
     //Employees Page Signals/Slots connections
 
+
     //Requests Page Signals/Slots connections
 }
 
@@ -72,7 +73,7 @@ void NavigationManager::showLoginPage()const{
     hide_side_menu(left_side_menu, sWidget);
     CurrentUser::setCurrentUserID(-1);
     sWidget->setCurrentWidget(loginPage);
-    emit hide_Chat_widget();
+    emit hide_small_buttons();
 }
 
 void NavigationManager::showDashboardPage()const{
@@ -80,7 +81,7 @@ void NavigationManager::showDashboardPage()const{
     dashboardPage->setCustomersStatistics();
     dashboardPage->setRequestsStatistics();
     sWidget->setCurrentWidget(dashboardPage);
-    emit show_Chat_widget();
+    emit show_small_buttons();
 }
 
 void NavigationManager::showCustomersPage()const{
@@ -92,6 +93,7 @@ void NavigationManager::showCustomersPage()const{
 void NavigationManager::showEmployeesPage()const{
     show_side_menu(left_side_menu, sWidget);
     employeesPage->SetEmployeesCards();
+    employeesPage->setCurrentUser();
     sWidget->setCurrentWidget(employeesPage);
 }
 

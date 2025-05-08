@@ -12,6 +12,7 @@ SOURCES += \
     authmanager.cpp \
     barchart.cpp \
     buttonsstylemanager.cpp \
+    calculator.cpp \
     chat.cpp \
     comboboxdelegate.cpp \
     currentuser.cpp \
@@ -42,6 +43,7 @@ SOURCES += \
     tariffspage.cpp
 
 HEADERS += \
+    calculator.h \
     customersreport.h \
     employeesreport.h \
     includes/chat.h \
@@ -72,6 +74,7 @@ HEADERS += \
     report.h
 
 FORMS += \
+    calculator.ui \
     mainwidget.ui \
     ui/chat.ui \
     ui/customersdetailspage.ui \

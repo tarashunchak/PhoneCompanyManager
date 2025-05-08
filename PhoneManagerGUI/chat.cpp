@@ -30,8 +30,7 @@ Chat::Chat(QFrame *parent)
     phone_choose_handler();
 }
 
-Chat::~Chat()
-{
+Chat::~Chat(){
     delete ui;
 }
 
@@ -90,7 +89,16 @@ void Chat::DisplayAllMessages(QSqlQuery& query){
         }
         layout = nullptr;
     }
-    while(query.next()){
+    int counter = 0;
+    while(true){
+        if(!query.next()){
+            if(counter == 0){
+                ui->empty_chat_label->setVisible(true);
+            }
+            break;
+        }
+        counter++;
+        ui->empty_chat_label->setVisible(false);
         QString message_text{query.value("message_text").toString()};
         QString message_date_time{query.value("date_time").toString()};
         MessageBox* message = new MessageBox{};

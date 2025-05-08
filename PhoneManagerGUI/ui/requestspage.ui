@@ -20,9 +20,9 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
+     <y>70</y>
      <width>1670</width>
-     <height>1080</height>
+     <height>1001</height>
     </rect>
    </property>
    <property name="widgetResizable">
@@ -34,7 +34,7 @@
       <x>0</x>
       <y>0</y>
       <width>1668</width>
-      <height>1078</height>
+      <height>999</height>
      </rect>
     </property>
     <widget class="QTableView" name="tableView">
@@ -57,6 +57,26 @@ font-family:Arial;</string>
      </property>
     </widget>
    </widget>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>720</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font-family:Lato;
+font-size:32px;
+padding-left:20px;
+color:black;
+background-color:transparent;</string>
+   </property>
+   <property name="text">
+    <string>Customers requests</string>
+   </property>
   </widget>
  </widget>
  <resources/>

@@ -35,7 +35,7 @@ background-color:rgba(150, 150, 150, 1);</string>
      <x>39</x>
      <y>540</y>
      <width>1051</width>
-     <height>480</height>
+     <height>501</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -51,7 +51,7 @@ background-color:#16171C;</string>
       <x>20</x>
       <y>50</y>
       <width>1010</width>
-      <height>410</height>
+      <height>430</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -109,7 +109,7 @@ border:none;</string>
      <x>1120</x>
      <y>540</y>
      <width>511</width>
-     <height>480</height>
+     <height>501</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -147,7 +147,7 @@ border:none;</string>
       <x>20</x>
       <y>50</y>
       <width>470</width>
-      <height>410</height>
+      <height>430</height>
      </rect>
     </property>
     <property name="styleSheet">

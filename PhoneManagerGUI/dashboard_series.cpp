@@ -6,17 +6,17 @@
 
 void Dashboard::setCustomersStatistics(){
     QSqlQuery query{};
-    if(ui->cust_date_comboBox->currentIndex()){
+    if (ui->cust_date_comboBox->currentIndex()) {
         query.prepare("SELECT COUNT(*) AS cust_count FROM Customers "
-            "WHERE date >= DATE(CURRENT_DATE, :date) "
-            "GROUP BY date ORDER BY date DESC;");
-        query.bindValue(":date", ui->cust_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days");
-    }else{
+                      "WHERE date >= CURRENT_DATE + INTERVAL :interval "
+                      "GROUP BY date ORDER BY date DESC;");
+        query.bindValue(":interval", ui->cust_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days");
+    } else {
         query.prepare("SELECT COUNT(*) AS cust_count FROM Customers "
-                "WHERE date = DATE(CURRENT_DATE) "
-                "GROUP BY date ORDER BY date DESC;");
+                      "WHERE date = CURRENT_DATE "
+                      "GROUP BY date ORDER BY date DESC;");
     }
-    bool is_not_empty = cust_bar_chart->setQuery(std::move(query), "cust_count");
+    bool is_not_empty = cust_bar_chart->setQuery(query, "cust_count");
 
     if(is_not_empty == false){
         cust_bar_chart->setParent(nullptr);
@@ -37,16 +37,16 @@ void Dashboard::setRequestsStatistics(){
     QSqlQuery query{};
     if(ui->req_date_comboBox->currentIndex()){
         query.prepare("SELECT COUNT(*) AS req_count FROM Requests "
-            "WHERE date >= DATE(CURRENT_DATE, :date) "
+            "WHERE date >= CURRENT_DATE + INTERVAL :interval"
             "GROUP BY date ORDER BY date;");
-        query.bindValue(":date", ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days");
+        query.bindValue(":interval", ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days");
     }else{
         query.prepare("SELECT COUNT(*) AS req_count FROM Requests "
-                "WHERE date = DATE(CURRENT_DATE) "
+                "WHERE date = CURRENT_DATE "
                 "GROUP BY date ORDER BY date;");
     }
 
-    req_bar_chart->setQuery(std::move(query), "req_count");
+    req_bar_chart->setQuery(query, "req_count");
     req_bar_chart->resize(ui->requests_statistic->size());
 }
 

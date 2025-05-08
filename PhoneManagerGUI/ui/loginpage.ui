@@ -10,6 +10,12 @@
     <height>1080</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1920</width>
+    <height>0</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -17,57 +23,6 @@
    <string notr="true">font-family:Lato;
 background-color:transparent;</string>
   </property>
-  <widget class="QLineEdit" name="username_LineEdit">
-   <property name="geometry">
-    <rect>
-     <x>800</x>
-     <y>440</y>
-     <width>320</width>
-     <height>36</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:4px;
-background-color:white;
-color:black;</string>
-   </property>
-   <property name="placeholderText">
-    <string>Username</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="password_LineEdit">
-   <property name="geometry">
-    <rect>
-     <x>800</x>
-     <y>520</y>
-     <width>320</width>
-     <height>36</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:4px;
-background-color:white;
-color:black;</string>
-   </property>
-   <property name="echoMode">
-    <enum>QLineEdit::EchoMode::Password</enum>
-   </property>
-   <property name="placeholderText">
-    <string>Password</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="confirm_btn">
    <property name="geometry">
     <rect>
@@ -76,6 +31,12 @@ color:black;</string>
      <width>320</width>
      <height>34</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
@@ -103,6 +64,12 @@ QPushButton:hover{
      <height>101</height>
     </rect>
    </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="font">
     <font>
      <family>Lato</family>
@@ -120,13 +87,22 @@ font-size:80px;</string>
    </property>
   </widget>
   <widget class="QLabel" name="incorrect_data_Label">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
-     <x>858</x>
-     <y>560</y>
-     <width>211</width>
+     <x>850</x>
+     <y>550</y>
+     <width>218</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:transparent;
@@ -144,6 +120,12 @@ font-size:14px;</string>
      <width>110</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="styleSheet">
     <string notr="true">text-decoration:underline;
@@ -166,6 +148,12 @@ background-color:transparent;</string>
      <height>25</height>
     </rect>
    </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="styleSheet">
     <string notr="true">text-decoration:underline;
 color:rgb(47, 85, 255);
@@ -187,6 +175,12 @@ background-color:transparent;</string>
      <height>16</height>
     </rect>
    </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="styleSheet">
     <string notr="true">color:rgb(47, 85, 255);
 font-size:14px;
@@ -195,6 +189,69 @@ background-color:transparent;</string>
    </property>
    <property name="text">
     <string>or</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="username_LineEdit">
+   <property name="geometry">
+    <rect>
+     <x>801</x>
+     <y>441</y>
+     <width>320</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="font">
+    <font>
+     <family>Lato</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:4px;
+background-color:white;
+color:black;</string>
+   </property>
+   <property name="placeholderText">
+    <string>Username</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="password_LineEdit">
+   <property name="geometry">
+    <rect>
+     <x>801</x>
+     <y>501</y>
+     <width>320</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="font">
+    <font>
+     <family>Lato</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:4px;
+background-color:white;
+color:black;</string>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::EchoMode::Password</enum>
+   </property>
+   <property name="placeholderText">
+    <string>Password</string>
    </property>
   </widget>
  </widget>

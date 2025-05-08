@@ -10,5 +10,6 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.showFullScreen();
+    //w.showMaximized();
     return a.exec();
 }

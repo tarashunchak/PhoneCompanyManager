@@ -52,8 +52,13 @@ void PieChart::setQuery(QSqlQuery query, QString label_for_query, QString value_
         slice->setLabelPosition(QPieSlice::LabelInsideHorizontal);
         connect(slice, &QPieSlice::hovered, this, [slice](bool is_hovered){
             QColor color = slice->color();
-            slice->setColor(is_hovered ? QColor(color.red() + 40, color.blue() + 40, color.green() + 40)
-                                       : QColor(color.red() - 40, color.blue() - 40, color.green() - 40));
+            if(color.red() + 40 < 255 || color.green() + 40 < 255 || color.blue() + 40 < 255){
+                slice->setColor(is_hovered ? QColor(color.red() + 20, color.green() + 20, color.blue() + 20)
+                                       : QColor(color.red() - 20, color.green() - 20, color.blue() - 20));
+            }else{
+                slice->setColor(is_hovered ? QColor(color.red() - 10, color.green() - 10, color.blue() - 10)
+                                       : QColor(color.red() + 10, color.green() + 10, color.blue() + 10));
+            }
         });
         slice->setBorderColor(QColor{255, 255, 255});
         slice->setBorderWidth(0);

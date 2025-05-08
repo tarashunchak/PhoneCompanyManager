@@ -88,7 +88,7 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
     innerGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     innerGridLayout->setHorizontalSpacing(34);
     innerGridLayout->setVerticalSpacing(40);
-    innerGridLayout->setContentsMargins(40, 70, 0, 0);
+    innerGridLayout->setContentsMargins(40, 40, 0, 0);
 
     mainWidget->setLayout(innerGridLayout);
     scrollArea->setWidget(mainWidget);

@@ -13,12 +13,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setWindowTitle("Neo Com");
     this->setWindowIcon(QIcon("./img/logo.png"));
-    this->setMinimumSize(1920, 1080);
-    this->setMaximumSize(1920, 1080);
+    //this->setMinimumSize(1920, 1080);
+    //this->setMaximumSize(1920, 1080);
     //sWidget = mainWidget->getSWidget();
     setCentralWidget(mainWidget);
     setStatusBar(nullptr);
     //nManager = new NavigationManager(sWidget, this);
+
+    centralWidget()->setLayout(new QGridLayout{});
 
     qApp->setStyleSheet("QPushButton:focus { outline: none; border: none; }");
 }
