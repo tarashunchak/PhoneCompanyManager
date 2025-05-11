@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include "insertemployeedialog.h"
 
 namespace Ui {
 class EmployeesPage;
@@ -31,7 +32,7 @@ private:
     Ui::EmployeesPage *ui;
 
     QSqlDatabase* db;
-
+    InsertEmployeeDialog* insert_employee_dialog;
 };
 
 #endif // EMPLOYEESPAGE_H

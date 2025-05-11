@@ -85,11 +85,16 @@ background-color:transparent;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:white;
+     <string notr="true">QPushButton{
+background-color:white;
 color:black;
 font-family:Lato;
 border:none;
-border-radius:4px;</string>
+border-radius:4px;
+}
+QPushButton:hover{
+	background-color:rgb(220, 220, 220);
+}</string>
     </property>
     <property name="text">
      <string>Add Customer</string>

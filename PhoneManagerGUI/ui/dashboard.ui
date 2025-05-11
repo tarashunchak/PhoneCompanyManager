@@ -352,7 +352,8 @@ background-color:#16171C;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font-family:Lato;
+     <string notr="true">font-family:Lato, Consolas;
+font-size:12px;
 border-radius: 0px;
 background-color:transparent;</string>
     </property>

@@ -82,10 +82,10 @@ background-color:#16171C;</string>
    <widget class="QLabel" name="profile_pic">
     <property name="geometry">
      <rect>
-      <x>55</x>
-      <y>70</y>
-      <width>140</width>
-      <height>140</height>
+      <x>35</x>
+      <y>60</y>
+      <width>180</width>
+      <height>180</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -218,7 +218,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>470</y>
+      <y>460</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -274,7 +274,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>535</y>
+      <y>515</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -314,7 +314,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>600</y>
+      <y>570</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -435,7 +435,7 @@ text-align:center;</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>665</y>
+      <y>625</y>
       <width>230</width>
       <height>50</height>
      </rect>
@@ -471,6 +471,42 @@ QPushButton:hover {
      </size>
     </property>
    </widget>
+   <widget class="Line" name="line_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>690</y>
+      <width>230</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;</string>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Orientation::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>692</y>
+      <width>230</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QComboBox{
+	background-color:transparent;
+	color:white;
+	font-family:Lato, Consolas;
+	font-size:16px;
+	border:none;
+	border-radius:0px;
+}</string>
+    </property>
+   </widget>
    <zorder>dashboard_btn</zorder>
    <zorder>customers_btn</zorder>
    <zorder>side_menu_logo</zorder>
@@ -483,6 +519,8 @@ QPushButton:hover {
    <zorder>name_label</zorder>
    <zorder>line_2</zorder>
    <zorder>tasks_btn</zorder>
+   <zorder>line_3</zorder>
+   <zorder>comboBox</zorder>
   </widget>
   <widget class="QPushButton" name="close_open_calc_btn">
    <property name="enabled">

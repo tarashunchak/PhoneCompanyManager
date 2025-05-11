@@ -23,16 +23,22 @@ font-family:Lato;</string>
   <widget class="QPushButton" name="confirm_addition">
    <property name="geometry">
     <rect>
-     <x>175</x>
-     <y>280</y>
-     <width>90</width>
+     <x>160</x>
+     <y>270</y>
+     <width>100</width>
      <height>25</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">color:black;
-background-color:rgba(140, 140, 140, 1);
-border:none;</string>
+    <string notr="true">QPushButton{
+color:black;
+background-color:white;
+border:none;
+border-radius:4px;
+}
+QPushButton:hover{
+	background-color:rgb(220, 220, 220);
+}</string>
    </property>
    <property name="text">
     <string>Add to DB</string>

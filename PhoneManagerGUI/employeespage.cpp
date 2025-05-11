@@ -8,8 +8,11 @@
 EmployeesPage::EmployeesPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::EmployeesPage)
+    , insert_employee_dialog(new InsertEmployeeDialog{})
 {
     ui->setupUi(this);
+    insert_employee_dialog->close();
+    insert_employee_dialog->setModal(true);
     SetConnections();
     SetEmployeesCards();
 }
@@ -21,7 +24,7 @@ EmployeesPage::~EmployeesPage()
 
 void EmployeesPage::SetConnections(){
     connect(ui->lineEdit, &QLineEdit::textEdited, this, &EmployeesPage::FindEmployeesByName);
-
+    connect(ui->add_empl_btn, &QPushButton::clicked, insert_employee_dialog, &InsertEmployeeDialog::exec);
 }
 
 void EmployeesPage::setCurrentUser()const{

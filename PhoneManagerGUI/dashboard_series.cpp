@@ -8,7 +8,7 @@ void Dashboard::setCustomersStatistics(){
     QSqlQuery query{};
     if (ui->cust_date_comboBox->currentIndex()) {
         query.prepare("SELECT COUNT(*) AS cust_count FROM Customers "
-                      "WHERE date >= CURRENT_DATE + INTERVAL :interval "
+                      "WHERE date >= DATE(CURRENT_DATE, :interval) "
                       "GROUP BY date ORDER BY date DESC;");
         query.bindValue(":interval", ui->cust_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days");
     } else {
@@ -18,19 +18,19 @@ void Dashboard::setCustomersStatistics(){
     }
     bool is_not_empty = cust_bar_chart->setQuery(query, "cust_count");
 
-    if(is_not_empty == false){
-        cust_bar_chart->setParent(nullptr);
-        is_empty_label->setParent(ui->customers_statistic);
-        ui->customers_statistic->setGeometry(10, 60, 490, 390);
-        is_empty_label->resize(ui->customers_statistic->size());
-        ui->customers_statistic->setStyleSheet("background-color: white;");
-    }else{
-        is_empty_label->setParent(nullptr);
-        ui->customers_statistic->setGeometry(0, 0, 510, 410);
+    //if(is_not_empty == false){
+        //cust_bar_chart->setParent(nullptr);
+        //is_empty_label->setParent(ui->customers_statistic);
+        //ui->customers_statistic->setGeometry(10, 60, 490, 390);
+        //is_empty_label->resize(ui->customers_statistic->size());
+        //ui->customers_statistic->setStyleSheet("background-color: white;");
+    //}else{
+        //is_empty_label->setParent(nullptr);
+        //ui->customers_statistic->setGeometry(0, 0, 510, 410);
         ui->customers_statistic->setStyleSheet("background-color: transparent;");
         cust_bar_chart->setParent(ui->customers_statistic);
         cust_bar_chart->resize(ui->customers_statistic->size());
-    }
+    //}
 }
 
 void Dashboard::setRequestsStatistics(){
@@ -46,7 +46,7 @@ void Dashboard::setRequestsStatistics(){
                 "GROUP BY date ORDER BY date;");
     }
 
-    req_bar_chart->setQuery(query, "req_count");
+    bool is_not_empty = req_bar_chart->setQuery(query, "req_count");
     req_bar_chart->resize(ui->requests_statistic->size());
 }
 

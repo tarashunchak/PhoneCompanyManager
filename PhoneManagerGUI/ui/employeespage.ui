@@ -27,8 +27,7 @@ background-color:white;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">
-background-color:rgba(150, 150, 150, 1);</string>
+    <string notr="true">background-color:rgba(200, 200, 200, 1);</string>
    </property>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
@@ -63,11 +62,16 @@ background-color:rgb(220, 220, 220);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:white;
+     <string notr="true">QPushButton{
+background-color:white;
 color:black;
 font-family:Lato;
 border:none;
-border-radius:4px;</string>
+border-radius:4px;
+}
+QPushButton:hover{
+	background-color:rgb(220, 220, 220);
+}</string>
     </property>
     <property name="text">
      <string>Add Employee</string>
