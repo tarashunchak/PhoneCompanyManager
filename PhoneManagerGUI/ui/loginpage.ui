@@ -21,7 +21,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">font-family:Lato;
-background-color:transparent;</string>
+background-color:rgb(205, 205, 205);</string>
   </property>
   <widget class="QPushButton" name="confirm_btn">
    <property name="geometry">

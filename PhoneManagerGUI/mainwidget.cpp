@@ -17,15 +17,15 @@ MainWidget::MainWidget(QWidget *parent)
     ui->close_open_calc_btn->setIcon(QIcon{"./img/calculator.svg"});
     ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     navigation_manager = new NavigationManager{ui->stackedWidget, this, ui->side_bar_menu};
-    buttons_style_manager = new ButtonsStyleManager{
-        {
-         ui->dashboard_btn,
-         ui->customers_btn,
-         ui->employees_btn,
-         ui->tariffs_btn,
-         ui->requests_btn
-        }
+    QList<QPushButton*>* buttons = new QList<QPushButton*>{
+        ui->dashboard_btn,
+        ui->customers_btn,
+        ui->employees_btn,
+        ui->tariffs_btn,
+        ui->requests_btn,
+        ui->tasks_btn
     };
+    buttons_style_manager = new ButtonsStyleManager{buttons};
     SetupConnections();
     ui->side_bar_menu->setVisible(false);
     ui->stackedWidget->setGeometry(0, 0, 1920, 1080);
@@ -92,6 +92,11 @@ void MainWidget::SetupConnections(){
         SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
         navigation_manager->showRequestsPage();
+    });
+    connect(this, &MainWidget::on_tasks_btn_clicked, this, [this](){
+        //SetCurrentUserInfo();
+        buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TASKS_BTN);
+        navigation_manager->showTasksPage();
     });
     connect(this, &MainWidget::on_log_out_btn_clicked, this, [this](){
         navigation_manager->showLoginPage();

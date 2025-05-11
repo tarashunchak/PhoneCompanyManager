@@ -40,7 +40,8 @@ SOURCES += \
     requestspage.cpp \
     table_view_for_requestpage.cpp \
     tariffcard.cpp \
-    tariffspage.cpp
+    tariffspage.cpp \
+    taskspage.cpp
 
 HEADERS += \
     calculator.h \
@@ -71,11 +72,13 @@ HEADERS += \
     includes/piechart.h \
     mainwidget.h \
     messagebox.h \
-    report.h
+    report.h \
+    taskspage.h
 
 FORMS += \
     calculator.ui \
     mainwidget.ui \
+    taskspage.ui \
     ui/chat.ui \
     ui/customersdetailspage.ui \
     ui/customerspage.ui \

@@ -16,7 +16,7 @@ class TariffsPage : public QWidget
 public:
     explicit TariffsPage(QWidget *parent = nullptr);
     ~TariffsPage();
-    void setTariffsCards(QString str_query = "");
+    void setTariffsCards(QSqlQuery query = QSqlQuery{"SELECT * FROM tariffs"});
     void setCurrentUser();
 
 signals:

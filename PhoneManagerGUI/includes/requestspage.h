@@ -17,10 +17,14 @@ public:
     ~RequestsPage();
     void setTableView();
     void setCurrentUser();
+    void showUnassignmentRequests()const;
+    void showInProgressRequests()const;
+    void showCompletedRequests()const;
 
 signals:
 
 private:
+    void SetConnections()const;
     //void contextMenuEvent(QContextMenuEvent* event) override;
 
 private:

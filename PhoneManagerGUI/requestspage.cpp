@@ -14,11 +14,18 @@ RequestsPage::RequestsPage(QWidget *parent)
     ui->scrollArea->setWidgetResizable(true);
 
     setTableView();
+    SetConnections();
 }
 
 RequestsPage::~RequestsPage()
 {
     delete ui;
+}
+
+void RequestsPage::SetConnections()const{
+    connect(ui->unassigned_req_btn, &QPushButton::clicked, this, &RequestsPage::showUnassignmentRequests);
+    connect(ui->in_progress_req_btn, &QPushButton::clicked, this, &RequestsPage::showInProgressRequests);
+    connect(ui->complete_req_btn, &QPushButton::clicked, this, &RequestsPage::showCompletedRequests);
 }
 
 void RequestsPage::setCurrentUser(){

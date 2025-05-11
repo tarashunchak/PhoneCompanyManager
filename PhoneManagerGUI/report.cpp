@@ -5,5 +5,5 @@
 Report::Report() : report_document(new QTextDocument{}){}
 
 Report::~Report(){
-    delete report_document;
+    //delete report_document;
 }

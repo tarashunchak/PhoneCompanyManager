@@ -1,21 +1,32 @@
 #include "includes/buttonsstylemanager.h"
 
-ButtonsStyleManager::ButtonsStyleManager(QList<QPushButton*> buttons) : buttons_list(new QList(buttons)){
-    SetLeftMenuIcons(buttons);
+ButtonsStyleManager::ButtonsStyleManager(QList<QPushButton*>*& buttons){
+    delete buttons_list;
+    buttons_list = buttons;
+    buttons = nullptr;
+    SetLeftMenuIcons(buttons_list);
 }
 
-void ButtonsStyleManager::SetLeftMenuIcons(QList<QPushButton*> buttons){
+QList<QPushButton*>* ButtonsStyleManager::buttons_list = nullptr;
+
+QList<QPushButton*>* ButtonsStyleManager::getButtonsList(){
+    return buttons_list;
+}
+
+void ButtonsStyleManager::SetLeftMenuIcons(QList<QPushButton*>* buttons){
 
     //Dashboard Button
-    buttons[0]->setIcon(QIcon("./img/dashboards.png"));
+    buttons->at(0)->setIcon(QIcon("./img/dashboards.png"));
     //Customers Button
-    buttons[1]->setIcon(QIcon("./img/customers.png"));
+    buttons->at(1)->setIcon(QIcon("./img/customers.png"));
     //Employees Button
-    buttons[2]->setIcon(QIcon("./img/employee.png"));
+    buttons->at(2)->setIcon(QIcon("./img/employee.png"));
     //Tariff Button
-    buttons[3]->setIcon(QIcon("./img/tariffs.png"));
+    buttons->at(3)->setIcon(QIcon("./img/tariffs.png"));
     //Requests Button
-    buttons[4]->setIcon(QIcon("./img/requests.png"));
+    buttons->at(4)->setIcon(QIcon("./img/requests.png"));
+    //Tasks Button
+    buttons->at(5)->setIcon(QIcon("./img/task.png"));
 }
 
 void ButtonsStyleManager::SetActiveButton(LEFT_SIDE_MENU active_button){

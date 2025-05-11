@@ -12,14 +12,16 @@ public:
         CUSTOMERS_BTN,
         EMPLOYEES_BTN,
         TARIFFS_BTN,
-        REQUESTS_BTN
+        REQUESTS_BTN,
+        TASKS_BTN
     };
-    static void SetLeftMenuIcons(QList<QPushButton*>);
-    void SetActiveButton(LEFT_SIDE_MENU);
-    ButtonsStyleManager(QList<QPushButton*>);
+    explicit ButtonsStyleManager(QList<QPushButton*>*&);
+    static void SetLeftMenuIcons(QList<QPushButton*>*);
+    static void SetActiveButton(LEFT_SIDE_MENU);
+    static QList<QPushButton*>* getButtonsList();
 
 private:
-    QList<QPushButton*>* buttons_list;
+    static QList<QPushButton*>* buttons_list;
 };
 
 #endif // BUTTONSSTYLEMANAGER_H

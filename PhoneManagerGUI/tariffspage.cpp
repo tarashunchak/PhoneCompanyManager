@@ -32,7 +32,6 @@ void TariffsPage::setCurrentUser(){
     const int empl_id = CurrentUser::getCurrentUserID();
     query.bindValue(":empl_id", empl_id);
     if(query.exec() && query.next()){
- //       ui->name_label->setText(query.value("name").toString());
         if(query.value("position").toString() == "Administrator"){
             ui->add_tariff_btn->setVisible(true);
         }else{
@@ -53,23 +52,19 @@ void TariffsPage::setConnections()const{
             , &insertT_Dialog, &InsertTariffDialog::exec);
 }
 
-void TariffsPage::setTariffsCards(QString str_query){
-    QSqlQuery query{};
-    if(str_query.isEmpty()){
-        query.prepare("SELECT * FROM Tariffs;");
-        if(!query.exec()){
-            qDebug() << "SetTariffsCards query fault!" << query.lastError();
-        }
-    }else{
-        query.prepare(str_query);
-    }
-
+void TariffsPage::setTariffsCards(QSqlQuery query){
     QLayout* layout = ui->gridLayout;
     if(layout){
         if(QLayoutItem* item = layout->takeAt(0)){
             delete item->widget();
             delete item;
         }
+    }
+
+    if(!query.exec()){
+        query.prepare("SELECT * FROM tariffs;");
+        if(!query.exec())
+            qDebug() << "TariffsPage::setTariffsCards(QSqlQuery) query fault: " << query.lastError();
     }
 
     int cols = 0;
@@ -106,9 +101,12 @@ void TariffsPage::setTariffsCards(QString str_query){
 }
 
 void TariffsPage::FindTariffInDB(){
-    QString query{"SELECT * FROM Tariffs "
-                  "WHERE tariff_name LIKE " +
-                  ui->lineEdit->text() + "% "
-                  "OR id LIKE " + ui->lineEdit->text() + "%;"};
+    QSqlQuery query;
+    query.prepare("SELECT * FROM tariffs "
+                  "WHERE tariff_name ILIKE :name OR id = :id;");
+    QString text{ui->lineEdit->text()};
+    query.bindValue(":name", text + "%");
+    query.bindValue(":id", text);
+
     setTariffsCards(query);
 }

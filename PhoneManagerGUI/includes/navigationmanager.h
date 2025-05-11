@@ -13,6 +13,7 @@
 #include "tariffspage.h"
 #include "requestspage.h"
 #include "customersdetailspage.h"
+#include "taskspage.h"
 
 class NavigationManager: public QObject
 {
@@ -31,6 +32,7 @@ public slots:
     void showTariffsPage()const;
     void showRequestsPage()const;
     void showCustomersDetailsPage(const int)const;
+    void showTasksPage()const;
 
 private: /*Methods*/
     void setUpNavigation();
@@ -51,6 +53,7 @@ private:
     TariffsPage* tariffsPage;
     RequestsPage* requestsPage;
     CustomersDetailsPage* customersDetailsPage;
+    TasksPage* tasksPage;
     QWidget* left_side_menu;
 };
 

@@ -42,7 +42,7 @@ void EmployeesPage::setCurrentUser()const{
 
 void EmployeesPage::FindEmployeesByName(){
     QSqlQuery query;
-    query.prepare("SELECT *FROM Employees WHERE full_name LIKE :name OR id = :id;");
+    query.prepare("SELECT * FROM employees WHERE full_name ILIKE :name OR id = :id");
     query.bindValue(":name", ui->lineEdit->text() + "%");
     query.bindValue(":id", ui->lineEdit->text());
     SetEmployeesCards(std::move(query));

@@ -23,6 +23,8 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
 
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
+    ui->delete_customer_btn->setIcon(QIcon{"./img/delete_can.png"});
+    ui->delete_customer_btn->setStyleSheet("background-color:transparent;");
 
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }

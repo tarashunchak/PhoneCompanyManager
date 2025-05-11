@@ -431,6 +431,46 @@ text-align:center;</string>
      <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
+   <widget class="QPushButton" name="tasks_btn">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>665</y>
+      <width>230</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    font-family: Lato;
+	padding-left:35px;
+    border-radius: 5px;
+	border:none;
+    background-color:rgba(80, 80, 80, 0.6);
+    font-size: 24px;
+    color: white;
+    text-align: left;
+}
+
+QPushButton:hover {
+    background-color: rgba(87, 91, 129, 1);
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Tasks</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>ui/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/requests.png</normaloff>ui/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/requests.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>30</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
    <zorder>dashboard_btn</zorder>
    <zorder>customers_btn</zorder>
    <zorder>side_menu_logo</zorder>
@@ -442,6 +482,7 @@ text-align:center;</string>
    <zorder>log_out_btn</zorder>
    <zorder>name_label</zorder>
    <zorder>line_2</zorder>
+   <zorder>tasks_btn</zorder>
   </widget>
   <widget class="QPushButton" name="close_open_calc_btn">
    <property name="enabled">

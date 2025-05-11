@@ -28,6 +28,7 @@ signals:
     void on_tariffs_btn_clicked();
     void on_requests_btn_clicked();
     void on_log_out_btn_clicked();
+    void on_tasks_btn_clicked();
 
 private:
     void SetCurrentUserInfo();

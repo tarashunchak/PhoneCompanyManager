@@ -33,7 +33,7 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         }
     }
     if(!query.exec()){
-        query.prepare("SELECT *FROM Customers;");
+        query.prepare("SELECT * FROM Customers;");
         if(!query.exec()){
             qDebug() << "SetCustomersCards Query fault!!!: " << query.lastError();
             return;
@@ -97,9 +97,10 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
 
 void CustomersPage::FindCustomersByName(){
     QSqlQuery query;
-    query.prepare("SELECT *FROM Customers WHERE full_name LIKE :name "
-                  "OR phone LIKE :phone;");
-    query.bindValue(":name", ui->lineEdit->text() + "%");
-    query.bindValue(":phone", ui->lineEdit->text() + "%");
+    query.prepare("SELECT * FROM customers WHERE full_name ILIKE :name "
+                  "OR phone ILIKE :phone;");
+    QString text = ui->lineEdit->text() + "%";
+    query.bindValue(":name", text);
+    query.bindValue(":phone", text);
     SetCustomersCards(std::move(query));
 }
