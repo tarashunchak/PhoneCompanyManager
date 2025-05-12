@@ -4,14 +4,46 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include "includes/comboboxdelegate.h"
+#include "pushbuttondelegate.h"
 #include "includes/currentuser.h"
 #include <QStandardItemModel>
 #include <QMenu>
 
-void RequestsPage::setTableView() {
+static void setActiveButton(QPushButton* button, bool status){
+    button->setStyleSheet(
+        "QPushButton{"
+        "height:40px;"
+        "color:black;"
+        "font-family:Lato, Consolas;"
+        "font-size:22px;"
+        "background-color:" + QString(status ? "white;" : "rgb(200, 200, 200);") +
+        "border-top-left-radius:5px;"
+        "border-top-right-radius:5px;"
+        "}"
+        "QPushButton:hover{"
+        "background-color:" + QString(status ? "rgb(180, 180, 180);" : "rgb(220, 220, 220);") +
+        "}"
+    );
+}
+
+void RequestsPage::showUnassignmentRequests(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM Requests");
-    ui->label_2->setVisible(!query.exec());
+    query.prepare("SELECT id, cust_id, request_type, "
+                  "status, date FROM Requests WHERE assigned_to_id = -1;");
+    if(!query.exec()){
+        qDebug() << "showUnassignmentRequests()const query fault: " << query.lastError().text();
+        qDebug() << "showUnassignmentRequests()const last query: " << query.lastQuery();
+        ui->label_2->setVisible(false);
+        setActiveButton(ui->unassigned_req_btn, true);
+        setActiveButton(ui->complete_req_btn, false);
+        setActiveButton(ui->in_progress_req_btn, false);
+        return;
+    }else{
+        ui->label_2->setVisible(true);
+    }
+    setActiveButton(ui->unassigned_req_btn, true);
+    setActiveButton(ui->in_progress_req_btn, false);
+    setActiveButton(ui->complete_req_btn, false);
     QStandardItemModel* model = new QStandardItemModel{this};
 
     int row = 0;
@@ -22,7 +54,7 @@ void RequestsPage::setTableView() {
             items.append(new QStandardItem(query.value(col).toString()));
             items[col]->setFlags(items[col]->flags() & ~Qt::ItemIsEditable);
         }
-        items.append(new QStandardItem{"Action"});
+        items.append(new QStandardItem{"Assign to me"});
         model->appendRow(items);
         ++row;
     }
@@ -45,44 +77,34 @@ void RequestsPage::setTableView() {
     ui->tableView->horizontalHeader()->setStyleSheet("background-color:rgb(120, 120, 120);");
     ui->tableView->verticalHeader()->setVisible(false);
 
-    ui->tableView->setItemDelegateForColumn(model->columnCount() - 1, new ComboBoxDelegate{this});
+    PushButtonDelegate* button_delegate = new PushButtonDelegate{this};
+    connect(button_delegate, &PushButtonDelegate::successfully_updated, this, &RequestsPage::showUnassignmentRequests);
+    ui->tableView->setItemDelegateForColumn(model->columnCount() - 1, button_delegate);
 }
 
-
-static void setActiveButton(QPushButton* button, bool status){
-    button->setStyleSheet(
-        "QPushButton{"
-        "height:40px;"
-        "color:black;"
-        "font-family:Lato, Consolas;"
-        "font-size:22px;"
-        "background-color:" + QString(status ? "white;" : "rgb(200, 200, 200);") +
-        "border-top-left-radius:5px;"
-        "border-top-right-radius:5px;"
-        "}"
-        "QPushButton:hover{"
-        "background-color:" + QString(status ? "rgb(180, 180, 180);" : "rgb(220, 220, 220);") +
-        "}"
-    );
-}
-
-void RequestsPage::showUnassignmentRequests()const{
+/*void RequestsPage::showUnassignmentRequests()const{
     QSqlQuery query;
     query.prepare("SELECT * FROM Requests WHERE assigned_to_id = -1;");
+    if(!query.exec())
+        qDebug() << "showUnassignmentRequests()const query fault: " << query.lastError();
+    ui->label_2->setVisible(!query.exec());
     qmodel->setQuery(std::move(query));
-    ui->label_2->setVisible(!qmodel->isDirty());
+    ui->tableView->setItemDelegateForColumn(ui->tableView->model()->columnCount()-1, nullptr);
     ui->tableView->setModel(qmodel);
     setActiveButton(ui->unassigned_req_btn, true);
     setActiveButton(ui->in_progress_req_btn, false);
     setActiveButton(ui->complete_req_btn, false);
-}
+}*/
 
 void RequestsPage::showInProgressRequests()const{
     QSqlQuery query;
     query.prepare("SELECT * FROM Requests WHERE status = 'In Progress' AND assigned_to_id = :id;");
     query.bindValue(":id", CurrentUser::getCurrentUserID());
+    if(!query.exec())
+        qDebug() << "showInProgressRequests()const query fault: " << query.lastError();
+    ui->label_2->setVisible(!query.exec());
     qmodel->setQuery(std::move(query));
-    ui->label_2->setVisible(!qmodel->isDirty());
+    ui->tableView->setItemDelegateForColumn(ui->tableView->model()->columnCount()-1, nullptr);
     ui->tableView->setModel(qmodel);
     setActiveButton(ui->unassigned_req_btn, false);
     setActiveButton(ui->in_progress_req_btn, true);
@@ -91,10 +113,13 @@ void RequestsPage::showInProgressRequests()const{
 
 void RequestsPage::showCompletedRequests()const{
     QSqlQuery query;
-    query.prepare("SELECT * FROM requests WHERE status = 'Completed' AND assigned_to_id = :id");
+    query.prepare("SELECT * FROM requests WHERE status = 'Completed' AND assigned_to_id = :id;");
     query.bindValue(":id", CurrentUser::getCurrentUserID());
+    if(!query.exec())
+        qDebug() << "showCompletedRequests()const query fault: " << query.lastError();
+    ui->label_2->setVisible(!query.exec());
     qmodel->setQuery(std::move(query));
-    ui->label_2->setVisible(!qmodel->isDirty());
+    ui->tableView->setItemDelegateForColumn(ui->tableView->model()->columnCount()-1, nullptr);
     ui->tableView->setModel(qmodel);
     setActiveButton(ui->unassigned_req_btn, false);
     setActiveButton(ui->in_progress_req_btn, false);

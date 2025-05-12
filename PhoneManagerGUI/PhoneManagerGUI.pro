@@ -35,6 +35,7 @@ SOURCES += \
     navigationmanager.cpp \
     passwordrecoverypage.cpp \
     piechart.cpp \
+    pushbuttondelegate.cpp \
     registrationmanager.cpp \
     registrationpage.cpp \
     report.cpp \
@@ -74,6 +75,7 @@ HEADERS += \
     insertemployeedialog.h \
     mainwidget.h \
     messagebox.h \
+    pushbuttondelegate.h \
     report.h \
     taskspage.h
 

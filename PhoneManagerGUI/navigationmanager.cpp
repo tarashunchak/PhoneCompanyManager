@@ -117,7 +117,8 @@ void NavigationManager::showRequestsPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
     show_side_menu(left_side_menu, sWidget);
     requestsPage->setCurrentUser();
-    requestsPage->setTableView();
+    //requestsPage->setTableView();
+    requestsPage->showUnassignmentRequests();
     sWidget->setCurrentWidget(requestsPage);
 }
 

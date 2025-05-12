@@ -26,10 +26,10 @@ background-color:rgb(205, 205, 205);</string>
   <widget class="QPushButton" name="confirm_btn">
    <property name="geometry">
     <rect>
-     <x>800</x>
+     <x>795</x>
      <y>585</y>
-     <width>320</width>
-     <height>34</height>
+     <width>330</width>
+     <height>38</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -61,7 +61,7 @@ QPushButton:hover{
      <x>845</x>
      <y>300</y>
      <width>230</width>
-     <height>101</height>
+     <height>100</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -94,8 +94,8 @@ font-size:80px;</string>
     <rect>
      <x>850</x>
      <y>550</y>
-     <width>218</width>
-     <height>21</height>
+     <width>220</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -142,7 +142,7 @@ background-color:transparent;</string>
   <widget class="QPushButton" name="pass_rec_btn">
    <property name="geometry">
     <rect>
-     <x>905</x>
+     <x>900</x>
      <y>680</y>
      <width>120</width>
      <height>25</height>
@@ -169,10 +169,10 @@ background-color:transparent;</string>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>955</x>
      <y>663</y>
      <width>16</width>
-     <height>16</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -194,10 +194,10 @@ background-color:transparent;</string>
   <widget class="QLineEdit" name="username_LineEdit">
    <property name="geometry">
     <rect>
-     <x>801</x>
-     <y>441</y>
-     <width>320</width>
-     <height>34</height>
+     <x>795</x>
+     <y>440</y>
+     <width>330</width>
+     <height>38</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -224,10 +224,10 @@ color:black;</string>
   <widget class="QLineEdit" name="password_LineEdit">
    <property name="geometry">
     <rect>
-     <x>801</x>
-     <y>501</y>
-     <width>320</width>
-     <height>34</height>
+     <x>795</x>
+     <y>500</y>
+     <width>330</width>
+     <height>38</height>
     </rect>
    </property>
    <property name="sizePolicy">

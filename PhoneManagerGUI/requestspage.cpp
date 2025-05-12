@@ -12,8 +12,8 @@ RequestsPage::RequestsPage(QWidget *parent)
     ui->setupUi(this);
 
     ui->scrollArea->setWidgetResizable(true);
-
-    setTableView();
+    ui->tableView->setModel(qmodel);
+    //setTableView();
     SetConnections();
 }
 
