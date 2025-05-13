@@ -7,6 +7,7 @@ InsertCustomerDialog::InsertCustomerDialog(QWidget *parent)
     , ui(new Ui::InsertCustomerDialog)
 {
     ui->setupUi(this);
+    ui->incorrect_data_label->setVisible(false);
     updateComboBoxData();
 }
 

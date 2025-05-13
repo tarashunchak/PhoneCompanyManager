@@ -18,8 +18,8 @@ public:
     //void setTableView();
     void setCurrentUser();
     void showUnassignmentRequests();
-    void showInProgressRequests()const;
-    void showCompletedRequests()const;
+    void showInProgressRequests();
+    void showCompletedRequests();
 
 signals:
 
