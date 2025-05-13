@@ -24,6 +24,7 @@ SOURCES += \
     databasemanager.cpp \
     employeespage.cpp \
     employeesreport.cpp \
+    insertcustomerdialog.cpp \
     insertemployeedialog.cpp \
     inserttariffdialog.cpp \
     linechart.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
     includes/linechart.h \
     includes/passwordrecoverypage.h \
     includes/piechart.h \
+    insertcustomerdialog.h \
     insertemployeedialog.h \
     mainwidget.h \
     messagebox.h \
@@ -81,6 +83,7 @@ HEADERS += \
 
 FORMS += \
     calculator.ui \
+    insertcustomerdialog.ui \
     insertemployeedialog.ui \
     mainwidget.ui \
     taskspage.ui \

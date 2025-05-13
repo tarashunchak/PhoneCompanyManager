@@ -8,11 +8,15 @@
 CustomersPage::CustomersPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CustomersPage)
+    , insert_customer_dialog(new InsertCustomerDialog{})
 {
     ui->setupUi(this);
 
     SetCustomersCards();
     SetConnections();
+    connect(ui->add_cust_btn, &QPushButton::clicked, insert_customer_dialog, &QDialog::exec);
+    connect(ui->add_cust_btn, &QPushButton::clicked, insert_customer_dialog
+                                , &InsertCustomerDialog::updateComboBoxData);
 }
 
 CustomersPage::~CustomersPage()

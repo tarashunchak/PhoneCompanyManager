@@ -56,12 +56,13 @@ MainWidget::~MainWidget()
 
 void MainWidget::SetCurrentUserInfo(){
     QSqlQuery query;
-    query.prepare("SELECT full_name AS name FROM Employees WHERE id = :id;");
+    query.prepare("SELECT * FROM Employees WHERE id = :id;");
     query.bindValue(":id", CurrentUser::getCurrentUserID());
     if(!query.exec() || !query.next()){
         qDebug() << "MainWidget::SetCurrentUserInfo() query fault!: " << query.lastError();
     }
-    ui->name_label->setText(query.value("name").toString());
+    ui->name_label->setText(query.value("first_name").toString()
+                            + " " + query.value("last_name").toString());
 }
 
 void MainWidget::SetupConnections(){

@@ -14,6 +14,11 @@ class InsertEmployeeDialog : public QDialog
 public:
     explicit InsertEmployeeDialog(QDialog *parent = nullptr);
     ~InsertEmployeeDialog();
+    void InsertEmployeeToDB();
+    void updateComboBoxData();
+
+private:
+    void clearWidgets();
 
 private:
     Ui::InsertEmployeeDialog *ui;

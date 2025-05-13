@@ -25,6 +25,7 @@ EmployeesPage::~EmployeesPage()
 void EmployeesPage::SetConnections(){
     connect(ui->lineEdit, &QLineEdit::textEdited, this, &EmployeesPage::FindEmployeesByName);
     connect(ui->add_empl_btn, &QPushButton::clicked, insert_employee_dialog, &InsertEmployeeDialog::exec);
+    connect(ui->add_empl_btn, &QPushButton::clicked, insert_employee_dialog, &InsertEmployeeDialog::updateComboBoxData);
 }
 
 void EmployeesPage::setCurrentUser()const{
@@ -45,7 +46,7 @@ void EmployeesPage::setCurrentUser()const{
 
 void EmployeesPage::FindEmployeesByName(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM employees WHERE full_name ILIKE :name OR id = :id");
+    query.prepare("SELECT * FROM employees WHERE first_name ILIKE :name OR last_name ILIKE :name OR id = :id");
     query.bindValue(":name", ui->lineEdit->text() + "%");
     query.bindValue(":id", ui->lineEdit->text());
     SetEmployeesCards(std::move(query));
@@ -91,7 +92,8 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         image->setGeometry(20, 25, 50, 50);
         image->setStyleSheet("QPushButton{background-color:transparent;}");
 
-        QLabel* full_name = new QLabel(query.value("full_name").toString(), card);
+        QLabel* full_name = new QLabel(query.value("first_name").toString()
+                                           + " " + query.value("last_name").toString(), card);
         full_name->setGeometry(85, 35, 250, 20);
         full_name->setStyleSheet("QPushButton{background-color:transparent;color:white;font-size:18px;}");
 

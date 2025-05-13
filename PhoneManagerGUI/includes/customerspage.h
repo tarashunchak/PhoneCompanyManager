@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSqlQuery>
+#include "insertcustomerdialog.h"
 
 namespace Ui {
 class CustomersPage;
@@ -26,6 +27,7 @@ private: /*Methods*/
 
 private:
     Ui::CustomersPage *ui;
+    InsertCustomerDialog* insert_customer_dialog;
 };
 
 #endif // CUSTOMERSPAGE_H
