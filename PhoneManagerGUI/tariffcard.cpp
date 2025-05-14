@@ -17,7 +17,6 @@ TariffCard::TariffCard(QFrame *parent)
     ui->internet_label->setAlignment(Qt::AlignRight);
     ui->calls_label->setAlignment(Qt::AlignRight);
     ui->SMS_label->setAlignment(Qt::AlignRight);
-
 }
 
 TariffCard::~TariffCard()
@@ -74,8 +73,8 @@ void TariffCard::setTariffInfoFromQuery(QSqlRecord record){
     ui->tariff_name->setText(record.value("tariff_name").toString());
     ui->id_label->setText("ID:" + record.value("id").toString());
     ui->price_label->setText(record.value("monthly_price").toString() + "$");
-    ui->internet_label->setText(record.value("internet_GB").toString());
-    ui->calls_label->setText(record.value("call_minutes").toString());
+    ui->internet_label->setText(record.value("internet_GB").toString() + " GB");
+    ui->calls_label->setText(record.value("call_minutes").toString() + " min");
     ui->SMS_label->setText(record.value("messages").toString());
 
     connect(ui->daily_btn, &QPushButton::clicked, this, [this, record](){

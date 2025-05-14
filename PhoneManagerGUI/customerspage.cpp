@@ -75,7 +75,9 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         phone->setGeometry(80, 35, 200, 20);
         phone->setStyleSheet("background-color:transparent;color:white;font-size:18px;");
 
-        QLabel* full_name = new QLabel(query.value("full_name").toString(), card);
+        QLabel* full_name = new QLabel(query.value("first_name").toString()
+                                    + query.value("last_name").toString(), card);
+
         full_name->setGeometry(80, 60, 250, 20);
         full_name->setStyleSheet("background-color:transparent;color:white;font-size:14px;");
 
@@ -101,7 +103,8 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
 
 void CustomersPage::FindCustomersByName(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM customers WHERE full_name ILIKE :name "
+    query.prepare("SELECT * FROM customers WHERE first_name ILIKE :name "
+                  "OR last_name ILIKE :name "
                   "OR phone ILIKE :phone;");
     QString text = ui->lineEdit->text() + "%";
     query.bindValue(":name", text);

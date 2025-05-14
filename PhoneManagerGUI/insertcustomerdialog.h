@@ -15,6 +15,7 @@ public:
     explicit InsertCustomerDialog(QWidget *parent = nullptr);
     ~InsertCustomerDialog();
     void updateComboBoxData();
+    void InsertCustomerToDB();
 
 private:
     Ui::InsertCustomerDialog *ui;

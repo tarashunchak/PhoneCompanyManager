@@ -78,7 +78,7 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
     QGridLayout* innerGridLayout = new QGridLayout(mainWidget);
     while(query.next()){
         TariffCard* card = new TariffCard();
-        card->setMinimumSize(296, 510);
+        card->setMinimumSize(300, 460);
         card->setTariffInfoFromQuery(query.record());
 
         innerGridLayout->addWidget(card, rows, cols);
@@ -91,7 +91,7 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
     innerGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     innerGridLayout->setHorizontalSpacing(100);
     innerGridLayout->setVerticalSpacing(50);
-    innerGridLayout->setContentsMargins(84, 70, 0, 0);
+    innerGridLayout->setContentsMargins(84, 40, 0, 0);
 
     mainWidget->setLayout(innerGridLayout);
 
@@ -108,5 +108,5 @@ void TariffsPage::FindTariffInDB(){
     query.bindValue(":name", text + "%");
     query.bindValue(":id", text);
 
-    setTariffsCards(query);
+    setTariffsCards(std::move(query));
 }

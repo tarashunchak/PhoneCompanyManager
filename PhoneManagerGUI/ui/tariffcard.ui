@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>296</width>
-    <height>510</height>
+    <width>300</width>
+    <height>460</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -99,7 +99,7 @@ color:black;</string>
    <property name="styleSheet">
     <string notr="true">background-color:transparent;
 color:white;
-font-family:Lato;
+font-family:Lato, Consolas;
 font-size:16px;</string>
    </property>
    <property name="text">
@@ -264,79 +264,11 @@ border:none;</string>
    <property name="styleSheet">
     <string notr="true">background-color:transparent;
 color:white;
-font-family:Lato;
+font-family:Lato, Consolas;
 font-size:16px;</string>
    </property>
    <property name="text">
     <string>Id</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="price_label">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>155</y>
-     <width>70</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:white;
-background-color:transparent;</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="calls_label">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>215</y>
-     <width>70</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:white;
-background-color:transparent;</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="internet_label">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>275</y>
-     <width>70</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:white;
-background-color:transparent;</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="SMS_label">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>335</y>
-     <width>70</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:white;
-background-color:transparent;</string>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SMS&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="internet_2">
@@ -379,6 +311,112 @@ background-color:transparent;</string>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>160</y>
+     <width>121</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font-size:14px;
+font-family:Lato, Consolas;</string>
+   </property>
+   <widget class="QLabel" name="SMS_label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>180</y>
+      <width>70</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SMS&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="price_label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>0</y>
+      <width>70</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="internet_label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>120</y>
+      <width>70</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="calls_label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>60</y>
+      <width>70</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>85</x>
+     <y>400</y>
+     <width>130</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+background-color:white;
+color:black;
+font-size:20px;
+font-family:Lato, Consolas;
+}
+QPushButton:hover{
+	background-color:rgb(220, 220, 220);
+}</string>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
    </property>
   </widget>
  </widget>

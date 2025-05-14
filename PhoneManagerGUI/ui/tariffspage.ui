@@ -14,7 +14,8 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">background-color:white;
+font-family:Lato, Consolas;</string>
   </property>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
@@ -22,19 +23,18 @@
      <x>0</x>
      <y>0</y>
      <width>1670</width>
-     <height>60</height>
+     <height>76</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border:none;
-background-color:rgba(42, 42, 42, 0.4);</string>
+    <string notr="true">background-color:rgba(200, 200, 200, 1);</string>
    </property>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>1340</x>
-      <y>20</y>
-      <width>291</width>
+      <x>1335</x>
+      <y>23</y>
+      <width>290</width>
       <height>30</height>
      </rect>
     </property>
@@ -45,7 +45,8 @@ text-align:left;
 padding-left:4px;
 padding-bottom:2px;
 border:none;
-background-color:rgb(151, 151, 151);</string>
+border-radius:4px;
+background-color:rgb(220, 220, 220);</string>
     </property>
     <property name="placeholderText">
      <string>Search Tariff by name or id</string>
@@ -54,18 +55,19 @@ background-color:rgb(151, 151, 151);</string>
    <widget class="QPushButton" name="add_tariff_btn">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>15</y>
-      <width>90</width>
+      <x>350</x>
+      <y>23</y>
+      <width>140</width>
       <height>30</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
-	font-family:Lato;
-	font-size:14px;
-	color:black;
-	background-color:white;
+background-color:white;
+color:black;
+font-family:Lato;
+border:none;
+border-radius:4px;
 }
 QPushButton:hover{
 	background-color:rgb(220, 220, 220);
@@ -73,6 +75,26 @@ QPushButton:hover{
     </property>
     <property name="text">
      <string>Add tariff</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>351</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-family:Lato;
+font-size:32px;
+padding-left:20px;
+color:black;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>Tariffs list page</string>
     </property>
    </widget>
   </widget>
@@ -100,9 +122,9 @@ background-color:rgba(42, 42, 42, 0.4);</string>
    <property name="geometry">
     <rect>
      <x>-1</x>
-     <y>-1</y>
+     <y>69</y>
      <width>1671</width>
-     <height>1081</height>
+     <height>1011</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout"/>

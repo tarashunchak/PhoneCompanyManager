@@ -61,7 +61,8 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
         return;
     }
 
-    ui->full_name_Label->setText(query.value("full_name").toString());
+    ui->full_name_Label->setText(query.value("first_name").toString()
+                                 + " " + query.value("last_name").toString());
     ui->phone_Label->setText(query.value("phone").toString());
     ui->reg_date_Label->setText(query.value("date").toString());
 

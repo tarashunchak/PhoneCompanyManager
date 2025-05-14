@@ -1,7 +1,5 @@
 #include "includes/inserttariffdialog.h"
 #include "ui_inserttariffdialog.h"
-
-#include "includes/databasemanager.h"
 #include <QSqlQuery>
 #include <QSqlError>
 
