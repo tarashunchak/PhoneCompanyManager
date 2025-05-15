@@ -10,7 +10,7 @@
 TariffsPage::TariffsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::TariffsPage)
-
+    , tariff_edit_widget(new TariffEditWidget{})
 {
     ui->setupUi(this);
     setConnections();
@@ -55,14 +55,14 @@ void TariffsPage::setConnections()const{
 void TariffsPage::setTariffsCards(QSqlQuery query){
     QLayout* layout = ui->gridLayout;
     if(layout){
-        if(QLayoutItem* item = layout->takeAt(0)){
+        while(QLayoutItem* item = layout->takeAt(0)){
             delete item->widget();
             delete item;
         }
     }
 
     if(!query.exec()){
-        query.prepare("SELECT * FROM tariffs;");
+        query.prepare("SELECT * FROM Tariffs;");
         if(!query.exec())
             qDebug() << "TariffsPage::setTariffsCards(QSqlQuery) query fault: " << query.lastError();
     }
@@ -87,6 +87,7 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
             cols = 0;
             rows++;
         }
+        connect(card, &TariffCard::on_edit_btn_clicked, tariff_edit_widget, &QWidget::show);
     }
     innerGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     innerGridLayout->setHorizontalSpacing(100);
@@ -102,8 +103,8 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
 
 void TariffsPage::FindTariffInDB(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM tariffs "
-                  "WHERE tariff_name ILIKE :name OR id = :id;");
+    query.prepare("SELECT * FROM Tariffs "
+                  "WHERE tariff_name LIKE :name OR id = :id;");
     QString text{ui->lineEdit->text()};
     query.bindValue(":name", text + "%");
     query.bindValue(":id", text);

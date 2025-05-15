@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "inserttariffdialog.h"
 #include <QSqlQuery>
+#include "tariffeditwidget.h"
 
 namespace Ui {
 class TariffsPage;
@@ -32,6 +33,7 @@ private:
     Ui::TariffsPage *ui;
 
     InsertTariffDialog insertT_Dialog;
+    TariffEditWidget* tariff_edit_widget;
 };
 
 #endif // TARIFFSPAGE_H

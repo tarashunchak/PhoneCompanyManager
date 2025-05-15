@@ -12,7 +12,7 @@ Dashboard::Dashboard(QWidget *parent)
     , cust_bar_chart(new BarChart{})
     , req_bar_chart(new BarChart{})
     , tariff_pie_chart(new PieChart{})
-    , chat(new Chat{})
+    //, chat(new Chat{})
 {
     ui->setupUi(this);
 
@@ -32,12 +32,12 @@ Dashboard::Dashboard(QWidget *parent)
     setTariffsStatistics();
     setRequestsHistory();
 
-    chat->setStyleSheet("border-radius:8px;");
-    chat->setParent(this);
-    chat->setVisible(false);
-    chat->setGeometry(this->size().width()-60 - chat->size().width()
-                      ,this->size().height()-60 - chat->size().height()
-                      ,chat->size().width(), chat->size().height());
+    //chat->setStyleSheet("border-radius:8px;");
+    //chat->setParent(this);
+    //chat->setVisible(false);
+    //chat->setGeometry(this->size().width()-60 - chat->size().width()
+    //                  ,this->size().height()-60 - chat->size().height()
+    //                  ,chat->size().width(), chat->size().height());
 
     connect(ui->req_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsStatistics);
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);

@@ -20,6 +20,9 @@ public:
 private slots:
     void setConnections()const;
 
+signals:
+    void on_edit_btn_clicked();
+
 private:
     Ui::TariffCard *ui;
 };

@@ -11,6 +11,8 @@ TariffCard::TariffCard(QFrame *parent)
     ui->internet_per_day->setPixmap(QPixmap("./img/internet.svg"));
     ui->SMS->setPixmap(QPixmap("./img/SMS.svg"));
     ui->calls_per_day->setPixmap(QPixmap("./img/call.svg"));
+    ui->edit_btn->setIcon(QIcon{"./img/edit.svg"});
+    ui->edit_btn->setIconSize(QSize{24, 24});
 
     ui->id_label->setAlignment(Qt::AlignRight);
     ui->price_label->setAlignment(Qt::AlignRight);

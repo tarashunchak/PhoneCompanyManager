@@ -21,12 +21,10 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
 
     SetTableViewStyle();
 
-    ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
+    ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo_cust.svg"});
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
     ui->delete_customer_btn->setIcon(QIcon{"./img/delete_can.png"});
     ui->delete_customer_btn->setStyleSheet("background-color:transparent;");
-
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 CustomersDetailsPage::~CustomersDetailsPage()
@@ -75,11 +73,12 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
 
 void CustomersDetailsPage::SetTableViewStyle(){
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->setVisible(false);
     ui->tableView->setStyleSheet(
         "QTableView{"
-        "background-color:rgb(100, 100, 100);"
+        "background-color:white;"
         "color:black;"
         "font-size:16px;"
         "}"

@@ -37,7 +37,7 @@ private:
     BarChart* cust_bar_chart;
     BarChart* req_bar_chart;
     PieChart* tariff_pie_chart;
-    Chat* chat;
+    //Chat* chat;
     static QLabel* is_empty_label;
 };
 

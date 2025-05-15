@@ -71,11 +71,16 @@ color:white;</string>
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-top-left-radius:0px;
+    <string notr="true">QPushButton{
+border-top-left-radius:0px;
 border-bottom-left-radius:0px;
 background-color:white;
 border:1px solid rgb(255, 255, 255);
-color:black;</string>
+color:black;
+}
+QPushButton:hover{
+	background-color:rgb(200, 200, 200);
+}</string>
    </property>
    <property name="text">
     <string>Daily</string>
@@ -395,7 +400,7 @@ background-color:transparent;</string>
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="edit_btn">
    <property name="geometry">
     <rect>
      <x>85</x>
@@ -412,11 +417,11 @@ font-size:20px;
 font-family:Lato, Consolas;
 }
 QPushButton:hover{
-	background-color:rgb(220, 220, 220);
+	background-color:rgb(200, 200, 200);
 }</string>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Edit data</string>
    </property>
   </widget>
  </widget>

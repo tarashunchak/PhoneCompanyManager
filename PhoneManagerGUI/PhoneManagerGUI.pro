@@ -20,7 +20,7 @@ SOURCES += \
     customerspage.cpp \
     customersreport.cpp \
     dashboard.cpp \
-    dashboard_series.cpp \
+    dashboardseries.cpp \
     databasemanager.cpp \
     employeespage.cpp \
     employeesreport.cpp \
@@ -43,6 +43,7 @@ SOURCES += \
     requestspage.cpp \
     table_view_for_requestpage.cpp \
     tariffcard.cpp \
+    tariffeditwidget.cpp \
     tariffspage.cpp \
     taskspage.cpp
 
@@ -79,6 +80,7 @@ HEADERS += \
     messagebox.h \
     pushbuttondelegate.h \
     report.h \
+    tariffeditwidget.h \
     taskspage.h
 
 FORMS += \
@@ -86,6 +88,7 @@ FORMS += \
     insertcustomerdialog.ui \
     insertemployeedialog.ui \
     mainwidget.ui \
+    tariffeditwidget.ui \
     taskspage.ui \
     ui/chat.ui \
     ui/customersdetailspage.ui \
