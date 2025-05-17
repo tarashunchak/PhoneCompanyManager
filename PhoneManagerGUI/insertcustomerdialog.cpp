@@ -1,4 +1,4 @@
-#include "insertcustomerdialog.h"
+#include "includes/insertcustomerdialog.h"
 #include "ui_insertcustomerdialog.h"
 #include <QSqlQuery>
 #include <QSqlError>

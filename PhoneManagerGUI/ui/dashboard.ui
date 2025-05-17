@@ -44,7 +44,7 @@ background-color:#16171C;</string>
    </property>
    <widget class="QTableView" name="tableView">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -101,6 +101,39 @@ border:none;</string>
     <property name="text">
      <string>Last Customers</string>
     </property>
+   </widget>
+   <widget class="QComboBox" name="customers_period_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>906</x>
+      <y>10</y>
+      <width>121</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">padding-left: 10px;
+font-family:Robotic;
+font-size:16px;
+color:black;
+background-color:white;
+border-radius:2px;</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Last 10 days</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Last 20 days</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Last 30 days</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QWidget" name="request_history_box" native="true">

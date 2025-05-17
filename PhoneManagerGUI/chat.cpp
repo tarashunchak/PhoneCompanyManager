@@ -3,7 +3,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDateTime>
-#include "messagebox.h"
+#include "includes/messagebox.h"
 #include <QScrollBar>
 #include "includes/currentuser.h"
 #include <QTimer>
@@ -18,6 +18,7 @@ Chat::Chat(QFrame *parent)
     ui->setupUi(this);
     ui->phone_lineEdit->setVisible(false);
     ui->send_btn->setIcon(QIcon{"./img/paper-plane.svg"});
+    ui->mode_btn->setIcon(QIcon{"img/support.svg"});
     connect(ui->send_btn, &QPushButton::clicked, this, &Chat::SendMessage);
     connect(ui->lineEdit, &QLineEdit::editingFinished, this, &Chat::SendMessage);
     innerVBoxLayout->setAlignment(Qt::AlignBottom | Qt::AlignRight);
@@ -62,12 +63,10 @@ void Chat::SendMessage(){
         return;
     }
     QSqlQuery query;
-    query.prepare("INSERT INTO Messages(message_text, date_time, origin, destination) "
-                  "VALUES(:message, :date, :origin, :dest);");
+    query.prepare("INSERT INTO Messages(text, sender_id, chat_id) "
+                  "VALUES(:message, :origin, 1);");
     query.bindValue(":message", ui->lineEdit->text());
-    query.bindValue(":date", QDateTime::currentDateTimeUtc().toString());
     query.bindValue(":origin", CurrentUser::getCurrentUserID());
-    query.bindValue(":dest", current_number);
     if(!query.exec()){
         qDebug() << "SendMessaget()const fault!: " << query.lastError();
         return;
@@ -99,8 +98,8 @@ void Chat::DisplayAllMessages(QSqlQuery& query){
         }
         counter++;
         ui->empty_chat_label->setVisible(false);
-        QString message_text{query.value("message_text").toString()};
-        QString message_date_time{query.value("date_time").toString()};
+        QString message_text{query.value("text").toString()};
+        QString message_date_time{query.value("timestamp").toString()};
         MessageBox* message = new MessageBox{};
         message->SetMessageText(message_text);
         message->SetMessageDateTime(message_date_time);
@@ -115,16 +114,16 @@ void Chat::DisplayAllMessages(QSqlQuery& query){
 
 void Chat::DisplayLastMessage()const{
     QSqlQuery query;
-    query.prepare("SELECT * FROM Messages WHERE origin = :origin AND destination = :dest "
+    query.prepare("SELECT * FROM Messages WHERE sender_id = :origin AND chat_id = 1 "
                   "ORDER BY id DESC LIMIT 1;");
     query.bindValue(":origin", CurrentUser::getCurrentUserID());
-    query.bindValue(":dest", current_number);
+    //query.bindValue(":dest", current_number);
     if(!query.exec() || !query.next()){
         qDebug() << "DisplayLastMessage()const query fault!: " << query.lastError();
         return;
     }
-    QString message_text{query.value("message_text").toString()};
-    QString message_date_time{query.value("date_time").toString()};
+    QString message_text{query.value("text").toString()};
+    QString message_date_time{query.value("timestamp").toString()};
     MessageBox* message= new MessageBox{};
     message->SetMessageText(message_text);
     message->SetMessageDateTime(message_date_time);
@@ -158,8 +157,8 @@ void Chat::phone_choose_handler(){
 
 bool Chat::is_exist(QString dest_number){
     QSqlQuery query;
-    query.prepare("SELECT * FROM Messages WHERE destination = :dest AND origin = :origin;");
-    query.bindValue(":dest", dest_number);
+    query.prepare("SELECT * FROM Messages WHERE chat_id = 1 AND sender_id = :origin;");
+    //query.bindValue(":dest", dest_number);
     query.bindValue(":origin", CurrentUser::getCurrentUserID());
     if(!query.exec()){
         qDebug() << "Ooh nooo";

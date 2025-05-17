@@ -61,10 +61,10 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
             "QPushButton{"
             "font-family:Lato, Consolas;"
             "border-radius:4px;"
-            "background-color:rgba(51, 51, 51, 1);;"
+            "background-color:rgb(51, 51, 51);"
             "}"
             "QPushButton:hover{"
-            "background-color:rgba(71, 71, 71, 1);;"
+            "background-color:rgb(71, 71, 71);"
             "}");
 
         QLabel* image = new QLabel(card);

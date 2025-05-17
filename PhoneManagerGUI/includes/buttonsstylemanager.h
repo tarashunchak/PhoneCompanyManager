@@ -13,7 +13,8 @@ public:
         EMPLOYEES_BTN,
         TARIFFS_BTN,
         REQUESTS_BTN,
-        TASKS_BTN
+        TASKS_BTN,
+        CHATS_BTN
     };
     explicit ButtonsStyleManager(QList<QPushButton*>*&);
     static void SetLeftMenuIcons(QList<QPushButton*>*);

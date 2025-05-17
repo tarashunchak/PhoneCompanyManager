@@ -51,7 +51,10 @@ void CustomersDetailsPage::SetConnections(){
 
 void CustomersDetailsPage::SetCustomerInfo(const int id){
     QSqlQuery query;
-    query.prepare("SELECT *FROM Customers WHERE id = :id;");
+    query.prepare("SELECT tariffs.tariff_name AS tariff_name, * "
+                  "FROM customers "
+                  "JOIN tariffs ON tariffs.id = customers.tariff_id "
+                  "WHERE customers.id = :id;");
     query.bindValue(":id", id);
 
     if(!query.exec() || !query.next()){
@@ -62,7 +65,8 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
     ui->full_name_Label->setText(query.value("first_name").toString()
                                  + " " + query.value("last_name").toString());
     ui->phone_Label->setText(query.value("phone").toString());
-    ui->reg_date_Label->setText(query.value("date").toString());
+    ui->reg_date_Label->setText(query.value("date").toString().left(10));
+    ui->current_tariff_label->setText(query.value("tariff_name").toString());
 
     qmodel->setQuery(std::move(query));
 
@@ -99,7 +103,7 @@ void CustomersDetailsPage::SetCharts(const int id){
 
     QSqlQuery usage_query{};
     usage_query.prepare("SELECT date(date) AS usage_date, COUNT(*) AS count FROM Usage "
-                        "WHERE cust_id = :id AND date(date) >= date('now', '-6 days') "
+                        "WHERE cust_id = :id AND date >= CURRENT_DATE - INTERVAL '7 days' "
                         "GROUP BY usage_date ORDER BY usage_date ASC;");
     usage_query.bindValue(":id", id);
     usage_chart->setQuery(std::move(usage_query), "count", "usage_date");

@@ -41,6 +41,7 @@ Dashboard::Dashboard(QWidget *parent)
 
     connect(ui->req_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsStatistics);
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
+    connect(ui->customers_period_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setTableViewConnection);
 }
 
 Dashboard::~Dashboard(){
@@ -50,7 +51,8 @@ Dashboard::~Dashboard(){
 QLabel* Dashboard::is_empty_label = nullptr;
 
 void Dashboard::setTableViewConnection(){
-    cust_qmodel->setQuery("SELECT *FROM Customers ORDER BY date DESC LIMIT 10;");
+    cust_qmodel->setQuery("SELECT * FROM Customers ORDER BY date DESC LIMIT " +
+                          QString{std::to_string((ui->customers_period_comboBox->currentIndex()+1)*10).c_str()} + ";");
     ui->tableView->setModel(cust_qmodel);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);

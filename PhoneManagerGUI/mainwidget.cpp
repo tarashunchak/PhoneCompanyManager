@@ -1,18 +1,23 @@
-#include "mainwidget.h"
+#include "includes/mainwidget.h"
 #include "ui_mainwidget.h"
 #include "includes/currentuser.h"
 #include <QSqlError>
-#include "customersreport.h"
+//#include "includes/customersreport.h"
 
 #include <QTextEdit>
 
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::MainWidget)
+    , webSocket(new QWebSocket{})
     , chat(new Chat{})
     , calculator(new Calculator{})
 {
     ui->setupUi(this);
+    webSocket->open(QUrl{"ws://192.168.1.103:8080/ws"});
+    connect(webSocket, &QWebSocket::connected, this, [this](){
+        qDebug() << "CONNECTED!!!";
+    });
     ui->close_open_chat_btn->setIcon(QIcon{"./img/chat.svg"});
     ui->close_open_calc_btn->setIcon(QIcon{"./img/calculator.svg"});
     ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
@@ -23,7 +28,8 @@ MainWidget::MainWidget(QWidget *parent)
         ui->employees_btn,
         ui->tariffs_btn,
         ui->requests_btn,
-        ui->tasks_btn
+        ui->tasks_btn,
+        ui->chats_btn
     };
     buttons_style_manager = new ButtonsStyleManager{buttons};
     SetupConnections();
@@ -102,13 +108,16 @@ void MainWidget::SetupConnections(){
     connect(this, &MainWidget::on_log_out_btn_clicked, this, [this](){
         navigation_manager->showLoginPage();
     });
+    connect(ui->chats_btn, &QPushButton::clicked, this, [this](){
+        navigation_manager->showChatsPage();
+    });
     connect(navigation_manager, &NavigationManager::show_small_buttons, ui->close_open_chat_btn, [this](){
         SetCurrentUserInfo();
         ui->close_open_chat_btn->setVisible(true);
-        ui->close_open_calc_btn->setVisible(true);
+        //ui->close_open_calc_btn->setVisible(true);
     });
     connect(navigation_manager, &NavigationManager::hide_small_buttons, ui->close_open_chat_btn, [this](){
         ui->close_open_chat_btn->setVisible(false);
-        ui->close_open_calc_btn->setVisible(false);
+        //ui->close_open_calc_btn->setVisible(false);
     });
 }

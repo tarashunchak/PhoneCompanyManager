@@ -47,7 +47,7 @@ background-color:white;</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>50</x>
        <y>529</y>
        <width>930</width>
        <height>450</height>
@@ -65,30 +65,11 @@ color:white;
 font-size:14px;</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>230</y>
-       <width>121</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:transparent;
-color:black;
-font-family:Lato;
-font-size:24px;</string>
-     </property>
-     <property name="text">
-      <string>Full Name:</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="full_name_Label">
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>232</y>
+       <x>180</x>
+       <y>248</y>
        <width>241</width>
        <height>20</height>
       </rect>
@@ -103,49 +84,11 @@ font-size:20px;</string>
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>320</y>
-       <width>201</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:transparent;
-color:black;
-font-family:Lato;
-font-size:24px;</string>
-     </property>
-     <property name="text">
-      <string>Registration date:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>280</y>
-       <width>79</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:transparent;
-color:black;
-font-family:Lato;
-font-size:24px;</string>
-     </property>
-     <property name="text">
-      <string>Phone:</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="phone_Label">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>282</y>
+       <x>144</x>
+       <y>281</y>
        <width>241</width>
        <height>20</height>
       </rect>
@@ -163,9 +106,9 @@ font-size:20px;</string>
     <widget class="QLabel" name="reg_date_Label">
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>350</y>
-       <width>151</width>
+       <x>264</x>
+       <y>314</y>
+       <width>131</width>
        <height>21</height>
       </rect>
      </property>
@@ -182,10 +125,10 @@ font-size:20px;</string>
     <widget class="QLabel" name="cust_profile_pic">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>57</x>
        <y>50</y>
-       <width>150</width>
-       <height>150</height>
+       <width>180</width>
+       <height>180</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -208,8 +151,7 @@ font-size:20px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:transparent;
-</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string/>
@@ -262,21 +204,8 @@ font-family: Lato;
     <widget class="QWidget" name="usage_history" native="true">
      <property name="geometry">
       <rect>
-       <x>510</x>
-       <y>40</y>
-       <width>450</width>
-       <height>450</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:white;</string>
-     </property>
-    </widget>
-    <widget class="QWidget" name="tariffs_history_3" native="true">
-     <property name="geometry">
-      <rect>
        <x>1020</x>
-       <y>40</y>
+       <y>30</y>
        <width>450</width>
        <height>450</height>
       </rect>
@@ -295,8 +224,7 @@ font-family: Lato;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:transparent;
-</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string/>
@@ -306,6 +234,66 @@ font-family: Lato;
        <width>80</width>
        <height>80</height>
       </size>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="listWidget">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>240</y>
+       <width>221</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:transparent;
+color:rgb(30, 30, 30);
+font-family:Lato, Consolas;
+font-size:24px;
+border:none;
+padding-left:0px;</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Full name:</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Phone:</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Registration date:</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Current tariff:</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="current_tariff_label">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>347</y>
+       <width>241</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:transparent;
+color:black;
+font-family:Lato;
+font-size:20px;</string>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
      </property>
     </widget>
    </widget>

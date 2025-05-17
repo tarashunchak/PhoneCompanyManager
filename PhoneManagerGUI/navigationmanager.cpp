@@ -15,6 +15,7 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent, Q
     , requestsPage(new RequestsPage{})
     , customersDetailsPage(new CustomersDetailsPage{})
     , tasksPage(new TasksPage{})
+    , employeesChatPage(new EmployeesChatPage{})
     , left_side_menu(side_menu)
 {
 
@@ -28,6 +29,7 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent, Q
     sWidget->addWidget(requestsPage);
     sWidget->addWidget(customersDetailsPage);
     sWidget->addWidget(tasksPage);
+    sWidget->addWidget(employeesChatPage);
 
     sWidget->setCurrentWidget(loginPage);
 
@@ -92,14 +94,12 @@ void NavigationManager::showDashboardPage()const{
 
 void NavigationManager::showCustomersPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
-    show_side_menu(left_side_menu, sWidget);
     customersPage->SetCustomersCards();
     sWidget->setCurrentWidget(customersPage);
 }
 
 void NavigationManager::showEmployeesPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::EMPLOYEES_BTN);
-    show_side_menu(left_side_menu, sWidget);
     employeesPage->SetEmployeesCards();
     employeesPage->setCurrentUser();
     sWidget->setCurrentWidget(employeesPage);
@@ -107,7 +107,6 @@ void NavigationManager::showEmployeesPage()const{
 
 void NavigationManager::showTariffsPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TARIFFS_BTN);
-    show_side_menu(left_side_menu, sWidget);
     tariffsPage->setCurrentUser();
     tariffsPage->setTariffsCards();
     sWidget->setCurrentWidget(tariffsPage);
@@ -115,7 +114,6 @@ void NavigationManager::showTariffsPage()const{
 
 void NavigationManager::showRequestsPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
-    show_side_menu(left_side_menu, sWidget);
     requestsPage->setCurrentUser();
     //requestsPage->setTableView();
     requestsPage->showUnassignmentRequests();
@@ -129,7 +127,6 @@ void NavigationManager::showRegistrationPage()const{
 
 void NavigationManager::showCustomersDetailsPage(const int id)const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
-    show_side_menu(left_side_menu, sWidget);
     customersDetailsPage->setCurrentUser();
     customersDetailsPage->SetCustomerInfo(id);
     sWidget->setCurrentWidget(customersDetailsPage);
@@ -137,8 +134,14 @@ void NavigationManager::showCustomersDetailsPage(const int id)const{
 
 void NavigationManager::showTasksPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TASKS_BTN);
-    show_side_menu(left_side_menu, sWidget);
     sWidget->setCurrentWidget(tasksPage);
+}
+
+void NavigationManager::showChatsPage()const{
+    ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CHATS_BTN);
+    show_side_menu(left_side_menu, sWidget);
+    employeesChatPage->fillChatsWidget();
+    sWidget->setCurrentWidget(employeesChatPage);
 }
 
 void NavigationManager::showPasswordRecoveryPage()const{

@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QTimer>
 #include <QScreen>
-#include "mainwidget.h"
+#include "includes/mainwidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

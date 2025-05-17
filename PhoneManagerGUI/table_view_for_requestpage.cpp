@@ -4,7 +4,7 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include "includes/comboboxdelegate.h"
-#include "pushbuttondelegate.h"
+#include "includes/pushbuttondelegate.h"
 #include "includes/currentuser.h"
 #include <QStandardItemModel>
 #include <QMenu>
@@ -29,7 +29,7 @@ static void setActiveButton(QPushButton* button, bool status){
 void RequestsPage::showUnassignmentRequests(){
     QSqlQuery query;
     query.prepare("SELECT id, cust_id, request_type, "
-                  "status, date FROM Requests WHERE assigned_to_id = -1;");
+                  "status, date FROM requests WHERE assigned_to_id = -1;");
     if(!query.exec()){
         qDebug() << "showUnassignmentRequests()const query fault: " << query.lastError().text();
         qDebug() << "showUnassignmentRequests()const last query: " << query.lastQuery();
@@ -95,7 +95,8 @@ void RequestsPage::showUnassignmentRequests(){
 void RequestsPage::showInProgressRequests(){
     QSqlQuery query;
     query.prepare("SELECT id, cust_id, request_type, "
-                  "status, date FROM Requests WHERE status = 'In Progress' AND assigned_to_id = :id;");
+                  "status, date FROM requests WHERE status = 'In Progress' "
+                  "AND assigned_to_id = :id;");
 
     query.bindValue(":id", CurrentUser::getCurrentUserID());
     if(!query.exec()){

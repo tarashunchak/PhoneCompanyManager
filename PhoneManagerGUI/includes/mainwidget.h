@@ -2,6 +2,7 @@
 #define MAINWIDGET_H
 
 #include <QWidget>
+#include <QWebSocket>
 #include <QStackedWidget>
 #include "includes/navigationmanager.h"
 #include "includes/buttonsstylemanager.h"
@@ -35,6 +36,7 @@ private:
 
 private:
     Ui::MainWidget *ui;
+    QWebSocket* webSocket;
     Chat* chat;
     NavigationManager* navigation_manager;
     ButtonsStyleManager* buttons_style_manager;

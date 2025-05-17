@@ -27,6 +27,8 @@ void ButtonsStyleManager::SetLeftMenuIcons(QList<QPushButton*>* buttons){
     buttons->at(4)->setIcon(QIcon("./img/requests.png"));
     //Tasks Button
     buttons->at(5)->setIcon(QIcon("./img/task.png"));
+    //Chats Button
+    buttons->at(6)->setIcon(QIcon("./img/chat.png"));
 }
 
 void ButtonsStyleManager::SetActiveButton(LEFT_SIDE_MENU active_button){

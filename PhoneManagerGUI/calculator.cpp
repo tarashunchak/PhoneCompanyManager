@@ -1,4 +1,4 @@
-#include "calculator.h"
+#include "includes/calculator.h"
 #include "ui_calculator.h"
 
 Calculator::Calculator(QWidget *parent)

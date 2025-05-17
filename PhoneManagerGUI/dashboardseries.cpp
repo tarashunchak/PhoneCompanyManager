@@ -6,11 +6,11 @@
 
 void Dashboard::setCustomersStatistics(){
     QSqlQuery query{};
+    QString interval{ui->cust_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
     if (ui->cust_date_comboBox->currentIndex()) {
         query.prepare("SELECT COUNT(*) AS cust_count FROM Customers "
-                      "WHERE date >= DATE(CURRENT_DATE, :interval) "
+                      "WHERE date >= CURRENT_DATE + INTERVAL '" + interval + "' "
                       "GROUP BY date ORDER BY date DESC;");
-        query.bindValue(":interval", ui->cust_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days");
     } else {
         query.prepare("SELECT COUNT(*) AS cust_count FROM Customers "
                       "WHERE date = CURRENT_DATE "
@@ -35,11 +35,11 @@ void Dashboard::setCustomersStatistics(){
 
 void Dashboard::setRequestsStatistics(){
     QSqlQuery query{};
+    QString interval{ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
     if(ui->req_date_comboBox->currentIndex()){
         query.prepare("SELECT COUNT(*) AS req_count FROM Requests "
-            "WHERE date >= CURRENT_DATE + INTERVAL :interval"
+            "WHERE date >= CURRENT_DATE + INTERVAL '" + interval + "' "
             "GROUP BY date ORDER BY date;");
-        query.bindValue(":interval", ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days");
     }else{
         query.prepare("SELECT COUNT(*) AS req_count FROM Requests "
                 "WHERE date = CURRENT_DATE "
