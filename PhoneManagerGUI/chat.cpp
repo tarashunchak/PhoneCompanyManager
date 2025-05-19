@@ -155,7 +155,7 @@ void Chat::phone_choose_handler(){
     });
 }
 
-bool Chat::is_exist(QString dest_number){
+bool Chat::is_exist(const QString& dest_number){
     QSqlQuery query;
     query.prepare("SELECT * FROM Messages WHERE chat_id = 1 AND sender_id = :origin;");
     //query.bindValue(":dest", dest_number);
@@ -175,4 +175,11 @@ bool Chat::is_exist(QString dest_number){
     scrollArea->verticalScrollBar()->setValue(ui->verticalLayout->count());
     scrollArea->verticalScrollBar()->setVisible(false);
     return true;
+}
+
+void Chat::SetPhoneNumber(const QString& phone){
+    ui->phone_lineEdit->setVisible(false);
+    ui->phone_lineEdit->setText(phone);
+    ui->phone_btn->setText(phone);
+    is_exist(phone);
 }

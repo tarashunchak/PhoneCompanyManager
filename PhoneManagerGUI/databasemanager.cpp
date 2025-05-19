@@ -3,10 +3,10 @@
 #include <QSqlQuery>
 
 DatabaseManager::DatabaseManager() {
-    db = QSqlDatabase::addDatabase("QPSQL");
     //db = QSqlDatabase::addDatabase("QSQLITE");
     //db.setDatabaseName("./database/database.db");
 
+    db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("192.168.1.103");
     db.setPort(5432);
     db.setDatabaseName("database");

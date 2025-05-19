@@ -24,6 +24,7 @@ public slots:
 
 signals:
     void on_return_btn_clicked();
+    void on_open_chat_btn_clicked(const QString&);
 
 private:
     void SetConnections();

@@ -26,7 +26,7 @@ void AuthManager::authenticate(const QString& username, const QString& password)
     }
 
     if(query.next()){
-        const int userID = query.value("empl_id").toInt();
+        const int userID = query.value("id").toInt();
         CurrentUser::setCurrentUserID(userID);
         emit authSuccess();
     }else{

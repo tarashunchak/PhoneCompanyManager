@@ -27,6 +27,7 @@ static void setActiveButton(QPushButton* button, bool status){
 }
 
 void RequestsPage::showUnassignmentRequests(){
+    ui->save_btn->setVisible(false);
     QSqlQuery query;
     query.prepare("SELECT id, cust_id, request_type, "
                   "status, date FROM requests WHERE assigned_to_id = -1;");
@@ -93,6 +94,7 @@ void RequestsPage::showUnassignmentRequests(){
 }*/
 
 void RequestsPage::showInProgressRequests(){
+    ui->save_btn->setVisible(true);
     QSqlQuery query;
     query.prepare("SELECT id, cust_id, request_type, "
                   "status, date FROM requests WHERE status = 'In Progress' "
@@ -124,6 +126,7 @@ void RequestsPage::showInProgressRequests(){
 }
 
 void RequestsPage::showCompletedRequests(){
+    ui->save_btn->setVisible(false);
     QSqlQuery query;
     query.prepare("SELECT * FROM requests WHERE status = 'Completed' AND assigned_to_id = :id;");
     query.bindValue(":id", CurrentUser::getCurrentUserID());

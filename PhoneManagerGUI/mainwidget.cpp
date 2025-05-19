@@ -14,11 +14,8 @@ MainWidget::MainWidget(QWidget *parent)
     , calculator(new Calculator{})
 {
     ui->setupUi(this);
-    webSocket->open(QUrl{"ws://192.168.1.103:8080/ws"});
-    connect(webSocket, &QWebSocket::connected, this, [this](){
-        qDebug() << "CONNECTED!!!";
-    });
-    ui->close_open_chat_btn->setIcon(QIcon{"./img/chat.svg"});
+    webSocket->open(QUrl{"ws://192.168.1.103:8080/ws"});    ui->close_open_chat_btn->setIcon(QIcon{"./img/chat.svg"});
+    ui->logo_label->setPixmap({"./img/company_name.svg"});
     ui->close_open_calc_btn->setIcon(QIcon{"./img/calculator.svg"});
     ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     navigation_manager = new NavigationManager{ui->stackedWidget, this, ui->side_bar_menu};
@@ -35,7 +32,6 @@ MainWidget::MainWidget(QWidget *parent)
     SetupConnections();
     ui->side_bar_menu->setVisible(false);
     ui->stackedWidget->setGeometry(0, 0, 1920, 1080);
-    //navigation_manager->showLoginPage();
     ui->close_open_chat_btn->setVisible(false);
     ui->close_open_calc_btn->setVisible(false);
     chat->setStyleSheet("border-radius:8px;");
@@ -44,7 +40,6 @@ MainWidget::MainWidget(QWidget *parent)
                       ,this->size().height()-60 - chat->size().height()
                       ,chat->size().width(), chat->size().height());
     calculator->setVisible(false);
-    connect(ui->close_open_calc_btn, &QPushButton::clicked, this, [this](){calculator->setVisible(!calculator->isVisible());});
     /*CustomersReport* report = new CustomersReport{};
     report->generate();
     QTextEdit* textEdit = new QTextEdit{};
@@ -72,6 +67,10 @@ void MainWidget::SetCurrentUserInfo(){
 }
 
 void MainWidget::SetupConnections(){
+    connect(ui->close_open_calc_btn, &QPushButton::clicked, this, [this](){calculator->setVisible(!calculator->isVisible());});
+    connect(webSocket, &QWebSocket::connected, this, [](){
+        qDebug() << "CONNECTED!!!";
+    });
     connect(ui->close_open_chat_btn, &QPushButton::clicked, this, [this](){
         chat->setVisible(!chat->isVisible());
     });
@@ -119,5 +118,9 @@ void MainWidget::SetupConnections(){
     connect(navigation_manager, &NavigationManager::hide_small_buttons, ui->close_open_chat_btn, [this](){
         ui->close_open_chat_btn->setVisible(false);
         //ui->close_open_calc_btn->setVisible(false);
+    });
+    connect(navigation_manager, &NavigationManager::open_chat, this, [this](const QString& phone){
+        chat->show();
+        chat->SetPhoneNumber(phone);
     });
 }

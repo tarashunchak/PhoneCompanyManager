@@ -354,7 +354,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>35</x>
-      <y>980</y>
+      <y>950</y>
       <width>180</width>
       <height>40</height>
      </rect>
@@ -476,7 +476,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>765</y>
+      <y>685</y>
       <width>230</width>
       <height>1</height>
      </rect>
@@ -492,7 +492,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>760</y>
+      <y>688</y>
       <width>230</width>
       <height>30</height>
      </rect>
@@ -548,6 +548,23 @@ QPushButton:hover {
      </size>
     </property>
    </widget>
+   <widget class="QLabel" name="logo_label">
+    <property name="geometry">
+     <rect>
+      <x>35</x>
+      <y>10</y>
+      <width>180</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:none;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>dashboard_btn</zorder>
    <zorder>customers_btn</zorder>
    <zorder>side_menu_logo</zorder>
@@ -563,6 +580,7 @@ QPushButton:hover {
    <zorder>line_3</zorder>
    <zorder>comboBox</zorder>
    <zorder>chats_btn</zorder>
+   <zorder>logo_label</zorder>
   </widget>
   <widget class="QPushButton" name="close_open_calc_btn">
    <property name="enabled">

@@ -23,6 +23,7 @@ SOURCES += \
     dashboardseries.cpp \
     databasemanager.cpp \
     employeeschatpage.cpp \
+    employeesdetailspage.cpp \
     employeespage.cpp \
     employeesreport.cpp \
     insertcustomerdialog.cpp \
@@ -50,6 +51,7 @@ SOURCES += \
 
 HEADERS += \
     employeeschatpage.h \
+    employeesdetailspage.h \
     includes/calculator.h \
     includes/customersreport.h \
     includes/employeesreport.h \
@@ -98,6 +100,7 @@ HEADERS += \
 
 FORMS += \
     employeeschatpage.ui \
+    employeesdetailspage.ui \
     ui/calculator.ui \
     ui/insertcustomerdialog.ui \
     ui/insertemployeedialog.ui \

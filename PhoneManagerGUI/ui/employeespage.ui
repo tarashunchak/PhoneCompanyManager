@@ -17,108 +17,13 @@
    <string notr="true">font-family:Lato;
 background-color:white;</string>
   </property>
-  <widget class="QWidget" name="widget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1670</width>
-     <height>76</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:rgba(200, 200, 200, 1);</string>
-   </property>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>1335</x>
-      <y>23</y>
-      <width>290</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font-size:14px;
-color:black;
-text-align:left;
-padding-left:4px;
-padding-bottom:2px;
-border:none;
-border-radius:4px;
-background-color:rgb(220, 220, 220);</string>
-    </property>
-    <property name="placeholderText">
-     <string>Search Employee by name or id</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="add_empl_btn">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>23</y>
-      <width>140</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton{
-background-color:white;
-color:black;
-font-family:Lato;
-border:none;
-border-radius:4px;
-}
-QPushButton:hover{
-	background-color:rgb(220, 220, 220);
-}</string>
-    </property>
-    <property name="text">
-     <string>Add Employee</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>730</width>
-      <height>70</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font-family:Lato;
-font-size:32px;
-padding-left:20px;
-color:black;
-background-color:transparent;</string>
-    </property>
-    <property name="text">
-     <string>Employees list page</string>
-    </property>
-   </widget>
-   <zorder>label</zorder>
-   <zorder>lineEdit</zorder>
-   <zorder>add_empl_btn</zorder>
-  </widget>
-  <widget class="QWidget" name="gridLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>80</y>
-     <width>1671</width>
-     <height>1001</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout"/>
-  </widget>
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>1029</y>
+     <y>1030</y>
      <width>1670</width>
-     <height>91</height>
+     <height>90</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -132,9 +37,111 @@ background-color:rgba(42, 42, 42, 0.4);</string>
     <enum>QFrame::Shadow::Raised</enum>
    </property>
   </widget>
-  <zorder>gridLayoutWidget</zorder>
-  <zorder>widget</zorder>
-  <zorder>frame</zorder>
+  <widget class="QWidget" name="widget_2" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1670</width>
+     <height>1080</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>80</y>
+      <width>1671</width>
+      <height>1001</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout"/>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1670</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgba(200, 200, 200, 1);</string>
+    </property>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>1335</x>
+       <y>23</y>
+       <width>290</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font-size:14px;
+color:black;
+text-align:left;
+padding-left:4px;
+padding-bottom:2px;
+border:none;
+border-radius:4px;
+background-color:rgb(220, 220, 220);</string>
+     </property>
+     <property name="placeholderText">
+      <string>Search Employee by name or id</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="add_empl_btn">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>23</y>
+       <width>140</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+background-color:white;
+color:black;
+font-family:Lato;
+border:none;
+border-radius:4px;
+}
+QPushButton:hover{
+	background-color:rgb(220, 220, 220);
+}</string>
+     </property>
+     <property name="text">
+      <string>Add Employee</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>730</width>
+       <height>70</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font-family:Lato;
+font-size:32px;
+padding-left:20px;
+color:black;
+background-color:transparent;</string>
+     </property>
+     <property name="text">
+      <string>Employees list page</string>
+     </property>
+    </widget>
+    <zorder>label</zorder>
+    <zorder>lineEdit</zorder>
+    <zorder>add_empl_btn</zorder>
+   </widget>
+  </widget>
  </widget>
  <resources/>
  <connections/>

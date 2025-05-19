@@ -42,6 +42,7 @@ private: /*Methods*/
 signals:
     void show_small_buttons()const;
     void hide_small_buttons()const;
+    void open_chat(const QString&);
 
 private:
     QStackedWidget* sWidget;

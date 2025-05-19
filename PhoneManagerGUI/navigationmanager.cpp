@@ -57,6 +57,9 @@ void NavigationManager::setUpNavigation(){
 
     //Customers Details Page Signals/Slots connections
     connect(customersDetailsPage, &CustomersDetailsPage::on_return_btn_clicked, this, &NavigationManager::showCustomersPage);
+    connect(customersDetailsPage, &CustomersDetailsPage::on_open_chat_btn_clicked, this, [this](const QString& phone){
+        emit open_chat(phone);
+    });
 
     //Employees Page Signals/Slots connections
 

@@ -16,8 +16,9 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     tariff_chart->setParent(ui->tariffs_history);
     tariff_chart->resize(ui->tariffs_history->size());
 
-    usage_chart->setParent(ui->usage_history);
-    usage_chart->resize(ui->usage_history->size());
+    //usage_chart->setParent(ui->usage_history);
+    //usage_chart->resize(ui->usage_history->size());
+    ui->no_usage_label->setVisible(false);
 
     SetTableViewStyle();
 
@@ -25,6 +26,10 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
     ui->delete_customer_btn->setIcon(QIcon{"./img/delete_can.png"});
     ui->delete_customer_btn->setStyleSheet("background-color:transparent;");
+
+    connect(ui->open_chat_btn, &QPushButton::clicked, this, [this](){
+        emit on_open_chat_btn_clicked(ui->phone_Label->text());
+    });
 }
 
 CustomersDetailsPage::~CustomersDetailsPage()
@@ -62,6 +67,7 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
         return;
     }
 
+    ui->cust_id_label->setText(query.value("id").toString());
     ui->full_name_Label->setText(query.value("first_name").toString()
                                  + " " + query.value("last_name").toString());
     ui->phone_Label->setText(query.value("phone").toString());
@@ -90,7 +96,7 @@ void CustomersDetailsPage::SetTableViewStyle(){
 }
 
 void CustomersDetailsPage::SetCharts(const int id){
-    QSqlQuery tariff_query{};
+    QSqlQuery tariff_query;
     tariff_query.prepare("SELECT Tariffs.tariff_name AS name, Tariffs.id AS id FROM Customers "
                   "JOIN Tariffs ON Tariffs.id = Customers.tariff_id "
                   "WHERE Customers.id = :id;");
@@ -101,10 +107,19 @@ void CustomersDetailsPage::SetCharts(const int id){
     }
     tariff_chart->setQuery(std::move(tariff_query), "name", "id");
 
-    QSqlQuery usage_query{};
+    QSqlQuery usage_query;
     usage_query.prepare("SELECT date(date) AS usage_date, COUNT(*) AS count FROM Usage "
-                        "WHERE cust_id = :id AND date >= CURRENT_DATE - INTERVAL '7 days' "
+                        "WHERE cust_id = :id " /*AND date >= CURRENT_DATE - INTERVAL '7 days' "*/
                         "GROUP BY usage_date ORDER BY usage_date ASC;");
     usage_query.bindValue(":id", id);
+    if(!usage_query.exec()){
+        usage_chart->setParent(nullptr);
+        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::usage_query fault!!!: " << tariff_query.lastError();
+        ui->no_usage_label->setVisible(true);
+        return;
+    }
+    ui->no_usage_label->setVisible(false);
+    usage_chart->setParent(ui->usage_history);
+    usage_chart->resize(ui->usage_history->size());
     usage_chart->setQuery(std::move(usage_query), "count", "usage_date");
 }

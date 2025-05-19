@@ -7,7 +7,7 @@
 class ButtonsStyleManager
 {
 public:
-    enum class LEFT_SIDE_MENU : int{
+    enum class LEFT_SIDE_MENU : uint8_t{
         DASHBOARD_BTN = 0,
         CUSTOMERS_BTN,
         EMPLOYEES_BTN,

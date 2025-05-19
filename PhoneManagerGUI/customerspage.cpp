@@ -59,12 +59,12 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         card->setMaximumSize(290, 120);
         card->setStyleSheet(
             "QPushButton{"
-            "font-family:Lato, Consolas;"
-            "border-radius:4px;"
-            "background-color:rgb(51, 51, 51);"
+            "	font-family:Lato, Consolas;"
+            "	border-radius:8px;"
+            "	background-color:rgb(51, 51, 51);"
             "}"
             "QPushButton:hover{"
-            "background-color:rgb(71, 71, 71);"
+            "	background-color:rgb(71, 71, 71);"
             "}");
 
         QLabel* image = new QLabel(card);
@@ -104,9 +104,10 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
 
 void CustomersPage::FindCustomersByName(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM customers WHERE first_name ILIKE :name "
-                  "OR last_name ILIKE :name "
-                  "OR phone ILIKE :phone;");
+    query.prepare("SELECT * FROM customers "
+                  "WHERE first_name LIKE LOWER(:name) "
+                  "OR last_name LIKE LOWER(:name) "
+                  "OR phone LIKE LOWER(:phone);");
     QString text = ui->lineEdit->text() + "%";
     query.bindValue(":name", text);
     query.bindValue(":phone", text);

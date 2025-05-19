@@ -69,9 +69,9 @@ font-size:14px;</string>
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>248</y>
-       <width>241</width>
-       <height>20</height>
+       <y>279</y>
+       <width>250</width>
+       <height>25</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -87,10 +87,10 @@ font-size:20px;</string>
     <widget class="QLabel" name="phone_Label">
      <property name="geometry">
       <rect>
-       <x>144</x>
-       <y>281</y>
-       <width>241</width>
-       <height>20</height>
+       <x>140</x>
+       <y>312</y>
+       <width>250</width>
+       <height>25</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -106,10 +106,10 @@ font-size:20px;</string>
     <widget class="QLabel" name="reg_date_Label">
      <property name="geometry">
       <rect>
-       <x>264</x>
-       <y>314</y>
-       <width>131</width>
-       <height>21</height>
+       <x>265</x>
+       <y>345</y>
+       <width>140</width>
+       <height>25</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -151,7 +151,8 @@ font-size:20px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">border:none;
+border-radius:4px;</string>
      </property>
      <property name="text">
       <string/>
@@ -213,6 +214,23 @@ font-family: Lato;
      <property name="styleSheet">
       <string notr="true">background-color:white;</string>
      </property>
+     <widget class="QLabel" name="no_usage_label">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>190</y>
+        <width>141</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:black;
+font-size:40px;</string>
+      </property>
+      <property name="text">
+       <string>No Info</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QPushButton" name="delete_customer_btn">
      <property name="geometry">
@@ -224,7 +242,8 @@ font-family: Lato;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">border:none;
+border-radius:4px;</string>
      </property>
      <property name="text">
       <string/>
@@ -258,6 +277,11 @@ padding-left:0px;</string>
      </property>
      <item>
       <property name="text">
+       <string>ID:</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>Full name:</string>
       </property>
      </item>
@@ -281,9 +305,9 @@ padding-left:0px;</string>
      <property name="geometry">
       <rect>
        <x>220</x>
-       <y>347</y>
-       <width>241</width>
-       <height>21</height>
+       <y>379</y>
+       <width>250</width>
+       <height>25</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -294,6 +318,109 @@ font-size:20px;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="open_chat_btn">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>430</y>
+       <width>130</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+background-color:rgb(27, 104, 87);
+color:white;
+font-family:Lato, Consolas;
+font-size:16px;
+border-radius:4px;
+}QPushButton:hover{
+background-color:rgb(7, 84, 67);
+}</string>
+     </property>
+     <property name="text">
+      <string>Open chat</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="export_to_PDF_btn">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>430</y>
+       <width>130</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+background-color:rgb(27, 104, 87);
+color:white;
+font-family:Lato, Consolas;
+font-size:16px;
+border-radius:4px;
+}QPushButton:hover{
+background-color:rgb(7, 84, 67);
+}</string>
+     </property>
+     <property name="text">
+      <string>Export to PDF</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="cust_id_label">
+     <property name="geometry">
+      <rect>
+       <x>93</x>
+       <y>247</y>
+       <width>250</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:transparent;
+color:black;
+font-family:Lato;
+font-size:20px;</string>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="edit_data_btn">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>430</y>
+       <width>130</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+background-color:rgb(27, 104, 87);
+color:white;
+font-family:Lato, Consolas;
+font-size:16px;
+border-radius:4px;
+}QPushButton:hover{
+background-color:rgb(7, 84, 67);
+}</string>
+     </property>
+     <property name="text">
+      <string>Edit data</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
      </property>
     </widget>
    </widget>
