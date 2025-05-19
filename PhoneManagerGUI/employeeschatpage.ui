@@ -22,12 +22,12 @@
      <x>0</x>
      <y>0</y>
      <width>360</width>
-     <height>1081</height>
+     <height>1080</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">border:none;
-background-color:rgb(30, 40, 60);</string>
+background-color:rgb(25, 30, 50);</string>
    </property>
    <widget class="QLineEdit" name="search_lineEdit">
     <property name="geometry">
@@ -41,7 +41,7 @@ background-color:rgb(30, 40, 60);</string>
     <property name="styleSheet">
      <string notr="true">color:white;
 font-family:Lato, Consolas;
-font-size:18px;
+font-size:16px;
 padding-left:18px;
 background-color:rgb(20, 20, 20);
 border-radius:20px;</string>
@@ -111,14 +111,14 @@ border-radius:20px;</string>
    <property name="geometry">
     <rect>
      <x>360</x>
-     <y>0</y>
+     <y>-1</y>
      <width>1310</width>
-     <height>70</height>
+     <height>71</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">border:none;
-background-color:rgb(30, 40, 60);</string>
+background-color:rgb(30, 35, 55);</string>
    </property>
    <widget class="QLabel" name="profile_pic_label">
     <property name="geometry">
@@ -214,7 +214,7 @@ background-color:rgb(36, 34, 86);
 }</string>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string/>
    </property>
   </widget>
   <widget class="QWidget" name="message_area_widget" native="true">
@@ -281,12 +281,79 @@ background-color:transparent;</string>
     </widget>
    </widget>
   </widget>
+  <widget class="QWidget" name="empty_chat_widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>915</x>
+     <y>435</y>
+     <width>200</width>
+     <height>140</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border:none;
+background-color:rgba(25, 30, 50, 0.5);
+border-radius:8px;</string>
+   </property>
+   <widget class="QPushButton" name="say_hello_btn">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>100</y>
+      <width>61</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+color:white;
+font-family:Lato, Consolas;
+font-size:18px;
+border-radius:4px;
+background-color:rgb(56, 54, 106);
+}
+QPushButton:hover{
+background-color:rgb(36, 34, 86);	
+}</string>
+    </property>
+    <property name="text">
+     <string>HI!!!</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>22</x>
+      <y>10</y>
+      <width>161</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-family:Lato, Consolas;
+font-size:20px;
+background-color:transparent;
+color:white;
+text-align:center;</string>
+    </property>
+    <property name="text">
+     <string>You haven't had a chat with this user yet</string>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
   <zorder>side_menu_widget</zorder>
   <zorder>header_widget</zorder>
   <zorder>message_area_widget</zorder>
   <zorder>message_input_lineEdit</zorder>
   <zorder>send_message_btn</zorder>
   <zorder>messages_scrollArea</zorder>
+  <zorder>empty_chat_widget</zorder>
  </widget>
  <resources/>
  <connections/>

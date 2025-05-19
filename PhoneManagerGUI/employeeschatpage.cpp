@@ -15,15 +15,9 @@ EmployeesChatPage::EmployeesChatPage(QWidget *parent)
     ui->chats_widget->setParent(ui->chats_scrollArea);
     ui->verticalLayoutWidget->setParent(ui->chats_widget);
     ui->chats_scrollArea->setWidget(ui->chats_widget);
-
-    /*ui->messages_scrollArea->setContentsMargins(QMargins{20, 0, 20, 20});
-    ui->messages_widget->setParent(ui->messages_scrollArea);
-    ui->verticalLayoutWidget_2->setParent(ui->messages_widget);
-    ui->messages_vLayout->setParent(ui->messages_widget);
-    ui->messages_scrollArea->setWidget(ui->messages_widget);
-    ui->messages_scrollArea->setWidgetResizable(true);*/
-
-
+    ui->send_message_btn->setIcon(QIcon{"./img/paper-plane.svg"});
+    ui->send_message_btn->setIconSize({30, 30});
+    ui->empty_chat_widget->setVisible(false);
     ui->message_area_widget->setStyleSheet("background:url(./img/wall_telegram_light.jpg);");
     connect(ui->search_lineEdit, &QLineEdit::textChanged, this, &EmployeesChatPage::searchChats);
     connect(ui->message_input_lineEdit, &QLineEdit::editingFinished, this, &EmployeesChatPage::sendMessage);
@@ -32,6 +26,15 @@ EmployeesChatPage::EmployeesChatPage(QWidget *parent)
 EmployeesChatPage::~EmployeesChatPage()
 {
     delete ui;
+}
+
+void EmployeesChatPage::updateLastSeenTimestamp(){
+    QSqlQuery query;
+    query.prepare("UPDATE chat_participants "
+                  "SET last_seen = CURRENT_TIMESTAMP "
+                  "WHERE user_id = :my_id;");
+    query.bindValue(":my_id", CurrentUser::getCurrentUserID());
+    query.exec();
 }
 
 static void clearLayout(QLayout* layout){
@@ -66,7 +69,6 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
         }
     }
 
-
     clearLayout(ui->chats_vLayout);
 
     while(query.next()){
@@ -93,15 +95,20 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
 
         QPixmap pixmap{};
         pixmap.loadFromData(byteA);
+
         if(pixmap.isNull()){
-            //qDebug() << "pixmap is null!:  " << pixmap.size();
+            profile_pic->setStyleSheet(
+                "background-color:white;"
+                "background: url(./img/profile_chat.png);"
+                "border-radius:25px;"
+            );
         }else{
-            profile_pic->setPixmap(pixmap);
+            profile_pic->setStyleSheet(
+                "border-radius:25px;"
+            );
+            profile_pic->setPixmap(pixmap.scaled(50, 50, Qt::KeepAspectRatioByExpanding));
         }
-        profile_pic->setStyleSheet(
-            "background-color:white;"
-            "border-radius:25px;"
-        );
+
         QString full_name = query.value("partner_fname").toString() +
                             + " " + query.value("partner_lname").toString();
         QLabel* partner_name = new QLabel{full_name};
@@ -120,13 +127,14 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
         ui->chats_vLayout->setContentsMargins(10, 0, 0, 0);
         ui->chats_vLayout->setAlignment(Qt::AlignTop);
         ui->chats_widget->setLayout(ui->chats_vLayout);
-        connect(chat_widget, &QPushButton::clicked, this, [this, tmp_chat_id, full_name](){
-            fillMessagesWidget(tmp_chat_id, full_name);
+        connect(chat_widget, &QPushButton::clicked, this, [this, tmp_chat_id, full_name, pixmap](){
+            fillMessagesWidget(tmp_chat_id, full_name
+                               , pixmap.scaled(50, 50, Qt::KeepAspectRatioByExpanding));
         });
     }
 }
 
-void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& full_name){
+void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& full_name, QPixmap pixmap){
     this->chat_id = chat_id;
     QSqlQuery query;
     query.prepare("SELECT * FROM messages "
@@ -177,22 +185,46 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
         ui->messages_vLayout->addLayout(message_hLayout);
         ui->messages_vLayout->setAlignment(Qt::AlignBottom);
     }
-    query.prepare("SELECT u.id AS user_id FROM chat_participants cp "
+    query.prepare("SELECT u.id AS user_id, cp.last_seen AS ls "
+                  "FROM chat_participants cp "
                   "JOIN users u ON u.id = cp.user_id "
                   "WHERE cp.chat_id = :chat_id AND cp.user_id != :my_id;");
     query.bindValue(":chat_id", chat_id);
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
-    if(!query.exec()){
+    if(!query.exec() || !query.next()){
+        this->user_id = query.value("user_id").toInt();
+        ui->empty_chat_widget->setVisible(true);
+        connect(ui->say_hello_btn, &QPushButton::clicked, this, [this](){
+            ui->message_input_lineEdit->setText("HI!!!");
+            emit ui->message_input_lineEdit->editingFinished();
+        });
         qDebug() << "getting partner id fault!!!";
-        return;
+    }else{
+        this->user_id = query.value("user_id").toInt();
+        ui->empty_chat_widget->setVisible(false);
     }
-    user_id = query.value("user_id").toInt();
+
+    ui->last_seen_label->setText(query.value("ls").toString());
 
     if(!full_name.isEmpty())
         ui->empl_full_name_label->setText(full_name);
+    if(pixmap.isNull()){
+        ui->profile_pic_label->setStyleSheet(
+            "background:url(./img/profile_chat.png);"
+            "border-radius:25px;"
+            );
+    }else{
+        ui->profile_pic_label->setStyleSheet(
+            "border-radius:25px;"
+        );
+        ui->profile_pic_label->setPixmap(pixmap);
+    }
 }
 
 void EmployeesChatPage::searchChats(){
+    if(ui->search_lineEdit->text().isEmpty())
+        return fillChatsWidget();
+
     QSqlQuery query;
     query.prepare(
         "SELECT e.first_name AS partner_fname, "
@@ -234,7 +266,7 @@ void EmployeesChatPage::sendMessage(){
     query.bindValue(":user_id", user_id);
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
     query.bindValue(":", CurrentUser::getCurrentUserID());
-    if(!query.exec()){
+    if(!query.exec() || !query.next()){
         qDebug() << "No chat";
         query.prepare("INSERT INTO chats(is_corporative) VALUES(1) RETURNING id;");
         if(!query.exec()){
