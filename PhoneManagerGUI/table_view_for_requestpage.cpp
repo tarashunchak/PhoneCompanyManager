@@ -7,6 +7,7 @@
 #include "includes/pushbuttondelegate.h"
 #include "includes/currentuser.h"
 #include <QStandardItemModel>
+#include <QHeaderView>
 #include <QMenu>
 
 static void setActiveButton(QPushButton* button, bool status){
@@ -59,20 +60,20 @@ void RequestsPage::showUnassignmentRequests(){
         headers << "Action";
         model->setHorizontalHeaderLabels(headers);
 
-        ui->tableView->setModel(model);
-        ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        ui->tableView->setStyleSheet(
+        req_tableView->setModel(model);
+        req_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        req_tableView->setStyleSheet(
         "font-family:Consolas;"
         "font-size:16px;"
         "background-color:white;"
         "color:black;"
         );
-        ui->tableView->horizontalHeader()->setStyleSheet("background-color:rgb(120, 120, 120);");
-        ui->tableView->verticalHeader()->setVisible(false);
+        req_tableView->horizontalHeader()->setStyleSheet("background-color:rgb(120, 120, 120);");
+        req_tableView->verticalHeader()->setVisible(false);
 
         PushButtonDelegate* button_delegate = new PushButtonDelegate{this};
         connect(button_delegate, &PushButtonDelegate::successfully_updated, this, &RequestsPage::showUnassignmentRequests);
-        ui->tableView->setItemDelegateForColumn(model->columnCount() - 1, button_delegate);
+        req_tableView->setItemDelegateForColumn(model->columnCount() - 1, button_delegate);
     }
     setActiveButton(ui->unassigned_req_btn, true);
     setActiveButton(ui->in_progress_req_btn, false);
@@ -86,8 +87,8 @@ void RequestsPage::showUnassignmentRequests(){
         qDebug() << "showUnassignmentRequests()const query fault: " << query.lastError();
     ui->label_2->setVisible(!query.exec());
     qmodel->setQuery(std::move(query));
-    ui->tableView->setItemDelegateForColumn(ui->tableView->model()->columnCount()-1, nullptr);
-    ui->tableView->setModel(qmodel);
+    req_tableView->setItemDelegateForColumn(ui->tableView->model()->columnCount()-1, nullptr);
+    req_tableView->setModel(qmodel);
     setActiveButton(ui->unassigned_req_btn, true);
     setActiveButton(ui->in_progress_req_btn, false);
     setActiveButton(ui->complete_req_btn, false);
@@ -117,8 +118,15 @@ void RequestsPage::showInProgressRequests(){
             items.append(new QStandardItem{"Action"});
             model->appendRow(items);
         }
-        ui->tableView->setModel(model);
-        ui->tableView->setItemDelegateForColumn(ui->tableView->model()->columnCount()-1, new ComboBoxDelegate{this});
+        req_tableView->setModel(model);
+        req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, new ComboBoxDelegate{this});
+
+        QStringList headers{};
+        for (int i = 0; i < query.record().count(); ++i) {
+            headers << query.record().fieldName(i);
+        }
+        headers << "Action";
+        model->setHorizontalHeaderLabels(headers);
     }
     setActiveButton(ui->unassigned_req_btn, false);
     setActiveButton(ui->in_progress_req_btn, true);
@@ -135,8 +143,8 @@ void RequestsPage::showCompletedRequests(){
     ui->label_2->setVisible(!query.exec());
     qmodel->setQuery(std::move(query));
 
-    ui->tableView->setModel(qmodel);
-    ui->tableView->setItemDelegateForColumn(ui->tableView->model()->columnCount()-1, nullptr);
+    req_tableView->setModel(qmodel);
+    req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, nullptr);
     setActiveButton(ui->unassigned_req_btn, false);
     setActiveButton(ui->in_progress_req_btn, false);
     setActiveButton(ui->complete_req_btn, true);

@@ -139,10 +139,11 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
     QSqlQuery query;
     query.prepare("SELECT * FROM messages "
                   "WHERE chat_id = :chat_id;");
-    query.bindValue(":chat_id", chat_id);
+    query.bindValue(":chat_id", this->chat_id);
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
 
     if(!query.exec()){
+        this->chat_id = -1;
         qDebug() << "fillChatsWidget()const query fault: " << query.lastError();
         return;
     }
@@ -191,14 +192,15 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
                   "WHERE cp.chat_id = :chat_id AND cp.user_id != :my_id;");
     query.bindValue(":chat_id", chat_id);
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
-    if(!query.exec() || !query.next()){
-        this->user_id = query.value("user_id").toInt();
-        ui->empty_chat_widget->setVisible(true);
+    if(!query.exec()){
+        qDebug() << "getting partner id fault!!!";
+    }
+    if(!query.next()){
         connect(ui->say_hello_btn, &QPushButton::clicked, this, [this](){
             ui->message_input_lineEdit->setText("HI!!!");
-            emit ui->message_input_lineEdit->editingFinished();
+            sendMessage();
         });
-        qDebug() << "getting partner id fault!!!";
+        qDebug() << "getting partner next id fault!!!";
     }else{
         this->user_id = query.value("user_id").toInt();
         ui->empty_chat_widget->setVisible(false);
@@ -244,7 +246,7 @@ void EmployeesChatPage::searchChats(){
         "    WHERE cp1.user_id = :my_id  "
         "      AND cp2.user_id != :my_id  "
         ") AS existing_chats ON existing_chats.user2 = u.id  "
-        "WHERE (e.first_name LIKE LOWER(:name) OR "
+        "WHERE u.id IS NULL OR u.id != :my_id AND (e.first_name LIKE LOWER(:name) OR "
         "e.last_name LIKE LOWER(:name));"
     );
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
@@ -265,23 +267,28 @@ void EmployeesChatPage::sendMessage(){
     query.prepare("SELECT * FROM chat_participants WHERE user_id = :user_id AND user_id = :my_id;");
     query.bindValue(":user_id", user_id);
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
-    query.bindValue(":", CurrentUser::getCurrentUserID());
     if(!query.exec() || !query.next()){
         qDebug() << "No chat";
-        query.prepare("INSERT INTO chats(is_corporative) VALUES(1) RETURNING id;");
+        query.prepare("INSERT INTO chats(is_corporate) VALUES(true) RETURNING id;");
         if(!query.exec()){
             qDebug() << "insert into chats query fault: " << query.lastError();
             return;
         }
         chat_id = query.value("id").toInt();
         query.prepare("INSERT INTO chat_participants(chat_id, user_id) "
-                      "VALUES(:chat_id, :user_id), "
-                      "VALUES(:chat_id, :my_id);");
+                      "VALUES(:chat_id, :user_id);");
         query.bindValue(":chat_id", chat_id);
         query.bindValue(":user_id", user_id);
+        if(!query.exec()){
+            qDebug() << "insert into chat_participants user_id query fault: " << query.lastError();
+            return;
+        }
+        query.prepare("INSERT INTO chat_participants(chat_id, user_id) "
+                      "VALUES(:chat_id, :my_id);");
+        query.bindValue(":chat_id", chat_id);
         query.bindValue(":my_id", CurrentUser::getCurrentUserID());
         if(!query.exec()){
-            qDebug() << "insert into chat_participants query fault: " << query.lastError();
+            qDebug() << "insert into chat_participants my_id query fault: " << query.lastError();
             return;
         }
     }

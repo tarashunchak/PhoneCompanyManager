@@ -43,6 +43,7 @@ SOURCES += \
     registrationpage.cpp \
     report.cpp \
     requestspage.cpp \
+    requeststabelview.cpp \
     table_view_for_requestpage.cpp \
     tariffcard.cpp \
     tariffeditwidget.cpp \
@@ -96,7 +97,8 @@ HEADERS += \
     includes/pushbuttondelegate.h \
     includes/report.h \
     includes/tariffeditwidget.h \
-    includes/taskspage.h
+    includes/taskspage.h \
+    requeststabelview.h
 
 FORMS += \
     employeeschatpage.ui \

@@ -21,12 +21,14 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     ui->no_usage_label->setVisible(false);
 
     SetTableViewStyle();
+    editCustomerDataOff();
 
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo_cust.svg"});
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
     ui->delete_customer_btn->setIcon(QIcon{"./img/delete_can.png"});
     ui->delete_customer_btn->setStyleSheet("background-color:transparent;");
 
+    SetConnections();
     connect(ui->open_chat_btn, &QPushButton::clicked, this, [this](){
         emit on_open_chat_btn_clicked(ui->phone_Label->text());
     });
@@ -52,6 +54,7 @@ void CustomersDetailsPage::setCurrentUser(){
 
 void CustomersDetailsPage::SetConnections(){
     connect(ui->return_btn, &QPushButton::clicked, this, [this](){emit on_return_btn_clicked();});
+    connect(ui->edit_data_btn, &QPushButton::clicked, this, &CustomersDetailsPage::editCustomerDataOn);
 }
 
 void CustomersDetailsPage::SetCustomerInfo(const int id){
@@ -109,7 +112,7 @@ void CustomersDetailsPage::SetCharts(const int id){
 
     QSqlQuery usage_query;
     usage_query.prepare("SELECT date(date) AS usage_date, COUNT(*) AS count FROM Usage "
-                        "WHERE cust_id = :id " /*AND date >= CURRENT_DATE - INTERVAL '7 days' "*/
+                        "WHERE cust_id = :id AND date >= CURRENT_DATE - INTERVAL '7 days' "
                         "GROUP BY usage_date ORDER BY usage_date ASC;");
     usage_query.bindValue(":id", id);
     if(!usage_query.exec()){
@@ -122,4 +125,15 @@ void CustomersDetailsPage::SetCharts(const int id){
     usage_chart->setParent(ui->usage_history);
     usage_chart->resize(ui->usage_history->size());
     usage_chart->setQuery(std::move(usage_query), "count", "usage_date");
+}
+
+void CustomersDetailsPage::editCustomerDataOn(){
+    ui->full_name_lineEdit->setVisible(true);
+    ui->full_name_lineEdit->setText(ui->full_name_Label->text());
+    ui->full_name_Label->setVisible(false);
+}
+
+void CustomersDetailsPage::editCustomerDataOff(){
+    ui->full_name_lineEdit->setVisible(false);
+    ui->full_name_Label->setVisible(true);
 }

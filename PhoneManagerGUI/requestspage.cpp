@@ -8,11 +8,17 @@ RequestsPage::RequestsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::RequestsPage)
     , qmodel(new QSqlTableModel{})
+    , req_tableView(new RequestsTabelView{})
 {
     ui->setupUi(this);
-
+    req_tableView->setParent(this);
+    req_tableView->setGeometry(0, 110, 1670, 970);
+    req_tableView->setModel(qmodel);
+    req_tableView->setMouseTracking(true);
+    req_tableView->viewport()->setMouseTracking(true);
+    ui->save_btn->raise();
     ui->scrollArea->setWidgetResizable(true);
-    ui->tableView->setModel(qmodel);
+    //ui->tableView->setModel(qmodel);
     //setTableView();
     SetConnections();
 }

@@ -30,6 +30,8 @@ private:
     void SetConnections();
     void SetTableViewStyle();
     void SetCharts(const int);
+    void editCustomerDataOn();
+    void editCustomerDataOff();
 
 private:
     Ui::CustomersDetailsPage *ui;

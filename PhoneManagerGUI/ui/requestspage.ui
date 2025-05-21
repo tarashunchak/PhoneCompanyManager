@@ -40,25 +40,6 @@
       <height>968</height>
      </rect>
     </property>
-    <widget class="QTableView" name="tableView">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>1670</width>
-       <height>970</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:transparent;
-color:black;
-font-size:18px;
-font-family:Arial;</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_2">
      <property name="enabled">
       <bool>false</bool>
