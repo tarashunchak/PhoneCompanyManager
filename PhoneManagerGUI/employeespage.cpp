@@ -54,7 +54,7 @@ void EmployeesPage::FindEmployeesByName(){
 }
 
 void EmployeesPage::SetEmployeesCards(QSqlQuery query){
-
+    static QPixmap pixmap{"./img/employees.png"};
     QLayout* layout = ui->gridLayout;
     if(layout){
         while(QLayoutItem* item = layout->takeAt(0)){
@@ -72,12 +72,9 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
     int rows = 0;
     int cols = 0;
 
-    QScrollArea* scrollArea = new QScrollArea(this);
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setStyleSheet("border:none;");
 
-    QWidget* mainWidget = new QWidget{};
-    QGridLayout* innerGridLayout = new QGridLayout(mainWidget);
+    //QWidget* mainWidget = new QWidget{};
+    //QGridLayout* ui->gridLayout = new QGridLayout(mainWidget);
 
     while(query.next()){
         QPushButton* card = new QPushButton;
@@ -94,7 +91,7 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         );
 
         QLabel* image = new QLabel(card);
-        image->setPixmap(QPixmap("./img/employees.png"));
+        image->setPixmap(pixmap);
         image->setGeometry(20, 25, 50, 50);
         image->setStyleSheet("background-color:transparent;");
 
@@ -112,7 +109,7 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
                                "color:white;"
                                "font-size:16px;");
 
-        innerGridLayout->addWidget(card, rows, cols);
+        ui->gridLayout->addWidget(card, rows, cols);
 
         cols++;
         if(cols % 5 == 0){
@@ -121,12 +118,13 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         }
     }
 
-    innerGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    innerGridLayout->setHorizontalSpacing(34);
-    innerGridLayout->setVerticalSpacing(40);
-    innerGridLayout->setContentsMargins(40, 40, 0, 0);
+    ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    ui->gridLayout->setHorizontalSpacing(34);
+    ui->gridLayout->setVerticalSpacing(40);
+    ui->gridLayout->setContentsMargins(40, 40, 0, 0);
+    ui->scrollArea->setWidgetResizable(true);
 
-    mainWidget->setLayout(innerGridLayout);
-    scrollArea->setWidget(mainWidget);
-    ui->gridLayout->addWidget(scrollArea);
+    ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
+    ui->scrollArea->setWidget(ui->scrollAreaWidgetContents);
+    //ui->gridLayout->addWidget(ui->scrollArea);
 }

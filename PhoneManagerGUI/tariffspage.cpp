@@ -70,18 +70,18 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
     int cols = 0;
     int rows = 0;
 
-    QScrollArea* scrollArea = new QScrollArea(this);
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setStyleSheet("border:none;");
+    //QScrollArea* scrollArea = new QScrollArea(this);
+    //scrollArea->setWidgetResizable(true);
+    //scrollArea->setStyleSheet("border:none;");
 
-    QWidget* mainWidget = new QWidget();
-    QGridLayout* innerGridLayout = new QGridLayout(mainWidget);
+    //QWidget* mainWidget = new QWidget();
+    //QGridLayout* ui->gridLayout = new QGridLayout(mainWidget);
     while(query.next()){
         TariffCard* card = new TariffCard();
         card->setMinimumSize(300, 460);
         card->setTariffInfoFromQuery(query.record());
 
-        innerGridLayout->addWidget(card, rows, cols);
+        ui->gridLayout->addWidget(card, rows, cols);
         cols++;
         if(cols % 4 == 0){
             cols = 0;
@@ -89,15 +89,14 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
         }
         connect(card, &TariffCard::on_edit_btn_clicked, tariff_edit_widget, &QWidget::show);
     }
-    innerGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    innerGridLayout->setHorizontalSpacing(100);
-    innerGridLayout->setVerticalSpacing(50);
-    innerGridLayout->setContentsMargins(84, 40, 0, 0);
+    ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    ui->gridLayout->setHorizontalSpacing(100);
+    ui->gridLayout->setVerticalSpacing(50);
+    ui->gridLayout->setContentsMargins(84, 40, 0, 0);
 
-    mainWidget->setLayout(innerGridLayout);
-
-    scrollArea->setWidget(mainWidget);
-    ui->gridLayout->addWidget(scrollArea);
+    ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
+    ui->scrollArea->setWidget(ui->scrollAreaWidgetContents);
+    //ui->gridLayout->addWidget(scrollArea);
 
 }
 

@@ -101,17 +101,6 @@ QPushButton:hover{
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="gridLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>79</y>
-     <width>1671</width>
-     <height>1011</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout"/>
-  </widget>
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
@@ -132,8 +121,42 @@ background-color:rgba(42, 42, 42, 0.3);</string>
     <enum>QFrame::Shadow::Raised</enum>
    </property>
   </widget>
-  <zorder>gridLayoutWidget</zorder>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>80</y>
+     <width>1670</width>
+     <height>981</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1668</width>
+      <height>979</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>-20</x>
+       <y>0</y>
+       <width>1691</width>
+       <height>991</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout"/>
+    </widget>
+   </widget>
+  </widget>
   <zorder>widget</zorder>
+  <zorder>scrollArea</zorder>
   <zorder>frame</zorder>
  </widget>
  <resources/>

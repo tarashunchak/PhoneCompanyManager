@@ -42,6 +42,7 @@ Dashboard::Dashboard(QWidget *parent)
     connect(ui->req_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsStatistics);
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
     connect(ui->customers_period_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setTableViewConnection);
+    connect(ui->requests_period_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsHistory);
 }
 
 Dashboard::~Dashboard(){

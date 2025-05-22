@@ -28,7 +28,9 @@ void CustomersPage::SetConnections(){
     connect(ui->lineEdit, &QLineEdit::textEdited, this, &CustomersPage::FindCustomersByName);
 }
 
+
 void CustomersPage::SetCustomersCards(QSqlQuery query){
+    static QPixmap pixmap{"./img/customer.png"};
     QLayout* layout = ui->gridLayout;
     if(layout){
         while(QLayoutItem* item = layout->takeAt(0)){
@@ -47,12 +49,12 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
     int cols = 0;
     int rows = 0;
 
-    QScrollArea* scrollArea = new QScrollArea(this);
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setStyleSheet("border:none;");
+    //QScrollArea* scrollArea = new QScrollArea(this);
+    ui->scrollArea->setWidgetResizable(true);
+    //scrollArea->setStyleSheet("border:none;");
 
-    QWidget* mainWidget = new QWidget;
-    QGridLayout* innerGridLayout = new QGridLayout(mainWidget);
+    //QWidget* mainWidget = new QWidget{};
+    //QGridLayout* ui->gridLayout = new QGridLayout(mainWidget);
     while(query.next()){
         QPushButton* card = new QPushButton;
         card->setMinimumSize(290, 120);
@@ -68,7 +70,7 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
             "}");
 
         QLabel* image = new QLabel(card);
-        image->setPixmap(QPixmap("./img/customer.png"));
+        image->setPixmap(pixmap);
         image->setGeometry(16, 25, 50, 50);
         image->setStyleSheet("background-color:transparent;");
 
@@ -82,7 +84,7 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         full_name->setGeometry(80, 60, 250, 20);
         full_name->setStyleSheet("background-color:transparent;color:white;font-size:14px;");
 
-        innerGridLayout->addWidget(card, rows, cols);
+        ui->gridLayout->addWidget(card, rows, cols);
         const int id = query.value("id").toInt();
         connect(card, &QPushButton::clicked, this, [this, id](){emit customer_selected(id);});
 
@@ -92,14 +94,14 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
             rows++;
         }
     }
-    innerGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    innerGridLayout->setHorizontalSpacing(34);
-    innerGridLayout->setVerticalSpacing(40);
-    innerGridLayout->setContentsMargins(40, 40, 0, 0);
+    ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    ui->gridLayout->setHorizontalSpacing(34);
+    ui->gridLayout->setVerticalSpacing(40);
+    ui->gridLayout->setContentsMargins(40, 40, 0, 0);
 
-    mainWidget->setLayout(innerGridLayout);
-    scrollArea->setWidget(mainWidget);
-    ui->gridLayout->addWidget(scrollArea);
+    ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
+    ui->scrollArea->setWidget(ui->scrollAreaWidgetContents);
+    //ui->gridLayout->setParent(ui->scrollArea);
 }
 
 void CustomersPage::FindCustomersByName(){

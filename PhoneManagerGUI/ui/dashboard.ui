@@ -191,6 +191,40 @@ font-size:16px;
 font-family:Lato;</string>
     </property>
    </widget>
+   <widget class="QComboBox" name="requests_period_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>10</y>
+      <width>121</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">padding-left:30px;
+font-family:Robotic;
+font-size:16px;
+color:black;
+background-color:white;
+border-radius:2px;
+</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Last 10</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Last 20</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Last 30</string>
+     </property>
+    </item>
+   </widget>
   </widget>
   <widget class="QWidget" name="requests_statistic_box" native="true">
    <property name="geometry">
@@ -414,6 +448,48 @@ font-family: Lato;</string>
      <string>Top Tariff By Usage</string>
     </property>
    </widget>
+  </widget>
+  <widget class="QLabel" name="empty_req_stat">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>80</y>
+     <width>511</width>
+     <height>391</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:black;
+font-size:50px;
+background-color:transparent;</string>
+   </property>
+   <property name="text">
+    <string>No Info</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="empty_cust_stat">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>80</y>
+     <width>511</width>
+     <height>391</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:black;
+font-size:50px;
+background-color:transparent;</string>
+   </property>
+   <property name="text">
+    <string>No Info</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
   </widget>
  </widget>
  <resources/>

@@ -46,7 +46,6 @@ void RequestsPage::showUnassignmentRequests(){
         QList<QStandardItem*> items;
         for (int col = 0; col < query.record().count(); ++col) {
             items.append(new QStandardItem{query.value(col).toString()});
-            items[col]->setFlags(items[col]->flags() & ~Qt::ItemIsEditable);
         }
         items.append(new QStandardItem{"Assign to me"});
         model->appendRow(items);
@@ -62,12 +61,15 @@ void RequestsPage::showUnassignmentRequests(){
 
         req_tableView->setModel(model);
         req_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
         req_tableView->setStyleSheet(
-        "font-family:Consolas;"
-        "font-size:16px;"
-        "background-color:white;"
-        "color:black;"
+            "font-family:Consolas;"
+            "font-size:16px;"
+            "background-color:white;"
+            "color:black;"
         );
+
         req_tableView->horizontalHeader()->setStyleSheet("background-color:rgb(120, 120, 120);");
         req_tableView->verticalHeader()->setVisible(false);
 
@@ -80,21 +82,7 @@ void RequestsPage::showUnassignmentRequests(){
     setActiveButton(ui->complete_req_btn, false);
 }
 
-/*void RequestsPage::showUnassignmentRequests()const{
-    QSqlQuery query;
-    query.prepare("SELECT * FROM Requests WHERE assigned_to_id = -1;");
-    if(!query.exec())
-        qDebug() << "showUnassignmentRequests()const query fault: " << query.lastError();
-    ui->label_2->setVisible(!query.exec());
-    qmodel->setQuery(std::move(query));
-    req_tableView->setItemDelegateForColumn(ui->tableView->model()->columnCount()-1, nullptr);
-    req_tableView->setModel(qmodel);
-    setActiveButton(ui->unassigned_req_btn, true);
-    setActiveButton(ui->in_progress_req_btn, false);
-    setActiveButton(ui->complete_req_btn, false);
-}*/
-
-void RequestsPage::showInProgressRequests(){
+void RequestsPage::showInProgressRequests()const{
     ui->save_btn->setVisible(true);
     QSqlQuery query;
     query.prepare("SELECT id, cust_id, request_type, "
@@ -107,19 +95,19 @@ void RequestsPage::showInProgressRequests(){
         qDebug() << "showInProgressRequests()const query fault: " << query.lastError();
     }else{
         ui->label_2->setVisible(false);
-        QStandardItemModel* model = new QStandardItemModel{this};
+        QStandardItemModel* model = new QStandardItemModel{ui->scrollAreaWidgetContents};
         int row = 0;
         while(query.next()){
             QList<QStandardItem*> items;
             for(int col = 0; col < query.record().count(); ++col){
                 items.append(new QStandardItem{query.value(col).toString()});
-                items[col]->setFlags(items[col]->flags() & ~Qt::ItemIsEditable);
             }
             items.append(new QStandardItem{"Action"});
             model->appendRow(items);
         }
         req_tableView->setModel(model);
-        req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, new ComboBoxDelegate{this});
+        req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, new ComboBoxDelegate{});
+        req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
         QStringList headers{};
         for (int i = 0; i < query.record().count(); ++i) {
@@ -136,14 +124,19 @@ void RequestsPage::showInProgressRequests(){
 void RequestsPage::showCompletedRequests(){
     ui->save_btn->setVisible(false);
     QSqlQuery query;
-    query.prepare("SELECT * FROM requests WHERE status = 'Completed' AND assigned_to_id = :id;");
+    query.prepare("SELECT * FROM requests "
+                  "WHERE status = 'Confirmed' OR status = 'Rejected' "
+                  "AND assigned_to_id = :id;");
     query.bindValue(":id", CurrentUser::getCurrentUserID());
     if(!query.exec())
         qDebug() << "showCompletedRequests()const query fault: " << query.lastError();
+    int col = 0;
+
     ui->label_2->setVisible(!query.exec());
     qmodel->setQuery(std::move(query));
 
     req_tableView->setModel(qmodel);
+    req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, nullptr);
     setActiveButton(ui->unassigned_req_btn, false);
     setActiveButton(ui->in_progress_req_btn, false);

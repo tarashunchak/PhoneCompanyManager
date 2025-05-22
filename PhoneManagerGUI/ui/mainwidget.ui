@@ -22,7 +22,7 @@
      <x>250</x>
      <y>0</y>
      <width>1670</width>
-     <height>1081</height>
+     <height>1080</height>
     </rect>
    </property>
    <widget class="QWidget" name="page"/>

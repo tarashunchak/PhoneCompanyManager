@@ -16,8 +16,8 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     tariff_chart->setParent(ui->tariffs_history);
     tariff_chart->resize(ui->tariffs_history->size());
 
-    //usage_chart->setParent(ui->usage_history);
-    //usage_chart->resize(ui->usage_history->size());
+    usage_chart->setParent(ui->usage_history);
+    usage_chart->resize(ui->usage_history->size());
     ui->no_usage_label->setVisible(false);
 
     SetTableViewStyle();
@@ -41,15 +41,11 @@ CustomersDetailsPage::~CustomersDetailsPage()
 
 void CustomersDetailsPage::setCurrentUser(){
     QSqlQuery query;
-    query.prepare("SELECT *FROM Employees WHERE id = :empl_id;");
+    query.prepare("SELECT * FROM employees WHERE id = :empl_id;");
     const int empl_id = CurrentUser::getCurrentUserID();
     query.bindValue(":empl_id", empl_id);
-    if(query.exec() && query.next()){
-    //   ui->name_label->setText(query.value("full_name").toString());
-    }else{
+    if(!query.exec() || query.next())
         qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
-        return;
-    }
 }
 
 void CustomersDetailsPage::SetConnections(){
@@ -59,9 +55,9 @@ void CustomersDetailsPage::SetConnections(){
 
 void CustomersDetailsPage::SetCustomerInfo(const int id){
     QSqlQuery query;
-    query.prepare("SELECT tariffs.tariff_name AS tariff_name, * "
+    query.prepare("SELECT t.tariff_name AS tariff_name, * "
                   "FROM customers "
-                  "JOIN tariffs ON tariffs.id = customers.tariff_id "
+                  "JOIN tariffs t ON t.id = customers.tariff_id "
                   "WHERE customers.id = :id;");
     query.bindValue(":id", id);
 
@@ -89,6 +85,7 @@ void CustomersDetailsPage::SetTableViewStyle(){
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->setVisible(false);
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->setStyleSheet(
         "QTableView{"
         "background-color:white;"
@@ -100,9 +97,10 @@ void CustomersDetailsPage::SetTableViewStyle(){
 
 void CustomersDetailsPage::SetCharts(const int id){
     QSqlQuery tariff_query;
-    tariff_query.prepare("SELECT Tariffs.tariff_name AS name, Tariffs.id AS id FROM Customers "
-                  "JOIN Tariffs ON Tariffs.id = Customers.tariff_id "
-                  "WHERE Customers.id = :id;");
+    tariff_query.prepare("SELECT t.tariff_name AS name, t.id AS id "
+                         "FROM customers c"
+                         "JOIN tariffs t ON t.id = c.tariff_id "
+                         "WHERE c.id = :id;");
     tariff_query.bindValue(":id", id);
     if(!tariff_query.exec()){
         qDebug() << "In CustomersDetailsPage::SetCustomersInfo::tariff_query fault!!!: " << tariff_query.lastError();
@@ -111,7 +109,7 @@ void CustomersDetailsPage::SetCharts(const int id){
     tariff_chart->setQuery(std::move(tariff_query), "name", "id");
 
     QSqlQuery usage_query;
-    usage_query.prepare("SELECT date(date) AS usage_date, COUNT(*) AS count FROM Usage "
+    usage_query.prepare("SELECT date(date) AS usage_date, COUNT(*) AS count FROM usage "
                         "WHERE cust_id = :id AND date >= CURRENT_DATE - INTERVAL '7 days' "
                         "GROUP BY usage_date ORDER BY usage_date ASC;");
     usage_query.bindValue(":id", id);

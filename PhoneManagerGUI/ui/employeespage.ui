@@ -46,17 +46,6 @@ background-color:rgba(42, 42, 42, 0.4);</string>
      <height>1080</height>
     </rect>
    </property>
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>80</y>
-      <width>1671</width>
-      <height>1001</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout"/>
-   </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
@@ -140,6 +129,40 @@ background-color:transparent;</string>
     <zorder>label</zorder>
     <zorder>lineEdit</zorder>
     <zorder>add_empl_btn</zorder>
+   </widget>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>80</y>
+      <width>1670</width>
+      <height>1000</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1668</width>
+       <height>998</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="gridLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1671</width>
+        <height>1001</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout"/>
+     </widget>
+    </widget>
    </widget>
   </widget>
  </widget>

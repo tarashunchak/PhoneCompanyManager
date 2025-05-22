@@ -19,7 +19,7 @@ public:
     //void setTableView();
     void setCurrentUser();
     void showUnassignmentRequests();
-    void showInProgressRequests();
+    void showInProgressRequests()const;
     void showCompletedRequests();
 
 signals:

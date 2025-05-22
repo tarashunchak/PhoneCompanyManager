@@ -23,7 +23,7 @@ font-family:Lato, Consolas;</string>
      <x>0</x>
      <y>0</y>
      <width>1670</width>
-     <height>76</height>
+     <height>80</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -118,19 +118,42 @@ background-color:rgba(42, 42, 42, 0.4);</string>
     <enum>QFrame::Shadow::Raised</enum>
    </property>
   </widget>
-  <widget class="QWidget" name="gridLayoutWidget">
+  <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
     <rect>
-     <x>-1</x>
-     <y>69</y>
-     <width>1671</width>
-     <height>1011</height>
+     <x>0</x>
+     <y>80</y>
+     <width>1670</width>
+     <height>1000</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout"/>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1668</width>
+      <height>998</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1671</width>
+       <height>1001</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout"/>
+    </widget>
+   </widget>
   </widget>
-  <zorder>gridLayoutWidget</zorder>
   <zorder>widget</zorder>
+  <zorder>scrollArea</zorder>
   <zorder>frame</zorder>
  </widget>
  <resources/>
