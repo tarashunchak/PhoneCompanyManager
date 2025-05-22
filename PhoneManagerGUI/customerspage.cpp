@@ -14,9 +14,11 @@ CustomersPage::CustomersPage(QWidget *parent)
 
     SetCustomersCards();
     SetConnections();
-    connect(ui->add_cust_btn, &QPushButton::clicked, insert_customer_dialog, &QDialog::exec);
-    connect(ui->add_cust_btn, &QPushButton::clicked, insert_customer_dialog
-                                , &InsertCustomerDialog::updateComboBoxData);
+
+    ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    ui->gridLayout->setHorizontalSpacing(34);
+    ui->gridLayout->setVerticalSpacing(40);
+    ui->gridLayout->setContentsMargins(40, 40, 0, 0);
 }
 
 CustomersPage::~CustomersPage()
@@ -25,7 +27,12 @@ CustomersPage::~CustomersPage()
 }
 
 void CustomersPage::SetConnections(){
-    connect(ui->lineEdit, &QLineEdit::textEdited, this, &CustomersPage::FindCustomersByName);
+    connect(ui->lineEdit, &QLineEdit::textEdited
+            , this, &CustomersPage::FindCustomersByName);
+    connect(ui->add_cust_btn, &QPushButton::clicked
+            , insert_customer_dialog, &QDialog::exec);
+    connect(ui->add_cust_btn, &QPushButton::clicked, insert_customer_dialog
+            , &InsertCustomerDialog::updateComboBoxData);
 }
 
 
@@ -49,12 +56,6 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
     int cols = 0;
     int rows = 0;
 
-    //QScrollArea* scrollArea = new QScrollArea(this);
-    ui->scrollArea->setWidgetResizable(true);
-    //scrollArea->setStyleSheet("border:none;");
-
-    //QWidget* mainWidget = new QWidget{};
-    //QGridLayout* ui->gridLayout = new QGridLayout(mainWidget);
     while(query.next()){
         QPushButton* card = new QPushButton;
         card->setMinimumSize(290, 120);
@@ -94,24 +95,19 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
             rows++;
         }
     }
-    ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    ui->gridLayout->setHorizontalSpacing(34);
-    ui->gridLayout->setVerticalSpacing(40);
-    ui->gridLayout->setContentsMargins(40, 40, 0, 0);
 
     ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
     ui->scrollArea->setWidget(ui->scrollAreaWidgetContents);
-    //ui->gridLayout->setParent(ui->scrollArea);
 }
 
 void CustomersPage::FindCustomersByName(){
     QSqlQuery query;
     query.prepare("SELECT * FROM customers "
-                  "WHERE first_name LIKE LOWER(:name) "
-                  "OR last_name LIKE LOWER(:name) "
-                  "OR phone LIKE LOWER(:phone);");
+                  "WHERE LOWER(first_name) LIKE LOWER(:text) "
+                  "OR LOWER(last_name) LIKE LOWER(:text) "
+                  "OR LOWER(first_name || ' ' || last_name) LIKE LOWER(:text) "
+                  "OR LOWER(phone) LIKE LOWER(:text);");
     QString text = ui->lineEdit->text() + "%";
-    query.bindValue(":name", text);
-    query.bindValue(":phone", text);
+    query.bindValue(":text", text);
     SetCustomersCards(std::move(query));
 }

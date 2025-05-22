@@ -19,6 +19,14 @@ InsertCustomerDialog::~InsertCustomerDialog()
     delete ui;
 }
 
+void InsertCustomerDialog::clearWidgets(){
+    ui->email_lineEdit->clear();
+    ui->first_name_lineEdit->clear();
+    ui->last_name_lineEdit->clear();
+    ui->phone_lineEdit->clear();
+    ui->tariff_comboBox->setCurrentIndex(0);
+}
+
 void InsertCustomerDialog::updateComboBoxData(){
     QSqlQuery query;
     query.prepare("SELECT * FROM Tariffs;");
@@ -37,13 +45,14 @@ void InsertCustomerDialog::InsertCustomerToDB(){
     const int tariff_id = ui->tariff_comboBox->currentData().toInt();
     if(!fname.isEmpty()
         && !lname.isEmpty()
-        && !phone.isEmpty()
-        && !email.isEmpty())
+        && !phone.isEmpty())
     {
         QSqlQuery query;
         bool no_email = ui->email_lineEdit->text().isEmpty();
-        query.prepare("INSERT INTO Customers (first_name, last_name, phone, date_of_B, tariff_id, email) "
-              "VALUES(:fname, :lname, :phone, :bday, :tariff_id" + QString(!no_email ? ", :email);" : ", NULL);"));
+        query.prepare("INSERT INTO customers "
+                      "(first_name, last_name, phone, date_of_B, tariff_id, email) "
+                      "VALUES(:fname, :lname, :phone, :bday, :tariff_id"
+                      + QString(!no_email ? ", :email);" : ", NULL);"));
 
         query.bindValue(":fname", fname);
         query.bindValue(":lname", lname);
@@ -57,6 +66,8 @@ void InsertCustomerDialog::InsertCustomerToDB(){
         if(!query.exec())
             qDebug() << "InsertCustomerToDB() query fault: " << query.lastError();
         ui->incorrect_data_label->setVisible(false);
+        clearWidgets();
+        this->close();
     }else{
         ui->incorrect_data_label->setVisible(true);
     }

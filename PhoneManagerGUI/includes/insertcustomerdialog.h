@@ -18,6 +18,9 @@ public:
     void InsertCustomerToDB();
 
 private:
+    void clearWidgets();
+
+private:
     Ui::InsertCustomerDialog *ui;
 };
 

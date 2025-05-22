@@ -15,6 +15,12 @@ EmployeesPage::EmployeesPage(QWidget *parent)
     insert_employee_dialog->setModal(true);
     SetConnections();
     SetEmployeesCards();
+
+    ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    ui->gridLayout->setHorizontalSpacing(34);
+    ui->gridLayout->setVerticalSpacing(40);
+    ui->gridLayout->setContentsMargins(40, 40, 0, 0);
+    ui->scrollArea->setWidgetResizable(true);
 }
 
 EmployeesPage::~EmployeesPage()
@@ -23,17 +29,20 @@ EmployeesPage::~EmployeesPage()
 }
 
 void EmployeesPage::SetConnections(){
-    connect(ui->lineEdit, &QLineEdit::textEdited, this, &EmployeesPage::FindEmployeesByName);
-    connect(ui->add_empl_btn, &QPushButton::clicked, insert_employee_dialog, &InsertEmployeeDialog::exec);
-    connect(ui->add_empl_btn, &QPushButton::clicked, insert_employee_dialog, &InsertEmployeeDialog::updateComboBoxData);
+    connect(ui->lineEdit, &QLineEdit::textEdited
+            , this, &EmployeesPage::FindEmployeesByName);
+    connect(ui->add_empl_btn, &QPushButton::clicked, insert_employee_dialog
+            , &InsertEmployeeDialog::exec);
+    connect(ui->add_empl_btn, &QPushButton::clicked, insert_employee_dialog
+            , &InsertEmployeeDialog::updateComboBoxData);
 }
 
 void EmployeesPage::setCurrentUser()const{
     QSqlQuery query;
-    query.prepare("SELECT positions.position_name AS POS_NAME "
+    query.prepare("SELECT p.position_name AS POS_NAME "
                   "FROM users "
-                  "JOIN employees ON employees.id = users.empl_id "
-                  "JOIN positions ON positions.id = employees.position_id "
+                  "JOIN employees e ON e.id = users.empl_id "
+                  "JOIN positions p ON p.id = e.position_id "
                   "WHERE users.id = :id");
 
     query.bindValue(":id", CurrentUser::getCurrentUserID());
@@ -46,7 +55,8 @@ void EmployeesPage::setCurrentUser()const{
 
 void EmployeesPage::FindEmployeesByName(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM employees WHERE first_name LIKE LOWER(:name) "
+    query.prepare("SELECT * FROM employees "
+                  "WHERE first_name LIKE LOWER(:name) "
                   "OR last_name LIKE LOWER(:name) OR id = :id");
     query.bindValue(":name", ui->lineEdit->text() + "%");
     query.bindValue(":id", ui->lineEdit->text());
@@ -63,7 +73,7 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         }
     }
     if(!query.exec()){
-        query.prepare("SELECT *FROM employees;");
+        query.prepare("SELECT * FROM employees;");
         if(!query.exec()){
             qDebug() << "SetEmployeesCards query fault!" << query.lastError();
             return;
@@ -71,10 +81,6 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
     }
     int rows = 0;
     int cols = 0;
-
-
-    //QWidget* mainWidget = new QWidget{};
-    //QGridLayout* ui->gridLayout = new QGridLayout(mainWidget);
 
     while(query.next()){
         QPushButton* card = new QPushButton;
@@ -96,11 +102,11 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         image->setStyleSheet("background-color:transparent;");
 
         QLabel* full_name = new QLabel(query.value("first_name").toString()
-                                           + " " + query.value("last_name").toString(), card);
+                            + " " + query.value("last_name").toString(), card);
         full_name->setGeometry(85, 35, 250, 20);
         full_name->setStyleSheet("background-color:transparent;"
-                                 "color:white;"
-                                 "font-size:18px;");
+                                "color:white;"
+                                "font-size:18px;");
 
         QLabel* empl_id = new QLabel("ID:" + query.value("id").toString(), card);
         
@@ -118,13 +124,6 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         }
     }
 
-    ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    ui->gridLayout->setHorizontalSpacing(34);
-    ui->gridLayout->setVerticalSpacing(40);
-    ui->gridLayout->setContentsMargins(40, 40, 0, 0);
-    ui->scrollArea->setWidgetResizable(true);
-
     ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
     ui->scrollArea->setWidget(ui->scrollAreaWidgetContents);
-    //ui->gridLayout->addWidget(ui->scrollArea);
 }

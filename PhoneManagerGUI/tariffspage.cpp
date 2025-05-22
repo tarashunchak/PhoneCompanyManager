@@ -70,12 +70,6 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
     int cols = 0;
     int rows = 0;
 
-    //QScrollArea* scrollArea = new QScrollArea(this);
-    //scrollArea->setWidgetResizable(true);
-    //scrollArea->setStyleSheet("border:none;");
-
-    //QWidget* mainWidget = new QWidget();
-    //QGridLayout* ui->gridLayout = new QGridLayout(mainWidget);
     while(query.next()){
         TariffCard* card = new TariffCard();
         card->setMinimumSize(300, 460);
@@ -96,8 +90,6 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
 
     ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
     ui->scrollArea->setWidget(ui->scrollAreaWidgetContents);
-    //ui->gridLayout->addWidget(scrollArea);
-
 }
 
 void TariffsPage::FindTariffInDB(){

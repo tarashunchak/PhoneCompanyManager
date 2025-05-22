@@ -49,7 +49,7 @@ void InsertEmployeeDialog::InsertEmployeeToDB(){
     {
         QSqlQuery query;
         query.prepare("INSERT INTO Employees (first_name, last_name, phone, email, hire_date, "
-                      "						department_id, position_id, salary) "
+                      "department_id, position_id, salary) "
                       "VALUES(:fname, :lname, :phone, :email, :hdate, :d_id, :p_id, 0.0);");
         query.bindValue(":fname", first_name);
         query.bindValue(":lname", last_name);
