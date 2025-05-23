@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QSqlTableModel>
 #include "piechart.h"
+#include "barchart.h"
 #include "linechart.h"
 
 namespace Ui {
@@ -29,15 +30,17 @@ signals:
 private:
     void SetConnections();
     void SetTableViewStyle();
-    void SetCharts(const int);
+    void SetCharts(int);
     void editCustomerDataOn();
     void editCustomerDataOff();
 
 private:
     Ui::CustomersDetailsPage *ui;
     QSqlTableModel* qmodel;
-    PieChart* tariff_chart;
+    PieChart* tariff_pie_chart;
+    BarChart* tariff_bar_chart;
     LineChart* usage_chart;
+    static uint curr_cust_id;
 };
 
 #endif // CUSTOMERSDETAILSPAGE_H

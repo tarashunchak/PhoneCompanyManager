@@ -20,10 +20,10 @@ font-family:Lato;</string>
   <property name="modal">
    <bool>true</bool>
   </property>
-  <widget class="QPushButton" name="confirm_addition">
+  <widget class="QPushButton" name="confirm_addition_btn">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>170</x>
      <y>270</y>
      <width>100</width>
      <height>25</height>
@@ -44,12 +44,12 @@ QPushButton:hover{
     <string>Add to DB</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="header_label">
    <property name="geometry">
     <rect>
-     <x>145</x>
-     <y>30</y>
-     <width>161</width>
+     <x>140</x>
+     <y>20</y>
+     <width>160</width>
      <height>30</height>
     </rect>
    </property>
@@ -63,151 +63,199 @@ QPushButton:hover{
     <string>Add Tariff</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="tariff_name">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>100</y>
-     <width>320</width>
-     <height>25</height>
+     <x>30</x>
+     <y>50</y>
+     <width>381</width>
+     <height>208</height>
     </rect>
    </property>
+   <layout class="QVBoxLayout" name="verticalLayout_6">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <family>Lato</family>
+          <pointsize>-1</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font-size:18px;</string>
+        </property>
+        <property name="text">
+         <string>Tariff name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="tariff_name_lineEdit">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
+color:white;
+font-family:Lato, Consolas;
+font-size:18px;
+border-radius:4px;
+border:1px solid white;
+padding-left:4px;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <family>Lato</family>
+            <pointsize>-1</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-size:18px;</string>
+          </property>
+          <property name="text">
+           <string>Monthly price</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="daily_p_lineEdit">
+          <property name="styleSheet">
+           <string notr="true">background-color:rgba(200, 200, 200, 0.2);
+color:white;
+font-family:Lato, Consolas;
+font-size:18px;
+border-radius:4px;
+border:1px solid white;
+padding-left:4px;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <family>Lato</family>
+            <pointsize>-1</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-size:18px;</string>
+          </property>
+          <property name="text">
+           <string>Calls minutes</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="internet_GB_lineEdit">
+          <property name="styleSheet">
+           <string notr="true">background-color:rgba(200, 200, 200, 0.2);
+color:white;
+font-family:Lato, Consolas;
+font-size:18px;
+border-radius:4px;
+border:1px solid white;
+padding-left:4px;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <family>Lato</family>
+            <pointsize>-1</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-size:18px;</string>
+          </property>
+          <property name="text">
+           <string>Daily price</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="call_minutes_lineEdit">
+          <property name="styleSheet">
+           <string notr="true">background-color:rgba(200, 200, 200, 0.2);
+color:white;
+font-family:Lato, Consolas;
+font-size:18px;
+border-radius:4px;
+border:1px solid white;
+padding-left:4px;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <family>Lato</family>
+            <pointsize>-1</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-size:18px;</string>
+          </property>
+          <property name="text">
+           <string>Internet(GB)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="monthly_p_lineEdit">
+          <property name="styleSheet">
+           <string notr="true">background-color:rgba(200, 200, 200, 0.2);
+color:white;
+font-family:Lato, Consolas;
+font-size:18px;
+border-radius:4px;
+border:1px solid white;
+padding-left:4px;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
-  <widget class="QLineEdit" name="tariff_monthly_price">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>200</y>
-     <width>130</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="tariff_daily_price">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>150</y>
-     <width>130</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="tariff_call_minutes">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>200</y>
-     <width>130</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="tariff_internet_GB">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>150</y>
-     <width>130</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>75</y>
-     <width>88</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Tariff name</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>130</y>
-     <width>105</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Monthly price</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>180</y>
-     <width>80</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Daily price</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>130</y>
-     <width>101</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Calls minutes</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_6">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>180</y>
-     <width>97</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Internet(GB)</string>
-   </property>
-  </widget>
+  <zorder>confirm_addition_btn</zorder>
+  <zorder>tariff_name_lineEdit</zorder>
+  <zorder>monthly_p_lineEdit</zorder>
+  <zorder>daily_p_lineEdit</zorder>
+  <zorder>call_minutes_lineEdit</zorder>
+  <zorder>internet_GB_lineEdit</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_3</zorder>
+  <zorder>label_4</zorder>
+  <zorder>label_5</zorder>
+  <zorder>label_6</zorder>
+  <zorder>header_label</zorder>
  </widget>
  <resources/>
  <connections/>

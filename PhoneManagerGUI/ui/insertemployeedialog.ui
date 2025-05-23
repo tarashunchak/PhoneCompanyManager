@@ -17,19 +17,6 @@
    <string notr="true">background-color:rgb(25, 30, 35);
 font-family:Lato, Consolas;</string>
   </property>
-  <widget class="QLineEdit" name="phone_lineEdit">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>145</y>
-     <width>200</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border:1px solid rgba(255, 255, 255, 0.6);</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="header_label">
    <property name="geometry">
     <rect>
@@ -47,63 +34,6 @@ font-family:Lato, Consolas;</string>
    </property>
    <property name="text">
     <string>Add Employee</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="department_label">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>125</y>
-     <width>105</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Department</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="hire_date_label">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>230</y>
-     <width>80</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Hire date</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="fname_label">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>65</y>
-     <width>161</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>First name</string>
    </property>
   </widget>
   <widget class="QPushButton" name="confirm_addition">
@@ -130,169 +60,6 @@ QPushButton:hover{
     <string>Add to DB</string>
    </property>
   </widget>
-  <widget class="QLabel" name="phone_label">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>125</y>
-     <width>97</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Phone</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="position_label">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>180</y>
-     <width>101</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Position</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="first_name_lineEdit">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>90</y>
-     <width>200</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border:1px solid rgba(255, 255, 255, 0.6);</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="department_comboBox">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>145</y>
-     <width>200</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:#424242;
-border:none;
-font-size:16px;
-color:white;</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="position_comboBox">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>200</y>
-     <width>200</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:#424242;
-border:none;
-font-size:16px;
-color:white;</string>
-   </property>
-  </widget>
-  <widget class="QDateEdit" name="hire_date_dateEdit">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>260</y>
-     <width>130</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:#424242;
-border:none;
-font-size:16px;
-color:white;</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="email_lineEdit">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>200</y>
-     <width>200</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border:1px solid rgba(255, 255, 255, 0.6);</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="email_label">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>180</y>
-     <width>97</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Email</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lname_label">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>65</y>
-     <width>161</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Lato</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Last name</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="last_name_lineEdit">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>90</y>
-     <width>200</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border:1px solid rgba(255, 255, 255, 0.6);</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="incorrect_data_label">
    <property name="geometry">
     <rect>
@@ -312,6 +79,234 @@ background-color:transparent;
    <property name="text">
     <string>Incorrect data!!!</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>65</y>
+     <width>441</width>
+     <height>188</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="fname_label">
+        <property name="font">
+         <font>
+          <family>Lato</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>First name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="first_name_lineEdit">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
+color:white;
+font-family:Lato, Consolas;
+font-size:18px;
+border-radius:4px;
+border:1px solid white;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLabel" name="lname_label">
+        <property name="font">
+         <font>
+          <family>Lato</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Last name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="last_name_lineEdit">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
+color:white;
+font-family:Lato, Consolas;
+font-size:18px;
+border-radius:4px;
+border:1px solid white;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <widget class="QLabel" name="department_label">
+        <property name="font">
+         <font>
+          <family>Lato</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Department</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="department_comboBox">
+        <property name="styleSheet">
+         <string notr="true">background-color:#424242;
+border:none;
+font-size:18px;
+color:white;
+padding-left:6px;
+border-radius:5px;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="phone_label">
+        <property name="font">
+         <font>
+          <family>Lato</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Phone</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="phone_lineEdit">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
+color:white;
+font-family:Lato, Consolas;
+font-size:18px;
+border-radius:4px;
+border:1px solid white;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="2" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <widget class="QLabel" name="position_label">
+        <property name="font">
+         <font>
+          <family>Lato</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Position</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="position_comboBox">
+        <property name="styleSheet">
+         <string notr="true">background-color:#424242;
+border:none;
+font-size:18px;
+color:white;
+padding-left:6px;
+border-radius:5px;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="2" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="QLabel" name="email_label">
+        <property name="font">
+         <font>
+          <family>Lato</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Email</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="email_lineEdit">
+        <property name="styleSheet">
+         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
+color:white;
+font-family:Lato, Consolas;
+font-size:18px;
+border-radius:4px;
+border:1px solid white;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>260</y>
+     <width>141</width>
+     <height>59</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_7">
+    <item>
+     <widget class="QLabel" name="hire_date_label">
+      <property name="font">
+       <font>
+        <family>Lato</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Hire date</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDateEdit" name="hire_date_dateEdit">
+      <property name="styleSheet">
+       <string notr="true">background-color:#424242;
+border:none;
+font-size:18px;
+color:white;
+border-radius:5px;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+      <property name="calendarPopup">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

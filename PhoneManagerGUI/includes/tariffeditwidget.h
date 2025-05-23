@@ -14,9 +14,13 @@ class TariffEditWidget : public QWidget
 public:
     explicit TariffEditWidget(QWidget *parent = nullptr);
     ~TariffEditWidget();
+    void saveChanges();
+    void discardChanges();
+    void setTariffInformation(const uint);
 
 private:
     Ui::TariffEditWidget *ui;
+    uint tariff_id;
 };
 
 #endif // TARIFFEDITWIDGET_H

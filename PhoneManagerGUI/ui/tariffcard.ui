@@ -425,28 +425,45 @@ QPushButton:hover{
     <string>Edit data</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="active_inactive_swithc_btn">
    <property name="geometry">
     <rect>
-     <x>250</x>
-     <y>400</y>
-     <width>30</width>
-     <height>30</height>
+     <x>240</x>
+     <y>405</y>
+     <width>51</width>
+     <height>23</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
-	background-color:rgba(255, 255, 255, 0.3);
+	background-color:rgba(200, 200, 200, 0.2);
 	border-radius:4px;
 	color:white;
-	font-size:24px;
+	font-size:14px;
 }
 QPushButton:hover{
-	background-color:rgba(255, 255, 255, 0.5);
+	background-color:rgba(200, 200, 200, 0.3);
 }</string>
    </property>
    <property name="text">
-    <string>i</string>
+    <string>active</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="active_indicator">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>409</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:green;
+border-radius:8;</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

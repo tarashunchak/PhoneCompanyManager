@@ -15,6 +15,7 @@ TariffsPage::TariffsPage(QWidget *parent)
     ui->setupUi(this);
     setConnections();
     setTariffsCards();
+    tariff_edit_widget->setWindowModality(Qt::WindowModality::WindowModal);
 }
 
 TariffsPage::~TariffsPage()
@@ -24,19 +25,15 @@ TariffsPage::~TariffsPage()
 
 void TariffsPage::setCurrentUser(){
     QSqlQuery query;
-    query.prepare("SELECT Employees.full_name AS name, "
-                  "Positions.position_name AS position "
-                  "FROM Employees "
-                  "JOIN Positions ON Positions.id = Employees.position_id "
-                  "WHERE Employees.id = :empl_id;");
-    const int empl_id = CurrentUser::getCurrentUserID();
+    query.prepare("SELECT e.full_name AS name, "
+                  "p.position_name AS position "
+                  "FROM employees e"
+                  "JOIN positions p ON p.id = e.position_id "
+                  "WHERE e.id = :empl_id;");
+    const uint32_t empl_id = CurrentUser::getCurrentUserID();
     query.bindValue(":empl_id", empl_id);
     if(query.exec() && query.next()){
-        if(query.value("position").toString() == "Administrator"){
-            ui->add_tariff_btn->setVisible(true);
-        }else{
-            ui->add_tariff_btn->setVisible(false);
-        }
+        ui->add_tariff_btn->setVisible((query.value("position").toString() == "Administrator"));
     }else{
         qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
         return;
@@ -47,7 +44,6 @@ void TariffsPage::setCurrentUser(){
 void TariffsPage::setConnections()const{
     connect(ui->lineEdit, &QLineEdit::textChanged
             , this, &TariffsPage::FindTariffInDB);
-
     connect(this, &TariffsPage::on_add_tariff_btn_clicked
             , &insertT_Dialog, &InsertTariffDialog::exec);
 }
@@ -62,15 +58,16 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
     }
 
     if(!query.exec()){
-        query.prepare("SELECT * FROM Tariffs;");
+        query.prepare("SELECT * FROM tariffs;");
         if(!query.exec())
             qDebug() << "TariffsPage::setTariffsCards(QSqlQuery) query fault: " << query.lastError();
     }
 
-    int cols = 0;
-    int rows = 0;
-
+    uint8_t cols = 0;
+    uint8_t rows = 0;
+    uint32_t tariff_id{};
     while(query.next()){
+        tariff_id = query.value("id").toUInt();
         TariffCard* card = new TariffCard();
         card->setMinimumSize(300, 460);
         card->setTariffInfoFromQuery(query.record());
@@ -81,7 +78,10 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
             cols = 0;
             rows++;
         }
-        connect(card, &TariffCard::on_edit_btn_clicked, tariff_edit_widget, &QWidget::show);
+        connect(card, &TariffCard::on_edit_btn_clicked, this, [this, tariff_id](){
+            tariff_edit_widget->setTariffInformation(tariff_id);
+            tariff_edit_widget->show();
+        });
     }
     ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->gridLayout->setHorizontalSpacing(100);
@@ -94,8 +94,8 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
 
 void TariffsPage::FindTariffInDB(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM Tariffs "
-                  "WHERE tariff_name LIKE :name OR id = :id;");
+    query.prepare("SELECT * FROM tariffs "
+                  "WHERE LOWER(tariff_name) LIKE LOWER(:name) OR id = :id;");
     QString text{ui->lineEdit->text()};
     query.bindValue(":name", text + "%");
     query.bindValue(":id", text);

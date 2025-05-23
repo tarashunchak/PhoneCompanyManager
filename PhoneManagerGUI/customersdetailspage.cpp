@@ -8,13 +8,17 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CustomersDetailsPage)
     , qmodel(new QSqlTableModel{})
-    , tariff_chart(new PieChart{})
+    , tariff_pie_chart(new PieChart{})
+    , tariff_bar_chart(new BarChart{})
     , usage_chart(new LineChart{})
 {
     ui->setupUi(this);
 
-    tariff_chart->setParent(ui->tariffs_history);
-    tariff_chart->resize(ui->tariffs_history->size());
+    tariff_pie_chart->setParent(ui->tariffs_history);
+    tariff_pie_chart->resize(ui->tariffs_history->size());
+
+    tariff_bar_chart->setParent(ui->tariffs_history);
+    tariff_bar_chart->resize(ui->tariffs_history->size());
 
     usage_chart->setParent(ui->usage_history);
     usage_chart->resize(ui->usage_history->size());
@@ -29,15 +33,14 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     ui->delete_customer_btn->setStyleSheet("background-color:transparent;");
 
     SetConnections();
-    connect(ui->open_chat_btn, &QPushButton::clicked, this, [this](){
-        emit on_open_chat_btn_clicked(ui->phone_Label->text());
-    });
 }
 
 CustomersDetailsPage::~CustomersDetailsPage()
 {
     delete ui;
 }
+
+uint CustomersDetailsPage::curr_cust_id = 0;
 
 void CustomersDetailsPage::setCurrentUser(){
     QSqlQuery query;
@@ -51,15 +54,20 @@ void CustomersDetailsPage::setCurrentUser(){
 void CustomersDetailsPage::SetConnections(){
     connect(ui->return_btn, &QPushButton::clicked, this, [this](){emit on_return_btn_clicked();});
     connect(ui->edit_data_btn, &QPushButton::clicked, this, &CustomersDetailsPage::editCustomerDataOn);
+    connect(ui->open_chat_btn, &QPushButton::clicked, this, [this](){
+        emit on_open_chat_btn_clicked(ui->phone_Label->text());
+    });
+    connect(ui->charts_comboBox, &QComboBox::currentIndexChanged, this, &CustomersDetailsPage::SetCharts);
 }
 
 void CustomersDetailsPage::SetCustomerInfo(const int id){
+    curr_cust_id = id;
     QSqlQuery query;
     query.prepare("SELECT t.tariff_name AS tariff_name, * "
                   "FROM customers "
                   "JOIN tariffs t ON t.id = customers.tariff_id "
                   "WHERE customers.id = :id;");
-    query.bindValue(":id", id);
+    query.bindValue(":id", curr_cust_id);
 
     if(!query.exec() || !query.next()){
         qDebug() << "In CustomersDetailsPage::SetCustomersInfo fault!!!: " << query.lastError();
@@ -77,7 +85,7 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
 
     ui->tableView->setModel(qmodel);
 
-    SetCharts(id);
+    SetCharts(curr_cust_id);
 }
 
 void CustomersDetailsPage::SetTableViewStyle(){
@@ -95,18 +103,30 @@ void CustomersDetailsPage::SetTableViewStyle(){
     );
 }
 
-void CustomersDetailsPage::SetCharts(const int id){
+void CustomersDetailsPage::SetCharts(int id = -1){
     QSqlQuery tariff_query;
     tariff_query.prepare("SELECT t.tariff_name AS name, t.id AS id "
-                         "FROM customers c"
-                         "JOIN tariffs t ON t.id = c.tariff_id "
-                         "WHERE c.id = :id;");
-    tariff_query.bindValue(":id", id);
+                         "FROM customers "
+                         "JOIN tariffs t ON t.id = customers.tariff_id "
+                         "WHERE customers.id = :id;");
+    tariff_query.bindValue(":id", curr_cust_id);
     if(!tariff_query.exec()){
         qDebug() << "In CustomersDetailsPage::SetCustomersInfo::tariff_query fault!!!: " << tariff_query.lastError();
         return;
     }
-    tariff_chart->setQuery(std::move(tariff_query), "name", "id");
+
+    if(ui->charts_comboBox->currentIndex() == 1){
+        tariff_bar_chart->setVisible(false);
+        tariff_pie_chart->setVisible(true);
+        //tariff_pie_chart->resize(ui->tariffs_history->size());
+        tariff_pie_chart->setQuery(std::move(tariff_query), "name", "id");
+    }else{
+        tariff_pie_chart->setVisible(false);
+        tariff_bar_chart->setVisible(true);
+        //tariff_bar_chart->resize(ui->tariffs_history->size());
+        tariff_bar_chart->setQuery(tariff_query, "id");
+    }
+    return;
 
     QSqlQuery usage_query;
     usage_query.prepare("SELECT date(date) AS usage_date, COUNT(*) AS count FROM usage "
