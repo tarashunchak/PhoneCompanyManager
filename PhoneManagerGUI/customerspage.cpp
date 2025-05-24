@@ -15,6 +15,8 @@ CustomersPage::CustomersPage(QWidget *parent)
     SetCustomersCards();
     SetConnections();
 
+    ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
+
     ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->gridLayout->setHorizontalSpacing(34);
     ui->gridLayout->setVerticalSpacing(40);
@@ -95,9 +97,6 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
             rows++;
         }
     }
-
-    ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
-    ui->scrollArea->setWidget(ui->scrollAreaWidgetContents);
 }
 
 void CustomersPage::FindCustomersByName(){

@@ -21,7 +21,7 @@ class NavigationManager: public QObject
     Q_OBJECT
 public:
     NavigationManager(QStackedWidget*, QObject*, QWidget*);
-    ~NavigationManager();
+    ~NavigationManager() = default;
 
 public slots:
     void showLoginPage()const;

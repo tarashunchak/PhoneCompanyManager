@@ -27,55 +27,51 @@ TariffCard::~TariffCard()
     delete ui;
 }
 
+void TariffCard::SetActiveButtonStatement(bool is_active){
+    if(is_active){
+        ui->active_inactive_swithc_btn->setText("active");
+        ui->active_indicator->setStyleSheet("background-color:green; "
+                                            "border-radius:8px; "
+                                            "border: 1px solid white;");
+    }else{
+        ui->active_inactive_swithc_btn->setText("inactive");
+        ui->active_indicator->setStyleSheet("background-color:red; "
+                                            "border-radius:8px; "
+                                            "border: 1px solid black;");
+    }
+}
+
 void TariffCard::setConnections()const{
-    QString active_left{
+    static const QString left{
         "QPushButton{"
             "border-top-right-radius:0px;"
             "border-bottom-right-radius:0px;"
-            "background-color:transparent;"
+    };
+    static const QString right{
+        "QPushButton{"
+            "border-top-left-radius:0px;"
+            "border-bottom-left-radius:0px;"
+    };
+    static const QString both{
             "border:1px solid rgb(255, 255, 255);"
-            "color:white;"
         "}"
+    };
+    static const QString inactive{
         "QPushButton:hover{"
             "background-color:rgba(200, 200, 200, 0.3);"
         "}"
     };
-    QString inactive_left{
-        "QPushButton{"
-            "border-top-right-radius:0px;"
-            "border-bottom-right-radius:0px;"
-            "background-color:white;"
-            "border:1px solid rgb(255, 255, 255);"
-            "color:black;"
-        "}"
-    };
-    QString active_right{
-        "QPushButton{"
-            "border-top-left-radius:0px;"
-            "border-bottom-left-radius:0px;"
-            "background-color:transparent;"
-            "border:1px solid rgb(255, 255, 255);"
-            "color:white;"
-        "}"
-        "QPushButton:hover{"
-            "background-color:rgba(200, 200, 200, 0.3);"
-        "}"
-    };
-    QString inactive_right{
-        "QPushButton{"
-            "border-top-left-radius:0px;"
-            "border-bottom-left-radius:0px;"
-            "background-color:white;"
-            "border:1px solid rgb(255, 255, 255);"
-            "color:black;"
-        "}"
-    };
-    connect(ui->monthly_btn, &QPushButton::clicked, this, [=, this](){
+    static const QString active_right{right + "background-color:white;color:black;" + both};
+    static const QString inactive_right{right + "background-color:transparent;color:white;" + both + inactive};
+    static const QString active_left{left + "background-color:white;color:black;" + both};
+    static const QString inactive_left{left + "background-color:transparent;color:white;" + both + inactive};
+
+    connect(ui->monthly_btn, &QPushButton::clicked, this, [&, this](){
         ui->daily_price->setText("Monthly price");
         ui->monthly_btn->setStyleSheet(active_left);
         ui->daily_btn->setStyleSheet(inactive_right);
     });
-    connect(ui->daily_btn, &QPushButton::clicked, this, [=, this](){
+    connect(ui->daily_btn, &QPushButton::clicked, this, [&, this](){
         ui->daily_price->setText("Daily price");
         ui->daily_btn->setStyleSheet(active_right);
         ui->monthly_btn->setStyleSheet(inactive_left);
@@ -91,14 +87,7 @@ void TariffCard::setTariffInfoFromQuery(QSqlRecord record){
     ui->calls_label->setText(record.value("call_minutes").toString() + " min");
     ui->SMS_label->setText(record.value("messages").toString());
 
-    bool is_active = record.value("is_active").toBool();
-    if(is_active){
-        ui->active_inactive_swithc_btn->setText("active");
-        ui->active_indicator->setStyleSheet("background-color:green; border-radius:8px;");
-    }else{
-        ui->active_inactive_swithc_btn->setText("inactive");
-        ui->active_indicator->setStyleSheet("background-color:red; border-radius:8px;");
-    }
+    SetActiveButtonStatement(record.value("is_active").toBool());
 
     connect(ui->active_inactive_swithc_btn, &QPushButton::clicked, this, [this, tariff_id]{
         QSqlQuery query;
@@ -111,13 +100,7 @@ void TariffCard::setTariffInfoFromQuery(QSqlRecord record){
         if(!query.exec())
             qDebug() << "update tariff status fault";
 
-        if(ui->active_inactive_swithc_btn->text() == "inactive"){
-            ui->active_inactive_swithc_btn->setText("active");
-            ui->active_indicator->setStyleSheet("background-color:green; border-radius:8px;");
-        }else{
-            ui->active_inactive_swithc_btn->setText("inactive");
-            ui->active_indicator->setStyleSheet("background-color:red; border-radius:8px;");
-        }
+        SetActiveButtonStatement((ui->active_inactive_swithc_btn->text() == "inactive"));
     });
     connect(ui->daily_btn, &QPushButton::clicked, this, [this, record](){
         ui->price_label->setText(record.value("daily_price").toString() + "$");

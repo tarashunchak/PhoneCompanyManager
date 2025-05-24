@@ -29,45 +29,44 @@ void InsertCustomerDialog::clearWidgets(){
 
 void InsertCustomerDialog::updateComboBoxData(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM Tariffs;");
+    query.prepare("SELECT * FROM tariffs;");
     query.exec();
     while(query.next())
         ui->tariff_comboBox->addItem(query.value("tariff_name").toString()
-                                     , query.value("id").toInt());
+                                     , query.value("id").toUInt());
 }
 
 void InsertCustomerDialog::InsertCustomerToDB(){
+    static QSqlQuery query;
     QString fname = ui->first_name_lineEdit->text();
     QString lname = ui->last_name_lineEdit->text();
     QString phone = ui->phone_lineEdit->text();
     QString email = ui->email_lineEdit->text();
     QDate bday = ui->bday_dateEdit->date();
-    const int tariff_id = ui->tariff_comboBox->currentData().toInt();
+    const uint tariff_id = ui->tariff_comboBox->currentData().toUInt();
+    qDebug() << "tariff id = " << tariff_id;
     if(!fname.isEmpty()
         && !lname.isEmpty()
         && !phone.isEmpty())
     {
-        QSqlQuery query;
-        bool no_email = ui->email_lineEdit->text().isEmpty();
-        query.prepare("INSERT INTO customers "
-                      "(first_name, last_name, phone, date_of_B, tariff_id, email) "
-                      "VALUES(:fname, :lname, :phone, :bday, :tariff_id"
-                      + QString(!no_email ? ", :email);" : ", NULL);"));
+        query.prepare(R"(INSERT INTO customers(first_name, last_name, phone, date_of_B, tariff_id, email)
+                        VALUES(:fname, :lname, :phone, :bday, :tariff_id, :email))");
 
         query.bindValue(":fname", fname);
         query.bindValue(":lname", lname);
         query.bindValue(":phone", phone);
         query.bindValue(":bday", bday);
         query.bindValue(":tariff_id", tariff_id);
+        query.bindValue(":email", email.isEmpty() ? "NULL" : email);
 
-        if(!no_email)
-            query.bindValue(":email", email);
-
-        if(!query.exec())
+        if(!query.exec()){
             qDebug() << "InsertCustomerToDB() query fault: " << query.lastError();
-        ui->incorrect_data_label->setVisible(false);
-        clearWidgets();
-        this->close();
+            ui->incorrect_data_label->setVisible(true);
+        }else{
+            ui->incorrect_data_label->setVisible(false);
+            clearWidgets();
+            this->close();
+        }
     }else{
         ui->incorrect_data_label->setVisible(true);
     }

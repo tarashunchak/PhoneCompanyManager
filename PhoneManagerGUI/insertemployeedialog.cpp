@@ -22,14 +22,14 @@ InsertEmployeeDialog::~InsertEmployeeDialog()
 
 void InsertEmployeeDialog::updateComboBoxData(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM Departments;");
+    query.prepare("SELECT * FROM departments;");
     query.exec();
     while(query.next()){
         ui->department_comboBox->addItem(query.value("department_name").toString()
                                          , query.value("id").toInt());
     }
 
-    query.prepare("SELECT * FROM Positions;");
+    query.prepare("SELECT * FROM positions;");
     query.exec();
     while(query.next()){
         ui->position_comboBox->addItem(query.value("position_name").toString()
@@ -48,20 +48,20 @@ void InsertEmployeeDialog::InsertEmployeeToDB(){
         && !email.isEmpty())
     {
         QSqlQuery query;
-        query.prepare("INSERT INTO Employees (first_name, last_name, phone, email, hire_date, "
-                      "department_id, position_id, salary) "
-                      "VALUES(:fname, :lname, :phone, :email, :hdate, :d_id, :p_id, 0.0);");
+        query.prepare("INSERT INTO employees (first_name, last_name, phone, email, "
+                      "department_id, position_id) "
+                      "VALUES(:fname, :lname, :phone, :email, :d_id, :p_id);");
         query.bindValue(":fname", first_name);
         query.bindValue(":lname", last_name);
         query.bindValue(":phone", phone);
         query.bindValue(":email", email);
-        query.bindValue(":hdate", ui->hire_date_dateEdit->dateTime());
         query.bindValue(":d_id", ui->department_comboBox->currentData().toInt());
         query.bindValue(":p_id", ui->position_comboBox->currentData().toInt());
 
-        if(!query.exec())
+        if(!query.exec()){
             qDebug() << "InsertEmployeeDialog::InsertEmployeeToDB() query fault: " << query.lastError();
-        else{
+            ui->incorrect_data_label->setVisible(true);
+        }else{
             ui->incorrect_data_label->setVisible(false);
             clearWidgets();
             this->close();

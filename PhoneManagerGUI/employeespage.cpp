@@ -15,6 +15,7 @@ EmployeesPage::EmployeesPage(QWidget *parent)
     insert_employee_dialog->setModal(true);
     SetConnections();
     SetEmployeesCards();
+    ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
 
     ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->gridLayout->setHorizontalSpacing(34);
@@ -54,12 +55,18 @@ void EmployeesPage::setCurrentUser()const{
 }
 
 void EmployeesPage::FindEmployeesByName(){
+    static bool ok;
+    const uint input = ui->lineEdit->text().toUInt(&ok);
     QSqlQuery query;
     query.prepare("SELECT * FROM employees "
-                  "WHERE first_name LIKE LOWER(:name) "
-                  "OR last_name LIKE LOWER(:name) OR id = :id");
+                  "WHERE LOWER(first_name) LIKE LOWER(:name) "
+                  "OR LOWER(last_name) LIKE LOWER(:name) "
+                  "OR LOWER(first_name || ' ' || last_name) LIKE LOWER(:name) "
+                          + QString{ok ? "OR id = :id;" : ";"});
+
     query.bindValue(":name", ui->lineEdit->text() + "%");
-    query.bindValue(":id", ui->lineEdit->text());
+    if(ok)
+        query.bindValue(":id", input);
     SetEmployeesCards(std::move(query));
 }
 
@@ -123,7 +130,4 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
             rows++;
         }
     }
-
-    ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
-    ui->scrollArea->setWidget(ui->scrollAreaWidgetContents);
 }

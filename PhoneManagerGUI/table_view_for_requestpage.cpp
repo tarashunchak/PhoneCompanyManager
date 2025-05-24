@@ -46,6 +46,7 @@ void RequestsPage::showUnassignmentRequests(){
         QList<QStandardItem*> items;
         for (int col = 0; col < query.record().count(); ++col) {
             items.append(new QStandardItem{query.value(col).toString()});
+            items[col]->setFlags(Qt::ItemIsEnabled);
         }
         items.append(new QStandardItem{"Assign to me"});
         model->appendRow(items);
@@ -61,7 +62,7 @@ void RequestsPage::showUnassignmentRequests(){
 
         req_tableView->setModel(model);
         req_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        //req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
         req_tableView->setStyleSheet(
             "font-family:Consolas;"
@@ -101,13 +102,14 @@ void RequestsPage::showInProgressRequests()const{
             QList<QStandardItem*> items;
             for(int col = 0; col < query.record().count(); ++col){
                 items.append(new QStandardItem{query.value(col).toString()});
+                items[col]->setFlags(Qt::ItemIsEnabled);
             }
             items.append(new QStandardItem{"Action"});
             model->appendRow(items);
         }
         req_tableView->setModel(model);
         req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, new ComboBoxDelegate{});
-        req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        //req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
         QStringList headers{};
         for (int i = 0; i < query.record().count(); ++i) {
@@ -136,7 +138,7 @@ void RequestsPage::showCompletedRequests(){
     qmodel->setQuery(std::move(query));
 
     req_tableView->setModel(qmodel);
-    req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, nullptr);
     setActiveButton(ui->unassigned_req_btn, false);
     setActiveButton(ui->in_progress_req_btn, false);

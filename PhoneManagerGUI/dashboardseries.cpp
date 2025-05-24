@@ -7,11 +7,11 @@ void Dashboard::setCustomersStatistics(){
     QSqlQuery query;
     QString interval{ui->cust_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
     if (ui->cust_date_comboBox->currentIndex()) {
-        query.prepare("SELECT COUNT(*) AS cust_count FROM Customers "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE, '" + interval + "') "
+        query.prepare("SELECT COUNT(*) AS cust_count FROM customers "
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE + INTERVAL '" + interval + "') "
                       "GROUP BY date ORDER BY date DESC;");
     }else {
-        query.prepare("SELECT COUNT(*) AS cust_count FROM Customers "
+        query.prepare("SELECT COUNT(*) AS cust_count FROM customers "
                       "WHERE DATE(date) = DATE(CURRENT_DATE) "
                       "GROUP BY date ORDER BY date DESC;");
     }
@@ -25,11 +25,11 @@ void Dashboard::setRequestsStatistics(){
     QSqlQuery query;
     QString interval{ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
     if(ui->req_date_comboBox->currentIndex()){
-        query.prepare("SELECT COUNT(*) AS req_count FROM Requests "
-                          "WHERE date >= DATE(CURRENT_DATE, '" + interval + "') "
+        query.prepare("SELECT COUNT(*) AS req_count FROM requests "
+                          "WHERE date >= DATE(CURRENT_DATE + INTERVAL '" + interval + "') "
                           "GROUP BY date ORDER BY date;");
     }else{
-        query.prepare("SELECT COUNT(*) AS req_count FROM Requests "
+        query.prepare("SELECT COUNT(*) AS req_count FROM requests "
                 "WHERE date = CURRENT_DATE "
                 "GROUP BY date ORDER BY date;");
     }
@@ -41,25 +41,32 @@ void Dashboard::setRequestsStatistics(){
 
 void Dashboard::setTariffsStatistics(){
     QSqlQuery query;
-    query.prepare("SELECT COUNT(c.id) AS count, Tariffs.tariff_name AS name "
-                  "FROM Tariffs "
-                  "JOIN customers c ON c.tariff_id = Tariffs.id "
-                  "GROUP BY Tariffs.tariff_name;");
+    query.prepare("SELECT COUNT(c.id) AS count, tariffs.tariff_name AS name "
+                  "FROM tariffs "
+                  "JOIN customers c ON c.tariff_id = tariffs.id "
+                  "GROUP BY tariffs.tariff_name;");
     if(!query.exec()){
         qDebug() << "SetTariffsStatistics() fault: " << query.lastError();
         return;
     }
-    tariff_pie_chart->setQuery(std::move(query), "name", "count");
-    tariff_pie_chart->resize(ui->tariff_statistics->size());
+    if(ui->charts_comboBox->currentIndex()){
+        tariff_bar_chart->setVisible(false);
+        tariff_pie_chart->setVisible(true);
+        tariff_pie_chart->setQuery(std::move(query), "name", "count");
+    }else{
+        tariff_pie_chart->setVisible(false);
+        tariff_bar_chart->setVisible(true);
+        tariff_bar_chart->setQuery(query, "count", "name");
+    }
 }
 
 void Dashboard::setRequestsHistory(){
     QString limit{std::to_string((ui->requests_period_comboBox->currentIndex() + 1) * 10).c_str()};
     QSqlQuery query;
-    query.prepare("SELECT Requests.id AS ID, c.phone AS Phone,"
-                  "Requests.date AS Date FROM Requests "
-                  "JOIN customers c ON c.id = Requests.cust_id "
-                  "ORDER BY Requests.id DESC LIMIT " + limit + ";");
+    query.prepare("SELECT requests.id AS ID, c.phone AS Phone,"
+                  "requests.date AS Date FROM requests "
+                  "JOIN customers c ON c.id = requests.cust_id "
+                  "ORDER BY requests.id DESC LIMIT " + limit + ";");
     if(!query.exec()){
         qDebug() << "setRequestsHistory() fault: " << query.lastError();
         return;

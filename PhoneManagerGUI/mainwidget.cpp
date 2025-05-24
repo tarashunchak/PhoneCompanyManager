@@ -14,8 +14,9 @@ MainWidget::MainWidget(QWidget *parent)
     , calculator(new Calculator{})
 {
     ui->setupUi(this);
-    webSocket->open(QUrl{"ws://192.168.1.103:8080/ws"});    ui->close_open_chat_btn->setIcon(QIcon{"./img/chat.svg"});
-    ui->logo_label->setPixmap({"./img/company_name.svg"});
+    webSocket->open(QUrl{"ws://192.168.1.103:8080/ws"});
+    ui->close_open_chat_btn->setIcon(QIcon{"./img/chat.svg"});
+    ui->logo_label->setPixmap({"./img/NeoCom.svg"});
     ui->close_open_calc_btn->setIcon(QIcon{"./img/calculator.svg"});
     ui->profile_pic->setPixmap(QPixmap{"./img/profile_photo.svg"});
     navigation_manager = new NavigationManager{ui->stackedWidget, this, ui->side_bar_menu};
@@ -57,11 +58,15 @@ MainWidget::~MainWidget()
 
 void MainWidget::SetCurrentUserInfo(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM Employees WHERE id = :id;");
+    query.prepare("SELECT * FROM employees WHERE id = :id;");
     query.bindValue(":id", CurrentUser::getCurrentUserID());
     if(!query.exec() || !query.next()){
         qDebug() << "MainWidget::SetCurrentUserInfo() query fault!: " << query.lastError();
     }
+    QByteArray byteArr{query.value("photo").toByteArray()};
+    QPixmap pixmap{};
+    pixmap.loadFromData(byteArr);
+    ui->profile_pic->setPixmap(pixmap.isNull() ? QPixmap{"./img/profile_photo.svg"} : pixmap);
     ui->name_label->setText(query.value("first_name").toString()
                             + " " + query.value("last_name").toString());
 }

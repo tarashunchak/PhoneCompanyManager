@@ -2,8 +2,6 @@
 #define BARCHART_H
 
 #include <QWidget>
-#include <QList>
-#include <QBarSet>
 #include <QSqlQuery>
 #include <QChartView>
 #include <QBarSeries>
@@ -16,7 +14,7 @@ public:
     [[nodiscard]] BarChart();
     ~BarChart();
     void resize(const QSize&);
-    [[nodiscard]] bool setQuery(QSqlQuery&, const QString&);
+    [[nodiscard]] bool setQuery(QSqlQuery&, const QString&, const QString& label = "");
 private:
     QChartView* chart_view = nullptr;
     QBarSeries* bar_series = nullptr;

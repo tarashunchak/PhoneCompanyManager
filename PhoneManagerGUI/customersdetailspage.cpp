@@ -124,7 +124,7 @@ void CustomersDetailsPage::SetCharts(int id = -1){
         tariff_pie_chart->setVisible(false);
         tariff_bar_chart->setVisible(true);
         //tariff_bar_chart->resize(ui->tariffs_history->size());
-        tariff_bar_chart->setQuery(tariff_query, "id");
+        tariff_bar_chart->setQuery(tariff_query, "id", "name");
     }
     return;
 

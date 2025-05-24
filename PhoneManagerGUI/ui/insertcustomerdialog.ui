@@ -17,6 +17,9 @@
    <string notr="true">background-color:rgb(25, 30, 35);
 font-family:Lato, Consolas;</string>
   </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <widget class="QLabel" name="header_label">
    <property name="geometry">
     <rect>
@@ -80,7 +83,7 @@ background-color:transparent;
     <string>Incorrect data!!!</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>

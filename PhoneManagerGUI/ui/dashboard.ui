@@ -33,9 +33,9 @@ background-color:rgba(150, 150, 150, 1);</string>
    <property name="geometry">
     <rect>
      <x>39</x>
-     <y>540</y>
-     <width>1051</width>
-     <height>501</height>
+     <y>520</y>
+     <width>1050</width>
+     <height>520</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -51,7 +51,7 @@ background-color:#16171C;</string>
       <x>20</x>
       <y>50</y>
       <width>1010</width>
-      <height>430</height>
+      <height>450</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -140,9 +140,9 @@ border-radius:2px;</string>
    <property name="geometry">
     <rect>
      <x>1120</x>
-     <y>540</y>
+     <y>520</y>
      <width>511</width>
-     <height>501</height>
+     <height>520</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -180,7 +180,7 @@ border:none;</string>
       <x>20</x>
       <y>50</y>
       <width>470</width>
-      <height>430</height>
+      <height>450</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -257,16 +257,16 @@ background-color:transparent;</string>
    <widget class="QComboBox" name="req_date_comboBox">
     <property name="geometry">
      <rect>
-      <x>411</x>
+      <x>405</x>
       <y>14</y>
-      <width>81</width>
-      <height>24</height>
+      <width>90</width>
+      <height>26</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">padding-left: 10px;
 font-family:Robotic;
-font-size:13px;
+font-size:14px;
 color:black;
 background-color:white;
 border-radius:0px;</string>
@@ -290,10 +290,10 @@ border-radius:0px;</string>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>0</x>
       <y>10</y>
-      <width>161</width>
-      <height>31</height>
+      <width>510</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="font">
@@ -304,10 +304,14 @@ border-radius:0px;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color:white;
-font-family: Lato;</string>
+font-family: Lato, Consolas;
+background-color:transparent;</string>
     </property>
     <property name="text">
      <string>Request Activity</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
   </widget>
@@ -316,7 +320,7 @@ font-family: Lato;</string>
     <rect>
      <x>580</x>
      <y>30</y>
-     <width>511</width>
+     <width>510</width>
      <height>461</height>
     </rect>
    </property>
@@ -342,16 +346,16 @@ background-color:transparent;</string>
    <widget class="QComboBox" name="cust_date_comboBox">
     <property name="geometry">
      <rect>
-      <x>412</x>
+      <x>405</x>
       <y>14</y>
-      <width>81</width>
-      <height>24</height>
+      <width>90</width>
+      <height>26</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">padding-left: 10px;
 font-family:Robotic;
-font-size:13px;
+font-size:14px;
 color:black;
 background-color:white;
 border-radius:0px;</string>
@@ -375,9 +379,9 @@ border-radius:0px;</string>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>10</y>
-      <width>331</width>
+      <x>0</x>
+      <y>14</y>
+      <width>510</width>
       <height>31</height>
      </rect>
     </property>
@@ -389,12 +393,19 @@ border-radius:0px;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color:white;
-font-family: Lato;</string>
+font-family: Lato, Consolas;
+background-color:transparent;</string>
     </property>
     <property name="text">
-     <string>Customers Registration Overview</string>
+     <string>New Customers Overview</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
+   <zorder>label_4</zorder>
+   <zorder>customers_statistic</zorder>
+   <zorder>cust_date_comboBox</zorder>
   </widget>
   <widget class="QWidget" name="tariffs_statistic_box" native="true">
    <property name="geometry">
@@ -428,10 +439,10 @@ background-color:transparent;</string>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>165</x>
+      <x>0</x>
       <y>10</y>
-      <width>191</width>
-      <height>31</height>
+      <width>510</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="font">
@@ -442,11 +453,49 @@ background-color:transparent;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color:white;
-font-family: Lato;</string>
+font-family: Lato, Consolas;
+background-color:transparent;</string>
     </property>
     <property name="text">
      <string>Top Tariff By Usage</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="charts_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>405</x>
+      <y>14</y>
+      <width>90</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Robotic</family>
+      <pointsize>-1</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">padding-left: 10px;
+font-family:Robotic;
+font-size:14px;
+color:black;
+background-color:white;
+border-radius:0px;</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Bar chart</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Pie chart</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QLabel" name="empty_req_stat">

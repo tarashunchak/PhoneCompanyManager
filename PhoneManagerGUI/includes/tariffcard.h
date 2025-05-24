@@ -24,6 +24,9 @@ signals:
     void on_edit_btn_clicked();
 
 private:
+    void SetActiveButtonStatement(bool);
+
+private:
     Ui::TariffCard *ui;
 };
 

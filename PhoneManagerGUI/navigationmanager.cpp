@@ -36,9 +36,6 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent, Q
     setUpNavigation();
 }
 
-NavigationManager::~NavigationManager(){
-}
-
 void NavigationManager::setUpNavigation(){
     //Login Page Signals/Slots connections
     connect(loginPage, &LoginPage::login_succsess, this, &NavigationManager::showDashboardPage);

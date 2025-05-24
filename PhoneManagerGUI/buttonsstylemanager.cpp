@@ -32,6 +32,11 @@ void ButtonsStyleManager::SetLeftMenuIcons(QList<QPushButton*>* buttons){
 }
 
 void ButtonsStyleManager::SetActiveButton(LEFT_SIDE_MENU active_button){
+    static const QString hover{
+                "QPushButton:hover {"
+                "background-color: rgba(87, 91, 129, 1);"
+                "}"};
+
     for(int i = 0; i < buttons_list->size(); ++i){
         if(i == static_cast<int>(LEFT_SIDE_MENU::DASHBOARD_BTN)){
             if(i == static_cast<int>(active_button)){
@@ -44,11 +49,7 @@ void ButtonsStyleManager::SetActiveButton(LEFT_SIDE_MENU active_button){
                         "font-size: 24px;"
                         "color: white;"
                         "text-align: center;"
-                    "}"
-                    "QPushButton:hover {"
-                        "background-color: rgba(87, 91, 129, 1);"
-                    "}"
-                );
+                    "}" + hover);
             }else{
                 buttons_list->at(i)->setStyleSheet(
                     "QPushButton { "
@@ -59,11 +60,7 @@ void ButtonsStyleManager::SetActiveButton(LEFT_SIDE_MENU active_button){
                         "font-size: 24px;"
                         "color: white;"
                         "text-align: center;"
-                        "}"
-                    "QPushButton:hover {"
-                        "background-color: rgba(87, 91, 129, 1);"
-                    "}"
-                );
+                    "}" + hover);
             }
         }else{
             if(i == static_cast<int>(active_button)){
@@ -77,11 +74,7 @@ void ButtonsStyleManager::SetActiveButton(LEFT_SIDE_MENU active_button){
                     "font-size: 24px;"
                     "color: white;"
                     "text-align: left;"
-                "}"
-                "QPushButton:hover {"
-                    "background-color: rgba(87, 91, 129, 1);"
-                "}"
-                );
+                "}" + hover);
             }else{
                 buttons_list->at(i)->setStyleSheet(
                 "QPushButton {"
@@ -93,11 +86,7 @@ void ButtonsStyleManager::SetActiveButton(LEFT_SIDE_MENU active_button){
                     "font-size: 24px;"
                     "color: white;"
                     "text-align: left;"
-                "}"
-                "QPushButton:hover {"
-                    "background-color: rgba(87, 91, 129, 1);"
-                "}"
-                );
+                "}" + hover);
             }
         }
     }

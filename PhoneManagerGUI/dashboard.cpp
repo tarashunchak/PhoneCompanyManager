@@ -12,6 +12,7 @@ Dashboard::Dashboard(QWidget *parent)
     , cust_bar_chart(new BarChart{})
     , req_bar_chart(new BarChart{})
     , tariff_pie_chart(new PieChart{})
+    , tariff_bar_chart(new BarChart{})
     //, chat(new Chat{})
 {
     ui->setupUi(this);
@@ -25,6 +26,9 @@ Dashboard::Dashboard(QWidget *parent)
     req_bar_chart->setParent(ui->requests_statistic);
     cust_bar_chart->setParent(ui->customers_statistic);
     tariff_pie_chart->setParent(ui->tariff_statistics);
+    tariff_bar_chart->setParent(ui->tariff_statistics);
+    tariff_pie_chart->resize(ui->tariff_statistics->size());
+    tariff_bar_chart->resize(ui->tariff_statistics->size());
 
     setTableViewConnection();
     setCustomersStatistics();
@@ -43,6 +47,7 @@ Dashboard::Dashboard(QWidget *parent)
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
     connect(ui->customers_period_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setTableViewConnection);
     connect(ui->requests_period_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsHistory);
+    connect(ui->charts_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setTariffsStatistics);
 }
 
 Dashboard::~Dashboard(){
@@ -52,7 +57,7 @@ Dashboard::~Dashboard(){
 QLabel* Dashboard::is_empty_label = nullptr;
 
 void Dashboard::setTableViewConnection(){
-    cust_qmodel->setQuery("SELECT * FROM Customers ORDER BY date DESC LIMIT " +
+    cust_qmodel->setQuery("SELECT * FROM customers ORDER BY date DESC LIMIT " +
                           QString{std::to_string((ui->customers_period_comboBox->currentIndex()+1)*10).c_str()} + ";");
     ui->tableView->setModel(cust_qmodel);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
