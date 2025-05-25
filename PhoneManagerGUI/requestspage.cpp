@@ -19,8 +19,6 @@ RequestsPage::RequestsPage(QWidget *parent)
     ui->save_btn->raise();
     ui->save_btn->raise();
     ui->scrollArea->setWidgetResizable(true);
-    //ui->tableView->setModel(qmodel);
-    //setTableView();
     SetConnections();
 }
 
@@ -33,6 +31,7 @@ void RequestsPage::SetConnections()const{
     connect(ui->unassigned_req_btn, &QPushButton::clicked, this, &RequestsPage::showUnassignmentRequests);
     connect(ui->in_progress_req_btn, &QPushButton::clicked, this, &RequestsPage::showInProgressRequests);
     connect(ui->complete_req_btn, &QPushButton::clicked, this, &RequestsPage::showCompletedRequests);
+    connect(ui->history_btn, &QPushButton::clicked, this, &RequestsPage::showRequestsHistory);
     connect(ui->save_btn, &QPushButton::clicked, this, [this](){
         QSqlQuery query;
         QAbstractItemModel* model = req_tableView->model();

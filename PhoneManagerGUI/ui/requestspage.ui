@@ -40,30 +40,6 @@
       <height>968</height>
      </rect>
     </property>
-    <widget class="QLabel" name="label_2">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>690</x>
-       <y>445</y>
-       <width>290</width>
-       <height>70</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font-family:Lato, Consolas;
-font-size:46px;
-color:black;
-background:transparent;
-border:none;
-</string>
-     </property>
-     <property name="text">
-      <string>No Requests!</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="save_btn">
      <property name="geometry">
       <rect>
@@ -190,11 +166,60 @@ QPushButton:hover{
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="history_btn">
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+height:40px;
+color:black;
+font-family:Lato, Consolas;
+font-size:22px;
+background-color:rgb(220, 220, 220);
+border-top-left-radius:5px;
+border-top-right-radius:5px;
+}
+QPushButton:hover{
+	background-color:white;
+}</string>
+      </property>
+      <property name="text">
+       <string>History</string>
+      </property>
+     </widget>
+    </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="no_requests_label">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>110</y>
+     <width>1670</width>
+     <height>970</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font-family:Lato, Consolas;
+font-size:54px;
+color:black;
+background:transparent;
+border:none;
+</string>
+   </property>
+   <property name="text">
+    <string>No Requests!</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
   </widget>
   <zorder>layoutWidget</zorder>
   <zorder>label</zorder>
   <zorder>scrollArea</zorder>
+  <zorder>no_requests_label</zorder>
  </widget>
  <resources/>
  <connections/>

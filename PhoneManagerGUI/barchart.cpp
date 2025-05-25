@@ -3,6 +3,9 @@
 #include <QSqlError>
 #include <QList>
 #include <QBarSet>
+#include <QBarCategoryAxis>
+#include <QDateTimeAxis>
+#include <QDate>
 
 BarChart::BarChart()
         : chart_view(new QChartView{this})
@@ -11,10 +14,9 @@ BarChart::BarChart()
 {
     bar_series->setBarWidth(1);
     chart->setTheme(QChart::ChartThemeHighContrast);
-    chart->setAnimationOptions(QChart::AllAnimations);
+    chart->setAnimationOptions(QChart::SeriesAnimations);
 
     chart_view->setChart(chart);
-    //chart_view->setParent(this);
     chart->addSeries(bar_series);
 }
 
@@ -26,18 +28,13 @@ BarChart::BarChart(QWidget* parent)
 {
     bar_series->setBarWidth(1);
     chart->setTheme(QChart::ChartThemeHighContrast);
-    chart->setAnimationOptions(QChart::AllAnimations);
+    chart->setAnimationOptions(QChart::SeriesAnimations);
 
     chart_view->setChart(chart);
-    //chart_view->setParent(this);
     chart->addSeries(bar_series);
 }
 
 BarChart::~BarChart(){
-    //chart->removeSeries(bar_series);
-    //delete bar_series;
-    //delete chart;
-    //delete chart_view;
 }
 
 void BarChart::resize(const QSize& size){
@@ -52,8 +49,14 @@ bool BarChart::setQuery(QSqlQuery& query, const QString& field_name, const QStri
 
     bar_series->clear();
 
+    QStringList string_list;
     while(query.next()){
-        QBarSet* bar_set = new QBarSet{query.value(label).toString()};
+        QString raw_label{query.value(label == "" ? field_name : label).toString()};
+        QDate date{QDate::fromString(raw_label, "yyyy-MM-dd")};
+        QString formatted_label{date.toString("MM-dd")};
+
+        QBarSet* bar_set = new QBarSet{query.value(field_name).toString()};
+        string_list << formatted_label;
 
         connect(bar_set, &QBarSet::hovered, this, [bar_set](bool is_hovered){
             QColor color = bar_set->color();
@@ -71,11 +74,20 @@ bool BarChart::setQuery(QSqlQuery& query, const QString& field_name, const QStri
             qDebug() << "bar_series cannot append bar_set!";
         }
     }
+
     if(!bar_series->count()){
         return false;
     }
+
     chart->removeSeries(bar_series);
     chart->addSeries(bar_series);
     chart_view->setChart(chart);
+    chart->createDefaultAxes();
+
+    QBarCategoryAxis* axisX = new QBarCategoryAxis{};
+    axisX->append(string_list);
+    //axisX->setTitleText("");
+    chart->addAxis(axisX, Qt::AlignBottom);
+
     return true;
 }

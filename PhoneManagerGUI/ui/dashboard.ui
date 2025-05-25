@@ -32,7 +32,7 @@ background-color:rgba(150, 150, 150, 1);</string>
   <widget class="QWidget" name="last_reg_cust" native="true">
    <property name="geometry">
     <rect>
-     <x>39</x>
+     <x>40</x>
      <y>520</y>
      <width>1050</width>
      <height>520</height>
@@ -58,22 +58,13 @@ background-color:#16171C;</string>
      <string notr="true">QTableView{
 	font-family:Lato;
 	font-size:16px;
-	background-color: rgba(225, 225, 225, 1);
+	background-color: white;
 	color:black;
 	border:none;
-	border-radius:0px;
+	border-top-left-radius:10px;
+	border-top-right-radius:10px;
 }
 
-QHeaderView:section {
-	height: 40px;
-	border:1px solid rgba(30, 30, 30, 0.4);
-    background-color: rgba(225, 225, 225, 1);
-    color: black;
-    font-family: Lato;
-    font-size: 18px;
-    font-weight: bold;
-    
-}    
 </string>
     </property>
    </widget>
@@ -184,11 +175,17 @@ border:none;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-radius: 0px;
-background-color:white;
-color:black;
-font-size:16px;
-font-family:Lato;</string>
+     <string notr="true">QTableView{
+	font-family:Lato;
+	font-size:16px;
+	background-color: white;
+	color:black;
+	border:none;
+	border-top-left-radius:10px;
+	border-top-right-radius:10px;
+}
+
+</string>
     </property>
    </widget>
    <widget class="QComboBox" name="requests_period_comboBox">
@@ -314,6 +311,9 @@ background-color:transparent;</string>
      <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
+   <zorder>label_5</zorder>
+   <zorder>requests_statistic</zorder>
+   <zorder>req_date_comboBox</zorder>
   </widget>
   <widget class="QWidget" name="customers_statistic_box" native="true">
    <property name="geometry">
@@ -463,40 +463,6 @@ background-color:transparent;</string>
      <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QComboBox" name="charts_comboBox">
-    <property name="geometry">
-     <rect>
-      <x>405</x>
-      <y>14</y>
-      <width>90</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Robotic</family>
-      <pointsize>-1</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">padding-left: 10px;
-font-family:Robotic;
-font-size:14px;
-color:black;
-background-color:white;
-border-radius:0px;</string>
-    </property>
-    <item>
-     <property name="text">
-      <string>Bar chart</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Pie chart</string>
-     </property>
-    </item>
-   </widget>
   </widget>
   <widget class="QLabel" name="empty_req_stat">
    <property name="geometry">
@@ -526,6 +492,27 @@ background-color:transparent;</string>
      <y>80</y>
      <width>511</width>
      <height>391</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:black;
+font-size:50px;
+background-color:transparent;</string>
+   </property>
+   <property name="text">
+    <string>No Info</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="empty_cust_model">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>570</y>
+     <width>1010</width>
+     <height>450</height>
     </rect>
    </property>
    <property name="styleSheet">

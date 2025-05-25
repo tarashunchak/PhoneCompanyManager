@@ -53,7 +53,6 @@ void InsertTariffDialog::InsertTariffToDB(){
             qDebug() << "Insert tariff to DB fault!" << query.lastError();
         }else{
             clearWidgets();
-            this->close();
         }
     }
 }

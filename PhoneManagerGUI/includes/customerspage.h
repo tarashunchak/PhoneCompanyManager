@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QSqlQuery>
 #include "insertcustomerdialog.h"
+#include <QPropertyAnimation>
 
 namespace Ui {
 class CustomersPage;
@@ -17,6 +18,7 @@ public:
     explicit CustomersPage(QWidget *parent = nullptr);
     ~CustomersPage();
     void SetCustomersCards(QSqlQuery query = QSqlQuery());
+    void updateFilterWidgets();
 
 signals:
     void customer_selected(const int);
@@ -24,10 +26,15 @@ signals:
 private: /*Methods*/
     void FindCustomersByName();
     void SetConnections();
+    void fillTariffsComboBox();
+    void fillEmployeesComboBox();
+    void open_close_filter_widget();
+    void apply_filters();
 
 private:
     Ui::CustomersPage *ui;
     InsertCustomerDialog* insert_customer_dialog;
+    QPropertyAnimation* filter_animation;
 };
 
 #endif // CUSTOMERSPAGE_H

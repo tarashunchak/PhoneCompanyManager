@@ -12,57 +12,79 @@ Dashboard::Dashboard(QWidget *parent)
     , cust_bar_chart(new BarChart{})
     , req_bar_chart(new BarChart{})
     , tariff_pie_chart(new PieChart{})
-    , tariff_bar_chart(new BarChart{})
-    //, chat(new Chat{})
 {
     ui->setupUi(this);
-
-    if(!is_empty_label){
-        is_empty_label = new QLabel{"No Info"};
-        is_empty_label->setStyleSheet("color: black; font-size: 40px;");
-        is_empty_label->setAlignment(Qt::AlignCenter);
-    }
 
     req_bar_chart->setParent(ui->requests_statistic);
     cust_bar_chart->setParent(ui->customers_statistic);
     tariff_pie_chart->setParent(ui->tariff_statistics);
-    tariff_bar_chart->setParent(ui->tariff_statistics);
     tariff_pie_chart->resize(ui->tariff_statistics->size());
-    tariff_bar_chart->resize(ui->tariff_statistics->size());
 
     setTableViewConnection();
     setCustomersStatistics();
     setRequestsStatistics();
     setTariffsStatistics();
     setRequestsHistory();
-
-    //chat->setStyleSheet("border-radius:8px;");
-    //chat->setParent(this);
-    //chat->setVisible(false);
-    //chat->setGeometry(this->size().width()-60 - chat->size().width()
-    //                  ,this->size().height()-60 - chat->size().height()
-    //                  ,chat->size().width(), chat->size().height());
+    setTableViewStyles();
 
     connect(ui->req_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsStatistics);
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
     connect(ui->customers_period_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setTableViewConnection);
     connect(ui->requests_period_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsHistory);
-    connect(ui->charts_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setTariffsStatistics);
 }
 
 Dashboard::~Dashboard(){
     delete ui;
 }
 
-QLabel* Dashboard::is_empty_label = nullptr;
-
-void Dashboard::setTableViewConnection(){
-    cust_qmodel->setQuery("SELECT * FROM customers ORDER BY date DESC LIMIT " +
-                          QString{std::to_string((ui->customers_period_comboBox->currentIndex()+1)*10).c_str()} + ";");
+void Dashboard::setTableViewStyles(){
     ui->tableView->setModel(cust_qmodel);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->requests_statistic_tableView->setModel(req_qmodel);
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->requests_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableView->setColumnWidth(0, 80);
+    ui->tableView->setColumnWidth(1, 223);
+    ui->tableView->setColumnWidth(2, 223);
+    ui->tableView->setColumnWidth(3, 81);
+    ui->tableView->setColumnWidth(4, 100);
+    ui->tableView->setColumnWidth(5, 223);
+    ui->tableView->setColumnWidth(6, 80);
     ui->tableView->verticalHeader()->setVisible(false);
-    ui->tableView->horizontalHeader()->setStyleSheet("border-top-right-radius:10px;background-color:rgb(50,50,50);");
+    ui->requests_statistic_tableView->verticalHeader()->setVisible(false);
+    ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    ui->requests_statistic_tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    const static QString style{
+        "QHeaderView{"
+            "	background-color:rgb(50, 40, 85);"
+            "	border:none;"
+            "}"
+            "QHeaderView:section:first{"
+            "	background-color:rgb(50, 40, 85);"
+            "	border:none;"
+            "	border-top-left-radius:10px;"
+            "}"
+            "QHeaderView:section:last{"
+            "	background-color:rgb(50, 40, 85);"
+            "	border:none;"
+            "	border-top-right-radius:10px;"
+            "}"
+    };
+    ui->tableView->horizontalHeader()->setStyleSheet(style);
+    ui->requests_statistic_tableView->horizontalHeader()->setStyleSheet(style);
+
+}
+void Dashboard::setTableViewConnection(){
+    cust_qmodel->setQuery("SELECT c.id AS \"Cust. ID\", "
+                          "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Full Name\", "
+                          "c.phone AS \"Phone\", "
+                          "c.tariff_id  AS \"Tariff ID\", "
+                          "c.date AS \"Reg. date\", "
+                          "(COALESCE(e.first_name, '') || ' ' || COALESCE(e.last_name, '')) AS \"Added By\", "
+                          "c.is_active AS \"Is Active\" "
+                          "FROM customers c "
+                          "LEFT JOIN employees e ON e.id = c.employee_id "
+                          "ORDER BY c.date DESC "
+                          "WHERE DATE(c.date) >= DATE(CURRENT_DATE, '-" +
+                          QString{std::to_string((ui->customers_period_comboBox->currentIndex()+1)*10).c_str()} + " days');");
+    ui->empty_cust_model->setVisible(!cust_qmodel->rowCount());
 }

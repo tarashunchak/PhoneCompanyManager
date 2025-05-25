@@ -64,7 +64,6 @@ void InsertEmployeeDialog::InsertEmployeeToDB(){
         }else{
             ui->incorrect_data_label->setVisible(false);
             clearWidgets();
-            this->close();
         }
     }else{
         ui->incorrect_data_label->setVisible(true);

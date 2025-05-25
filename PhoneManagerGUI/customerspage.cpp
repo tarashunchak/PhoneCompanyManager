@@ -17,10 +17,20 @@ CustomersPage::CustomersPage(QWidget *parent)
 
     ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
 
+    ui->filter_pic->setPixmap(QPixmap{"./img/filter.png"});
+    filter_animation = new QPropertyAnimation{ui->filter_widget, "pos"};
+    filter_animation->setDuration(200);
+
     ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->gridLayout->setHorizontalSpacing(34);
     ui->gridLayout->setVerticalSpacing(40);
     ui->gridLayout->setContentsMargins(40, 40, 0, 0);
+
+    ui->sort_by_comboBox->clear();
+    ui->sort_by_comboBox->addItem("By date(newest)", " ORDER BY date DESC;");
+    ui->sort_by_comboBox->addItem("By name(a-z)", " ORDER BY first_name ASC;");
+    ui->sort_by_comboBox->addItem("By name(z-a)", " ORDER BY first_name DESC;");
+    ui->sort_by_comboBox->addItem("By date(oldest)", " ORDER BY date ASC;");
 }
 
 CustomersPage::~CustomersPage()
@@ -35,6 +45,9 @@ void CustomersPage::SetConnections(){
             , insert_customer_dialog, &QDialog::exec);
     connect(ui->add_cust_btn, &QPushButton::clicked, insert_customer_dialog
             , &InsertCustomerDialog::updateComboBoxData);
+    connect(ui->close_open_filter_btn, &QPushButton::clicked
+            , this, &CustomersPage::open_close_filter_widget);
+    connect(ui->apply_filter_btn, &QPushButton::clicked, this, &CustomersPage::apply_filters);
 }
 
 
@@ -48,7 +61,7 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         }
     }
     if(!query.exec()){
-        query.prepare("SELECT * FROM Customers;");
+        query.prepare("SELECT * FROM customers;");
         if(!query.exec()){
             qDebug() << "SetCustomersCards Query fault!!!: " << query.lastError();
             return;

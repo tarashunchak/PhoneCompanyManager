@@ -7,7 +7,6 @@
 #include <QLabel>
 #include "includes/barchart.h"
 #include "includes/piechart.h"
-#include "includes/chat.h"
 
 namespace Ui {
 class Dashboard;
@@ -29,6 +28,7 @@ signals:
 
 private:/*Methods*/
     void setTableViewConnection();
+    void setTableViewStyles();
 
 private:
     Ui::Dashboard *ui;
@@ -37,9 +37,6 @@ private:
     BarChart* cust_bar_chart;
     BarChart* req_bar_chart;
     PieChart* tariff_pie_chart;
-    BarChart* tariff_bar_chart;
-    //Chat* chat;
-    static QLabel* is_empty_label;
 };
 
 #endif // DASHBOARD_H

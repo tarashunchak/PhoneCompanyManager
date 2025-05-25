@@ -2,6 +2,7 @@
 #include "ui_insertcustomerdialog.h"
 #include <QSqlQuery>
 #include <QSqlError>
+#include "includes/currentuser.h"
 
 InsertCustomerDialog::InsertCustomerDialog(QWidget *parent)
     : QDialog(parent)
@@ -49,8 +50,8 @@ void InsertCustomerDialog::InsertCustomerToDB(){
         && !lname.isEmpty()
         && !phone.isEmpty())
     {
-        query.prepare(R"(INSERT INTO customers(first_name, last_name, phone, date_of_B, tariff_id, email)
-                        VALUES(:fname, :lname, :phone, :bday, :tariff_id, :email))");
+        query.prepare(R"(INSERT INTO customers(first_name, last_name, phone, date_of_B, tariff_id, email, employee_id)
+                        VALUES(:fname, :lname, :phone, :bday, :tariff_id, :email, :empl_id))");
 
         query.bindValue(":fname", fname);
         query.bindValue(":lname", lname);
@@ -58,6 +59,7 @@ void InsertCustomerDialog::InsertCustomerToDB(){
         query.bindValue(":bday", bday);
         query.bindValue(":tariff_id", tariff_id);
         query.bindValue(":email", email.isEmpty() ? "NULL" : email);
+        query.bindValue(":empl_id", CurrentUser::getCurrentUserID());
 
         if(!query.exec()){
             qDebug() << "InsertCustomerToDB() query fault: " << query.lastError();
@@ -65,7 +67,6 @@ void InsertCustomerDialog::InsertCustomerToDB(){
         }else{
             ui->incorrect_data_label->setVisible(false);
             clearWidgets();
-            this->close();
         }
     }else{
         ui->incorrect_data_label->setVisible(true);

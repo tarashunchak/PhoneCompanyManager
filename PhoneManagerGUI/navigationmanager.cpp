@@ -95,6 +95,7 @@ void NavigationManager::showDashboardPage()const{
 void NavigationManager::showCustomersPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
     customersPage->SetCustomersCards();
+    customersPage->updateFilterWidgets();
     sWidget->setCurrentWidget(customersPage);
 }
 

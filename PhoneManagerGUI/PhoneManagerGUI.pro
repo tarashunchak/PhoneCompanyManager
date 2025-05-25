@@ -18,6 +18,7 @@ SOURCES += \
     currentuser.cpp \
     customersdetailspage.cpp \
     customerspage.cpp \
+    customerspagefilter.cpp \
     customersreport.cpp \
     dashboard.cpp \
     dashboardseries.cpp \

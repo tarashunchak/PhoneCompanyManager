@@ -21,6 +21,7 @@ public:
     void showUnassignmentRequests();
     void showInProgressRequests()const;
     void showCompletedRequests();
+    void showRequestsHistory();
 
 signals:
 

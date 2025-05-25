@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSqlQuery>
+#include <QLabel>
 
 namespace Ui {
 class EmployeesChatPage;
@@ -16,7 +17,10 @@ public:
     explicit EmployeesChatPage(QWidget *parent = nullptr);
     ~EmployeesChatPage();
     void fillChatsWidget(QSqlQuery query = QSqlQuery{});
-    void fillMessagesWidget(const int, const QString&, QPixmap pixmap = QPixmap{});
+    void fillMessagesWidget(const int, const QString&
+                            , QLabel* partner_name = nullptr
+                            , QPixmap pixmap = QPixmap{});
+
     void updateLastSeenTimestamp();
 
 private:
