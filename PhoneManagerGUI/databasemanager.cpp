@@ -3,15 +3,15 @@
 #include <QSqlQuery>
 
 DatabaseManager::DatabaseManager() {
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("./database/database.db");
+    //db = QSqlDatabase::addDatabase("QSQLITE");
+    //db.setDatabaseName("./database/database.db");
 
-    /*db = QSqlDatabase::addDatabase("QPSQL");
+    db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("192.168.1.103");
     db.setPort(5432);
     db.setDatabaseName("database");
     db.setUserName("postgres");
-    db.setPassword("new_password");*/
+    db.setPassword("new_password");
 
     if (!db.open()) {
         qDebug() << "Database Connection Error:" << db.lastError().text();

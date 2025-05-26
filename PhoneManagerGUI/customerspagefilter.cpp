@@ -18,7 +18,7 @@ void CustomersPage::fillTariffsComboBox(){
     ui->tariffs_comboBox->addItem("All", "");
     while(query.next()){
         ui->tariffs_comboBox->addItem(query.value("tariff_name").toString(),
-                                      " tariff_id " + query.value("id").toString());
+                                      " tariff_id = " + query.value("id").toString());
     }
 }
 
@@ -27,7 +27,10 @@ void CustomersPage::fillEmployeesComboBox(){
     query.prepare("SELECT id, "
                   "(COALESCE(first_name, '') "
                   "|| ' ' || "
-                  "COALESCE(last_name, '')) AS full_name FROM employees;");
+                  "COALESCE(last_name, '') "
+                  "|| ' ' || ' ID(' || id || ')') AS full_name "
+                  "FROM employees;");
+
     if(!query.exec()){
         qDebug() << "fillEmployeesComboBox() query fault!";
         return;
@@ -59,14 +62,23 @@ void CustomersPage::apply_filters(){
     static QString tariff_id;
     static QString empl_id;
     static QString order_by;
+    static QString phone;
     empl_id = ui->employees_comboBox->currentData().toString();
     tariff_id = ui->tariffs_comboBox->currentData().toString();
     order_by = ui->sort_by_comboBox->currentData().toString();
+
+    if(ui->number_comboBox->currentIndex())
+        phone = ui->number_comboBox->currentText() + "%";
+    else
+        phone = "";
+
     QSqlQuery query;
     query.prepare("SELECT * FROM customers "
                   + (empl_id.isEmpty() ? " " : "WHERE " + empl_id)
                   + (tariff_id.isEmpty() ? " " : ((empl_id.isEmpty() ? "WHERE " : " AND ") + tariff_id)
-                  + order_by));
+                  + (phone.isEmpty() ? " " : (tariff_id.isEmpty() ? " WHERE " : " AND "))
+                  + " phone LIKE " + phone + " ")
+                  + order_by);
     if(!query.exec())
         qDebug() << "apply filters fault:  " << query.lastError();
     SetCustomersCards(std::move(query));
