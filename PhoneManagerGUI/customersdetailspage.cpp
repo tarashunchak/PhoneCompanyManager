@@ -25,7 +25,6 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     ui->no_usage_label->setVisible(false);
 
     SetTableViewStyle();
-    editCustomerDataOff();
 
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo_cust.svg"});
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
@@ -53,20 +52,27 @@ void CustomersDetailsPage::setCurrentUser(){
 
 void CustomersDetailsPage::SetConnections(){
     connect(ui->return_btn, &QPushButton::clicked, this, [this](){emit on_return_btn_clicked();});
-    connect(ui->edit_data_btn, &QPushButton::clicked, this, &CustomersDetailsPage::editCustomerDataOn);
     connect(ui->open_chat_btn, &QPushButton::clicked, this, [this](){
         emit on_open_chat_btn_clicked(ui->phone_Label->text());
     });
     connect(ui->charts_comboBox, &QComboBox::currentIndexChanged, this, &CustomersDetailsPage::SetCharts);
+    connect(ui->save_comment_btn, &QPushButton::clicked, this, &CustomersDetailsPage::SaveCommentToDB);
 }
 
 void CustomersDetailsPage::SetCustomerInfo(const int id){
     curr_cust_id = id;
     QSqlQuery query;
-    query.prepare("SELECT t.tariff_name AS tariff_name, * "
-                  "FROM customers "
-                  "JOIN tariffs t ON t.id = customers.tariff_id "
-                  "WHERE customers.id = :id;");
+    query.prepare("SELECT c.id AS cust_id, "
+                  "(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS full_name, "
+                  "c.phone AS phone_num, "
+                  "c.date AS reg_date, "
+                  "t.tariff_name AS tariff_name, "
+                  "cm.comment_text AS comment, "
+                  "COALESCE(c.comment_id, -1) AS comm_id "
+                  "FROM customers c "
+                  "JOIN tariffs t ON t.id = c.tariff_id "
+                  "LEFT JOIN comments cm ON cm.id = c.comment_id "
+                  "WHERE c.id = :id;");
     query.bindValue(":id", curr_cust_id);
 
     if(!query.exec() || !query.next()){
@@ -74,13 +80,14 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
         return;
     }
 
-    ui->cust_id_label->setText(query.value("id").toString());
-    ui->full_name_Label->setText(query.value("first_name").toString()
-                                 + " " + query.value("last_name").toString());
-    ui->phone_Label->setText(query.value("phone").toString());
-    ui->reg_date_Label->setText(query.value("date").toString().left(10));
+    ui->cust_id_label->setText(query.value("cust_id").toString());
+    ui->cust_id_label->setProperty("cust_id", query.value("cust_id"));
+    ui->full_name_Label->setText(query.value("full_name").toString());
+    ui->phone_Label->setText(query.value("phone_num").toString());
+    ui->reg_date_Label->setText(query.value("reg_date").toString().left(10));
     ui->current_tariff_label->setText(query.value("tariff_name").toString());
-
+    ui->comment_textEdit->setPlainText(query.value("comment").toString());
+    ui->comment_textEdit->setProperty("comment_id", query.value("comm_id"));
     qmodel->setQuery(std::move(query));
 
     ui->tableView->setModel(qmodel);
@@ -106,9 +113,9 @@ void CustomersDetailsPage::SetTableViewStyle(){
 void CustomersDetailsPage::SetCharts(int id = -1){
     QSqlQuery tariff_query;
     tariff_query.prepare("SELECT t.tariff_name AS name, t.id AS id "
-                         "FROM customers "
-                         "JOIN tariffs t ON t.id = customers.tariff_id "
-                         "WHERE customers.id = :id;");
+                         "FROM customers c "
+                         "JOIN tariffs t ON t.id = c.tariff_id "
+                         "WHERE c.id = :id;");
     tariff_query.bindValue(":id", curr_cust_id);
     if(!tariff_query.exec()){
         qDebug() << "In CustomersDetailsPage::SetCustomersInfo::tariff_query fault!!!: " << tariff_query.lastError();
@@ -126,11 +133,10 @@ void CustomersDetailsPage::SetCharts(int id = -1){
         //tariff_bar_chart->resize(ui->tariffs_history->size());
         tariff_bar_chart->setQuery(tariff_query, "id", "name");
     }
-    return;
 
     QSqlQuery usage_query;
     usage_query.prepare("SELECT date(date) AS usage_date, COUNT(*) AS count FROM usage "
-                        "WHERE cust_id = :id AND date >= CURRENT_DATE - INTERVAL '7 days' "
+                        "WHERE cust_id = :id AND date >= (CURRENT_DATE - INTERVAL '7 days') "
                         "GROUP BY usage_date ORDER BY usage_date ASC;");
     usage_query.bindValue(":id", id);
     if(!usage_query.exec()){
@@ -145,13 +151,38 @@ void CustomersDetailsPage::SetCharts(int id = -1){
     usage_chart->setQuery(std::move(usage_query), "count", "usage_date");
 }
 
-void CustomersDetailsPage::editCustomerDataOn(){
-    ui->full_name_lineEdit->setVisible(true);
-    ui->full_name_lineEdit->setText(ui->full_name_Label->text());
-    ui->full_name_Label->setVisible(false);
-}
+void CustomersDetailsPage::SaveCommentToDB(){
+    static QSqlQuery query;
+    int comment_id = ui->comment_textEdit->property("comment_id").toInt();
+    if(comment_id == -1){
+        query.prepare("INSERT INTO comments(comment_text, written_by_id) "
+                      "VALUES(:text, :my_id) RETURNING id;");
+        query.bindValue(":text", ui->comment_textEdit->toPlainText());
+        query.bindValue(":my_id", CurrentUser::getCurrentUserID());
 
-void CustomersDetailsPage::editCustomerDataOff(){
-    ui->full_name_lineEdit->setVisible(false);
-    ui->full_name_Label->setVisible(true);
+        if(!query.exec() || !query.next()){
+            qDebug() << "insert into comment query fault: " << query.lastError();
+            return;
+        }
+        comment_id = query.value("id").toInt();
+        query.clear();
+        query.prepare("UPDATE customers "
+                      "SET comment_id = :comm_id "
+                      "WHERE id = :cust_id;");
+        query.bindValue(":comm_id", comment_id);
+        query.bindValue(":cust_id", ui->cust_id_label->property("cust_id").toInt());
+
+        if(!query.exec())
+            qDebug() << "update customers comment_id query fault: " << query.lastError();
+
+        return;
+    }
+    query.clear();
+    query.prepare("UPDATE comments "
+                  "SET comment_text = :text "
+                  "WHERE id = :comm_id;");
+    query.bindValue(":text", ui->comment_textEdit->toPlainText());
+    query.bindValue(":comm_id", ui->comment_textEdit->property("comment_id").toUInt());
+    if(!query.exec())
+        qDebug() << "update comments query fault: " << query.lastError();
 }

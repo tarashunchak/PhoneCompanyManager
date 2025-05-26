@@ -2,7 +2,8 @@
 #include "includes/currentuser.h"
 #include "includes/buttonsstylemanager.h"
 
-NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent, QWidget* side_menu)
+NavigationManager::NavigationManager(QStackedWidget* sWidget
+                                     , QObject* parent, QWidget* side_menu)
     : QObject(parent)
     , sWidget(sWidget)
     , loginPage(new LoginPage{})
@@ -38,23 +39,33 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent, Q
 
 void NavigationManager::setUpNavigation(){
     //Login Page Signals/Slots connections
-    connect(loginPage, &LoginPage::login_succsess, this, &NavigationManager::showDashboardPage);
-    connect(loginPage, &LoginPage::on_registration_btn_clicked, this, &NavigationManager::showRegistrationPage);
-    connect(loginPage, &LoginPage::on_pass_rec_btn_clicked, this, &NavigationManager::showPasswordRecoveryPage);
+    connect(loginPage, &LoginPage::login_succsess
+            , this, &NavigationManager::showDashboardPage);
+    connect(loginPage, &LoginPage::on_registration_btn_clicked
+            , this, &NavigationManager::showRegistrationPage);
+    connect(loginPage, &LoginPage::on_pass_rec_btn_clicked
+            , this, &NavigationManager::showPasswordRecoveryPage);
 
     //RegistrationPage Signals/Slots connections
-    connect(registrationPage, &RegistrationPage::successful_registration, this, &NavigationManager::showLoginPage);
-    connect(registrationPage, &RegistrationPage::on_return_to_login_btn_clicked, this, &NavigationManager::showLoginPage);
+    connect(registrationPage, &RegistrationPage::successful_registration
+            , this, &NavigationManager::showLoginPage);
+    connect(registrationPage, &RegistrationPage::on_return_to_login_btn_clicked
+            , this, &NavigationManager::showLoginPage);
 
     //PasswordRecoveryPage Signals/Slots connections
-    connect(passwordRecoveryPage, &PasswordRecoveryPage::on_return_to_login_btn_clicked, this, &NavigationManager::showLoginPage);
+    connect(passwordRecoveryPage, &PasswordRecoveryPage::on_return_to_login_btn_clicked
+            , this, &NavigationManager::showLoginPage);
 
     //Customers Page Signals/Slots connections
-    connect(customersPage, &CustomersPage::customer_selected, this, &NavigationManager::showCustomersDetailsPage);
+    connect(customersPage, &CustomersPage::customer_selected
+            , this, &NavigationManager::showCustomersDetailsPage);
 
     //Customers Details Page Signals/Slots connections
-    connect(customersDetailsPage, &CustomersDetailsPage::on_return_btn_clicked, this, &NavigationManager::showCustomersPage);
-    connect(customersDetailsPage, &CustomersDetailsPage::on_open_chat_btn_clicked, this, [this](const QString& phone){
+    connect(customersDetailsPage, &CustomersDetailsPage::on_return_btn_clicked
+            , this, &NavigationManager::showCustomersPage);
+    connect(customersDetailsPage, &CustomersDetailsPage::on_open_chat_btn_clicked
+            , this, [this](const QString& phone)
+    {
         emit open_chat(phone);
     });
 
@@ -96,6 +107,7 @@ void NavigationManager::showCustomersPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
     customersPage->SetCustomersCards();
     customersPage->updateFilterWidgets();
+    customersPage->close_filter_widget();
     sWidget->setCurrentWidget(customersPage);
 }
 

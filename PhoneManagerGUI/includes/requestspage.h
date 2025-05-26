@@ -16,18 +16,17 @@ class RequestsPage : public QWidget
 public:
     explicit RequestsPage(QWidget *parent = nullptr);
     ~RequestsPage();
-    //void setTableView();
     void setCurrentUser();
     void showUnassignmentRequests();
-    void showInProgressRequests()const;
+    void showInProgressRequests();
     void showCompletedRequests();
     void showRequestsHistory();
 
 signals:
 
 private:
-    void SetConnections()const;
-    //void contextMenuEvent(QContextMenuEvent* event) override;
+    void SetConnections();
+    void setActiveButton(const char);
 
 private:
     Ui::RequestsPage *ui;

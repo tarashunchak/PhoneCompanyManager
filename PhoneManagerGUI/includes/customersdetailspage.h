@@ -31,8 +31,7 @@ private:
     void SetConnections();
     void SetTableViewStyle();
     void SetCharts(int);
-    void editCustomerDataOn();
-    void editCustomerDataOff();
+    void SaveCommentToDB();
 
 private:
     Ui::CustomersDetailsPage *ui;

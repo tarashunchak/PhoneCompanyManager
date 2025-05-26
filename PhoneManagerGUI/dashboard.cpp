@@ -19,6 +19,8 @@ Dashboard::Dashboard(QWidget *parent)
     cust_bar_chart->setParent(ui->customers_statistic);
     tariff_pie_chart->setParent(ui->tariff_statistics);
     tariff_pie_chart->resize(ui->tariff_statistics->size());
+    cust_bar_chart->resize(ui->customers_statistic->size());
+    cust_bar_chart->setParent(ui->customers_statistic);
 
     setTableViewConnection();
     setCustomersStatistics();
@@ -82,9 +84,9 @@ void Dashboard::setTableViewConnection(){
                           "(COALESCE(e.first_name, '') || ' ' || COALESCE(e.last_name, '')) AS \"Added By\", "
                           "c.is_active AS \"Is Active\" "
                           "FROM customers c "
-                          "LEFT JOIN employees e ON e.id = c.employee_id "
+                          "JOIN employees e ON e.id = c.employee_id "
                           "ORDER BY c.date DESC "
-                          "WHERE DATE(c.date) >= DATE(CURRENT_DATE, '-" +
+                          "WHERE (c.date) >= (CURRENT_DATE - INTERVAL '" +
                           QString{std::to_string((ui->customers_period_comboBox->currentIndex()+1)*10).c_str()} + " days');");
     ui->empty_cust_model->setVisible(!cust_qmodel->rowCount());
 }

@@ -11,6 +11,7 @@ BarChart::BarChart()
         : chart_view(new QChartView{this})
         , bar_series(new QBarSeries{})
         , chart(new QChart{})
+        , axisX(new QBarCategoryAxis{})
 {
     bar_series->setBarWidth(1);
     chart->setTheme(QChart::ChartThemeHighContrast);
@@ -18,6 +19,7 @@ BarChart::BarChart()
 
     chart_view->setChart(chart);
     chart->addSeries(bar_series);
+    chart->addAxis(axisX, Qt::AlignBottom);
 }
 
 BarChart::BarChart(QWidget* parent)
@@ -25,6 +27,7 @@ BarChart::BarChart(QWidget* parent)
         , chart_view(new QChartView{this})
         , bar_series(new QBarSeries{})
         , chart(new QChart{})
+        , axisX(new QBarCategoryAxis{})
 {
     bar_series->setBarWidth(1);
     chart->setTheme(QChart::ChartThemeHighContrast);
@@ -32,6 +35,7 @@ BarChart::BarChart(QWidget* parent)
 
     chart_view->setChart(chart);
     chart->addSeries(bar_series);
+    chart->addAxis(axisX, Qt::AlignBottom);
 }
 
 BarChart::~BarChart(){
@@ -44,6 +48,8 @@ void BarChart::resize(const QSize& size){
 bool BarChart::setQuery(QSqlQuery& query, const QString& field_name, const QString& label){
     if(!query.exec()){
         qDebug() << "Sql query error in BarChart(): " << query.lastError();
+        chart->removeAxis(chart->axisX());
+        chart->removeAxis(chart->axisY());
         return false;
     }
 
@@ -74,8 +80,9 @@ bool BarChart::setQuery(QSqlQuery& query, const QString& field_name, const QStri
             qDebug() << "bar_series cannot append bar_set!";
         }
     }
-
     if(!bar_series->count()){
+        chart->removeAxis(chart->axisX());
+        chart->removeAxis(chart->axisY());
         return false;
     }
 
@@ -84,7 +91,6 @@ bool BarChart::setQuery(QSqlQuery& query, const QString& field_name, const QStri
     chart_view->setChart(chart);
     chart->createDefaultAxes();
 
-    QBarCategoryAxis* axisX = new QBarCategoryAxis{};
     axisX->append(string_list);
     //axisX->setTitleText("");
     chart->addAxis(axisX, Qt::AlignBottom);

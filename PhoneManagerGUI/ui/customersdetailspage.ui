@@ -39,7 +39,7 @@ background-color:white;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgba(200, 200, 200, 1);</string>
+     <string notr="true">background-color:rgba(115, 120, 125, 1);</string>
     </property>
     <widget class="QTableView" name="tableView">
      <property name="enabled">
@@ -62,7 +62,8 @@ background-color:white;</string>
      <property name="styleSheet">
       <string notr="true">background-color:white;
 color:white;
-font-size:14px;</string>
+font-size:14px;
+border-radius:6px;</string>
      </property>
     </widget>
     <widget class="QLabel" name="full_name_Label">
@@ -75,7 +76,7 @@ font-size:14px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:rgba(255, 255, 255, 0.6);
+      <string notr="true">background-color:transparent;
 color:black;
 font-family:Consolas;
 font-size:20px;</string>
@@ -174,7 +175,7 @@ border-radius:4px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:white;</string>
+      <string notr="true">background-color:transparent;</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_4">
@@ -212,7 +213,8 @@ font-family: Lato;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:white;</string>
+      <string notr="true">background-color:white;
+border-radius:6px;</string>
      </property>
      <widget class="QLabel" name="no_usage_label">
       <property name="geometry">
@@ -336,6 +338,7 @@ color:white;
 font-family:Lato, Consolas;
 font-size:16px;
 border-radius:4px;
+border:1px solid rgba(255, 255, 255, 0.5);
 }QPushButton:hover{
 background-color:rgb(7, 84, 67);
 }</string>
@@ -366,6 +369,7 @@ color:white;
 font-family:Lato, Consolas;
 font-size:16px;
 border-radius:4px;
+border:1px solid rgba(255, 255, 255, 0.5);
 }QPushButton:hover{
 background-color:rgb(7, 84, 67);
 }</string>
@@ -391,72 +395,6 @@ font-size:20px;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="edit_data_btn">
-     <property name="geometry">
-      <rect>
-       <x>640</x>
-       <y>272</y>
-       <width>30</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-background-color:rgb(27, 104, 87);
-color:white;
-font-family:Lato, Consolas;
-font-size:16px;
-border:none;
-}QPushButton:hover{
-background-color:rgb(7, 84, 67);
-}</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="full_name_lineEdit">
-     <property name="geometry">
-      <rect>
-       <x>300</x>
-       <y>272</y>
-       <width>340</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:white;
-color:black;
-font-family:Lato;
-font-size:20px;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>710</x>
-       <y>260</y>
-       <width>241</width>
-       <height>171</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:white;
-color:black;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
      </property>
     </widget>
     <widget class="QComboBox" name="charts_comboBox">
@@ -490,6 +428,76 @@ padding-left:8px;</string>
        <string>Pie chart</string>
       </property>
      </item>
+    </widget>
+    <widget class="QPlainTextEdit" name="comment_textEdit">
+     <property name="geometry">
+      <rect>
+       <x>650</x>
+       <y>65</y>
+       <width>330</width>
+       <height>375</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:white;
+border:1px solid rgba(0,0,0,0.4);
+
+color:black;
+font-family:Lato, Consolas;
+font-size:20px;
+padding-top:10px;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>651</x>
+       <y>30</y>
+       <width>328</width>
+       <height>35</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color:black;
+font-size:24px;
+font-family:Lato, Consolas;
+background-color:rgb(200, 200, 200);
+border:none;
+border-top-right-radius:6px;
+border-top-left-radius:6px;</string>
+     </property>
+     <property name="text">
+      <string>Comment</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="save_comment_btn">
+     <property name="geometry">
+      <rect>
+       <x>651</x>
+       <y>440</y>
+       <width>329</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton{
+background-color:rgb(27, 104, 87);
+color:white;
+font-family:Lato, Consolas;
+font-size:20px;
+border-bottom-left-radius:6px;
+border-bottom-right-radius:6px;
+}QPushButton:hover{
+background-color:rgb(7, 84, 67);
+}</string>
+     </property>
+     <property name="text">
+      <string>Save comment</string>
+     </property>
     </widget>
    </widget>
   </widget>

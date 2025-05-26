@@ -10,21 +10,39 @@
 #include <QHeaderView>
 #include <QMenu>
 
-static void setActiveButton(QPushButton* button, bool status){
-    button->setStyleSheet(
+enum ACTIVE_BTN : char{
+    UNASSIGNED = 0,
+    IN_PROGRESS,
+    COMPLETED,
+    HISTORY
+};
+
+void RequestsPage::setActiveButton(const char button){
+    static QString both{
         "QPushButton{"
         "height:40px;"
         "color:black;"
         "font-family:Lato, Consolas;"
         "font-size:22px;"
-        "background-color:" + QString(status ? "white;" : "rgb(200, 200, 200);") +
         "border-top-left-radius:5px;"
-        "border-top-right-radius:5px;"
+        "border-top-right-radius:5px;"};
+    static QString active(both +
+        "background-color:white;"
         "}"
         "QPushButton:hover{"
-        "background-color:" + QString(status ? "rgb(180, 180, 180);" : "rgb(220, 220, 220);") +
+        "background-color:rgb(180, 180, 180);"
+        "}");
+    static QString inactive(both +
+        "background-color:rgb(200, 200, 200);"
         "}"
-    );
+        "QPushButton:hover{"
+        "background-color:rgb(220, 220, 220);"
+        "}");
+
+    ui->unassigned_req_btn->setStyleSheet(button == 0 ? active : inactive);
+    ui->in_progress_req_btn->setStyleSheet(button == 1 ? active : inactive);
+    ui->complete_req_btn->setStyleSheet(button == 2 ? active : inactive);
+    ui->history_btn->setStyleSheet(button == 3 ? active : inactive);
 }
 
 void RequestsPage::showUnassignmentRequests(){
@@ -76,13 +94,10 @@ void RequestsPage::showUnassignmentRequests(){
         connect(button_delegate, &PushButtonDelegate::successfully_updated, this, &RequestsPage::showUnassignmentRequests);
         req_tableView->setItemDelegateForColumn(model->columnCount() - 1, button_delegate);
     }
-    setActiveButton(ui->unassigned_req_btn, true);
-    setActiveButton(ui->in_progress_req_btn, false);
-    setActiveButton(ui->complete_req_btn, false);
-    setActiveButton(ui->history_btn, false);
+    setActiveButton(UNASSIGNED);
 }
 
-void RequestsPage::showInProgressRequests()const{
+void RequestsPage::showInProgressRequests(){
     ui->save_btn->setVisible(true);
     QSqlQuery query;
     query.prepare("SELECT id AS \"ID\", cust_id AS \"Cust. ID\", "
@@ -119,10 +134,7 @@ void RequestsPage::showInProgressRequests()const{
         headers << "Action";
         model->setHorizontalHeaderLabels(headers);
     }
-    setActiveButton(ui->unassigned_req_btn, false);
-    setActiveButton(ui->in_progress_req_btn, true);
-    setActiveButton(ui->complete_req_btn, false);
-    setActiveButton(ui->history_btn, false);
+    setActiveButton(IN_PROGRESS);
 }
 
 void RequestsPage::showCompletedRequests(){
@@ -141,10 +153,7 @@ void RequestsPage::showCompletedRequests(){
     ui->no_requests_label->setVisible(qmodel->rowCount() == 0);
     req_tableView->setModel(qmodel);
     req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, nullptr);
-    setActiveButton(ui->unassigned_req_btn, false);
-    setActiveButton(ui->in_progress_req_btn, false);
-    setActiveButton(ui->complete_req_btn, true);
-    setActiveButton(ui->history_btn, false);
+    setActiveButton(COMPLETED);
 }
 
 
@@ -167,10 +176,7 @@ void RequestsPage::showRequestsHistory(){
 
     ui->no_requests_label->setVisible(qmodel->rowCount() == 0);
     req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, nullptr);
-
     req_tableView->setModel(qmodel);
-    setActiveButton(ui->unassigned_req_btn, false);
-    setActiveButton(ui->in_progress_req_btn, false);
-    setActiveButton(ui->complete_req_btn, false);
-    setActiveButton(ui->history_btn, true);
+    req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    setActiveButton(HISTORY);
 }

@@ -17,10 +17,9 @@ void Dashboard::setCustomersStatistics(){
                       "WHERE DATE(date) = DATE(CURRENT_DATE) "
                       "GROUP BY date ORDER BY date DESC;");
     }
-    ui->empty_cust_stat->setVisible(!cust_bar_chart->setQuery(query, "cust_count", "date"));
+    bool is_not_empty = cust_bar_chart->setQuery(query, "cust_count", "date");
+    ui->empty_cust_stat->setVisible(!is_not_empty);
     ui->customers_statistic->setStyleSheet("background-color: transparent;");
-    cust_bar_chart->setParent(ui->customers_statistic);
-    cust_bar_chart->resize(ui->customers_statistic->size());
 }
 
 void Dashboard::setRequestsStatistics(){

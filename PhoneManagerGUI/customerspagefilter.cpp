@@ -43,19 +43,27 @@ void CustomersPage::fillEmployeesComboBox(){
     }
 }
 
+void CustomersPage::close_filter_widget(){
+    ui->lineEdit->setGeometry(1300, 23, 290, 30);
+    ui->close_open_filter_btn->setGeometry(1590, 23, 30, 30);
+    filter_animation->setEndValue(QPoint{1670, 0});
+    filter_animation->start();
+}
+
+void CustomersPage::open_filter_widget(){
+    ui->lineEdit->setGeometry(1060, 23, 290, 30);
+    ui->close_open_filter_btn->setGeometry(1350, 23, 30, 30);
+    filter_animation->setEndValue(QPoint{1390, 0});
+    updateFilterWidgets();
+    filter_animation->start();
+}
+
 void CustomersPage::open_close_filter_widget(){
     filter_animation->setStartValue(QPoint{1670, 0});
-    if(ui->filter_widget->x() == 1670){
-        ui->lineEdit->setGeometry(1060, 23, 290, 30);
-        ui->close_open_filter_btn->setGeometry(1350, 23, 30, 30);
-        filter_animation->setEndValue(QPoint{1390, 0});
-        updateFilterWidgets();
-    }else{
-        ui->lineEdit->setGeometry(1300, 23, 290, 30);
-        ui->close_open_filter_btn->setGeometry(1590, 23, 30, 30);
-        filter_animation->setEndValue(QPoint{1670, 0});
-    }
-    filter_animation->start();
+    if(ui->filter_widget->x() == 1670)
+        open_filter_widget();
+    else
+        close_filter_widget();
 }
 
 void CustomersPage::apply_filters(){
@@ -72,14 +80,18 @@ void CustomersPage::apply_filters(){
     else
         phone = "";
 
+    QString query_str{"SELECT * FROM customers WHERE is_active = :status"};
+    if(!empl_id.isEmpty()) query_str += " AND " + empl_id;
+    if(!tariff_id.isEmpty()) query_str += " AND " + tariff_id;
+    if(!phone.isEmpty()) query_str += " AND phone LIKE :phone";
+    query_str += order_by;
+
     QSqlQuery query;
-    query.prepare("SELECT * FROM customers "
-                  + (empl_id.isEmpty() ? " " : "WHERE " + empl_id)
-                  + (tariff_id.isEmpty() ? " " : ((empl_id.isEmpty() ? "WHERE " : " AND ") + tariff_id)
-                  + (phone.isEmpty() ? " " : (tariff_id.isEmpty() ? " WHERE " : " AND "))
-                  + " phone LIKE " + phone + " ")
-                  + order_by);
+    query.prepare(query_str);
+    query.bindValue(":status", ui->active_btn->property("status"));
+    query.bindValue(":phone", phone);
+
     if(!query.exec())
-        qDebug() << "apply filters fault:  " << query.lastError();
+        qDebug() << "apply filters fault: " << query.lastError();
     SetCustomersCards(std::move(query));
 }

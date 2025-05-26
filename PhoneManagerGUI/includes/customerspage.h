@@ -19,6 +19,8 @@ public:
     ~CustomersPage();
     void SetCustomersCards(QSqlQuery query = QSqlQuery());
     void updateFilterWidgets();
+    void open_filter_widget();
+    void close_filter_widget();
 
 signals:
     void customer_selected(const int);

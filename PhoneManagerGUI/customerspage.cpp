@@ -4,6 +4,7 @@
 #include <QScrollArea>
 #include <QPushButton>
 #include <QLabel>
+#include <QListView>
 
 CustomersPage::CustomersPage(QWidget *parent)
     : QWidget(parent)
@@ -18,6 +19,8 @@ CustomersPage::CustomersPage(QWidget *parent)
     ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
 
     ui->filter_pic->setPixmap(QPixmap{"./img/filter.png"});
+    ui->close_open_filter_btn->setIcon(QIcon{"./img/filter.svg"});
+    ui->close_open_filter_btn->setIconSize(QSize{24, 24});
     filter_animation = new QPropertyAnimation{ui->filter_widget, "pos"};
     filter_animation->setDuration(200);
 
@@ -48,6 +51,46 @@ void CustomersPage::SetConnections(){
     connect(ui->close_open_filter_btn, &QPushButton::clicked
             , this, &CustomersPage::open_close_filter_widget);
     connect(ui->apply_filter_btn, &QPushButton::clicked, this, &CustomersPage::apply_filters);
+    static const QString left{
+        "QPushButton{"
+        "border-top-right-radius:0px;"
+        "border-bottom-right-radius:0px;"
+        "border-top-left-radius:4px;"
+        "border-bottom-left-radius:4px;"
+    };
+    static const QString right{
+        "QPushButton{"
+        "border-top-left-radius:0px;"
+        "border-bottom-left-radius:0px;"
+        "border-top-right-radius:4px;"
+        "border-bottom-right-radius:4px;"
+    };
+    static const QString both{
+        "font-size:18px;"
+        "border:1px solid rgb(255, 255, 255);"
+        "height:30px;"
+        "}"
+    };
+    static const QString inactive{
+        "QPushButton:hover{"
+        "background-color:rgba(200, 200, 200, 0.3);"
+        "}"
+    };
+    static const QString active_right{right + "background-color:white;color:black;" + both};
+    static const QString inactive_right{right + "background-color:transparent;color:white;" + both + inactive};
+    static const QString active_left{left + "background-color:white;color:black;" + both};
+    static const QString inactive_left{left + "background-color:transparent;color:white;" + both + inactive};
+
+    connect(ui->active_btn, &QPushButton::clicked, this, [&, this](){
+        ui->active_btn->setStyleSheet(active_left);
+        ui->inactive_btn->setStyleSheet(inactive_right);
+        ui->active_btn->setProperty("status", true);
+    });
+    connect(ui->inactive_btn, &QPushButton::clicked, this, [&, this](){
+        ui->inactive_btn->setStyleSheet(active_right);
+        ui->active_btn->setStyleSheet(inactive_left);
+        ui->active_btn->setProperty("status", false);
+    });
 }
 
 
