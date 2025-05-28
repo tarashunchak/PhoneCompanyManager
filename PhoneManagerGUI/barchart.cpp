@@ -11,7 +11,6 @@ BarChart::BarChart()
         : chart_view(new QChartView{this})
         , bar_series(new QBarSeries{})
         , chart(new QChart{})
-        , axisX(new QBarCategoryAxis{})
 {
     bar_series->setBarWidth(1);
     chart->setTheme(QChart::ChartThemeHighContrast);
@@ -19,7 +18,6 @@ BarChart::BarChart()
 
     chart_view->setChart(chart);
     chart->addSeries(bar_series);
-    chart->addAxis(axisX, Qt::AlignBottom);
 }
 
 BarChart::BarChart(QWidget* parent)
@@ -27,7 +25,6 @@ BarChart::BarChart(QWidget* parent)
         , chart_view(new QChartView{this})
         , bar_series(new QBarSeries{})
         , chart(new QChart{})
-        , axisX(new QBarCategoryAxis{})
 {
     bar_series->setBarWidth(1);
     chart->setTheme(QChart::ChartThemeHighContrast);
@@ -35,7 +32,6 @@ BarChart::BarChart(QWidget* parent)
 
     chart_view->setChart(chart);
     chart->addSeries(bar_series);
-    chart->addAxis(axisX, Qt::AlignBottom);
 }
 
 BarChart::~BarChart(){
@@ -91,9 +87,7 @@ bool BarChart::setQuery(QSqlQuery& query, const QString& field_name, const QStri
     chart_view->setChart(chart);
     chart->createDefaultAxes();
 
-    axisX->append(string_list);
     //axisX->setTitleText("");
-    chart->addAxis(axisX, Qt::AlignBottom);
 
     return true;
 }

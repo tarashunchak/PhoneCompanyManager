@@ -26,6 +26,7 @@ SOURCES += \
     employeeschatpage.cpp \
     employeesdetailspage.cpp \
     employeespage.cpp \
+    employeespagefilter.cpp \
     employeesreport.cpp \
     insertcustomerdialog.cpp \
     insertemployeedialog.cpp \

@@ -2,6 +2,11 @@
 #include "ui_dashboard.h"
 #include <QSqlQuery>
 #include <QSqlError>
+#include "includes/currentuser.h"
+#include <QNetworkAccessManager>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QNetworkReply>
 
 void Dashboard::setCustomersStatistics(){
     QSqlQuery query;
@@ -55,7 +60,35 @@ void Dashboard::setTariffsStatistics(){
 }
 
 void Dashboard::setRequestsHistory(){
-    QString limit{std::to_string((ui->requests_period_comboBox->currentIndex() + 1) * 10).c_str()};
+    static QNetworkAccessManager* manager = new QNetworkAccessManager{this};
+    QUrl url("http://192.168.1.103:8080/dashboard_req");
+    QNetworkRequest request{url};
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    QJsonObject json;
+    json["limit"] = ((ui->requests_period_comboBox->currentIndex()+1)*10);
+    QJsonDocument json_doc(json);
+    QByteArray byteArr = json_doc.toJson();
+    QNetworkReply* reply = manager->post(request, byteArr);
+    connect(reply, &QNetworkReply::finished, this, [=](){
+        QByteArray response = reply->readAll();
+        QJsonDocument doc = QJsonDocument::fromJson(response);
+        QJsonObject obj = doc.object();
+
+        QString queryStr = obj["query"].toString();
+        QSqlQuery query;
+        query.prepare(queryStr);
+        if (!query.exec()) {
+            qDebug() << "Query error:" << query.lastError();
+            return;
+        }
+
+        req_qmodel->setQuery(std::move(query));
+        ui->requests_statistic_tableView->setModel(req_qmodel);
+        ui->requests_statistic_tableView->verticalHeader()->setVisible(false);
+        ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    });
+
+    /*QString limit{std::to_string((ui->requests_period_comboBox->currentIndex() + 1) * 10).c_str()};
     QSqlQuery query;
     query.prepare("SELECT r.id AS ID, c.phone AS Phone,"
                   "r.date AS Date FROM requests r "
@@ -65,7 +98,7 @@ void Dashboard::setRequestsHistory(){
         qDebug() << "setRequestsHistory() fault: " << query.lastError();
         return;
     }
-    req_qmodel->setQuery(std::move(query));
+    req_qmodel->setQuery(std::move(query));*/
     //ui->requests_statistic_tableView->setModel(req_qmodel);
     //ui->requests_statistic_tableView->verticalHeader()->setVisible(false);
     //ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);

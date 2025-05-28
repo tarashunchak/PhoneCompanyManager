@@ -20,7 +20,6 @@ private:
     QChartView* chart_view = nullptr;
     QBarSeries* bar_series = nullptr;
     QChart* chart = nullptr;
-    QBarCategoryAxis* axisX = nullptr;
 };
 
 #endif // BARCHART_H

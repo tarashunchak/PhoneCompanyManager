@@ -24,6 +24,7 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     usage_chart->resize(ui->usage_history->size());
     ui->no_usage_label->setVisible(false);
 
+    ui->tableView->setModel(qmodel);
     SetTableViewStyle();
 
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo_cust.svg"});
@@ -62,11 +63,11 @@ void CustomersDetailsPage::SetConnections(){
 void CustomersDetailsPage::SetCustomerInfo(const int id){
     curr_cust_id = id;
     QSqlQuery query;
-    query.prepare("SELECT c.id AS cust_id, "
-                  "(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS full_name, "
-                  "c.phone AS phone_num, "
-                  "c.date AS reg_date, "
-                  "t.tariff_name AS tariff_name, "
+    query.prepare("SELECT c.id AS \"Cust. ID\", "
+                  "(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS \"Full name\", "
+                  "c.phone AS \"Phone\", "
+                  "c.date AS \"Reg. date\", "
+                  "t.tariff_name AS \"Tariff\", "
                   "cm.comment_text AS comment, "
                   "COALESCE(c.comment_id, -1) AS comm_id "
                   "FROM customers c "
@@ -80,26 +81,22 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
         return;
     }
 
-    ui->cust_id_label->setText(query.value("cust_id").toString());
-    ui->cust_id_label->setProperty("cust_id", query.value("cust_id"));
-    ui->full_name_Label->setText(query.value("full_name").toString());
-    ui->phone_Label->setText(query.value("phone_num").toString());
-    ui->reg_date_Label->setText(query.value("reg_date").toString().left(10));
-    ui->current_tariff_label->setText(query.value("tariff_name").toString());
+    ui->cust_id_label->setText(query.value("Cust. ID").toString());
+    ui->cust_id_label->setProperty("cust_id", query.value("Cust. ID"));
+    ui->full_name_Label->setText(query.value("Full name").toString());
+    ui->phone_Label->setText(query.value("Phone").toString());
+    ui->reg_date_Label->setText(query.value("Reg. date").toString().left(10));
+    ui->current_tariff_label->setText(query.value("Tariff").toString());
     ui->comment_textEdit->setPlainText(query.value("comment").toString());
     ui->comment_textEdit->setProperty("comment_id", query.value("comm_id"));
     qmodel->setQuery(std::move(query));
-
-    ui->tableView->setModel(qmodel);
 
     SetCharts(curr_cust_id);
 }
 
 void CustomersDetailsPage::SetTableViewStyle(){
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableView->verticalHeader()->setVisible(false);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->setStyleSheet(
         "QTableView{"
@@ -122,23 +119,24 @@ void CustomersDetailsPage::SetCharts(int id = -1){
         return;
     }
 
-    if(ui->charts_comboBox->currentIndex() == 1){
-        tariff_bar_chart->setVisible(false);
-        tariff_pie_chart->setVisible(true);
-        //tariff_pie_chart->resize(ui->tariffs_history->size());
+    bool is_pie_chart_active = ui->charts_comboBox->currentIndex();
+    tariff_bar_chart->setVisible(!is_pie_chart_active);
+    tariff_pie_chart->setVisible(is_pie_chart_active);
+
+    if(is_pie_chart_active)
         tariff_pie_chart->setQuery(std::move(tariff_query), "name", "id");
-    }else{
-        tariff_pie_chart->setVisible(false);
-        tariff_bar_chart->setVisible(true);
-        //tariff_bar_chart->resize(ui->tariffs_history->size());
+    else
         tariff_bar_chart->setQuery(tariff_query, "id", "name");
-    }
 
     QSqlQuery usage_query;
-    usage_query.prepare("SELECT date(date) AS usage_date, COUNT(*) AS count FROM usage "
-                        "WHERE cust_id = :id AND date >= (CURRENT_DATE - INTERVAL '7 days') "
-                        "GROUP BY usage_date ORDER BY usage_date ASC;");
-    usage_query.bindValue(":id", id);
+    usage_query.prepare("SELECT date AS usage_date, "
+                        "COUNT(id) AS count "
+                        "FROM usage "
+                        "WHERE cust_id = :id "
+                        "AND date >= (CURRENT_DATE - INTERVAL '7 days') "
+                        "GROUP BY date ORDER BY date ASC;");
+
+    usage_query.bindValue(":id", curr_cust_id);
     if(!usage_query.exec()){
         usage_chart->setParent(nullptr);
         qDebug() << "In CustomersDetailsPage::SetCustomersInfo::usage_query fault!!!: " << tariff_query.lastError();

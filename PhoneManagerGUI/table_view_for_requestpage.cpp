@@ -158,6 +158,7 @@ void RequestsPage::showCompletedRequests(){
 
 
 void RequestsPage::showRequestsHistory(){
+    ui->save_btn->setVisible(false);
     QSqlQuery query;
     query.prepare("SELECT r.id AS \"ID\", "
                   "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '') "
