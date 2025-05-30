@@ -8,7 +8,7 @@ LineChart::LineChart(QWidget* parent)
     , chart_view(new QChartView{})
     , line_series(new QSplineSeries{})
     , chart(new QChart{})
-    , axisX(new QDateTimeAxis{})
+    , axisX(new QDateTimeAxis{chart})
 {
     QPen pen{};
     pen.setWidth(5);
@@ -28,7 +28,7 @@ LineChart::LineChart()
     : chart_view(new QChartView{})
     , line_series(new QSplineSeries{})
     , chart(new QChart{})
-    , axisX(new QDateTimeAxis{})
+    , axisX(new QDateTimeAxis{chart})
 {
     QPen pen{};
     pen.setWidth(5);
@@ -45,10 +45,6 @@ LineChart::LineChart()
 }
 
 LineChart::~LineChart(){
-    chart->removeSeries(line_series);
-    delete line_series;
-    delete chart;
-    delete chart_view;
 }
 
 void LineChart::resize(const QSize& size){
@@ -73,10 +69,10 @@ void LineChart::setQuery(QSqlQuery query, QString str, QString strY){
         axisX->setTitleText("Date");
 
         connect(line_series, &QSplineSeries::hovered, this, [this](const QPointF&, bool is_hovered){
-        QPen pen{};
-        pen.setWidth(5);
-        pen.setColor(is_hovered ? Qt::lightGray : Qt::black);
-        line_series->setPen(pen);
+            QPen pen{};
+            pen.setWidth(5);
+            pen.setColor(is_hovered ? Qt::lightGray : Qt::black);
+            line_series->setPen(pen);
         });
 
         chart->removeSeries(line_series);

@@ -7,7 +7,6 @@
 #include "includes/navigationmanager.h"
 #include "includes/buttonsstylemanager.h"
 #include "includes/chat.h"
-#include "calculator.h"
 
 namespace Ui {
 class MainWidget;
@@ -36,11 +35,9 @@ private:
 
 private:
     Ui::MainWidget *ui;
-    QWebSocket* webSocket;
     Chat* chat;
     NavigationManager* navigation_manager;
     ButtonsStyleManager* buttons_style_manager;
-    Calculator* calculator;
 };
 
 #endif // MAINWIDGET_H

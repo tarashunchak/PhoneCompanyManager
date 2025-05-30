@@ -32,6 +32,8 @@ private:
     void SetTableViewStyle();
     void SetCharts(int);
     void SaveCommentToDB();
+    void SetTariffsChart()const;
+    void SetUsageChart()const;
 
 private:
     Ui::CustomersDetailsPage *ui;

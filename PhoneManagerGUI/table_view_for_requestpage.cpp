@@ -10,14 +10,14 @@
 #include <QHeaderView>
 #include <QMenu>
 
-enum ACTIVE_BTN : char{
+enum ACTIVE_BTN : unsigned char{
     UNASSIGNED = 0,
     IN_PROGRESS,
     COMPLETED,
     HISTORY
 };
 
-void RequestsPage::setActiveButton(const char button){
+void RequestsPage::setActiveButton(const uchar button){
     static QString both{
         "QPushButton{"
         "height:40px;"
@@ -105,7 +105,7 @@ void RequestsPage::showInProgressRequests(){
                   "status AS \"Status\", date AS \"Date\" "
                   "FROM requests "
                   "WHERE status = 'In Progress' "
-                  "AND assigned_to_id = -1;");
+                  "AND assigned_to_id = :id;");
 
     query.bindValue(":id", CurrentUser::getCurrentUserID());
     if(!query.exec()){

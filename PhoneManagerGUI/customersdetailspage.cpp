@@ -89,6 +89,9 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
     ui->current_tariff_label->setText(query.value("Tariff").toString());
     ui->comment_textEdit->setPlainText(query.value("comment").toString());
     ui->comment_textEdit->setProperty("comment_id", query.value("comm_id"));
+    if(!query.exec()){
+        qDebug() << "customers details page qmodel";
+    }
     qmodel->setQuery(std::move(query));
 
     SetCharts(curr_cust_id);
@@ -107,7 +110,7 @@ void CustomersDetailsPage::SetTableViewStyle(){
     );
 }
 
-void CustomersDetailsPage::SetCharts(int id = -1){
+void CustomersDetailsPage::SetTariffsChart()const{
     QSqlQuery tariff_query;
     tariff_query.prepare("SELECT t.tariff_name AS name, t.id AS id "
                          "FROM customers c "
@@ -127,7 +130,9 @@ void CustomersDetailsPage::SetCharts(int id = -1){
         tariff_pie_chart->setQuery(std::move(tariff_query), "name", "id");
     else
         tariff_bar_chart->setQuery(tariff_query, "id", "name");
+}
 
+void CustomersDetailsPage::SetUsageChart()const{
     QSqlQuery usage_query;
     usage_query.prepare("SELECT date AS usage_date, "
                         "COUNT(id) AS count "
@@ -138,15 +143,20 @@ void CustomersDetailsPage::SetCharts(int id = -1){
 
     usage_query.bindValue(":id", curr_cust_id);
     if(!usage_query.exec()){
-        usage_chart->setParent(nullptr);
-        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::usage_query fault!!!: " << tariff_query.lastError();
+        usage_chart->setVisible(false);
+        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::usage_query fault!!!: " << usage_query.lastError();
         ui->no_usage_label->setVisible(true);
         return;
     }
     ui->no_usage_label->setVisible(false);
-    usage_chart->setParent(ui->usage_history);
+    usage_chart->setVisible(true);
     usage_chart->resize(ui->usage_history->size());
     usage_chart->setQuery(std::move(usage_query), "count", "usage_date");
+}
+
+void CustomersDetailsPage::SetCharts(int id = -1){
+    SetTariffsChart();
+    SetUsageChart();
 }
 
 void CustomersDetailsPage::SaveCommentToDB(){

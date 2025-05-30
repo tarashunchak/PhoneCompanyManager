@@ -65,6 +65,10 @@ void CustomersPage::SetConnections(){
         "border-top-right-radius:4px;"
         "border-bottom-right-radius:4px;"
     };
+    static const QString center{
+        "QPushButton{"
+        "border-radius:0px;"
+    };
     static const QString both{
         "font-size:18px;"
         "border:1px solid rgb(255, 255, 255);"
@@ -80,16 +84,28 @@ void CustomersPage::SetConnections(){
     static const QString inactive_right{right + "background-color:transparent;color:white;" + both + inactive};
     static const QString active_left{left + "background-color:white;color:black;" + both};
     static const QString inactive_left{left + "background-color:transparent;color:white;" + both + inactive};
+    static const QString active_center{center + "background-color:white;color:black;" + both};
+    static const QString inactive_center{center + "background-color:transparent;color:white;" + both + inactive};
 
     connect(ui->active_btn, &QPushButton::clicked, this, [&, this](){
         ui->active_btn->setStyleSheet(active_left);
         ui->inactive_btn->setStyleSheet(inactive_right);
+        ui->all_by_activity_btn->setStyleSheet(inactive_center);
         ui->active_btn->setProperty("status", true);
+        ui->all_by_activity_btn->setProperty("status", false);
     });
     connect(ui->inactive_btn, &QPushButton::clicked, this, [&, this](){
         ui->inactive_btn->setStyleSheet(active_right);
         ui->active_btn->setStyleSheet(inactive_left);
+        ui->all_by_activity_btn->setStyleSheet(inactive_center);
         ui->active_btn->setProperty("status", false);
+        ui->all_by_activity_btn->setProperty("status", false);
+    });
+    connect(ui->all_by_activity_btn, &QPushButton::clicked, this, [&, this](){
+        ui->inactive_btn->setStyleSheet(inactive_right);
+        ui->active_btn->setStyleSheet(inactive_left);
+        ui->all_by_activity_btn->setStyleSheet(active_center);
+        ui->all_by_activity_btn->setProperty("status", true);
     });
 }
 

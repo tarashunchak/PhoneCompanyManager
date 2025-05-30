@@ -53,6 +53,7 @@ void Dashboard::setTableViewStyles(){
     ui->tableView->setColumnWidth(6, 80);
     ui->tableView->verticalHeader()->setVisible(false);
     ui->requests_statistic_tableView->verticalHeader()->setVisible(false);
+    ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     ui->requests_statistic_tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     const static QString style{
@@ -73,20 +74,25 @@ void Dashboard::setTableViewStyles(){
     };
     ui->tableView->horizontalHeader()->setStyleSheet(style);
     ui->requests_statistic_tableView->horizontalHeader()->setStyleSheet(style);
-
 }
+
 void Dashboard::setTableViewConnection(){
-    cust_qmodel->setQuery("SELECT c.id AS \"Cust. ID\", "
-                          "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Full Name\", "
-                          "c.phone AS \"Phone\", "
-                          "c.tariff_id  AS \"Tariff ID\", "
-                          "c.date AS \"Reg. date\", "
-                          "(COALESCE(e.first_name, '') || ' ' || COALESCE(e.last_name, '')) AS \"Added By\", "
-                          "c.is_active AS \"Is Active\" "
-                          "FROM customers c "
-                          "JOIN employees e ON e.id = c.employee_id "
-                          "ORDER BY c.date DESC "
-                          "WHERE (c.date) >= (CURRENT_DATE - INTERVAL '" +
-                          QString{std::to_string((ui->customers_period_comboBox->currentIndex()+1)*10).c_str()} + " days');");
+    QSqlQuery query;
+    query.prepare("SELECT c.id AS \"Cust. ID\", "
+                  "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Full Name\", "
+                  "c.phone AS \"Phone\", "
+                  "c.tariff_id  AS \"Tariff ID\", "
+                  "c.date AS \"Reg. date\", "
+                  "(COALESCE(e.first_name, '') || ' ' || COALESCE(e.last_name, '')) AS \"Added By\", "
+                  "c.is_active AS \"Is Active\" "
+                  "FROM customers c "
+                  "LEFT JOIN employees e ON e.id = c.employee_id "
+                  "ORDER BY c.date DESC "
+                  "WHERE c.date >= (CURRENT_DATE - INTERVAL :interval);"
+        );
+    QString interval_days{'\'' + (std::to_string((ui->customers_period_comboBox->currentIndex() + 1)*10) + " days'").c_str()};
+    query.bindValue(":interval", interval_days);
+    query.exec();
+    cust_qmodel->setQuery(std::move(query));
     ui->empty_cust_model->setVisible(!cust_qmodel->rowCount());
 }

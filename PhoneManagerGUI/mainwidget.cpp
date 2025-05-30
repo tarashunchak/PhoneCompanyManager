@@ -2,19 +2,15 @@
 #include "ui_mainwidget.h"
 #include "includes/currentuser.h"
 #include <QSqlError>
-//#include "includes/customersreport.h"
 
 #include <QTextEdit>
 
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::MainWidget)
-    , webSocket(new QWebSocket{})
     , chat(new Chat{})
-    , calculator(new Calculator{})
 {
     ui->setupUi(this);
-    webSocket->open(QUrl{"ws://192.168.1.103:8080/ws"});
     ui->close_open_chat_btn->setIcon(QIcon{"./img/chat.svg"});
     ui->logo_label->setPixmap({"./img/NeoCom.svg"});
     ui->close_open_calc_btn->setIcon(QIcon{"./img/calculator.svg"});
@@ -40,15 +36,6 @@ MainWidget::MainWidget(QWidget *parent)
     chat->setGeometry(this->size().width()-60 - chat->size().width()
                       ,this->size().height()-60 - chat->size().height()
                       ,chat->size().width(), chat->size().height());
-    calculator->setVisible(false);
-    /*CustomersReport* report = new CustomersReport{};
-    report->generate();
-    QTextEdit* textEdit = new QTextEdit{};
-    textEdit->setHtml(report->getHtml());
-    textEdit->setStyleSheet("color:black;");
-    ui->stackedWidget->addWidget(textEdit);
-    ui->stackedWidget->setCurrentWidget(textEdit);
-    textEdit = nullptr;*/
 }
 
 MainWidget::~MainWidget()
@@ -58,54 +45,54 @@ MainWidget::~MainWidget()
 
 void MainWidget::SetCurrentUserInfo(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM employees WHERE id = :id;");
+    query.prepare("SELECT e.photo AS profile_pic, "
+                  "(COALESCE(e.first_name, '') "
+                  "|| ' ' || COALESCE(e.last_name, '')) AS full_name "
+                  "FROM users u "
+                  "JOIN employees e ON e.id = u.empl_id "
+                  "WHERE u.id = :id;");
     query.bindValue(":id", CurrentUser::getCurrentUserID());
     if(!query.exec() || !query.next()){
         qDebug() << "MainWidget::SetCurrentUserInfo() query fault!: " << query.lastError();
     }
-    QByteArray byteArr{query.value("photo").toByteArray()};
+    QByteArray byteArr{query.value("profile_pic").toByteArray()};
     QPixmap pixmap{};
     pixmap.loadFromData(byteArr);
     ui->profile_pic->setPixmap(pixmap.isNull() ? QPixmap{"./img/profile_photo.svg"} : pixmap);
-    ui->name_label->setText(query.value("first_name").toString()
-                            + " " + query.value("last_name").toString());
+    ui->name_label->setText(query.value("full_name").toString());
 }
 
 void MainWidget::SetupConnections(){
-    connect(ui->close_open_calc_btn, &QPushButton::clicked, this, [this](){calculator->setVisible(!calculator->isVisible());});
-    connect(webSocket, &QWebSocket::connected, this, [](){
-        qDebug() << "CONNECTED!!!";
-    });
+    connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, &MainWidget::SetCurrentUserInfo);
     connect(ui->close_open_chat_btn, &QPushButton::clicked, this, [this](){
         chat->setVisible(!chat->isVisible());
     });
     connect(this, &MainWidget::on_dashboard_btn_clicked, this, [this](){
-        SetCurrentUserInfo();
+        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::DASHBOARD_BTN);
         navigation_manager->showDashboardPage();
     });
     connect(this, &MainWidget::on_customers_btn_clicked, this, [this](){
-        SetCurrentUserInfo();
+        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
         navigation_manager->showCustomersPage();
     });
     connect(this, &MainWidget::on_employees_btn_clicked, this, [this](){
-        SetCurrentUserInfo();
+        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::EMPLOYEES_BTN);
         navigation_manager->showEmployeesPage();
     });
     connect(this, &MainWidget::on_tariffs_btn_clicked, this, [this](){
-        SetCurrentUserInfo();
+        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TARIFFS_BTN);
         navigation_manager->showTariffsPage();
     });
     connect(this, &MainWidget::on_requests_btn_clicked, this, [this](){
-        SetCurrentUserInfo();
+        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
         navigation_manager->showRequestsPage();
     });
     connect(this, &MainWidget::on_tasks_btn_clicked, this, [this](){
-        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TASKS_BTN);
         navigation_manager->showTasksPage();
     });
@@ -116,13 +103,11 @@ void MainWidget::SetupConnections(){
         navigation_manager->showChatsPage();
     });
     connect(navigation_manager, &NavigationManager::show_small_buttons, ui->close_open_chat_btn, [this](){
-        SetCurrentUserInfo();
+        //SetCurrentUserInfo();
         ui->close_open_chat_btn->setVisible(true);
-        //ui->close_open_calc_btn->setVisible(true);
     });
     connect(navigation_manager, &NavigationManager::hide_small_buttons, ui->close_open_chat_btn, [this](){
         ui->close_open_chat_btn->setVisible(false);
-        //ui->close_open_calc_btn->setVisible(false);
     });
     connect(navigation_manager, &NavigationManager::open_chat, this, [this](const QString& phone){
         chat->show();

@@ -60,46 +60,17 @@ void Dashboard::setTariffsStatistics(){
 }
 
 void Dashboard::setRequestsHistory(){
-    static QNetworkAccessManager* manager = new QNetworkAccessManager{this};
-    QUrl url("http://192.168.1.103:8080/dashboard_req");
-    QNetworkRequest request{url};
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    QJsonObject json;
-    json["limit"] = ((ui->requests_period_comboBox->currentIndex()+1)*10);
-    QJsonDocument json_doc(json);
-    QByteArray byteArr = json_doc.toJson();
-    QNetworkReply* reply = manager->post(request, byteArr);
-    connect(reply, &QNetworkReply::finished, this, [=](){
-        QByteArray response = reply->readAll();
-        QJsonDocument doc = QJsonDocument::fromJson(response);
-        QJsonObject obj = doc.object();
-
-        QString queryStr = obj["query"].toString();
-        QSqlQuery query;
-        query.prepare(queryStr);
-        if (!query.exec()) {
-            qDebug() << "Query error:" << query.lastError();
-            return;
-        }
-
-        req_qmodel->setQuery(std::move(query));
-        ui->requests_statistic_tableView->setModel(req_qmodel);
-        ui->requests_statistic_tableView->verticalHeader()->setVisible(false);
-        ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    });
-
-    /*QString limit{std::to_string((ui->requests_period_comboBox->currentIndex() + 1) * 10).c_str()};
+    QString limit{std::to_string((ui->requests_period_comboBox->currentIndex() + 1) * 10).c_str()};
     QSqlQuery query;
-    query.prepare("SELECT r.id AS ID, c.phone AS Phone,"
-                  "r.date AS Date FROM requests r "
+    query.prepare("SELECT r.id AS \"ID\", "
+                  "c.phone AS \"Phone\", "
+                  "r.date AS \"Date\" "
+                  "FROM requests r "
                   "JOIN customers c ON c.id = r.cust_id "
                   "ORDER BY r.id DESC LIMIT " + limit + ";");
     if(!query.exec()){
         qDebug() << "setRequestsHistory() fault: " << query.lastError();
         return;
     }
-    req_qmodel->setQuery(std::move(query));*/
-    //ui->requests_statistic_tableView->setModel(req_qmodel);
-    //ui->requests_statistic_tableView->verticalHeader()->setVisible(false);
-    //ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    req_qmodel->setQuery(std::move(query));
 }

@@ -26,7 +26,7 @@ signals:
 
 private:
     void SetConnections();
-    void setActiveButton(const char);
+    void setActiveButton(const uchar);
 
 private:
     Ui::RequestsPage *ui;

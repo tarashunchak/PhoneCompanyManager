@@ -27,7 +27,8 @@
    </property>
    <property name="styleSheet">
     <string notr="true">border:none;
-background-color:rgb(25, 30, 50);</string>
+background-color:rgb(25, 30, 50);
+color:white;</string>
    </property>
    <widget class="QLineEdit" name="search_lineEdit">
     <property name="geometry">
@@ -118,7 +119,8 @@ border-radius:20px;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">border:none;
-background-color:rgb(30, 35, 55);</string>
+background-color:rgb(25, 30, 50);
+color:white;</string>
    </property>
    <widget class="QLabel" name="profile_pic_label">
     <property name="geometry">
@@ -150,7 +152,8 @@ background-color:white;</string>
      <string notr="true">font-family:Lato, Consolas;
 font-size:24px;
 background-color:transparent;
-border:none;</string>
+border:none;
+color:white;</string>
     </property>
     <property name="text">
      <string>TextLabel</string>
@@ -293,7 +296,8 @@ background-color:transparent;</string>
    <property name="styleSheet">
     <string notr="true">border:none;
 background-color:rgba(25, 30, 50, 0.5);
-border-radius:8px;</string>
+border-radius:8px;
+color:white;</string>
    </property>
    <widget class="QPushButton" name="say_hello_btn">
     <property name="geometry">

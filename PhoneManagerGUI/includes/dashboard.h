@@ -23,6 +23,7 @@ public:
     void setRequestsStatistics();
     void setTariffsStatistics();
     void setRequestsHistory();
+    void updateCurrentUser();
 
 signals:
 

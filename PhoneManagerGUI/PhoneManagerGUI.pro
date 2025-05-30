@@ -12,7 +12,6 @@ SOURCES += \
     authmanager.cpp \
     barchart.cpp \
     buttonsstylemanager.cpp \
-    calculator.cpp \
     chat.cpp \
     comboboxdelegate.cpp \
     currentuser.cpp \
@@ -55,10 +54,8 @@ SOURCES += \
 HEADERS += \
     employeeschatpage.h \
     employeesdetailspage.h \
-    includes/calculator.h \
     includes/customersreport.h \
     includes/employeesreport.h \
-    includes/calculator.h \
     includes/chat.h \
     includes/comboboxdelegate.h \
     includes/authmanager.h \
@@ -105,13 +102,11 @@ HEADERS += \
 FORMS += \
     employeeschatpage.ui \
     employeesdetailspage.ui \
-    ui/calculator.ui \
     ui/insertcustomerdialog.ui \
     ui/insertemployeedialog.ui \
     ui/mainwidget.ui \
     ui/tariffeditwidget.ui \
     ui/taskspage.ui \
-    ui/calculator.ui \
     ui/chat.ui \
     ui/customersdetailspage.ui \
     ui/customerspage.ui \
