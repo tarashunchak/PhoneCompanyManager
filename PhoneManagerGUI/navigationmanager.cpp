@@ -59,6 +59,15 @@ void NavigationManager::setUpNavigation(){
     //Customers Page Signals/Slots connections
     connect(customersPage, &CustomersPage::customer_selected
             , this, &NavigationManager::showCustomersDetailsPage);
+    connect(customersPage, &CustomersPage::on_close_open_filter_btn_clicked
+            , this, [this](){
+        static bool flag = true;
+        if(flag)
+            emit hide_small_buttons();
+        else
+            emit show_small_buttons();
+        flag = !flag;
+    });
 
     //Customers Details Page Signals/Slots connections
     connect(customersDetailsPage, &CustomersDetailsPage::on_return_btn_clicked
@@ -74,7 +83,6 @@ void NavigationManager::setUpNavigation(){
 
     //Requests Page Signals/Slots connections
 
-    //Tasks Page Signals/Slots connections
 }
 
 static void hide_side_menu(QWidget* menu, QStackedWidget* sWidget){
@@ -127,8 +135,6 @@ void NavigationManager::showTariffsPage()const{
 
 void NavigationManager::showRequestsPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
-    requestsPage->setCurrentUser();
-    //requestsPage->setTableView();
     requestsPage->showUnassignmentRequests();
     sWidget->setCurrentWidget(requestsPage);
 }
@@ -147,6 +153,7 @@ void NavigationManager::showCustomersDetailsPage(const int id)const{
 
 void NavigationManager::showTasksPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TASKS_BTN);
+    tasksPage->showCreatedByMe();
     sWidget->setCurrentWidget(tasksPage);
 }
 

@@ -6,6 +6,7 @@
 #include "piechart.h"
 #include "barchart.h"
 #include "linechart.h"
+#include <QTableView>
 
 namespace Ui {
 class CustomersDetailsPage;
@@ -41,6 +42,7 @@ private:
     PieChart* tariff_pie_chart;
     BarChart* tariff_bar_chart;
     LineChart* usage_chart;
+    QTableView* table_view;
     static uint curr_cust_id;
 };
 

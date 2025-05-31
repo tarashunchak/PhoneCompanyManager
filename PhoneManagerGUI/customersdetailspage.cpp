@@ -3,6 +3,7 @@
 #include "includes/currentuser.h"
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QHeaderView>
 
 CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     : QWidget(parent)
@@ -11,8 +12,11 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     , tariff_pie_chart(new PieChart{})
     , tariff_bar_chart(new BarChart{})
     , usage_chart(new LineChart{})
+    , table_view(new QTableView{})
 {
     ui->setupUi(this);
+    table_view->setParent(ui->details_widget);
+    table_view->setMinimumSize(QSize{930, 450});
 
     tariff_pie_chart->setParent(ui->tariffs_history);
     tariff_pie_chart->resize(ui->tariffs_history->size());
@@ -24,7 +28,7 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     usage_chart->resize(ui->usage_history->size());
     ui->no_usage_label->setVisible(false);
 
-    ui->tableView->setModel(qmodel);
+    table_view->setModel(qmodel);
     SetTableViewStyle();
 
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo_cust.svg"});
@@ -98,16 +102,22 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
 }
 
 void CustomersDetailsPage::SetTableViewStyle(){
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableView->setStyleSheet(
+    table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    table_view->setStyleSheet(
         "QTableView{"
         "background-color:white;"
         "color:black;"
         "font-size:16px;"
         "}"
     );
+    table_view->setColumnWidth(0, 133);
+    table_view->setColumnWidth(1, 133);
+    table_view->setColumnWidth(2, 133);
+    table_view->setColumnWidth(3, 133);
+    table_view->setColumnWidth(4, 133);
+    table_view->setColumnWidth(5, 133);
+    table_view->setColumnWidth(6, 133);
 }
 
 void CustomersDetailsPage::SetTariffsChart()const{

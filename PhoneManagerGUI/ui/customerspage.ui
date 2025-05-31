@@ -24,9 +24,9 @@ background-color:white;</string>
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>-1</y>
+     <y>0</y>
      <width>1670</width>
-     <height>81</height>
+     <height>80</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -82,7 +82,7 @@ background-color:transparent;</string>
       <x>350</x>
       <y>23</y>
       <width>140</width>
-      <height>30</height>
+      <height>34</height>
      </rect>
     </property>
     <property name="styleSheet">

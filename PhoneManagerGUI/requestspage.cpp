@@ -54,14 +54,3 @@ void RequestsPage::SetConnections(){
         showInProgressRequests();
     });
 }
-
-void RequestsPage::setCurrentUser(){
-    QSqlQuery query;
-    query.prepare("SELECT *FROM employees WHERE id = :empl_id;");
-    const int empl_id = CurrentUser::getCurrentUserID();
-    query.bindValue(":empl_id", empl_id);
-    if(query.exec() && query.next()){
-        qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
-        return;
-    }
-}

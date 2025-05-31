@@ -176,7 +176,7 @@ void CustomersPage::FindCustomersByName(){
     query.prepare("SELECT * FROM customers "
                   "WHERE LOWER(first_name) LIKE LOWER(:text) "
                   "OR LOWER(last_name) LIKE LOWER(:text) "
-                  "OR LOWER(first_name || ' ' || last_name) LIKE LOWER(:text) "
+                  "OR LOWER(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) LIKE LOWER(:text) "
                   "OR LOWER(phone) LIKE LOWER(:text);");
     QString text = ui->lineEdit->text() + "%";
     query.bindValue(":text", text);

@@ -16,7 +16,6 @@ class RequestsPage : public QWidget
 public:
     explicit RequestsPage(QWidget *parent = nullptr);
     ~RequestsPage();
-    void setCurrentUser();
     void showUnassignmentRequests();
     void showInProgressRequests();
     void showCompletedRequests();

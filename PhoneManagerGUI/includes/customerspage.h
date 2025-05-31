@@ -24,6 +24,7 @@ public:
 
 signals:
     void customer_selected(const int);
+    void on_close_open_filter_btn_clicked();
 
 private: /*Methods*/
     void FindCustomersByName();

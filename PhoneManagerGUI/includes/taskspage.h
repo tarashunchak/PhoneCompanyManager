@@ -2,6 +2,7 @@
 #define TASKSPAGE_H
 
 #include <QWidget>
+#include <QSqlQueryModel>
 
 namespace Ui {
 class TasksPage;
@@ -14,9 +15,12 @@ class TasksPage : public QWidget
 public:
     explicit TasksPage(QWidget *parent = nullptr);
     ~TasksPage();
+    void showAssignedToMe();
+    void showCreatedByMe();
 
 private:
     Ui::TasksPage *ui;
+    QSqlQueryModel* qmodel;
 };
 
 #endif // TASKSPAGE_H

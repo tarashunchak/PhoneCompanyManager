@@ -125,7 +125,8 @@ void RequestsPage::showInProgressRequests(){
         }
         ui->no_requests_label->setVisible(model->rowCount() == 0);
         req_tableView->setModel(model);
-        req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, new ComboBoxDelegate{});
+        req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1
+                                , new ComboBoxDelegate{{"Do nothing", "Confirm", "Reject"}});
 
         QStringList headers{};
         for (int i = 0; i < query.record().count(); ++i) {
@@ -134,6 +135,7 @@ void RequestsPage::showInProgressRequests(){
         headers << "Action";
         model->setHorizontalHeaderLabels(headers);
     }
+    req_tableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
     setActiveButton(IN_PROGRESS);
 }
 
@@ -151,8 +153,9 @@ void RequestsPage::showCompletedRequests(){
     qmodel->setQuery(std::move(query));
 
     ui->no_requests_label->setVisible(qmodel->rowCount() == 0);
-    req_tableView->setModel(qmodel);
     req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, nullptr);
+    req_tableView->setModel(qmodel);
+    req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     setActiveButton(COMPLETED);
 }
 

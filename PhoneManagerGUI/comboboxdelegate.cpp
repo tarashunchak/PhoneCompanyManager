@@ -1,17 +1,18 @@
 #include "includes/comboboxdelegate.h"
 #include <QComboBox>
 
-ComboBoxDelegate::ComboBoxDelegate() {}
+ComboBoxDelegate::ComboBoxDelegate(QObject* parent) : QStyledItemDelegate(parent){}
 
-ComboBoxDelegate::ComboBoxDelegate(QObject* parent)
-        : QStyledItemDelegate(parent) {}
+ComboBoxDelegate::ComboBoxDelegate(const QStringList& str_list, QObject* parent)
+        : QStyledItemDelegate(parent)
+        , str_list(std::move(str_list)){}
 
 QWidget* ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem&,
         const QModelIndex&)const
 {
     QComboBox* combo_box = new QComboBox{parent};
     combo_box->setStyleSheet("background-color:gray;color:black;");
-    combo_box->addItems({"Do nothing", "Confirm", "Reject"});
+    combo_box->addItems(str_list);
     return combo_box;
 }
 
