@@ -2,7 +2,6 @@
 #include "ui_mainwidget.h"
 #include "includes/currentuser.h"
 #include <QSqlError>
-
 #include <QTextEdit>
 
 MainWidget::MainWidget(QWidget *parent)
@@ -68,27 +67,22 @@ void MainWidget::SetupConnections(){
         chat->setVisible(!chat->isVisible());
     });
     connect(this, &MainWidget::on_dashboard_btn_clicked, this, [this](){
-        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::DASHBOARD_BTN);
         navigation_manager->showDashboardPage();
     });
     connect(this, &MainWidget::on_customers_btn_clicked, this, [this](){
-        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
         navigation_manager->showCustomersPage();
     });
     connect(this, &MainWidget::on_employees_btn_clicked, this, [this](){
-        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::EMPLOYEES_BTN);
         navigation_manager->showEmployeesPage();
     });
     connect(this, &MainWidget::on_tariffs_btn_clicked, this, [this](){
-        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TARIFFS_BTN);
         navigation_manager->showTariffsPage();
     });
     connect(this, &MainWidget::on_requests_btn_clicked, this, [this](){
-        //SetCurrentUserInfo();
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
         navigation_manager->showRequestsPage();
     });
@@ -103,7 +97,6 @@ void MainWidget::SetupConnections(){
         navigation_manager->showChatsPage();
     });
     connect(navigation_manager, &NavigationManager::show_small_buttons, ui->close_open_chat_btn, [this](){
-        //SetCurrentUserInfo();
         ui->close_open_chat_btn->setVisible(true);
     });
     connect(navigation_manager, &NavigationManager::hide_small_buttons, ui->close_open_chat_btn, [this](){

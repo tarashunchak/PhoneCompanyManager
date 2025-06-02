@@ -123,6 +123,12 @@ border:1px solid white;</string>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QLabel" name="lname_label">
+        <property name="minimumSize">
+         <size>
+          <width>215</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Lato</family>
@@ -136,6 +142,12 @@ border:1px solid white;</string>
       </item>
       <item>
        <widget class="QLineEdit" name="last_name_lineEdit">
+        <property name="minimumSize">
+         <size>
+          <width>215</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">background-color:rgba(200, 200, 200, 0.2);
 color:white;
@@ -181,6 +193,12 @@ border-radius:5px;</string>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="QLabel" name="phone_label">
+        <property name="minimumSize">
+         <size>
+          <width>215</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Lato</family>
@@ -194,6 +212,12 @@ border-radius:5px;</string>
       </item>
       <item>
        <widget class="QLineEdit" name="phone_lineEdit">
+        <property name="minimumSize">
+         <size>
+          <width>215</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">background-color:rgba(200, 200, 200, 0.2);
 color:white;
@@ -239,6 +263,12 @@ border-radius:5px;</string>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
        <widget class="QLabel" name="email_label">
+        <property name="minimumSize">
+         <size>
+          <width>215</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Lato</family>
@@ -252,6 +282,12 @@ border-radius:5px;</string>
       </item>
       <item>
        <widget class="QLineEdit" name="email_lineEdit">
+        <property name="minimumSize">
+         <size>
+          <width>215</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true">background-color:rgba(200, 200, 200, 0.2);
 color:white;

@@ -235,27 +235,26 @@ void EmployeesChatPage::searchChats(){
     QSqlQuery query;
     query.prepare(
         "SELECT e.first_name AS partner_fname, "
-        "   e.last_name AS partner_lname, "
-        "	e.photo AS profile_pic, "
-        "       u.id AS user_id, "
-        "       existing_chats.id AS chat_id "
-        "FROM employees e "
-        "LEFT JOIN users u ON u.empl_id = e.id "
+        "e.last_name AS partner_lname, "
+        "e.photo AS profile_pic, "
+        "u.id AS user_id, "
+        "chat.id AS chat_id "
+        "FROM users u "
+        "JOIN employees e ON e.id = u.empl_id "
         "LEFT JOIN (  "
-        "    SELECT c.id,  "
-        "       cp1.user_id AS user1,  "
-        "       cp2.user_id AS user2  "
-        "    FROM chats c  "
-        "    JOIN chat_participants cp1 ON cp1.chat_id = c.id  "
-        "    JOIN chat_participants cp2 ON cp2.chat_id = c.id  "
-        "    WHERE cp1.user_id = :my_id  "
-        "      AND cp2.user_id != :my_id  "
-        ") AS existing_chats ON existing_chats.user2 = u.id  "
-        "WHERE u.id IS NULL OR u.id != :my_id AND (e.first_name LIKE LOWER(:name) OR "
-        "e.last_name LIKE LOWER(:name));"
+        "SELECT c.id,  "
+        "cp1.user_id AS user1,  "
+        "cp2.user_id AS user2  "
+        "FROM chats c  "
+        "JOIN chat_participants cp1 ON cp1.chat_id = c.id  "
+        "JOIN chat_participants cp2 ON cp2.chat_id = c.id  "
+        "WHERE cp1.user_id = :my_id  "
+        "AND cp2.user_id != :my_id  "
+        ") AS chat ON (chat.user1 = u.id OR chat.user2 = u.id) "
+        "WHERE u.id != :my_id AND LOWER(e.first_name) LIKE LOWER(:name) OR "
+        "LOWER(e.last_name) LIKE LOWER(:name);"
     );
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
-    qDebug() << "my_id = " << CurrentUser::getCurrentUserID();
     query.bindValue(":name", ui->search_lineEdit->text()+"%");
     if(!query.exec()){
         qDebug() << "searchChats() query fault: " << query.lastError();

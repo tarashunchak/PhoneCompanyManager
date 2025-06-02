@@ -50,7 +50,7 @@ background-color:#16171C;</string>
      <rect>
       <x>20</x>
       <y>50</y>
-      <width>1010</width>
+      <width>1015</width>
       <height>450</height>
      </rect>
     </property>
@@ -511,7 +511,7 @@ background-color:transparent;</string>
     <rect>
      <x>60</x>
      <y>570</y>
-     <width>1010</width>
+     <width>1015</width>
      <height>450</height>
     </rect>
    </property>

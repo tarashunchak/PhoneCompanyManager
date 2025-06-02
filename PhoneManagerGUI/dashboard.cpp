@@ -87,12 +87,12 @@ void Dashboard::setTableViewConnection(){
                   "c.is_active AS \"Is Active\" "
                   "FROM customers c "
                   "LEFT JOIN employees e ON e.id = c.employee_id "
-                  "ORDER BY c.date DESC "
-                  "WHERE c.date >= (CURRENT_DATE - INTERVAL :interval);"
+                  "WHERE c.date >= (CURRENT_DATE - INTERVAL '"
+                  + QString{std::to_string((ui->customers_period_comboBox->currentIndex()+1)*10).c_str()} + " days') "
+                  "ORDER BY c.date DESC;"
         );
-    QString interval_days{'\'' + (std::to_string((ui->customers_period_comboBox->currentIndex() + 1)*10) + " days'").c_str()};
-    query.bindValue(":interval", interval_days);
-    query.exec();
+    if(!query.exec())
+        qDebug() << "dashboard tableView fault" << query.lastError().text();
     cust_qmodel->setQuery(std::move(query));
     ui->empty_cust_model->setVisible(!cust_qmodel->rowCount());
 }

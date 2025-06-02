@@ -37,7 +37,6 @@ void RegistrationPage::SetConnections(){
         }
     });
     connect(reg_manager, &RegistrationManager::employee_not_founded, this, [this](){
-        qDebug() << "kjadsf";
         ui->error_message->setVisible(true);
         ui->error_message->setText("There is no employee with this email!");
     });

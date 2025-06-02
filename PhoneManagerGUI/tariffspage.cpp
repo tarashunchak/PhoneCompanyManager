@@ -38,7 +38,6 @@ void TariffsPage::setCurrentUser(){
         qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
         return;
     }
-
 }
 
 void TariffsPage::setConnections()const{

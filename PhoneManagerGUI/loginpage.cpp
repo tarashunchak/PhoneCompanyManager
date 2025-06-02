@@ -9,7 +9,6 @@ LoginPage::LoginPage(QWidget *parent)
 {
     ui->setupUi(this);
     ui->incorrect_data_Label->setVisible(false);
-    //this->setLayout(new QGridLayout{});
     ui->pushButton->setIcon(QIcon{"./img/eye-closed.svg"});
     setConnections();
 }

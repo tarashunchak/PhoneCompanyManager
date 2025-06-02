@@ -87,7 +87,5 @@ bool BarChart::setQuery(QSqlQuery& query, const QString& field_name, const QStri
     chart_view->setChart(chart);
     chart->createDefaultAxes();
 
-    //axisX->setTitleText("");
-
     return true;
 }

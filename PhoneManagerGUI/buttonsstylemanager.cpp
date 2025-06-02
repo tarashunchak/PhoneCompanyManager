@@ -14,7 +14,6 @@ QList<QPushButton*>* ButtonsStyleManager::getButtonsList(){
 }
 
 void ButtonsStyleManager::SetLeftMenuIcons(QList<QPushButton*>* buttons){
-
     //Dashboard Button
     buttons->at(0)->setIcon(QIcon("./img/dashboards.png"));
     //Customers Button

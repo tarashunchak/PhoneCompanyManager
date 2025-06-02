@@ -19,7 +19,6 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget
     , employeesChatPage(new EmployeesChatPage{})
     , left_side_menu(side_menu)
 {
-
     sWidget->addWidget(loginPage);
     sWidget->addWidget(registrationPage);
     sWidget->addWidget(passwordRecoveryPage);
@@ -80,9 +79,7 @@ void NavigationManager::setUpNavigation(){
 
     //Employees Page Signals/Slots connections
 
-
     //Requests Page Signals/Slots connections
-
 }
 
 static void hide_side_menu(QWidget* menu, QStackedWidget* sWidget){

@@ -30,7 +30,7 @@ void InsertCustomerDialog::clearWidgets(){
 
 void InsertCustomerDialog::updateComboBoxData(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM tariffs;");
+    query.prepare("SELECT * FROM tariffs WHERE is_active = true;");
     query.exec();
     while(query.next())
         ui->tariff_comboBox->addItem(query.value("tariff_name").toString()
