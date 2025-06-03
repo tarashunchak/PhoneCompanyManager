@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(60, 60, 60);</string>
+   <string notr="true">background-color:transparent;</string>
   </property>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
@@ -235,8 +235,8 @@ QPushButton:hover{
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border:none;
-background-color:transparent;</string>
+    <string notr="true">background-color:transparent;
+border:none;</string>
    </property>
    <property name="text">
     <string/>

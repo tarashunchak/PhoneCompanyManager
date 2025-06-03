@@ -1,22 +1,16 @@
 #include "includes/authmanager.h"
-#include "includes/databasemanager.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QByteArray>
 #include <QCryptographicHash>
 #include "includes/currentuser.h"
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QJsonObject>
-#include <QJsonDocument>
 
 void AuthManager::authenticate(const QString& username, const QString& password){
     //QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
     QSqlQuery query;
     query.prepare("SELECT * FROM users "
                   "WHERE username = :user "
-                  "AND password = :pass");
+                  "AND password = :pass;");
 
     query.bindValue(":user", username);
     query.bindValue(":pass", password);
@@ -28,8 +22,10 @@ void AuthManager::authenticate(const QString& username, const QString& password)
     }
 
     if(query.next()){
-        const int userID = query.value("id").toInt();
+        const uint userID = query.value("id").toUInt();
+        const uint emplID = query.value("empl_id").toUInt();
         CurrentUser::setCurrentUserID(userID);
+        CurrentUser::setCurrentEmployeeID(emplID);
         emit authSuccess();
     }else{
         qDebug() << "Invalid username or password!";

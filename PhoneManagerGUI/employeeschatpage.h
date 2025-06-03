@@ -18,7 +18,7 @@ public:
     ~EmployeesChatPage();
     void fillChatsWidget(QSqlQuery query = QSqlQuery{});
     void fillMessagesWidget(const int, const QString&
-                            , QLabel* partner_name = nullptr
+                            , QLabel* partner_label = nullptr
                             , QPixmap pixmap = QPixmap{});
 
     void updateLastSeenTimestamp();

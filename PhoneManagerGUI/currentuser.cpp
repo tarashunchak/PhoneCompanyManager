@@ -1,11 +1,21 @@
 #include "includes/currentuser.h"
 
-int CurrentUser::UID = 0;
+unsigned int CurrentUser::UID = 0;
 
-int CurrentUser::getCurrentUserID(){
+unsigned int CurrentUser::EMPL_ID = 0;
+
+unsigned int CurrentUser::getCurrentUserID(){
     return UID;
 }
 
-void CurrentUser::setCurrentUserID(const int uId){
+void CurrentUser::setCurrentUserID(const unsigned int uId){
     UID = uId;
+}
+
+unsigned int CurrentUser::getCurrentEmployeeID(){
+    return EMPL_ID;
+}
+
+void CurrentUser::setCurrentEmployeeID(const unsigned int uId){
+    EMPL_ID = uId;
 }

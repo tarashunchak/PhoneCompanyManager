@@ -18,7 +18,6 @@ SOURCES += \
     customersdetailspage.cpp \
     customerspage.cpp \
     customerspagefilter.cpp \
-    customersreport.cpp \
     dashboard.cpp \
     dashboardseries.cpp \
     databasemanager.cpp \
@@ -26,7 +25,6 @@ SOURCES += \
     employeesdetailspage.cpp \
     employeespage.cpp \
     employeespagefilter.cpp \
-    employeesreport.cpp \
     insertcustomerdialog.cpp \
     insertemployeedialog.cpp \
     inserttariffdialog.cpp \
@@ -42,7 +40,6 @@ SOURCES += \
     pushbuttondelegate.cpp \
     registrationmanager.cpp \
     registrationpage.cpp \
-    report.cpp \
     requestspage.cpp \
     requeststabelview.cpp \
     table_view_for_requestpage.cpp \
@@ -54,8 +51,6 @@ SOURCES += \
 HEADERS += \
     employeeschatpage.h \
     employeesdetailspage.h \
-    includes/customersreport.h \
-    includes/employeesreport.h \
     includes/chat.h \
     includes/comboboxdelegate.h \
     includes/authmanager.h \
@@ -64,11 +59,9 @@ HEADERS += \
     includes/currentuser.h \
     includes/customersdetailspage.h \
     includes/customerspage.h \
-    includes/customersreport.h \
     includes/dashboard.h \
     includes/databasemanager.h \
     includes/employeespage.h \
-    includes/employeesreport.h \
     includes/insertcustomerdialog.h \
     includes/insertemployeedialog.h \
     includes/inserttariffdialog.h \
@@ -80,7 +73,6 @@ HEADERS += \
     includes/pushbuttondelegate.h \
     includes/registrationmanager.h \
     includes/registrationpage.h \
-    includes/report.h \
     includes/requestspage.h \
     includes/tariffcard.h \
     includes/tariffeditwidget.h \
@@ -94,7 +86,6 @@ HEADERS += \
     includes/mainwidget.h \
     includes/messagebox.h \
     includes/pushbuttondelegate.h \
-    includes/report.h \
     includes/tariffeditwidget.h \
     includes/taskspage.h \
     requeststabelview.h

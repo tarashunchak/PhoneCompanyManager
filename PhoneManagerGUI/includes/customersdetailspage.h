@@ -31,7 +31,7 @@ signals:
 private:
     void SetConnections();
     void SetTableViewStyle();
-    void SetCharts(int);
+    void SetCharts();
     void SaveCommentToDB();
     void SetTariffsChart()const;
     void SetUsageChart()const;

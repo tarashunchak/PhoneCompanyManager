@@ -12,11 +12,12 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     , tariff_pie_chart(new PieChart{})
     , tariff_bar_chart(new BarChart{})
     , usage_chart(new LineChart{})
-    , table_view(new QTableView{})
 {
     ui->setupUi(this);
-    table_view->setParent(ui->details_widget);
-    table_view->setMinimumSize(QSize{930, 450});
+    //ui->tableView->setGeometry(50, 530, 931, 450);
+    //ui->tableView->resize(ui->details_widget->size());
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableView->raise();
 
     tariff_pie_chart->setParent(ui->tariffs_history);
     tariff_pie_chart->resize(ui->tariffs_history->size());
@@ -28,7 +29,7 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     usage_chart->resize(ui->usage_history->size());
     ui->no_usage_label->setVisible(false);
 
-    table_view->setModel(qmodel);
+    ui->tableView->setModel(qmodel);
     SetTableViewStyle();
 
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo_cust.svg"});
@@ -49,7 +50,7 @@ uint CustomersDetailsPage::curr_cust_id = 0;
 void CustomersDetailsPage::setCurrentUser(){
     QSqlQuery query;
     query.prepare("SELECT * FROM employees WHERE id = :empl_id;");
-    const int empl_id = CurrentUser::getCurrentUserID();
+    const int empl_id = CurrentUser::getCurrentEmployeeID();
     query.bindValue(":empl_id", empl_id);
     if(!query.exec() || query.next())
         qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
@@ -65,7 +66,7 @@ void CustomersDetailsPage::SetConnections(){
 }
 
 void CustomersDetailsPage::SetCustomerInfo(const int id){
-    curr_cust_id = id;
+    this->curr_cust_id = id;
     QSqlQuery query;
     query.prepare("SELECT c.id AS \"Cust. ID\", "
                   "(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS \"Full name\", "
@@ -78,7 +79,7 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
                   "JOIN tariffs t ON t.id = c.tariff_id "
                   "LEFT JOIN comments cm ON cm.id = c.comment_id "
                   "WHERE c.id = :id;");
-    query.bindValue(":id", curr_cust_id);
+    query.bindValue(":id", this->curr_cust_id);
 
     if(!query.exec() || !query.next()){
         qDebug() << "In CustomersDetailsPage::SetCustomersInfo fault!!!: " << query.lastError();
@@ -98,26 +99,27 @@ void CustomersDetailsPage::SetCustomerInfo(const int id){
     }
     qmodel->setQuery(std::move(query));
 
-    SetCharts(curr_cust_id);
+    SetCharts();
 }
 
 void CustomersDetailsPage::SetTableViewStyle(){
-    table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-    table_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    table_view->setStyleSheet(
+    ui->tableView->verticalHeader()->setVisible(false);
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableView->setStyleSheet(
         "QTableView{"
         "background-color:white;"
         "color:black;"
         "font-size:16px;"
         "}"
     );
-    table_view->setColumnWidth(0, 133);
-    table_view->setColumnWidth(1, 133);
-    table_view->setColumnWidth(2, 133);
-    table_view->setColumnWidth(3, 133);
-    table_view->setColumnWidth(4, 133);
-    table_view->setColumnWidth(5, 133);
-    table_view->setColumnWidth(6, 133);
+    /*ui->tableView->setColumnWidth(0, 133);
+    ui->tableView->setColumnWidth(1, 133);
+    ui->tableView->setColumnWidth(2, 133);
+    ui->tableView->setColumnWidth(3, 133);
+    ui->tableView->setColumnWidth(4, 133);
+    ui->tableView->setColumnWidth(5, 133);
+    ui->tableView->setColumnWidth(6, 133);*/
 }
 
 void CustomersDetailsPage::SetTariffsChart()const{
@@ -126,7 +128,7 @@ void CustomersDetailsPage::SetTariffsChart()const{
                          "FROM customers c "
                          "JOIN tariffs t ON t.id = c.tariff_id "
                          "WHERE c.id = :id;");
-    tariff_query.bindValue(":id", curr_cust_id);
+    tariff_query.bindValue(":id", this->curr_cust_id);
     if(!tariff_query.exec()){
         qDebug() << "In CustomersDetailsPage::SetCustomersInfo::tariff_query fault!!!: " << tariff_query.lastError();
         return;
@@ -151,7 +153,7 @@ void CustomersDetailsPage::SetUsageChart()const{
                         "AND date >= (CURRENT_DATE - INTERVAL '7 days') "
                         "GROUP BY date ORDER BY date ASC;");
 
-    usage_query.bindValue(":id", curr_cust_id);
+    usage_query.bindValue(":id", this->curr_cust_id);
     if(!usage_query.exec()){
         usage_chart->setVisible(false);
         qDebug() << "In CustomersDetailsPage::SetCustomersInfo::usage_query fault!!!: " << usage_query.lastError();
@@ -164,7 +166,7 @@ void CustomersDetailsPage::SetUsageChart()const{
     usage_chart->setQuery(std::move(usage_query), "count", "usage_date");
 }
 
-void CustomersDetailsPage::SetCharts(int id = -1){
+void CustomersDetailsPage::SetCharts(){
     SetTariffsChart();
     SetUsageChart();
 }

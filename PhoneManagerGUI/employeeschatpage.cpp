@@ -113,7 +113,6 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
         QString full_name = query.value("partner_fname").toString() +
                             + " " + query.value("partner_lname").toString();
         QLabel* partner_name = new QLabel{full_name};
-        partner_name->setProperty("id", query.value("user_id").toInt());
         partner_name->setParent(chat_widget);
         partner_name->setGeometry(60, 20, 280, 20);
         partner_name->setStyleSheet(
@@ -124,6 +123,10 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
             "	color:white;"
             "}"
         );
+
+        const uint partner_id = query.value("user_id").toUInt();
+        qDebug() << "fillChatsWidget() partner_id = " << partner_id;
+        partner_name->setProperty("id", partner_id);
 
         ui->chats_vLayout->addWidget(chat_widget);
         ui->chats_vLayout->setContentsMargins(10, 0, 0, 0);
@@ -137,7 +140,7 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
 }
 
 void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& full_name
-                                           , QLabel* partner_name, QPixmap pixmap)
+                                           , QLabel* partner_label, QPixmap pixmap)
 {
     this->chat_id = chat_id;
     QSqlQuery query;
@@ -146,15 +149,18 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
     query.bindValue(":chat_id", this->chat_id);
 
     if(!query.exec()){
-        this->chat_id = -1;
+        this->chat_id = 0;
         qDebug() << "fillChatsWidget()const query fault: " << query.lastError();
         return;
-    }
+    }else{
 
     clearLayout(ui->messages_vLayout);
-    if(partner_name)
-        this->user_id = partner_name->property("id").toInt();
+    if(partner_label)
+        this->user_id = partner_label->property("id").toUInt();
+
     qDebug() << "my_id = " << CurrentUser::getCurrentUserID();
+    qDebug() << "user_id = " << user_id;
+
     while(query.next()){
         QHBoxLayout* message_hLayout = new QHBoxLayout{};
         QLabel* label = new QLabel{query.value("text").toString()};
@@ -163,7 +169,7 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
         label->setWordWrap(true);
         label->setMaximumWidth(340);
         QWidget* widget = new QWidget{};
-        if(query.value("sender_id").toInt() == CurrentUser::getCurrentUserID()){
+        if(query.value("sender_id").toUInt() == CurrentUser::getCurrentUserID()){
             message_hLayout->addStretch();
             message_hLayout->addWidget(label);
             label->setStyleSheet(
@@ -181,7 +187,7 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
             "QLabel{"
             "	background-color: #2b2b2b;"
             "	font-size:16px;"
-            "	font-family:Lato, Consolas;"
+            "	font-family:Lato, Arial, Consolas;"
             "	border-radius:6px;"
             "}"
             );
@@ -189,6 +195,7 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
         message_hLayout->addWidget(widget);
         ui->messages_vLayout->addLayout(message_hLayout);
         ui->messages_vLayout->setAlignment(Qt::AlignBottom);
+    }
     }
     query.prepare("SELECT u.id AS user_id, cp.last_seen AS ls "
                   "FROM chat_participants cp "
@@ -200,14 +207,16 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
         qDebug() << "getting partner id fault!!!";
     }
     if(!query.next()){
+        ui->empty_chat_widget->setVisible(true);
+        this->chat_id = 0;
         connect(ui->say_hello_btn, &QPushButton::clicked, this, [this](){
-            ui->empty_chat_widget->setVisible(true);
             ui->message_input_lineEdit->setText("HI!!!");
             sendMessage();
         });
         qDebug() << "getting partner next id fault!!!";
     }else{
-        //this->user_id = query.value("user_id").toInt();
+        this->user_id = query.value("user_id").toUInt();
+        qDebug() << "user_id fillMessageWidget = " << user_id;
         ui->empty_chat_widget->setVisible(false);
     }
 
@@ -237,25 +246,16 @@ void EmployeesChatPage::searchChats(){
         "SELECT e.first_name AS partner_fname, "
         "e.last_name AS partner_lname, "
         "e.photo AS profile_pic, "
-        "u.id AS user_id, "
-        "chat.id AS chat_id "
+        "e.id AS empl_id, "
+        "u.id AS user_id "
         "FROM users u "
         "JOIN employees e ON e.id = u.empl_id "
-        "LEFT JOIN (  "
-        "SELECT c.id,  "
-        "cp1.user_id AS user1,  "
-        "cp2.user_id AS user2  "
-        "FROM chats c  "
-        "JOIN chat_participants cp1 ON cp1.chat_id = c.id  "
-        "JOIN chat_participants cp2 ON cp2.chat_id = c.id  "
-        "WHERE cp1.user_id = :my_id  "
-        "AND cp2.user_id != :my_id  "
-        ") AS chat ON (chat.user1 = u.id OR chat.user2 = u.id) "
-        "WHERE u.id != :my_id AND LOWER(e.first_name) LIKE LOWER(:name) OR "
-        "LOWER(e.last_name) LIKE LOWER(:name);"
+        "WHERE u.id != :my_id "
+        "AND (LOWER(e.first_name) LIKE LOWER(:text) "
+        "OR LOWER(e.last_name) LIKE LOWER(:text));"
     );
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
-    query.bindValue(":name", ui->search_lineEdit->text()+"%");
+    query.bindValue(":text", ui->search_lineEdit->text()+"%");
     if(!query.exec()){
         qDebug() << "searchChats() query fault: " << query.lastError();
         return;
@@ -264,13 +264,10 @@ void EmployeesChatPage::searchChats(){
 }
 
 void EmployeesChatPage::sendMessage(){
-    if(ui->message_input_lineEdit->text().isEmpty())
+    if(ui->message_input_lineEdit->text().isEmpty() || this->user_id == 0)
         return;
-
     QSqlQuery query;
-    query.prepare("SELECT * FROM chat_participants WHERE user_id = :user_id;");
-    query.bindValue(":user_id", user_id);
-    if(!query.exec() || !query.next()){
+    if(this->chat_id == 0){
         qDebug() << "No chat";
         query.prepare("INSERT INTO chats(is_corporate) VALUES(true) RETURNING id AS ID;");
         if(!query.exec() || !query.next()){
@@ -278,7 +275,7 @@ void EmployeesChatPage::sendMessage(){
             return;
         }
 
-        chat_id = query.value("ID").toInt();
+        this->chat_id = query.value("ID").toInt();
         if(chat_id == 0){
             qDebug() << "chat id == 0";
             return;
@@ -286,8 +283,8 @@ void EmployeesChatPage::sendMessage(){
 
         query.prepare("INSERT INTO chat_participants(chat_id, user_id) "
                       "VALUES(:chat_id, :user_id);");
-        query.bindValue(":chat_id", chat_id);
-        query.bindValue(":user_id", user_id);
+        query.bindValue(":chat_id", this->chat_id);
+        query.bindValue(":user_id", this->user_id);
         if(!query.exec()){
             qDebug() << "insert into chat_participants user_id query fault: " << query.lastError();
             return;
@@ -295,7 +292,7 @@ void EmployeesChatPage::sendMessage(){
 
         query.prepare("INSERT INTO chat_participants(chat_id, user_id) "
                       "VALUES(:chat_id, :my_id);");
-        query.bindValue(":chat_id", chat_id);
+        query.bindValue(":chat_id", this->chat_id);
         query.bindValue(":my_id", CurrentUser::getCurrentUserID());
 
         if(!query.exec()){
@@ -303,17 +300,30 @@ void EmployeesChatPage::sendMessage(){
             return;
         }
     }
+    query.prepare("SELECT c.id "
+                  "FROM chats c "
+                  "JOIN chat_participants cp1 ON cp1.chat_id = c.id "
+                  "JOIN chat_participants cp2 ON cp2.chat_id = c.id "
+                  "WHERE cp1.user_id = :user_id AND cp2.user_id = :my_id "
+                  "AND c.is_corporate = true;"
+                  );
+    query.bindValue(":user_id", this->user_id);
+    query.bindValue(":my_id", CurrentUser::getCurrentUserID());
+    if(!query.exec() || !query.next()){
+        qDebug() << "new Chat query fault!";
+        return;
+    }
 
     query.prepare("INSERT INTO messages(text, sender_id, chat_id) "
                   "VALUES(:text, :sender_id, :chat_id);");
     query.bindValue(":text", ui->message_input_lineEdit->text());
     query.bindValue(":sender_id", CurrentUser::getCurrentUserID());
-    query.bindValue(":chat_id", chat_id);
+    query.bindValue(":chat_id", this->chat_id);
     query.exec();
     ui->message_input_lineEdit->clear();
-    qDebug() << "send message user_id: " << user_id;
+    qDebug() << "send message user_id: " << this->user_id;
     fillChatsWidget();
-    fillMessagesWidget(chat_id, {});
+    fillMessagesWidget(this->chat_id, {});
     QTimer::singleShot(200, this, [this](){
         ui->messages_scrollArea->verticalScrollBar()->setValue(
                     ui->messages_scrollArea->verticalScrollBar()->maximum());
