@@ -1,5 +1,6 @@
 #include "includes/loginpage.h"
 #include "ui_loginpage.h"
+#include <QGridLayout>
 
 LoginPage::LoginPage(QWidget *parent)
     : QWidget(parent)
@@ -8,7 +9,7 @@ LoginPage::LoginPage(QWidget *parent)
 {
     ui->setupUi(this);
     ui->incorrect_data_Label->setVisible(false);
-
+    ui->pushButton->setIcon(QIcon{"./img/eye-closed.svg"});
     setConnections();
 }
 
@@ -34,5 +35,14 @@ void LoginPage::setConnections(){
         ui->username_LineEdit->clear();
         ui->password_LineEdit->clear();
         emit login_succsess();
+    });
+    connect(ui->pushButton, &QPushButton::clicked, this, [this](){
+        if(ui->password_LineEdit->echoMode() == QLineEdit::Password){
+            ui->password_LineEdit->setEchoMode(QLineEdit::Normal);
+            ui->pushButton->setIcon(QIcon{"./img/opened-eye.svg"});
+        }else{
+            ui->password_LineEdit->setEchoMode(QLineEdit::Password);
+            ui->pushButton->setIcon(QIcon{"./img/eye-closed.svg"});
+        }
     });
 }

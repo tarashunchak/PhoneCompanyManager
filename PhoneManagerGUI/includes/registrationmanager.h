@@ -1,7 +1,7 @@
 #ifndef REGISTRATIONMANAGER_H
 #define REGISTRATIONMANAGER_H
 
-#include <QSqlDatabase>
+#include <QObject>
 
 class RegistrationManager : public QObject
 {
@@ -24,7 +24,6 @@ private:/*Methods*/
     void setConnections();
 
 private:
-    QSqlDatabase* db;
     int empl_id;
 };
 

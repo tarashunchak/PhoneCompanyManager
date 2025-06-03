@@ -13,14 +13,17 @@
 #include "tariffspage.h"
 #include "requestspage.h"
 #include "customersdetailspage.h"
+#include "taskspage.h"
+#include "employeeschatpage.h"
 
 class NavigationManager: public QObject
 {
     Q_OBJECT
 public:
-    NavigationManager(QStackedWidget*, QObject*);
+    NavigationManager(QStackedWidget*, QObject*, QWidget*);
+    ~NavigationManager() = default;
 
-private slots:
+public slots:
     void showLoginPage()const;
     void showRegistrationPage()const;
     void showPasswordRecoveryPage()const;
@@ -30,9 +33,16 @@ private slots:
     void showTariffsPage()const;
     void showRequestsPage()const;
     void showCustomersDetailsPage(const int)const;
+    void showTasksPage()const;
+    void showChatsPage()const;
 
 private: /*Methods*/
     void setUpNavigation();
+
+signals:
+    void show_small_buttons()const;
+    void hide_small_buttons()const;
+    void open_chat(const QString&);
 
 private:
     QStackedWidget* sWidget;
@@ -46,7 +56,9 @@ private:
     TariffsPage* tariffsPage;
     RequestsPage* requestsPage;
     CustomersDetailsPage* customersDetailsPage;
-
+    TasksPage* tasksPage;
+    EmployeesChatPage* employeesChatPage;
+    QWidget* left_side_menu;
 };
 
 #endif //

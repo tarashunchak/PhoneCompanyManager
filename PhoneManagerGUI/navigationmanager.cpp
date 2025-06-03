@@ -1,7 +1,9 @@
 #include "includes/navigationmanager.h"
 #include "includes/currentuser.h"
+#include "includes/buttonsstylemanager.h"
 
-NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
+NavigationManager::NavigationManager(QStackedWidget* sWidget
+                                     , QObject* parent, QWidget* side_menu)
     : QObject(parent)
     , sWidget(sWidget)
     , loginPage(new LoginPage{})
@@ -13,9 +15,10 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
     , tariffsPage(new TariffsPage{})
     , requestsPage(new RequestsPage{})
     , customersDetailsPage(new CustomersDetailsPage{})
-
+    , tasksPage(new TasksPage{})
+    , employeesChatPage(new EmployeesChatPage{})
+    , left_side_menu(side_menu)
 {
-
     sWidget->addWidget(loginPage);
     sWidget->addWidget(registrationPage);
     sWidget->addWidget(passwordRecoveryPage);
@@ -25,123 +28,141 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget, QObject* parent)
     sWidget->addWidget(tariffsPage);
     sWidget->addWidget(requestsPage);
     sWidget->addWidget(customersDetailsPage);
+    sWidget->addWidget(tasksPage);
+    sWidget->addWidget(employeesChatPage);
 
     sWidget->setCurrentWidget(loginPage);
 
     setUpNavigation();
-
 }
 
 void NavigationManager::setUpNavigation(){
-
     //Login Page Signals/Slots connections
-    connect(loginPage, &LoginPage::login_succsess, this, &NavigationManager::showDashboardPage);
-    connect(loginPage, &LoginPage::on_registration_btn_clicked, this, &NavigationManager::showRegistrationPage);
-    connect(loginPage, &LoginPage::on_pass_rec_btn_clicked, this, &NavigationManager::showPasswordRecoveryPage);
+    connect(loginPage, &LoginPage::login_succsess
+            , this, &NavigationManager::showDashboardPage);
+    connect(loginPage, &LoginPage::on_registration_btn_clicked
+            , this, &NavigationManager::showRegistrationPage);
+    connect(loginPage, &LoginPage::on_pass_rec_btn_clicked
+            , this, &NavigationManager::showPasswordRecoveryPage);
 
     //RegistrationPage Signals/Slots connections
-    connect(registrationPage, &RegistrationPage::successful_registration, this, &NavigationManager::showLoginPage);
-    connect(registrationPage, &RegistrationPage::on_return_to_login_btn_clicked, this, &NavigationManager::showLoginPage);
+    connect(registrationPage, &RegistrationPage::successful_registration
+            , this, &NavigationManager::showLoginPage);
+    connect(registrationPage, &RegistrationPage::on_return_to_login_btn_clicked
+            , this, &NavigationManager::showLoginPage);
 
     //PasswordRecoveryPage Signals/Slots connections
-    connect(passwordRecoveryPage, &PasswordRecoveryPage::on_return_to_login_btn_clicked, this, &NavigationManager::showLoginPage);
-
-    //Dashboard Page Signals/Slots connections
-    connect(dashboardPage, &Dashboard::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
-    connect(dashboardPage, &Dashboard::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
-    connect(dashboardPage, &Dashboard::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
-    connect(dashboardPage, &Dashboard::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
-    connect(dashboardPage, &Dashboard::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
-    connect(dashboardPage, &Dashboard::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
+    connect(passwordRecoveryPage, &PasswordRecoveryPage::on_return_to_login_btn_clicked
+            , this, &NavigationManager::showLoginPage);
 
     //Customers Page Signals/Slots connections
-    connect(customersPage, &CustomersPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
-    connect(customersPage, &CustomersPage::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
-    connect(customersPage, &CustomersPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
-    connect(customersPage, &CustomersPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
-    connect(customersPage, &CustomersPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
-    connect(customersPage, &CustomersPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
-    connect(customersPage, &CustomersPage::customer_selected, this, &NavigationManager::showCustomersDetailsPage);
+    connect(customersPage, &CustomersPage::customer_selected
+            , this, &NavigationManager::showCustomersDetailsPage);
+    connect(customersPage, &CustomersPage::on_close_open_filter_btn_clicked
+            , this, [this](){
+        static bool flag = true;
+        if(flag)
+            emit hide_small_buttons();
+        else
+            emit show_small_buttons();
+        flag = !flag;
+    });
 
     //Customers Details Page Signals/Slots connections
-    connect(customersDetailsPage, &CustomersDetailsPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
-    connect(customersDetailsPage, &CustomersDetailsPage::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
-    connect(customersDetailsPage, &CustomersDetailsPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
-    connect(customersDetailsPage, &CustomersDetailsPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
-    connect(customersDetailsPage, &CustomersDetailsPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
-    connect(customersDetailsPage, &CustomersDetailsPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
-    connect(customersDetailsPage, &CustomersDetailsPage::on_return_btn_clicked, this, &NavigationManager::showCustomersPage);
+    connect(customersDetailsPage, &CustomersDetailsPage::on_return_btn_clicked
+            , this, &NavigationManager::showCustomersPage);
+    connect(customersDetailsPage, &CustomersDetailsPage::on_open_chat_btn_clicked
+            , this, [this](const QString& phone)
+    {
+        emit open_chat(phone);
+    });
 
     //Employees Page Signals/Slots connections
-    connect(employeesPage, &EmployeesPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
-    connect(employeesPage, &EmployeesPage::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
-    connect(employeesPage, &EmployeesPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
-    connect(employeesPage, &EmployeesPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
-    connect(employeesPage, &EmployeesPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
-    connect(employeesPage, &EmployeesPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
-
-    //Tariffs Page Signals/Slots connections
-    connect(tariffsPage, &TariffsPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
-    connect(tariffsPage, &TariffsPage::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
-    connect(tariffsPage, &TariffsPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
-    connect(tariffsPage, &TariffsPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
-    connect(tariffsPage, &TariffsPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
-    connect(tariffsPage, &TariffsPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
 
     //Requests Page Signals/Slots connections
-    connect(requestsPage, &RequestsPage::on_dashboard_btn_clicked, this, &NavigationManager::showDashboardPage);
-    connect(requestsPage, &RequestsPage::on_customers_btn_clicked, this, &NavigationManager::showCustomersPage);
-    connect(requestsPage, &RequestsPage::on_employees_btn_clicked, this, &NavigationManager::showEmployeesPage);
-    connect(requestsPage, &RequestsPage::on_tariffs_btn_clicked, this, &NavigationManager::showTariffsPage);
-    connect(requestsPage, &RequestsPage::on_requests_btn_clicked, this, &NavigationManager::showRequestsPage);
-    connect(requestsPage, &RequestsPage::on_log_out_btn_clicked, this, &NavigationManager::showLoginPage);
+}
 
+static void hide_side_menu(QWidget* menu, QStackedWidget* sWidget){
+    sWidget->setGeometry(0, 0, 1920, 1080);
+    menu->setVisible(false);
+}
+
+static void show_side_menu(QWidget* menu, QStackedWidget* sWidget){
+    sWidget->setGeometry(250, 0, 1670, 1080);
+    menu->setVisible(true);
 }
 
 void NavigationManager::showLoginPage()const{
-    CurrentUser::setCurrentUserID(0);
+    hide_side_menu(left_side_menu, sWidget);
+    CurrentUser::setCurrentUserID(-1);
     sWidget->setCurrentWidget(loginPage);
+    emit hide_small_buttons();
 }
 
 void NavigationManager::showDashboardPage()const{
-    dashboardPage->setCurrentUser();
+    ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::DASHBOARD_BTN);
+    show_side_menu(left_side_menu, sWidget);
     dashboardPage->setCustomersStatistics();
     dashboardPage->setRequestsStatistics();
     sWidget->setCurrentWidget(dashboardPage);
+    emit show_small_buttons();
 }
 
 void NavigationManager::showCustomersPage()const{
+    ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
     customersPage->SetCustomersCards();
+    customersPage->updateFilterWidgets();
+    customersPage->close_filter_widget();
     sWidget->setCurrentWidget(customersPage);
 }
 
 void NavigationManager::showEmployeesPage()const{
+    ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::EMPLOYEES_BTN);
     employeesPage->SetEmployeesCards();
+    employeesPage->setCurrentUser();
     sWidget->setCurrentWidget(employeesPage);
 }
 
 void NavigationManager::showTariffsPage()const{
+    ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TARIFFS_BTN);
     tariffsPage->setCurrentUser();
     tariffsPage->setTariffsCards();
     sWidget->setCurrentWidget(tariffsPage);
 }
 
 void NavigationManager::showRequestsPage()const{
-    requestsPage->setCurrentUser();
-    requestsPage->setTableView();
+    ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
+    requestsPage->showUnassignmentRequests();
     sWidget->setCurrentWidget(requestsPage);
 }
 
 void NavigationManager::showRegistrationPage()const{
+    hide_side_menu(left_side_menu, sWidget);
     sWidget->setCurrentWidget(registrationPage);
 }
 
 void NavigationManager::showCustomersDetailsPage(const int id)const{
+    ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
     customersDetailsPage->setCurrentUser();
     customersDetailsPage->SetCustomerInfo(id);
     sWidget->setCurrentWidget(customersDetailsPage);
 }
 
+void NavigationManager::showTasksPage()const{
+    ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TASKS_BTN);
+    tasksPage->showCreatedByMe();
+    sWidget->setCurrentWidget(tasksPage);
+}
+
+void NavigationManager::showChatsPage()const{
+    ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CHATS_BTN);
+    show_side_menu(left_side_menu, sWidget);
+    employeesChatPage->fillChatsWidget();
+    employeesChatPage->updateLastSeenTimestamp();
+    sWidget->setCurrentWidget(employeesChatPage);
+}
+
 void NavigationManager::showPasswordRecoveryPage()const{
+    hide_side_menu(left_side_menu, sWidget);
     sWidget->setCurrentWidget(passwordRecoveryPage);
 }

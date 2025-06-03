@@ -2,10 +2,11 @@
 #define CUSTOMERSDETAILSPAGE_H
 
 #include <QWidget>
-#include <QSqlDatabase>
 #include <QSqlTableModel>
 #include "piechart.h"
+#include "barchart.h"
 #include "linechart.h"
+#include <QTableView>
 
 namespace Ui {
 class CustomersDetailsPage;
@@ -24,25 +25,25 @@ public slots:
     void SetCustomerInfo(const int);
 
 signals:
-    void on_dashboard_btn_clicked();
-    void on_customers_btn_clicked();
-    void on_employees_btn_clicked();
-    void on_tariffs_btn_clicked();
-    void on_requests_btn_clicked();
-    void on_log_out_btn_clicked();
     void on_return_btn_clicked();
+    void on_open_chat_btn_clicked(const QString&);
 
 private:
     void SetConnections();
     void SetTableViewStyle();
-    void SetCharts(const int);
+    void SetCharts();
+    void SaveCommentToDB();
+    void SetTariffsChart()const;
+    void SetUsageChart()const;
 
 private:
     Ui::CustomersDetailsPage *ui;
-    QSqlDatabase* db;
     QSqlTableModel* qmodel;
-    PieChart* tariff_chart;
+    PieChart* tariff_pie_chart;
+    BarChart* tariff_bar_chart;
     LineChart* usage_chart;
+    QTableView* table_view;
+    static uint curr_cust_id;
 };
 
 #endif // CUSTOMERSDETAILSPAGE_H

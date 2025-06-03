@@ -1,4 +1,4 @@
-#include "messagebox.h"
+#include "includes/messagebox.h"
 
 MessageBox::MessageBox(QFrame* parent)
     : QFrame(parent)
@@ -39,7 +39,7 @@ void MessageBox::setMessageStyle(){
         "font-family:Roboto;"
         "font-size:16px;"
         "color:white;"
-        "background-color:rgb(35,35,35);"
+        "background-color:rgb(85,85,85);"
         "text-align:right;"
         "}"
     );

@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "navigationmanager.h"
+#include "mainwidget.h"
 #include <QStackedWidget>
 
 QT_BEGIN_NAMESPACE
@@ -18,12 +18,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    MainWidget* getMainWidget()const;
 
 private:
     Ui::MainWindow *ui;
-    QStackedWidget* sWidget;
-
-    NavigationManager* nManager;
-
+    MainWidget* mainWidget;
 };
 #endif // MAINWINDOW_H

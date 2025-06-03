@@ -37,13 +37,11 @@ void RegistrationPage::SetConnections(){
         }
     });
     connect(reg_manager, &RegistrationManager::employee_not_founded, this, [this](){
-        if(ui->confirmed_widget->isVisible() == false){
-            ui->error_message->setText("There is no employee with this email!");
-            ui->error_message->setVisible(true);
-        }
+        ui->error_message->setVisible(true);
+        ui->error_message->setText("There is no employee with this email!");
     });
     connect(reg_manager, &RegistrationManager::employee_is_founded, this, [this](){
-        ui->confirm_btn->setGeometry(800, 700, 320, 34);
+        ui->confirm_btn->setGeometry(800, 700, 320, 40);
         ui->error_message->setVisible(false);
         ui->confirmed_widget->setVisible(true);
     });
@@ -55,6 +53,8 @@ void RegistrationPage::SetConnections(){
         emit successful_registration();
     });
     connect(this, &RegistrationPage::on_return_to_login_btn_clicked, this, [this](){
+        ui->confirm_btn->setGeometry(800, 590, 320, 40);
+        ui->confirmed_widget->setVisible(false);
         ui->email_LineEdit->clear();
         ui->password_LineEdit->clear();
         ui->rep_password_LineEdit->clear();

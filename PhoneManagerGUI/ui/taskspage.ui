@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TasksPage</class>
+ <widget class="QWidget" name="TasksPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1670</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:transparent;</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1670</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgba(200, 200, 200, 1);</string>
+   </property>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>730</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-family:Lato;
+font-size:32px;
+padding-left:20px;
+color:black;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>Tasks list page</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="add_cust_btn">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>23</y>
+      <width>140</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:white;
+color:black;
+font-family:Lato;
+border:none;
+border-radius:4px;
+}
+QPushButton:hover{
+	background-color:rgb(220, 220, 220);
+}</string>
+    </property>
+    <property name="text">
+     <string>Add Task</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>build/Desktop_Qt_6_10_0-Debug/img/add.png</normaloff>build/Desktop_Qt_6_10_0-Debug/img/add.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>24</width>
+      <height>24</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QTableView" name="tableView">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>121</y>
+     <width>1671</width>
+     <height>961</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font-family:Consolas;
+font-size:16px;
+background-color:white;
+color:black;</string>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>81</y>
+     <width>1671</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>1</number>
+    </property>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+height:40px;
+color:black;
+font-family:Lato, Consolas;
+font-size:22px;
+background-color:rgb(220, 220, 220);
+border-top-left-radius:5px;
+border-top-right-radius:5px;
+}
+QPushButton:hover{
+	background-color:white;
+}</string>
+      </property>
+      <property name="text">
+       <string>Assigned to me</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+height:40px;
+color:black;
+font-family:Lato, Consolas;
+font-size:22px;
+background-color:rgb(220, 220, 220);
+border-top-left-radius:5px;
+border-top-right-radius:5px;
+}
+QPushButton:hover{
+	background-color:white;
+}</string>
+      </property>
+      <property name="text">
+       <string>Created by me</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

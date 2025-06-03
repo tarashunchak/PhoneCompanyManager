@@ -7,9 +7,22 @@
 class ButtonsStyleManager
 {
 public:
-    static void SetLeftMenuIcons(QList<QPushButton*>);
+    enum class LEFT_SIDE_MENU : uint8_t{
+        DASHBOARD_BTN = 0,
+        CUSTOMERS_BTN,
+        EMPLOYEES_BTN,
+        TARIFFS_BTN,
+        REQUESTS_BTN,
+        TASKS_BTN,
+        CHATS_BTN
+    };
+    explicit ButtonsStyleManager(QList<QPushButton*>*&);
+    static void SetLeftMenuIcons(QList<QPushButton*>*);
+    static void SetActiveButton(LEFT_SIDE_MENU);
+    static QList<QPushButton*>* getButtonsList();
+
 private:
-    ButtonsStyleManager() = delete;
+    static QList<QPushButton*>* buttons_list;
 };
 
 #endif // BUTTONSSTYLEMANAGER_H

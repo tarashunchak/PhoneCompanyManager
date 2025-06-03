@@ -6,8 +6,8 @@
 class ComboBoxDelegate : public QStyledItemDelegate
 {
 public:
-    [[nodiscard]] ComboBoxDelegate();
-    [[nodiscard]] explicit ComboBoxDelegate(QObject*);
+    [[nodiscard]] ComboBoxDelegate(QObject* parent = nullptr);
+    [[nodiscard]] explicit ComboBoxDelegate(const QStringList&, QObject* parent = nullptr);
 
 private:
     [[nodiscard]] QWidget* createEditor(QWidget*, const QStyleOptionViewItem&,
@@ -19,6 +19,7 @@ private:
     void updateEditorGeometry(QWidget* editor,
             const QStyleOptionViewItem& option,
             const QModelIndex& index) const override;
+    QStringList str_list;
 };
 
 #endif // COMBOBOXDELEGATE_H

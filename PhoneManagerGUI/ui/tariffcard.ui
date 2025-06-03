@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>296</width>
-    <height>510</height>
+    <width>300</width>
+    <height>460</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,8 +21,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">border-radius:5px;
-
-background-color:#16171C;</string>
+font-family:Lato, Consolas;
+background-color:rgb(51, 51, 51);</string>
   </property>
   <widget class="QPushButton" name="monthly_btn">
    <property name="geometry">
@@ -35,6 +35,7 @@ background-color:#16171C;</string>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -42,10 +43,16 @@ background-color:#16171C;</string>
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-top-right-radius:0px;
+    <string notr="true">QPushButton{
+border-top-right-radius:0px;
 border-bottom-right-radius:0px;
+background-color:white;
 border:1px solid rgb(255, 255, 255);
-color:white;</string>
+color:black;
+}
+QPushButton:hover{
+	background-color:rgb(200, 200, 200);
+}</string>
    </property>
    <property name="text">
     <string>Monthly</string>
@@ -62,6 +69,7 @@ color:white;</string>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -71,9 +79,8 @@ color:white;</string>
    <property name="styleSheet">
     <string notr="true">border-top-left-radius:0px;
 border-bottom-left-radius:0px;
-background-color:white;
 border:1px solid rgb(255, 255, 255);
-color:black;</string>
+color:white;</string>
    </property>
    <property name="text">
     <string>Daily</string>
@@ -97,7 +104,7 @@ color:black;</string>
    <property name="styleSheet">
     <string notr="true">background-color:transparent;
 color:white;
-font-family:Lato;
+font-family:Lato, Consolas;
 font-size:16px;</string>
    </property>
    <property name="text">
@@ -115,6 +122,7 @@ font-size:16px;</string>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>11</pointsize>
     </font>
    </property>
@@ -137,6 +145,7 @@ background-color:transparent;</string>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>11</pointsize>
     </font>
    </property>
@@ -162,6 +171,7 @@ background-color:transparent;</string>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>11</pointsize>
     </font>
    </property>
@@ -259,79 +269,11 @@ border:none;</string>
    <property name="styleSheet">
     <string notr="true">background-color:transparent;
 color:white;
-font-family:Lato;
+font-family:Lato, Consolas;
 font-size:16px;</string>
    </property>
    <property name="text">
     <string>Id</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="price_label">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>155</y>
-     <width>70</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:white;
-background-color:transparent;</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="calls_label">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>215</y>
-     <width>70</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:white;
-background-color:transparent;</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="internet_label">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>275</y>
-     <width>70</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:white;
-background-color:transparent;</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="SMS_label">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>335</y>
-     <width>70</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:white;
-background-color:transparent;</string>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SMS&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="internet_2">
@@ -345,6 +287,7 @@ background-color:transparent;</string>
    </property>
    <property name="font">
     <font>
+     <family>Lato</family>
      <pointsize>11</pointsize>
     </font>
    </property>
@@ -373,6 +316,154 @@ background-color:transparent;</string>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>160</y>
+     <width>111</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font-size:14px;
+font-family:Lato, Consolas;
+background-color:transparent;</string>
+   </property>
+   <widget class="QLabel" name="SMS_label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>180</y>
+      <width>70</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SMS&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="price_label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>0</y>
+      <width>70</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="internet_label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>120</y>
+      <width>70</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="calls_label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>60</y>
+      <width>70</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="edit_btn">
+   <property name="geometry">
+    <rect>
+     <x>85</x>
+     <y>400</y>
+     <width>130</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+background-color:white;
+color:black;
+font-size:20px;
+font-family:Lato, Consolas;
+}
+QPushButton:hover{
+	background-color:rgb(200, 200, 200);
+}</string>
+   </property>
+   <property name="text">
+    <string>Edit data</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="active_inactive_swithc_btn">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>405</y>
+     <width>51</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	background-color:rgba(200, 200, 200, 0.2);
+	border-radius:4px;
+	color:white;
+	font-size:14px;
+}
+QPushButton:hover{
+	background-color:rgba(200, 200, 200, 0.3);
+}</string>
+   </property>
+   <property name="text">
+    <string>active</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="active_indicator">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>409</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:green;
+border-radius:8;</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

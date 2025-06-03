@@ -3,12 +3,13 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDateTime>
-#include "messagebox.h"
+#include "includes/messagebox.h"
 #include <QScrollBar>
 #include "includes/currentuser.h"
+#include <QTimer>
 
-ChatUI::ChatUI(QWidget *parent)
-    : QWidget(parent)
+Chat::Chat(QFrame *parent)
+    : QFrame (parent)
     , ui(new Ui::ChatUI)
     , scrollArea(new QScrollArea{})
     , mainWidget(new QWidget{})
@@ -17,71 +18,64 @@ ChatUI::ChatUI(QWidget *parent)
     ui->setupUi(this);
     ui->phone_lineEdit->setVisible(false);
     ui->send_btn->setIcon(QIcon{"./img/paper-plane.svg"});
-    connect(ui->send_btn, &QPushButton::clicked, this, &ChatUI::SendMessage);
+    ui->mode_btn->setIcon(QIcon{"img/support.svg"});
+    connect(ui->send_btn, &QPushButton::clicked, this, &Chat::SendMessage);
+    connect(ui->lineEdit, &QLineEdit::editingFinished, this, &Chat::SendMessage);
     innerVBoxLayout->setAlignment(Qt::AlignBottom | Qt::AlignRight);
     mainWidget->setLayout(innerVBoxLayout);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(mainWidget);
-    scrollArea->verticalScrollBar()->setVisible(false);
+    scrollArea->verticalScrollBar()->setVisible(true);
     ui->verticalLayout->addWidget(scrollArea);
-
+    this->setWindowTitle("Interactive Chat");
     phone_choose_handler();
 }
 
-ChatUI::~ChatUI()
-{
+Chat::~Chat(){
     delete ui;
 }
 
-void ChatUI::SendMessage(){
-    if(ui->lineEdit->text().isEmpty()){
-        return;
-    }
-    if(ui->phone_btn->text().isEmpty()){
-        return;
-    }
+static void ScrollDown_ScrollBar(QScrollBar* sb){
+    sb->setValue(sb->maximum());
+}
 
-    int i = 0;
-    for(const auto& ch : ui->lineEdit->text().toStdString()){
-        if(ch != ' '){
-            break;
+static bool is_all_chars_empty(QString str){
+    if(str.isEmpty()){
+        return false;
+    }else{
+        int i = 0;
+        for(const auto& ch : str.toStdString()){
+            if(ch != ' ')
+                break;
+            else
+                ++i;
         }
-        else{
-            ++i;
-        }
+        if(i == str.length())
+            return false;
     }
-    //if all of characters is empty -> return!
-    if(i == ui->lineEdit->text().length()){
-        return;
-    }
-    for(const auto& ch : current_number.toStdString()){
-        if(ch != ' '){
-            break;
-        }
-        else{
-            ++i;
-        }
-    }
-    //if all of characters is empty -> return!
-    if(i == ui->lineEdit->text().length()){
-        return;
-    }
+    return true;
+}
 
+void Chat::SendMessage(){
+    if(!is_all_chars_empty(ui->lineEdit->text())
+            || !is_all_chars_empty(ui->phone_btn->text()))
+    {
+        return;
+    }
     QSqlQuery query;
-    query.prepare("INSERT INTO Messages(message_text, date_time, origin, destination) "
-                  "VALUES(:message, :date, :origin, :dest);");
+    query.prepare("INSERT INTO Messages(text, sender_id, chat_id) "
+                  "VALUES(:message, :origin, 1);");
     query.bindValue(":message", ui->lineEdit->text());
-    query.bindValue(":date", QDateTime::currentDateTime().toString());
     query.bindValue(":origin", CurrentUser::getCurrentUserID());
-    query.bindValue(":dest", current_number);
-    ui->lineEdit->clear();
     if(!query.exec()){
         qDebug() << "SendMessaget()const fault!: " << query.lastError();
+        return;
     }
+    ui->lineEdit->clear();
     DisplayLastMessage();
 }
 
-void ChatUI::DisplayAllMessages(QSqlQuery query){
+void Chat::DisplayAllMessages(QSqlQuery& query){
     if(!query.exec()){
         qDebug() << "DisplayAllMessages()const fault!: " << query.lastError();
         return;
@@ -94,36 +88,54 @@ void ChatUI::DisplayAllMessages(QSqlQuery query){
         }
         layout = nullptr;
     }
-    while(query.next()){
-        QString message_text{query.value("message_text").toString()};
-        QString message_date_time{query.value("date_time").toString()};
+    int counter = 0;
+    while(true){
+        if(!query.next()){
+            if(counter == 0){
+                ui->empty_chat_label->setVisible(true);
+            }
+            break;
+        }
+        counter++;
+        ui->empty_chat_label->setVisible(false);
+        QString message_text{query.value("text").toString()};
+        QString message_date_time{query.value("timestamp").toString()};
         MessageBox* message = new MessageBox{};
         message->SetMessageText(message_text);
         message->SetMessageDateTime(message_date_time);
         innerVBoxLayout->addWidget(message);
+        mainWidget->adjustSize();
+        mainWidget->updateGeometry();
+        QTimer::singleShot(100, this, [this](){
+            ScrollDown_ScrollBar(scrollArea->verticalScrollBar());
+        });
     }
 }
 
-void ChatUI::DisplayLastMessage()const{
+void Chat::DisplayLastMessage()const{
     QSqlQuery query;
-    query.prepare("SELECT * FROM Messages WHERE origin = :origin AND destination = :dest "
+    query.prepare("SELECT * FROM Messages WHERE sender_id = :origin AND chat_id = 1 "
                   "ORDER BY id DESC LIMIT 1;");
     query.bindValue(":origin", CurrentUser::getCurrentUserID());
-    query.bindValue(":dest", current_number);
+    //query.bindValue(":dest", current_number);
     if(!query.exec() || !query.next()){
         qDebug() << "DisplayLastMessage()const query fault!: " << query.lastError();
         return;
     }
-    QString message_text{query.value("message_text").toString()};
-    QString message_date_time{query.value("date_time").toString()};
+    QString message_text{query.value("text").toString()};
+    QString message_date_time{query.value("timestamp").toString()};
     MessageBox* message= new MessageBox{};
     message->SetMessageText(message_text);
     message->SetMessageDateTime(message_date_time);
     innerVBoxLayout->addWidget(message);
-    scrollArea->verticalScrollBar()->setValue(scrollArea->verticalScrollBar()->maximum());
+    mainWidget->adjustSize();
+    mainWidget->updateGeometry();
+    QTimer::singleShot(100, this, [this](){
+        ScrollDown_ScrollBar(scrollArea->verticalScrollBar());
+    });
 }
 
-void ChatUI::phone_choose_handler(){
+void Chat::phone_choose_handler(){
     connect(ui->phone_btn, &QPushButton::clicked, this, [this](){
         ui->phone_btn->setVisible(false);
         ui->phone_btn->setText("Chose phone number");
@@ -134,21 +146,19 @@ void ChatUI::phone_choose_handler(){
         if(is_exist(ui->phone_lineEdit->text())){
             ui->phone_btn->setVisible(true);
             ui->phone_btn->setText(ui->phone_lineEdit->text());
-            //ui->phone_lineEdit->clear();
             ui->phone_lineEdit->setVisible(false);
         }else{
             ui->phone_btn->setVisible(false);
             ui->phone_btn->setText("Chose phone number");
             ui->phone_lineEdit->setVisible(true);
-            //ui->phone_lineEdit->clear();
         }
     });
 }
 
-bool ChatUI::is_exist(QString dest_number){
+bool Chat::is_exist(const QString& dest_number){
     QSqlQuery query;
-    query.prepare("SELECT * FROM Messages WHERE destination = :dest AND origin = :origin;");
-    query.bindValue(":dest", dest_number);
+    query.prepare("SELECT * FROM Messages WHERE chat_id = 1 AND sender_id = :origin;");
+    //query.bindValue(":dest", dest_number);
     query.bindValue(":origin", CurrentUser::getCurrentUserID());
     if(!query.exec()){
         qDebug() << "Ooh nooo";
@@ -156,9 +166,20 @@ bool ChatUI::is_exist(QString dest_number){
         ui->phone_btn->setText("Chose phone number");
         ui->phone_lineEdit->setVisible(true);
         current_number.clear();
-        return false;
+        current_number = ui->phone_lineEdit->text();
+        return true;
     }
     current_number = dest_number;
-    DisplayAllMessages(std::move(query));
+    scrollArea->verticalScrollBar()->setVisible(true);
+    DisplayAllMessages(query);
+    scrollArea->verticalScrollBar()->setValue(ui->verticalLayout->count());
+    scrollArea->verticalScrollBar()->setVisible(false);
     return true;
+}
+
+void Chat::SetPhoneNumber(const QString& phone){
+    ui->phone_lineEdit->setVisible(false);
+    ui->phone_lineEdit->setText(phone);
+    ui->phone_btn->setText(phone);
+    is_exist(phone);
 }

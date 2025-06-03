@@ -10,23 +10,24 @@ namespace Ui {
 class ChatUI;
 }
 
-class ChatUI : public QWidget
+class Chat : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit ChatUI(QWidget *parent = nullptr);
-    ~ChatUI();
+    explicit Chat(QFrame *parent = nullptr);
+    ~Chat();
 
 public slots:
     void SendMessage();
-    void DisplayAllMessages(QSqlQuery query = QSqlQuery{});
+    void DisplayAllMessages(QSqlQuery& query);
     void DisplayLastMessage()const;
+    void SetPhoneNumber(const QString&);
 
 private:
     void phone_choose_handler();
-    void find_phones_in_db(QString);
-    bool is_exist(QString);
+    void find_phones_in_db(const QString&);
+    bool is_exist(const QString&);
 
 private:
     Ui::ChatUI *ui;

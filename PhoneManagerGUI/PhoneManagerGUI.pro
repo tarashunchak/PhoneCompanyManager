@@ -1,4 +1,4 @@
-QT       += core gui sql charts
+QT       += core gui sql charts printsupport websockets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,27 +17,40 @@ SOURCES += \
     currentuser.cpp \
     customersdetailspage.cpp \
     customerspage.cpp \
+    customerspagefilter.cpp \
     dashboard.cpp \
-    dashboard_series.cpp \
+    dashboardseries.cpp \
     databasemanager.cpp \
+    employeeschatpage.cpp \
+    employeesdetailspage.cpp \
     employeespage.cpp \
+    employeespagefilter.cpp \
+    insertcustomerdialog.cpp \
+    insertemployeedialog.cpp \
     inserttariffdialog.cpp \
     linechart.cpp \
     loginpage.cpp \
     main.cpp \
+    mainwidget.cpp \
     mainwindow.cpp \
     messagebox.cpp \
     navigationmanager.cpp \
     passwordrecoverypage.cpp \
     piechart.cpp \
+    pushbuttondelegate.cpp \
     registrationmanager.cpp \
     registrationpage.cpp \
     requestspage.cpp \
+    requeststabelview.cpp \
     table_view_for_requestpage.cpp \
     tariffcard.cpp \
-    tariffspage.cpp
+    tariffeditwidget.cpp \
+    tariffspage.cpp \
+    taskspage.cpp
 
 HEADERS += \
+    employeeschatpage.h \
+    employeesdetailspage.h \
     includes/chat.h \
     includes/comboboxdelegate.h \
     includes/authmanager.h \
@@ -49,34 +62,60 @@ HEADERS += \
     includes/dashboard.h \
     includes/databasemanager.h \
     includes/employeespage.h \
+    includes/insertcustomerdialog.h \
+    includes/insertemployeedialog.h \
     includes/inserttariffdialog.h \
     includes/loginpage.h \
+    includes/mainwidget.h \
     includes/mainwindow.h \
+    includes/messagebox.h \
     includes/navigationmanager.h \
+    includes/pushbuttondelegate.h \
     includes/registrationmanager.h \
     includes/registrationpage.h \
     includes/requestspage.h \
     includes/tariffcard.h \
+    includes/tariffeditwidget.h \
     includes/tariffspage.h \
     includes/linechart.h \
     includes/passwordrecoverypage.h \
     includes/piechart.h \
-    messagebox.h
+    includes/taskspage.h \
+    includes/insertcustomerdialog.h \
+    includes/insertemployeedialog.h \
+    includes/mainwidget.h \
+    includes/messagebox.h \
+    includes/pushbuttondelegate.h \
+    includes/tariffeditwidget.h \
+    includes/taskspage.h \
+    requeststabelview.h
 
 FORMS += \
+    employeeschatpage.ui \
+    employeesdetailspage.ui \
+    ui/insertcustomerdialog.ui \
+    ui/insertemployeedialog.ui \
+    ui/mainwidget.ui \
+    ui/tariffeditwidget.ui \
+    ui/taskspage.ui \
     ui/chat.ui \
     ui/customersdetailspage.ui \
     ui/customerspage.ui \
     ui/dashboard.ui \
     ui/employeespage.ui \
+    ui/insertcustomerdialog.ui \
+    ui/insertemployeedialog.ui \
     ui/inserttariffdialog.ui \
     ui/loginpage.ui \
+    ui/mainwidget.ui \
     ui/mainwindow.ui \
     ui/passwordrecoverypage.ui \
     ui/registrationpage.ui \
     ui/requestspage.ui \
     ui/tariffcard.ui \
-    ui/tariffspage.ui
+    ui/tariffeditwidget.ui \
+    ui/tariffspage.ui \
+    ui/taskspage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

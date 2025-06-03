@@ -2,8 +2,9 @@
 #define CUSTOMERSPAGE_H
 
 #include <QWidget>
-#include <QSqlDatabase>
 #include <QSqlQuery>
+#include "insertcustomerdialog.h"
+#include <QPropertyAnimation>
 
 namespace Ui {
 class CustomersPage;
@@ -17,23 +18,26 @@ public:
     explicit CustomersPage(QWidget *parent = nullptr);
     ~CustomersPage();
     void SetCustomersCards(QSqlQuery query = QSqlQuery());
+    void updateFilterWidgets();
+    void open_filter_widget();
+    void close_filter_widget();
 
 signals:
-    void on_dashboard_btn_clicked();
-    void on_customers_btn_clicked();
-    void on_employees_btn_clicked();
-    void on_tariffs_btn_clicked();
-    void on_requests_btn_clicked();
-    void on_log_out_btn_clicked();
     void customer_selected(const int);
+    void on_close_open_filter_btn_clicked();
 
 private: /*Methods*/
     void FindCustomersByName();
     void SetConnections();
+    void fillTariffsComboBox();
+    void fillEmployeesComboBox();
+    void open_close_filter_widget();
+    void apply_filters();
 
 private:
     Ui::CustomersPage *ui;
-    QSqlDatabase* db;
+    InsertCustomerDialog* insert_customer_dialog;
+    QPropertyAnimation* filter_animation;
 };
 
 #endif // CUSTOMERSPAGE_H

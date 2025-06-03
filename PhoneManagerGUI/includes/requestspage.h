@@ -2,9 +2,8 @@
 #define REQUESTSPAGE_H
 
 #include <QWidget>
-
-#include <QSqlDatabase>
 #include <QSqlTableModel>
+#include "requeststabelview.h"
 
 namespace Ui {
 class RequestsPage;
@@ -17,23 +16,21 @@ class RequestsPage : public QWidget
 public:
     explicit RequestsPage(QWidget *parent = nullptr);
     ~RequestsPage();
-    void setTableView();
-    void setCurrentUser();
+    void showUnassignmentRequests();
+    void showInProgressRequests();
+    void showCompletedRequests();
+    void showRequestsHistory();
 
 signals:
-    void on_dashboard_btn_clicked();
-    void on_customers_btn_clicked();
-    void on_employees_btn_clicked();
-    void on_tariffs_btn_clicked();
-    void on_requests_btn_clicked();
-    void on_log_out_btn_clicked();
+
+private:
+    void SetConnections();
+    void setActiveButton(const uchar);
 
 private:
     Ui::RequestsPage *ui;
-
-    QSqlDatabase* db;
     QSqlTableModel* qmodel;
-
+    RequestsTabelView* req_tableView;
 };
 
 #endif // REQUESTSPAGE_H

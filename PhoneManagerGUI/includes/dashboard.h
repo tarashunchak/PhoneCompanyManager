@@ -7,7 +7,6 @@
 #include <QLabel>
 #include "includes/barchart.h"
 #include "includes/piechart.h"
-#include "includes/chat.h"
 
 namespace Ui {
 class Dashboard;
@@ -20,33 +19,25 @@ class Dashboard : public QWidget
 public:
     explicit Dashboard(QWidget *parent = nullptr);
     ~Dashboard();
-    void setCurrentUser();
     void setCustomersStatistics();
     void setRequestsStatistics();
     void setTariffsStatistics();
     void setRequestsHistory();
+    void updateCurrentUser();
 
 signals:
-    void on_dashboard_btn_clicked();
-    void on_customers_btn_clicked();
-    void on_employees_btn_clicked();
-    void on_tariffs_btn_clicked();
-    void on_requests_btn_clicked();
-    void on_log_out_btn_clicked();
 
 private:/*Methods*/
     void setTableViewConnection();
+    void setTableViewStyles();
 
 private:
     Ui::Dashboard *ui;
-    QSqlDatabase* db;
     QSqlTableModel* cust_qmodel;
     QSqlTableModel* req_qmodel;
     BarChart* cust_bar_chart;
     BarChart* req_bar_chart;
     PieChart* tariff_pie_chart;
-    ChatUI* chat;
-    static QLabel* is_empty_label;
 };
 
 #endif // DASHBOARD_H
