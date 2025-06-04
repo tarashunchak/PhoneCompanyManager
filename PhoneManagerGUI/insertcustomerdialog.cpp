@@ -37,10 +37,19 @@ void InsertCustomerDialog::updateComboBoxData(){
                                      , query.value("id").toUInt());
 }
 
+static bool has_digit(const QString& str){
+    for(auto c : str)
+        if(c.isDigit())
+            return true;
+    return false;
+}
+
 void InsertCustomerDialog::InsertCustomerToDB(){
     static QSqlQuery query;
-    QString fname = ui->first_name_lineEdit->text();
-    QString lname = ui->last_name_lineEdit->text();
+    QString fname = has_digit(ui->first_name_lineEdit->text()) ? ""
+                    : ui->first_name_lineEdit->text();
+    QString lname = has_digit(ui->last_name_lineEdit->text()) ? ""
+                    : ui->last_name_lineEdit->text();
     QString phone = ui->phone_lineEdit->text();
     QString email = ui->email_lineEdit->text();
     QDate bday = ui->bday_dateEdit->date();

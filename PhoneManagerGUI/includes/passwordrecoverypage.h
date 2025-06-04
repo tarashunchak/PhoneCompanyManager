@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QFile>
 #include <QProcess>
+#include <fstream>
 
 namespace Ui {
 class PasswordRecoveryPage;
@@ -25,7 +26,7 @@ signals:
 
 private:
     Ui::PasswordRecoveryPage *ui;
-    QFile file;
+    std::fstream file;
     QProcess process;
 };
 

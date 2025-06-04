@@ -176,8 +176,9 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
             "QLabel{"
             "	background-color: rgb(95, 85, 160);"
             "	font-size:16px;"
-            "	font-family:Lato, Consolas;"
+            "	font-family:Lato, Arial, Consolas;"
             "	border-radius:6px;"
+            "   color:white;"
             "}"
             );
         }else{
@@ -189,6 +190,7 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
             "	font-size:16px;"
             "	font-family:Lato, Arial, Consolas;"
             "	border-radius:6px;"
+            "   color:white;"
             "}"
             );
         }

@@ -3,10 +3,6 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include "includes/currentuser.h"
-#include <QNetworkAccessManager>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QNetworkReply>
 
 void Dashboard::setCustomersStatistics(){
     QSqlQuery query;
@@ -14,7 +10,7 @@ void Dashboard::setCustomersStatistics(){
     if (ui->cust_date_comboBox->currentIndex()) {
         query.prepare("SELECT COUNT(id) AS cust_count, date "
                       "FROM customers "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE + INTERVAL '" + interval + "') "
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE, INTERVAL '" + interval + "') "
                       "GROUP BY date ORDER BY date DESC;");
     }else {
         query.prepare("SELECT COUNT(*) AS cust_count, date "
@@ -32,7 +28,7 @@ void Dashboard::setRequestsStatistics(){
     QString interval{ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
     if(ui->req_date_comboBox->currentIndex()){
         query.prepare("SELECT COUNT(*) AS req_count FROM requests "
-                          "WHERE date >= DATE(CURRENT_DATE + INTERVAL '" + interval + "') "
+                          "WHERE date >= DATE(CURRENT_DATE, INTERVAL '" + interval + "') "
                           "GROUP BY date ORDER BY date;");
     }else{
         query.prepare("SELECT COUNT(*) AS req_count FROM requests "
