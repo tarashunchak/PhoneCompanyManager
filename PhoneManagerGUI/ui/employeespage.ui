@@ -74,9 +74,9 @@ text-align:left;
 padding-left:4px;
 padding-bottom:2px;
 border:none;
-border-top-left-radius:4px;
-border-bottom-left-radius:4px;
-background-color:rgb(220, 220, 220);</string>
+border-radius:4px;
+background-color:rgb(220, 220, 220);
+font-family:Lato, Arial, Consolas;</string>
      </property>
      <property name="placeholderText">
       <string>Search Employee by name or id</string>
@@ -95,9 +95,10 @@ background-color:rgb(220, 220, 220);</string>
       <string notr="true">QPushButton{
 background-color:white;
 color:black;
-font-family:Lato;
+font-family:Lato, Arial, Consolas;
 border:none;
 border-radius:4px;
+font-size:16px;
 }
 QPushButton:hover{
 	background-color:rgb(220, 220, 220);
@@ -117,7 +118,7 @@ QPushButton:hover{
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">font-family:Lato;
+      <string notr="true">font-family:Lato, Arial, Consolas;
 font-size:32px;
 padding-left:20px;
 color:black;

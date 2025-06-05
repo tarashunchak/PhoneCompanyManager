@@ -14,7 +14,8 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(150, 150, 150);</string>
+   <string notr="true">background-color:rgb(150, 150, 150);
+font-family:Lato, Arial, Consolas;</string>
   </property>
   <widget class="QScrollArea" name="scrollArea">
    <property name="enabled">
@@ -54,7 +55,7 @@
 border-radius:20px;
 border:1px solid rgba(0, 0, 0, 0.4);
 background-color:rgb(27, 104, 87);
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 font-size:24px;
 }QPushButton:hover{
 background-color:rgb(7, 84, 67);
@@ -80,7 +81,7 @@ background-color:rgb(7, 84, 67);
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-family:Lato;
+    <string notr="true">font-family:Lato, Arial, Consolas;
 font-size:32px;
 padding-left:20px;
 color:black;
@@ -109,7 +110,7 @@ background-color:rgb(200, 200, 200);</string>
        <string notr="true">QPushButton{
 height:40px;
 color:black;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 font-size:22px;
 background-color:rgb(220, 220, 220);
 border-top-left-radius:5px;
@@ -130,7 +131,7 @@ QPushButton:hover{
        <string notr="true">QPushButton{
 height:40px;
 color:black;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 font-size:22px;
 background-color:rgb(220, 220, 220);
 border-top-left-radius:5px;
@@ -151,7 +152,7 @@ QPushButton:hover{
        <string notr="true">QPushButton{
 height:40px;
 color:black;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 font-size:22px;
 background-color:rgb(220, 220, 220);
 border-top-left-radius:5px;
@@ -172,7 +173,7 @@ QPushButton:hover{
        <string notr="true">QPushButton{
 height:40px;
 color:black;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 font-size:22px;
 background-color:rgb(220, 220, 220);
 border-top-left-radius:5px;
@@ -202,7 +203,7 @@ QPushButton:hover{
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-family:Lato, Consolas;
+    <string notr="true">font-family:Lato, Arial, Consolas;
 font-size:54px;
 color:black;
 background:transparent;

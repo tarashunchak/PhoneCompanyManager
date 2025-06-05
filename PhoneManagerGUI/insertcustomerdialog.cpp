@@ -9,6 +9,7 @@ InsertCustomerDialog::InsertCustomerDialog(QWidget *parent)
     , ui(new Ui::InsertCustomerDialog)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Insert customer");
     ui->incorrect_data_label->setVisible(false);
     updateComboBoxData();
     connect(ui->confirm_addition, &QPushButton::clicked
@@ -37,30 +38,29 @@ void InsertCustomerDialog::updateComboBoxData(){
                                      , query.value("id").toUInt());
 }
 
-static bool has_digit(const QString& str){
+static bool is_correct_name(const QString& str){
     for(auto c : str)
-        if(c.isDigit())
-            return true;
-    return false;
+        if(!c.isLetter())
+            return false;
+    return true;
 }
 
 void InsertCustomerDialog::InsertCustomerToDB(){
     static QSqlQuery query;
-    QString fname = has_digit(ui->first_name_lineEdit->text()) ? ""
-                    : ui->first_name_lineEdit->text();
-    QString lname = has_digit(ui->last_name_lineEdit->text()) ? ""
-                    : ui->last_name_lineEdit->text();
+    QString fname = is_correct_name(ui->first_name_lineEdit->text())
+                    ? ui->first_name_lineEdit->text() : "";
+    QString lname = is_correct_name(ui->last_name_lineEdit->text())
+                    ? ui->last_name_lineEdit->text() : "";
     QString phone = ui->phone_lineEdit->text();
     QString email = ui->email_lineEdit->text();
     QDate bday = ui->bday_dateEdit->date();
     const uint tariff_id = ui->tariff_comboBox->currentData().toUInt();
-    qDebug() << "tariff id = " << tariff_id;
     if(!fname.isEmpty()
         && !lname.isEmpty()
         && !phone.isEmpty())
     {
-        query.prepare(R"(INSERT INTO customers(first_name, last_name, phone, date_of_B, tariff_id, email, employee_id)
-                        VALUES(:fname, :lname, :phone, :bday, :tariff_id, :email, :empl_id))");
+        query.prepare("INSERT INTO customers(first_name, last_name, phone, date_of_B, tariff_id, email, employee_id) "
+                      "VALUES(:fname, :lname, :phone, :bday, :tariff_id, :email, :empl_id)");
 
         query.bindValue(":fname", fname);
         query.bindValue(":lname", lname);

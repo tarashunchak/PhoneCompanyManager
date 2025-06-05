@@ -33,6 +33,7 @@ Dashboard::Dashboard(QWidget *parent)
     connect(ui->cust_date_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setCustomersStatistics);
     connect(ui->customers_period_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setTableViewConnection);
     connect(ui->requests_period_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setRequestsHistory);
+    connect(ui->tariff_comboBox, &QComboBox::currentIndexChanged, this, &Dashboard::setTariffsStatistics);
 }
 
 Dashboard::~Dashboard(){
@@ -51,26 +52,31 @@ void Dashboard::setTableViewStyles(){
     ui->tableView->setColumnWidth(4, 100);
     ui->tableView->setColumnWidth(5, 223);
     ui->tableView->setColumnWidth(6, 80);
+    ui->tableView->horizontalHeader()->setFixedHeight(30);
     ui->tableView->verticalHeader()->setVisible(false);
     ui->requests_statistic_tableView->verticalHeader()->setVisible(false);
     ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     ui->requests_statistic_tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     const static QString style{
-        "QHeaderView{"
-            "	background-color:rgb(50, 40, 85);"
-            "	border:none;"
-            "}"
-            "QHeaderView:section:first{"
-            "	background-color:rgb(50, 40, 85);"
-            "	border:none;"
-            "	border-top-left-radius:10px;"
-            "}"
-            "QHeaderView:section:last{"
-            "	background-color:rgb(50, 40, 85);"
-            "	border:none;"
-            "	border-top-right-radius:10px;"
-            "}"
+        "	background-color:rgb(50, 40, 85);"
+        "	border:none;"
+        "   font-family:Lato, Arial, Consolas;"
+        "   font-size:14px;"
+       /* "QHeaderView:section:first{"
+        "	background-color:rgb(50, 40, 85);"
+        "	border:none;"
+        "	border-top-left-radius:10px;"
+        "   font-family:Lato, Arial, Consolas;"
+        "   font-size:14px;"
+        "}"
+        "QHeaderView:section:last{"
+        "	background-color:rgb(50, 40, 85);"
+        "	border:none;"
+        "	border-top-right-radius:10px;"
+        "   font-family:Lato, Arial, Consolas;"
+        "   font-size:14px;"
+        "}"*/
     };
     ui->tableView->horizontalHeader()->setStyleSheet(style);
     ui->requests_statistic_tableView->horizontalHeader()->setStyleSheet(style);
@@ -87,7 +93,7 @@ void Dashboard::setTableViewConnection(){
                   "c.is_active AS \"Is Active\" "
                   "FROM customers c "
                   "LEFT JOIN employees e ON e.id = c.employee_id "
-                  "WHERE c.date >= (CURRENT_DATE - INTERVAL '"
+                  "WHERE c.date >= DATE('now', '-"
                   + QString{std::to_string((ui->customers_period_comboBox->currentIndex()+1)*10).c_str()} + " days') "
                   "ORDER BY c.date DESC;"
         );

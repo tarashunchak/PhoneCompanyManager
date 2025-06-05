@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(200, 200, 200);</string>
+   <string notr="true">background-color:rgb(225, 225, 225);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

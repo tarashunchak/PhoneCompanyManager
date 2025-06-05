@@ -32,8 +32,8 @@ MainWidget::MainWidget(QWidget *parent)
     ui->close_open_calc_btn->setVisible(false);
     chat->setStyleSheet("border-radius:8px;");
     chat->setVisible(false);
-    chat->setGeometry(this->size().width()-60 - chat->size().width()
-                      ,this->size().height()-60 - chat->size().height()
+    chat->setGeometry(this->size().width() - 80 - chat->size().width()
+                      ,this->size().height() - 80 - chat->size().height()
                       ,chat->size().width(), chat->size().height());
 }
 

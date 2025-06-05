@@ -77,7 +77,7 @@ QPushButton:hover{
    </property>
    <property name="styleSheet">
     <string notr="true">border-right: 5px solid rgba(0, 0, 0, 0.3);
-background-color:#16171C;</string>
+background-color:#73819C;</string>
    </property>
    <widget class="QLabel" name="profile_pic">
     <property name="geometry">
@@ -402,10 +402,8 @@ QPushButton:hover {
     </property>
     <property name="styleSheet">
      <string notr="true">border:none;
-font-family:Lato;
-color:white;
-padding-left:10px;
-text-align:center;
+font-family:Lato, Arial, Consolas;
+color:black;
 background-color:transparent;</string>
     </property>
     <property name="text">

@@ -14,8 +14,10 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(25, 30, 35);
-font-family:Lato, Consolas;</string>
+   <string notr="true">background-color:rgb(155,160, 165);
+font-family:Lato, Arial, Consolas;
+color:black;
+font-size:18px;</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -32,17 +34,24 @@ font-family:Lato, Consolas;</string>
    <property name="font">
     <font>
      <family>Lato</family>
-     <pointsize>26</pointsize>
+     <pointsize>-1</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:transparent;
+font-size:36px;</string>
    </property>
    <property name="text">
     <string>Add Customer</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="confirm_addition">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>200</x>
      <y>290</y>
      <width>100</width>
      <height>25</height>
@@ -52,8 +61,9 @@ font-family:Lato, Consolas;</string>
     <string notr="true">QPushButton{
 color:black;
 background-color:white;
-border:none;
+border:1px solid black;
 border-radius:4px;
+font-size:16px;
 }
 QPushButton:hover{
 	background-color:rgb(200, 200, 200);
@@ -66,21 +76,24 @@ QPushButton:hover{
   <widget class="QLabel" name="incorrect_data_label">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>0</x>
      <y>260</y>
-     <width>121</width>
-     <height>19</height>
+     <width>500</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">color:red;
-font-family:Lato, Consolas;
-font-size:16px;
+font-family:Lato, Arial, Consolas;
+font-size:18px;
 background-color:transparent;
 </string>
    </property>
    <property name="text">
     <string>Incorrect data!!!</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
@@ -100,8 +113,11 @@ background-color:transparent;
         <property name="font">
          <font>
           <family>Lato</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
         </property>
         <property name="text">
          <string>First name</string>
@@ -111,12 +127,13 @@ background-color:transparent;
       <item>
        <widget class="QLineEdit" name="first_name_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
-border:1px solid white;</string>
+border:1px solid black;
+padding-left:4px;</string>
         </property>
        </widget>
       </item>
@@ -129,8 +146,11 @@ border:1px solid white;</string>
         <property name="font">
          <font>
           <family>Lato</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
         </property>
         <property name="text">
          <string>Last name</string>
@@ -140,12 +160,13 @@ border:1px solid white;</string>
       <item>
        <widget class="QLineEdit" name="last_name_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
-border:1px solid white;</string>
+border:1px solid black;
+padding-left:4px;</string>
         </property>
        </widget>
       </item>
@@ -158,8 +179,11 @@ border:1px solid white;</string>
         <property name="font">
          <font>
           <family>Lato</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
         </property>
         <property name="text">
          <string>Tariff</string>
@@ -187,8 +211,11 @@ border-radius:5px;</string>
         <property name="font">
          <font>
           <family>Lato</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
         </property>
         <property name="text">
          <string>Phone</string>
@@ -198,12 +225,13 @@ border-radius:5px;</string>
       <item>
        <widget class="QLineEdit" name="phone_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
-border:1px solid white;</string>
+border:1px solid black;
+padding-left:4px;</string>
         </property>
        </widget>
       </item>
@@ -216,8 +244,11 @@ border:1px solid white;</string>
         <property name="font">
          <font>
           <family>Lato</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
         </property>
         <property name="text">
          <string>Date of birth</string>
@@ -260,8 +291,11 @@ border-radius:5px;</string>
         <property name="font">
          <font>
           <family>Lato</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
         </property>
         <property name="text">
          <string>Email(optional)</string>
@@ -271,12 +305,13 @@ border-radius:5px;</string>
       <item>
        <widget class="QLineEdit" name="email_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
-border:1px solid white;</string>
+border:1px solid black;
+padding-left:4px;</string>
         </property>
        </widget>
       </item>

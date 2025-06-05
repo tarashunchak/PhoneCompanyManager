@@ -27,7 +27,8 @@ background-color:white;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:white;</string>
+    <string notr="true">background-color:white;
+font-family:Lato, Arial, Consolas;</string>
    </property>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
@@ -310,7 +311,7 @@ font-size:20px;</string>
       <string notr="true">QPushButton{
 background-color:rgb(27, 104, 87);
 color:white;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 font-size:16px;
 border-radius:4px;
 border:1px solid rgba(255, 255, 255, 0.5);
@@ -341,7 +342,7 @@ background-color:rgb(7, 84, 67);
       <string notr="true">QPushButton{
 background-color:rgb(27, 104, 87);
 color:white;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 font-size:16px;
 border-radius:4px;
 border:1px solid rgba(255, 255, 255, 0.5);
@@ -483,9 +484,25 @@ background-color:rgb(7, 84, 67);
        <height>450</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QTableView" name="tableView">
+        <property name="styleSheet">
+         <string notr="true">QTableView{
+	font-family:Lato;
+	font-size:16px;
+	background-color: white;
+	color:black;
+	border:none;
+	border-top-left-radius:10px;
+	border-top-right-radius:10px;
+}
+
+</string>
+        </property>
         <attribute name="horizontalHeaderCascadingSectionResizes">
          <bool>true</bool>
         </attribute>
@@ -495,6 +512,86 @@ background-color:rgb(7, 84, 67);
        </widget>
       </item>
      </layout>
+    </widget>
+    <widget class="QWidget" name="delete_customer_widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>685</x>
+       <y>450</y>
+       <width>300</width>
+       <height>180</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(155,160, 165);
+color:black;
+font-family:Lato, Arial, Consolas;
+border:1px solid black;
+border-radius:5px;</string>
+     </property>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>1</x>
+        <y>1</y>
+        <width>298</width>
+        <height>139</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border:none;
+font-size:36px;
+border-radius:4px;</string>
+      </property>
+      <property name="text">
+       <string>Are you sure?</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>140</y>
+        <width>231</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="confirm_btn">
+         <property name="styleSheet">
+          <string notr="true">background-color:white;
+font-size:16px;
+border:1px solid black;
+padding-top:5px;
+padding-bottom:5px;
+border-radius:4px;</string>
+         </property>
+         <property name="text">
+          <string>Confirm</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="cancel_btn">
+         <property name="styleSheet">
+          <string notr="true">background-color:white;
+font-size:16px;
+border:1px solid black;
+padding-top:5px;
+padding-bottom:5px;
+border-radius:4px;</string>
+         </property>
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </widget>
   </widget>

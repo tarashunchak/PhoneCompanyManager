@@ -19,10 +19,9 @@ class CustomersDetailsPage : public QWidget
 public:
     explicit CustomersDetailsPage(QWidget *parent = nullptr);
     ~CustomersDetailsPage();
-    void setCurrentUser();
 
 public slots:
-    void SetCustomerInfo(const int);
+    void SetCustomerInfo(const uint);
 
 signals:
     void on_return_btn_clicked();
@@ -35,6 +34,7 @@ private:
     void SaveCommentToDB();
     void SetTariffsChart()const;
     void SetUsageChart()const;
+    void DeleteCustomerFromDB()const;
 
 private:
     Ui::CustomersDetailsPage *ui;

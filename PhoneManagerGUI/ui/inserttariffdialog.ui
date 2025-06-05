@@ -14,8 +14,10 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(25, 30, 35);
-font-family:Lato;</string>
+   <string notr="true">background-color:rgb(155,160, 165);
+font-family:Lato, Arial, Consolas;
+color:black;
+font-size:18px;</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -33,11 +35,12 @@ font-family:Lato;</string>
     <string notr="true">QPushButton{
 color:black;
 background-color:white;
-border:none;
+border:1px solid black;
 border-radius:4px;
+font-size:16px;
 }
 QPushButton:hover{
-	background-color:rgb(220, 220, 220);
+	background-color:rgb(200, 200, 200);
 }</string>
    </property>
    <property name="text">
@@ -48,22 +51,29 @@ QPushButton:hover{
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>20</y>
+     <y>10</y>
      <width>160</width>
-     <height>30</height>
+     <height>40</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Lato</family>
-     <pointsize>26</pointsize>
+     <pointsize>-1</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:transparent;
+font-size:36px;</string>
    </property>
    <property name="text">
     <string>Add Tariff</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -84,7 +94,8 @@ QPushButton:hover{
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font-size:18px;</string>
+         <string notr="true">background-color:transparent;
+</string>
         </property>
         <property name="text">
          <string>Tariff name</string>
@@ -94,13 +105,16 @@ QPushButton:hover{
       <item>
        <widget class="QLineEdit" name="tariff_name_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
-border:1px solid white;
+border:1px solid black;
 padding-left:4px;</string>
+        </property>
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>
@@ -129,12 +143,12 @@ padding-left:4px;</string>
         <item>
          <widget class="QLineEdit" name="daily_p_lineEdit">
           <property name="styleSheet">
-           <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+           <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
-border:1px solid white;
+border:1px solid black;
 padding-left:4px;</string>
           </property>
          </widget>
@@ -162,12 +176,12 @@ padding-left:4px;</string>
         <item>
          <widget class="QLineEdit" name="internet_GB_lineEdit">
           <property name="styleSheet">
-           <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+           <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
-border:1px solid white;
+border:1px solid black;
 padding-left:4px;</string>
           </property>
          </widget>
@@ -195,12 +209,12 @@ padding-left:4px;</string>
         <item>
          <widget class="QLineEdit" name="call_minutes_lineEdit">
           <property name="styleSheet">
-           <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+           <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
-border:1px solid white;
+border:1px solid black;
 padding-left:4px;</string>
           </property>
          </widget>
@@ -228,12 +242,12 @@ padding-left:4px;</string>
         <item>
          <widget class="QLineEdit" name="monthly_p_lineEdit">
           <property name="styleSheet">
-           <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+           <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
-border:1px solid white;
+border:1px solid black;
 padding-left:4px;</string>
           </property>
          </widget>
@@ -244,17 +258,8 @@ padding-left:4px;</string>
     </item>
    </layout>
   </widget>
+  <zorder>layoutWidget</zorder>
   <zorder>confirm_addition_btn</zorder>
-  <zorder>tariff_name_lineEdit</zorder>
-  <zorder>monthly_p_lineEdit</zorder>
-  <zorder>daily_p_lineEdit</zorder>
-  <zorder>call_minutes_lineEdit</zorder>
-  <zorder>internet_GB_lineEdit</zorder>
-  <zorder>label_2</zorder>
-  <zorder>label_3</zorder>
-  <zorder>label_4</zorder>
-  <zorder>label_5</zorder>
-  <zorder>label_6</zorder>
   <zorder>header_label</zorder>
  </widget>
  <resources/>

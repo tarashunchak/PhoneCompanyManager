@@ -33,7 +33,7 @@ void EmployeesChatPage::updateLastSeenTimestamp(){
     QSqlQuery query;
     query.prepare("UPDATE chat_participants "
                   "SET last_seen = CURRENT_TIMESTAMP "
-                  "WHERE user_id = :my_id;");
+                  "WHERE participants_id = :my_id;");
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
     query.exec();
 }
@@ -59,9 +59,12 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
                       "FROM chats c "
                       "JOIN chat_participants cp1 ON cp1.chat_id = c.id "
                       "JOIN chat_participants cp2 ON cp2.chat_id = c.id "
-                      "JOIN users u ON u.id = cp2.user_id "
+                      "JOIN participants p1 ON p1.id = cp1.participants_id "
+                      "JOIN participants p2 ON p2.id = cp2.participants_id "
+                      "JOIN users u ON u.id = cp2.participants_id "
                       "JOIN employees e ON e.id = u.empl_id "
-                      "WHERE cp1.user_id = :my_id AND cp2.user_id != :my_id;");
+                      "WHERE p1.role = 'employee' AND p2.role = 'employee' "
+                      "AND cp1.participants_id = :my_id AND cp2.reference_id != :my_id;");
 
         query.bindValue(":my_id", CurrentUser::getCurrentUserID());
         if(!query.exec()){
@@ -282,8 +285,16 @@ void EmployeesChatPage::sendMessage(){
             qDebug() << "chat id == 0";
             return;
         }
+        query.prepare("INSERT INTO participants(role, reference_id) "
+                      "VALUES('employee', :partner_id) RETURNING id AS ID;");
+        query.bindValue(":partner_id", this->user_id);
+        if(!query.exec() || !query.next()){
+            qDebug() << "insert into participants user_id query fault: " << query.lastError();
+            return;
+        }
+        this->user_id = query.value("ID").toUInt();
 
-        query.prepare("INSERT INTO chat_participants(chat_id, user_id) "
+        query.prepare("INSERT INTO chat_participants(chat_id, participants_id) "
                       "VALUES(:chat_id, :user_id);");
         query.bindValue(":chat_id", this->chat_id);
         query.bindValue(":user_id", this->user_id);
@@ -306,7 +317,9 @@ void EmployeesChatPage::sendMessage(){
                   "FROM chats c "
                   "JOIN chat_participants cp1 ON cp1.chat_id = c.id "
                   "JOIN chat_participants cp2 ON cp2.chat_id = c.id "
-                  "WHERE cp1.user_id = :user_id AND cp2.user_id = :my_id "
+                  "JOIN participants p1 ON p1.id = cp1.participants_id "
+                  "JOIN participants p2 ON p2.id = cp2.participants_id "
+                  "WHERE p1.reference_id = :user_id AND p2.reference_id = :my_id "
                   "AND c.is_corporate = true;"
                   );
     query.bindValue(":user_id", this->user_id);
@@ -316,7 +329,7 @@ void EmployeesChatPage::sendMessage(){
         return;
     }
 
-    query.prepare("INSERT INTO messages(text, sender_id, chat_id) "
+    query.prepare("INSERT INTO messages(text, sender_participant_id, chat_id) "
                   "VALUES(:text, :sender_id, :chat_id);");
     query.bindValue(":text", ui->message_input_lineEdit->text());
     query.bindValue(":sender_id", CurrentUser::getCurrentUserID());

@@ -29,11 +29,16 @@ Chat::Chat(QFrame *parent)
     ui->verticalLayout->addWidget(scrollArea);
     this->setWindowTitle("Interactive Chat");
     phone_choose_handler();
+    this->setWindowFlags(Qt::Widget | Qt::CustomizeWindowHint);
 }
 
 Chat::~Chat(){
     delete ui;
 }
+
+uint Chat::curr_cust_id = 0;
+
+uint Chat::curr_chat_id = 0;
 
 static void ScrollDown_ScrollBar(QScrollBar* sb){
     sb->setValue(sb->maximum());
@@ -63,10 +68,11 @@ void Chat::SendMessage(){
         return;
     }
     QSqlQuery query;
-    query.prepare("INSERT INTO Messages(text, sender_id, chat_id) "
-                  "VALUES(:message, :origin, 1);");
+    query.prepare("INSERT INTO messages(text, sender_participant_id, chat_id) "
+                  "VALUES(:message, :origin_id, :chat_id);");
     query.bindValue(":message", ui->lineEdit->text());
-    query.bindValue(":origin", CurrentUser::getCurrentUserID());
+    query.bindValue(":origin_id", CurrentUser::getCurrentUserID());
+    query.bindValue(":chat_id", curr_chat_id);
     if(!query.exec()){
         qDebug() << "SendMessaget()const fault!: " << query.lastError();
         return;
@@ -114,14 +120,17 @@ void Chat::DisplayAllMessages(QSqlQuery& query){
 
 void Chat::DisplayLastMessage()const{
     QSqlQuery query;
-    query.prepare("SELECT * FROM Messages WHERE sender_id = :origin AND chat_id = 1 "
+    query.prepare("SELECT * FROM messages m "
+                  "JOIN chats c ON c.id = m.chat_id "
+                  "WHERE m.chat_id = :chat_id "
+                  "AND c.is_corporate = false "
                   "ORDER BY id DESC LIMIT 1;");
-    query.bindValue(":origin", CurrentUser::getCurrentUserID());
-    //query.bindValue(":dest", current_number);
+    query.bindValue(":chat_id", curr_chat_id);
     if(!query.exec() || !query.next()){
         qDebug() << "DisplayLastMessage()const query fault!: " << query.lastError();
         return;
     }
+    ui->empty_chat_label->setVisible(false);
     QString message_text{query.value("text").toString()};
     QString message_date_time{query.value("timestamp").toString()};
     MessageBox* message= new MessageBox{};
@@ -143,7 +152,14 @@ void Chat::phone_choose_handler(){
         ui->phone_lineEdit->setFocus();
     });
     connect(ui->phone_lineEdit, &QLineEdit::editingFinished, this, [this](){
-        if(is_exist(ui->phone_lineEdit->text())){
+        QSqlQuery query;
+        query.prepare("SELECT id FROM customers WHERE phone = :phone;");
+        query.bindValue(":phone", ui->phone_lineEdit->text());
+        query.exec();
+        query.next();
+        curr_cust_id = query.value("id").toUInt();
+        qDebug() << "curr_cust_id = " << curr_cust_id;
+        if(is_exist()){
             ui->phone_btn->setVisible(true);
             ui->phone_btn->setText(ui->phone_lineEdit->text());
             ui->phone_lineEdit->setVisible(false);
@@ -155,21 +171,33 @@ void Chat::phone_choose_handler(){
     });
 }
 
-bool Chat::is_exist(const QString& dest_number){
+bool Chat::is_exist(){
     QSqlQuery query;
-    query.prepare("SELECT * FROM Messages WHERE chat_id = 1 AND sender_id = :origin;");
-    //query.bindValue(":dest", dest_number);
-    query.bindValue(":origin", CurrentUser::getCurrentUserID());
-    if(!query.exec()){
-        qDebug() << "Ooh nooo";
-        ui->phone_btn->setVisible(false);
+    query.prepare("SELECT ch.id AS CHAT_ID FROM chats ch "
+                  "JOIN chat_participants cp_cust ON cp_cust.chat_id = ch.id "
+                  "JOIN participants p_cust ON p_cust.id = cp_cust.participants_id "
+                  "JOIN chat_participants cp_empl ON cp_empl.chat_id = ch.id "
+                  "JOIN participants p_empl ON p_empl.id = cp_empl.participants_id "
+                  "JOIN messages m ON m.chat_id = ch.id "
+                  "WHERE cp.is_corporate = false "
+                  "AND p_cust.role = 'customer' "
+                  "     AND p_cust.reference_id = :cust_id "
+                  "AND p_empl.role = 'employee' "
+                  "     AND p_empl.reference_id = :empl_id;");
+
+    query.bindValue(":cust_id", curr_cust_id);
+    query.bindValue(":empl_id", CurrentUser::getCurrentUserID());
+    if(!query.exec() || !query.next()){
+        qDebug() << "Ooh nooo: " << query.lastError();
+        ui->phone_btn->setVisible(true);
         ui->phone_btn->setText("Chose phone number");
-        ui->phone_lineEdit->setVisible(true);
-        current_number.clear();
-        current_number = ui->phone_lineEdit->text();
-        return true;
+        ui->phone_lineEdit->setVisible(false);
+        ui->empty_chat_label->setVisible(true);
+        curr_chat_id = -1;
+        return false;
     }
-    current_number = dest_number;
+    ui->empty_chat_label->setVisible(false);
+    curr_chat_id = query.value("CHAT_ID").toUInt();
     scrollArea->verticalScrollBar()->setVisible(true);
     DisplayAllMessages(query);
     scrollArea->verticalScrollBar()->setValue(ui->verticalLayout->count());
@@ -178,8 +206,14 @@ bool Chat::is_exist(const QString& dest_number){
 }
 
 void Chat::SetPhoneNumber(const QString& phone){
+    QSqlQuery query;
+    query.prepare("SELECT id FROM customers WHERE phone = :phone;");
+    query.bindValue(":phone", phone);
+    query.exec();
+    query.next();
+    curr_cust_id = query.value("id").toUInt();
     ui->phone_lineEdit->setVisible(false);
     ui->phone_lineEdit->setText(phone);
     ui->phone_btn->setText(phone);
-    is_exist(phone);
+    is_exist();
 }

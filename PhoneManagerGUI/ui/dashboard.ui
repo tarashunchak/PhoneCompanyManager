@@ -26,7 +26,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">font-family:Lato;
+   <string notr="true">font-family:Lato, Arial, Consolas;
 background-color:rgba(150, 150, 150, 1);</string>
   </property>
   <widget class="QWidget" name="last_reg_cust" native="true">
@@ -40,7 +40,7 @@ background-color:rgba(150, 150, 150, 1);</string>
    </property>
    <property name="styleSheet">
     <string notr="true">border-radius:5px;
-background-color:#16171C;</string>
+background-color:#73819C;</string>
    </property>
    <widget class="QTableView" name="tableView">
     <property name="enabled">
@@ -50,7 +50,7 @@ background-color:#16171C;</string>
      <rect>
       <x>20</x>
       <y>50</y>
-      <width>1015</width>
+      <width>1010</width>
       <height>450</height>
      </rect>
     </property>
@@ -84,10 +84,9 @@ background-color:#16171C;</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">font-family:Lato;
-color:white;
-background-color:transparent;
-border:none;</string>
+     <string notr="true">color:white;
+font-family: Lato, Arial, Consolas;
+background-color:transparent;</string>
     </property>
     <property name="text">
      <string>Last Customers</string>
@@ -103,12 +102,12 @@ border:none;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">padding-left: 10px;
+     <string notr="true">padding-left:10px;
 font-family:Robotic;
 font-size:16px;
 color:black;
 background-color:white;
-border-radius:2px;</string>
+border-radius:4px;</string>
     </property>
     <item>
      <property name="text">
@@ -138,7 +137,7 @@ border-radius:2px;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">border-radius:5px;
-background-color:#16171C;</string>
+background-color:#73819C;</string>
    </property>
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -156,10 +155,9 @@ background-color:#16171C;</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">font-family:Lato;
-color:white;
-background-color:transparent;
-border:none;</string>
+     <string notr="true">color:white;
+font-family: Lato, Arial, Consolas;
+background-color:transparent;</string>
     </property>
     <property name="text">
      <string>Last Requests</string>
@@ -203,8 +201,7 @@ font-family:Robotic;
 font-size:16px;
 color:black;
 background-color:white;
-border-radius:2px;
-</string>
+border-radius:4px;</string>
     </property>
     <item>
      <property name="text">
@@ -234,7 +231,7 @@ border-radius:2px;
    </property>
    <property name="styleSheet">
     <string notr="true">border-radius: 10px;
-background-color:#16171C;</string>
+background-color:#73819C;</string>
    </property>
    <widget class="QWidget" name="requests_statistic" native="true">
     <property name="geometry">
@@ -254,19 +251,19 @@ background-color:transparent;</string>
    <widget class="QComboBox" name="req_date_comboBox">
     <property name="geometry">
      <rect>
-      <x>405</x>
-      <y>14</y>
-      <width>90</width>
+      <x>370</x>
+      <y>10</y>
+      <width>121</width>
       <height>26</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">padding-left: 10px;
+     <string notr="true">padding-left:30px;
 font-family:Robotic;
-font-size:14px;
+font-size:16px;
 color:black;
 background-color:white;
-border-radius:0px;</string>
+border-radius:4px;</string>
     </property>
     <item>
      <property name="text">
@@ -289,8 +286,8 @@ border-radius:0px;</string>
      <rect>
       <x>0</x>
       <y>10</y>
-      <width>510</width>
-      <height>30</height>
+      <width>511</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -301,7 +298,7 @@ border-radius:0px;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color:white;
-font-family: Lato, Consolas;
+font-family: Lato, Arial, Consolas;
 background-color:transparent;</string>
     </property>
     <property name="text">
@@ -326,7 +323,7 @@ background-color:transparent;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">border-radius: 10px;
-background-color:#16171C;</string>
+background-color:#73819C;</string>
    </property>
    <widget class="QWidget" name="customers_statistic" native="true">
     <property name="geometry">
@@ -346,19 +343,19 @@ background-color:transparent;</string>
    <widget class="QComboBox" name="cust_date_comboBox">
     <property name="geometry">
      <rect>
-      <x>405</x>
-      <y>14</y>
-      <width>90</width>
+      <x>370</x>
+      <y>10</y>
+      <width>121</width>
       <height>26</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">padding-left: 10px;
+     <string notr="true">padding-left:30px;
 font-family:Robotic;
-font-size:14px;
+font-size:16px;
 color:black;
 background-color:white;
-border-radius:0px;</string>
+border-radius:4px;</string>
     </property>
     <item>
      <property name="text">
@@ -380,9 +377,9 @@ border-radius:0px;</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>14</y>
+      <y>10</y>
       <width>510</width>
-      <height>31</height>
+      <height>30</height>
      </rect>
     </property>
     <property name="font">
@@ -393,14 +390,15 @@ border-radius:0px;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color:white;
-font-family: Lato, Consolas;
+padding-left:100px;
+font-family: Lato, Arial, Consolas;
 background-color:transparent;</string>
     </property>
     <property name="text">
      <string>New Customers Overview</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
    </widget>
    <zorder>label_4</zorder>
@@ -418,7 +416,7 @@ background-color:transparent;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">border-radius: 10px;
-background-color:#16171C;</string>
+background-color:#73819C;</string>
    </property>
    <widget class="QWidget" name="tariff_statistics" native="true">
     <property name="geometry">
@@ -453,7 +451,7 @@ background-color:transparent;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color:white;
-font-family: Lato, Consolas;
+font-family: Lato, Arial, Consolas;
 background-color:transparent;</string>
     </property>
     <property name="text">
@@ -462,6 +460,39 @@ background-color:transparent;</string>
     <property name="alignment">
      <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
+   </widget>
+   <widget class="QComboBox" name="tariff_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>10</y>
+      <width>121</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">padding-left:30px;
+font-family:Robotic;
+font-size:16px;
+color:black;
+background-color:white;
+border-radius:4px;</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Top 3</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Top 5</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Top 10</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QLabel" name="empty_req_stat">
@@ -511,7 +542,7 @@ background-color:transparent;</string>
     <rect>
      <x>60</x>
      <y>570</y>
-     <width>1015</width>
+     <width>1010</width>
      <height>450</height>
     </rect>
    </property>

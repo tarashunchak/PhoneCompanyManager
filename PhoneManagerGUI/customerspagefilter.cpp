@@ -81,14 +81,14 @@ void CustomersPage::apply_filters(){
         phone = "";
 
     bool is_active_btn = ui->all_by_activity_btn->property("status").toBool();
-    QString query_str{"SELECT * FROM customers WHERE is_active = :status"};
+    QString query_str{"SELECT * FROM customers WHERE is_active = :status "};
     if(is_active_btn) query_str += " OR is_active != :status ";
     if(!empl_id.isEmpty()) query_str += " AND " + empl_id;
     if(!tariff_id.isEmpty()) query_str += " AND " + tariff_id;
     if(!phone.isEmpty()) query_str += " AND phone LIKE :phone";
     query_str += order_by;
 
-    is_active_btn = ui->active_btn->property("status").toBool();
+    /**/is_active_btn = ui->active_btn->property("status").toBool();
 
     QSqlQuery query;
     query.prepare(query_str);

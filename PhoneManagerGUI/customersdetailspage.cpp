@@ -14,8 +14,6 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     , usage_chart(new LineChart{})
 {
     ui->setupUi(this);
-    //ui->tableView->setGeometry(50, 530, 931, 450);
-    //ui->tableView->resize(ui->details_widget->size());
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->raise();
 
@@ -37,6 +35,8 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     ui->delete_customer_btn->setIcon(QIcon{"./img/delete_can.png"});
     ui->delete_customer_btn->setStyleSheet("background-color:transparent;");
 
+    ui->delete_customer_widget->close();
+
     SetConnections();
 }
 
@@ -47,15 +47,6 @@ CustomersDetailsPage::~CustomersDetailsPage()
 
 uint CustomersDetailsPage::curr_cust_id = 0;
 
-void CustomersDetailsPage::setCurrentUser(){
-    QSqlQuery query;
-    query.prepare("SELECT * FROM employees WHERE id = :empl_id;");
-    const int empl_id = CurrentUser::getCurrentEmployeeID();
-    query.bindValue(":empl_id", empl_id);
-    if(!query.exec() || query.next())
-        qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
-}
-
 void CustomersDetailsPage::SetConnections(){
     connect(ui->return_btn, &QPushButton::clicked, this, [this](){emit on_return_btn_clicked();});
     connect(ui->open_chat_btn, &QPushButton::clicked, this, [this](){
@@ -63,9 +54,16 @@ void CustomersDetailsPage::SetConnections(){
     });
     connect(ui->charts_comboBox, &QComboBox::currentIndexChanged, this, &CustomersDetailsPage::SetCharts);
     connect(ui->save_comment_btn, &QPushButton::clicked, this, &CustomersDetailsPage::SaveCommentToDB);
+    connect(ui->delete_customer_btn, &QPushButton::clicked, ui->delete_customer_widget, &QWidget::show);
+    connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
+        ui->delete_customer_widget->close();
+        DeleteCustomerFromDB();
+        emit on_return_btn_clicked();
+    });
+    connect(ui->cancel_btn, &QPushButton::clicked, ui->delete_customer_widget, &QWidget::close);
 }
 
-void CustomersDetailsPage::SetCustomerInfo(const int id){
+void CustomersDetailsPage::SetCustomerInfo(const uint id){
     this->curr_cust_id = id;
     QSqlQuery query;
     query.prepare("SELECT c.id AS \"Cust. ID\", "
@@ -106,13 +104,31 @@ void CustomersDetailsPage::SetTableViewStyle(){
     ui->tableView->verticalHeader()->setVisible(false);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableView->setStyleSheet(
-        "QTableView{"
-        "background-color:white;"
-        "color:black;"
-        "font-size:16px;"
+    const static QString style{
+        "QHeaderView{"
+        "   height:30px;"
+        "	background-color:rgb(50, 40, 85);"
+        "	border:none;"
+        "   font-family:Lato, Arial, Consolas;"
+        "   font-size:16px;"
         "}"
-    );
+        "QHeaderView:section:first{"
+        "	background-color:rgb(50, 40, 85);"
+        "	border:none;"
+        "	border-top-left-radius:10px;"
+        "   font-family:Lato, Arial, Consolas;"
+        "   font-size:16px;"
+        "}"
+        "QHeaderView:section:last{"
+        "	background-color:rgb(50, 40, 85);"
+        "	border:none;"
+        "	border-top-right-radius:10px;"
+        "   font-family:Lato, Arial, Consolas;"
+        "   font-size:16px;"
+        "}"
+    };
+    ui->tableView->horizontalHeader()->setStyleSheet(style);
+    ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     /*ui->tableView->setColumnWidth(0, 133);
     ui->tableView->setColumnWidth(1, 133);
     ui->tableView->setColumnWidth(2, 133);
@@ -150,7 +166,7 @@ void CustomersDetailsPage::SetUsageChart()const{
                         "COUNT(id) AS count "
                         "FROM usage "
                         "WHERE cust_id = :id "
-                        "AND date >= (CURRENT_DATE - INTERVAL '7 days') "
+                        "AND date >= DATE(CURRENT_DATE, '-7 days') "
                         "GROUP BY date ORDER BY date ASC;");
 
     usage_query.bindValue(":id", this->curr_cust_id);
@@ -205,4 +221,13 @@ void CustomersDetailsPage::SaveCommentToDB(){
     query.bindValue(":comm_id", ui->comment_textEdit->property("comment_id").toUInt());
     if(!query.exec())
         qDebug() << "update comments query fault: " << query.lastError();
+}
+
+void CustomersDetailsPage::DeleteCustomerFromDB()const{
+    QSqlQuery query;
+    query.prepare("DELETE FROM customers WHERE id = :cust_id;");
+    qDebug() << "delete customer id = " << curr_cust_id;
+    query.bindValue(":cust_id", curr_cust_id);
+    if(!query.exec())
+        qDebug() << "DeleteCustomerFromDB() fault " << query.lastError();
 }

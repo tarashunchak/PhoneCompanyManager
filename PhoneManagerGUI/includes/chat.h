@@ -27,15 +27,15 @@ public slots:
 private:
     void phone_choose_handler();
     void find_phones_in_db(const QString&);
-    bool is_exist(const QString&);
+    bool is_exist();
 
 private:
     Ui::ChatUI *ui;
     QScrollArea* scrollArea;
     QWidget* mainWidget;
     QVBoxLayout* innerVBoxLayout;
-    QString current_number;
-
+    static uint curr_chat_id;
+    static uint curr_cust_id;
 };
 
 

@@ -2,7 +2,6 @@
 #include "ui_dashboard.h"
 #include <QSqlQuery>
 #include <QSqlError>
-#include "includes/currentuser.h"
 
 void Dashboard::setCustomersStatistics(){
     QSqlQuery query;
@@ -10,7 +9,7 @@ void Dashboard::setCustomersStatistics(){
     if (ui->cust_date_comboBox->currentIndex()) {
         query.prepare("SELECT COUNT(id) AS cust_count, date "
                       "FROM customers "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE, INTERVAL '" + interval + "') "
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE, '" + interval + "') "
                       "GROUP BY date ORDER BY date DESC;");
     }else {
         query.prepare("SELECT COUNT(*) AS cust_count, date "
@@ -28,7 +27,7 @@ void Dashboard::setRequestsStatistics(){
     QString interval{ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
     if(ui->req_date_comboBox->currentIndex()){
         query.prepare("SELECT COUNT(*) AS req_count FROM requests "
-                          "WHERE date >= DATE(CURRENT_DATE, INTERVAL '" + interval + "') "
+                          "WHERE date >= DATE(CURRENT_DATE, '" + interval + "') "
                           "GROUP BY date ORDER BY date;");
     }else{
         query.prepare("SELECT COUNT(*) AS req_count FROM requests "
@@ -46,7 +45,9 @@ void Dashboard::setTariffsStatistics(){
     query.prepare("SELECT COUNT(c.id) AS count, t.tariff_name AS name "
                   "FROM tariffs t "
                   "JOIN customers c ON c.tariff_id = t.id "
-                  "GROUP BY t.tariff_name;");
+                  "GROUP BY t.tariff_name LIMIT :limit;");
+    QString text = ui->tariff_comboBox->currentText();
+    query.bindValue(":limit", text.right(text.length()-4));
     if(!query.exec()){
         qDebug() << "SetTariffsStatistics() fault: " << query.lastError();
         return;

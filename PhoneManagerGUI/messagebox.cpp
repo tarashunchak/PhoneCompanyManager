@@ -36,7 +36,7 @@ void MessageBox::SetMessageDateTime(QString mdate){
 void MessageBox::setMessageStyle(){
     this->setStyleSheet(
         "QFrame{"
-        "font-family:Roboto;"
+        "font-family:Roboto, Lato, Arial, Consolas;"
         "font-size:16px;"
         "color:white;"
         "background-color:rgb(85,85,85);"

@@ -21,7 +21,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">border-radius:5px;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 background-color:rgb(51, 51, 51);</string>
   </property>
   <widget class="QPushButton" name="monthly_btn">

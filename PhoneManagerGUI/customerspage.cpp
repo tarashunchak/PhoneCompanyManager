@@ -109,7 +109,6 @@ void CustomersPage::SetConnections(){
     });
 }
 
-
 void CustomersPage::SetCustomersCards(QSqlQuery query){
     static QPixmap pixmap{"./img/customer.png"};
     QLayout* layout = ui->gridLayout;
@@ -161,7 +160,10 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
 
         ui->gridLayout->addWidget(card, rows, cols);
         const int id = query.value("id").toInt();
-        connect(card, &QPushButton::clicked, this, [this, id](){emit customer_selected(id);});
+        connect(card, &QPushButton::clicked, this, [this, id](){
+            ui->lineEdit->clear();
+            emit customer_selected(id);
+        });
 
         cols++;
         if(cols % 5 == 0){

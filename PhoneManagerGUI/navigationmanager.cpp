@@ -143,7 +143,6 @@ void NavigationManager::showRegistrationPage()const{
 
 void NavigationManager::showCustomersDetailsPage(const int id)const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
-    customersDetailsPage->setCurrentUser();
     customersDetailsPage->SetCustomerInfo(id);
     sWidget->setCurrentWidget(customersDetailsPage);
 }

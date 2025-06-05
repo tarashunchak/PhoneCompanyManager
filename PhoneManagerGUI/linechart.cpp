@@ -57,8 +57,6 @@ void LineChart::setQuery(QSqlQuery query, QString str, QString strY){
         qDebug() << "in LineChart::setQuery() fault: " << query.lastError();
         return;
     }else if(query.isValid()){
-
-        //int x{0};
         int y{};
         while(query.next()){
         y = query.value(str).toInt();

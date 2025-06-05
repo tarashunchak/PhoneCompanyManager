@@ -86,11 +86,14 @@ border:1px solid rgba(0, 0, 0, 0.6);</string>
    <property name="styleSheet">
     <string notr="true">background-color:transparent;
 color:black;
-font-family:Lato;
+font-family:Lato, Arial, Consolas;
 font-size:80px;</string>
    </property>
    <property name="text">
     <string>Registration</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="incorrect_data_Label">
@@ -121,7 +124,7 @@ font-size:14px;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:transparent;
-font-family:Lato, Consolas;</string>
+font-family:Lato, Arial, Consolas;</string>
    </property>
    <widget class="QLineEdit" name="username_LineEdit">
     <property name="geometry">

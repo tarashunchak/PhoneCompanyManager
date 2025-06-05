@@ -25,6 +25,9 @@ signals:
     void on_return_to_login_btn_clicked();
 
 private:
+    void RecoverPassword(const uint)const;
+
+private:
     Ui::PasswordRecoveryPage *ui;
     std::fstream file;
     QProcess process;

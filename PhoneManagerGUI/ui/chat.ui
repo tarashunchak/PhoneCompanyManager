@@ -209,9 +209,9 @@ border-radius:18px;</string>
   <widget class="QLabel" name="empty_chat_label">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>0</x>
      <y>260</y>
-     <width>160</width>
+     <width>350</width>
      <height>30</height>
     </rect>
    </property>
@@ -223,8 +223,9 @@ border-radius:18px;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">color:white;
-font-family:Lato;
-font-size:20px;</string>
+font-family:Lato, Arial, Consolas;
+font-size:20px;
+background-color:transparent;</string>
    </property>
    <property name="text">
     <string>Empty chat...</string>

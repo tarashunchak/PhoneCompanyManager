@@ -46,7 +46,8 @@ padding-left:4px;
 padding-bottom:2px;
 border:none;
 border-radius:4px;
-background-color:rgb(220, 220, 220);</string>
+background-color:rgb(220, 220, 220);
+font-family:Lato, Arial, Consolas;</string>
     </property>
     <property name="placeholderText">
      <string>Search Tariff by name or id</string>
@@ -58,16 +59,17 @@ background-color:rgb(220, 220, 220);</string>
       <x>350</x>
       <y>23</y>
       <width>140</width>
-      <height>30</height>
+      <height>34</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 background-color:white;
 color:black;
-font-family:Lato;
+font-family:Lato, Arial, Consolas;
 border:none;
 border-radius:4px;
+font-size:16px;
 }
 QPushButton:hover{
 	background-color:rgb(220, 220, 220);
@@ -82,16 +84,16 @@ QPushButton:hover{
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>351</width>
+      <width>350</width>
       <height>70</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font-family:Lato;
+     <string notr="true">font-family:Lato, Arial, Consolas;
 font-size:32px;
 padding-left:20px;
 color:black;
-background-color:transparent;</string>
+background-color:rgb(200, 200, 200);</string>
     </property>
     <property name="text">
      <string>Tariffs list page</string>

@@ -14,8 +14,10 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(25, 30, 35);
-font-family:Lato, Consolas;</string>
+   <string notr="true">background-color:rgb(155,160, 165);
+font-family:Lato, Arial, Consolas;
+color:black;
+font-size:18px;</string>
   </property>
   <widget class="QPushButton" name="calcel_btn">
    <property name="geometry">
@@ -29,10 +31,10 @@ font-family:Lato, Consolas;</string>
    <property name="styleSheet">
     <string notr="true">QPushButton{
 color:black;
-font-size:20px;
 background-color:white;
-border:none;
+border:1px solid black;
 border-radius:4px;
+font-size:16px;
 }
 QPushButton:hover{
 	background-color:rgb(200, 200, 200);
@@ -54,10 +56,10 @@ QPushButton:hover{
    <property name="styleSheet">
     <string notr="true">QPushButton{
 color:black;
-font-size:20px;
 background-color:white;
-border:none;
+border:1px solid black;
 border-radius:4px;
+font-size:16px;
 }
 QPushButton:hover{
 	background-color:rgb(200, 200, 200);
@@ -72,15 +74,13 @@ QPushButton:hover{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>521</width>
-     <height>41</height>
+     <width>520</width>
+     <height>40</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:transparent;
-color:white;
-font-family:Lato, Consolas;
-font-size:26px;</string>
+font-size:36px;</string>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -111,12 +111,13 @@ font-size:26px;</string>
       <item>
        <widget class="QLineEdit" name="messages_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
-font-size:14px;
+font-size:18px;
 border-radius:4px;
-border:1px solid white;</string>
+border:1px solid black;
+padding-left:4px;</string>
         </property>
        </widget>
       </item>
@@ -134,12 +135,13 @@ border:1px solid white;</string>
       <item>
        <widget class="QLineEdit" name="daily_price_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
-font-size:14px;
+font-size:18px;
 border-radius:4px;
-border:1px solid white;</string>
+border:1px solid black;
+padding-left:4px;</string>
         </property>
        </widget>
       </item>
@@ -157,12 +159,13 @@ border:1px solid white;</string>
       <item>
        <widget class="QLineEdit" name="internet_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
-font-size:14px;
+font-size:18px;
 border-radius:4px;
-border:1px solid white;</string>
+border:1px solid black;
+padding-left:4px;</string>
         </property>
        </widget>
       </item>
@@ -180,12 +183,13 @@ border:1px solid white;</string>
       <item>
        <widget class="QLineEdit" name="call_minutes_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
-font-size:14px;
+font-size:18px;
 border-radius:4px;
-border:1px solid white;</string>
+border:1px solid black;
+padding-left:4px;</string>
         </property>
        </widget>
       </item>
@@ -203,12 +207,13 @@ border:1px solid white;</string>
       <item>
        <widget class="QLineEdit" name="monthly_price_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(200, 200, 200, 0.2);
-color:white;
+         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+color:black;
 font-family:Lato, Consolas;
-font-size:14px;
+font-size:18px;
 border-radius:4px;
-border:1px solid white;</string>
+border:1px solid black;
+padding-left:4px;</string>
         </property>
        </widget>
       </item>
@@ -226,10 +231,11 @@ border:1px solid white;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:transparent;
-color:red;
-font-family:Lato, Consolas;
-font-size:18px;</string>
+    <string notr="true">color:red;
+font-family:Lato, Arial, Consolas;
+font-size:18px;
+background-color:transparent;
+</string>
    </property>
    <property name="text">
     <string>Incorrect data!</string>

@@ -8,6 +8,7 @@ InsertEmployeeDialog::InsertEmployeeDialog(QDialog* parent)
     , ui(new Ui::InsertEmployeeDialog)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Insert employee");
     this->setMinimumSize(500, 376);
     this->setMaximumSize(500, 376);
     connect(ui->confirm_addition, &QPushButton::clicked, this, &InsertEmployeeDialog::InsertEmployeeToDB);

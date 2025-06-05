@@ -8,10 +8,10 @@ InsertTariffDialog::InsertTariffDialog(QWidget *parent)
     , ui(new Ui::InsertTariffDialog)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Insert tariff");
     setModal(true);
     setMinimumSize(440, 320);
     setMaximumSize(440, 320);
-
     setConnections();
 }
 

@@ -15,11 +15,22 @@ PasswordRecoveryPage::PasswordRecoveryPage(QWidget *parent)
             , this, &PasswordRecoveryPage::SendMessageToEmail);
     ui->code_LineEdit->setVisible(false);
     ui->error_message->setVisible(false);
+    ui->check_code_btn->setVisible(false);
 }
 
 PasswordRecoveryPage::~PasswordRecoveryPage()
 {
     delete ui;
+}
+
+void PasswordRecoveryPage::RecoverPassword(const uint empl_id)const{
+    QSqlQuery query;
+    query.prepare("UPDATE users "
+                  "SET password = :new_pass "
+                  "WHERE empl_id = :empl_id;");
+    query.bindValue(":new_pass", "");
+    query.bindValue(":empl_id", empl_id);
+    query.exec();
 }
 
 void PasswordRecoveryPage::SendMessageToEmail(){
@@ -30,15 +41,15 @@ void PasswordRecoveryPage::SendMessageToEmail(){
     query.bindValue(":email", email);
 
     if(query.exec() && query.next()){
+        const uint empl_id = query.value("id").toUInt();
         ui->code_LineEdit->setVisible(true);
         if(!file.is_open()){
             qDebug() << "cannot open file";
             return;
         }
         code = "";
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++)
             code += QString::number(QRandomGenerator::global()->bounded(10));
-        }
 
         file << "From: tarashunchak43214321@gmail.com\r\n";
         file << "To: " + email.toStdString() + "\r\n";
@@ -67,8 +78,23 @@ void PasswordRecoveryPage::SendMessageToEmail(){
         qDebug() << "Curl exit code:" << process.exitCode();
         qDebug() << "Curl output:" << process.readAllStandardOutput();
         qDebug() << "Curl error:" << process.readAllStandardError();
-
+        ui->confirm_btn->setVisible(false);
+        ui->check_code_btn->setVisible(true);
+        connect(ui->check_code_btn, &QPushButton::clicked, this, [this, empl_id](){
+            if(ui->code_LineEdit->text() == code){
+                ui->error_message->setVisible(false);
+                ui->email_LineEdit->clear();
+                ui->code_LineEdit->clear();
+                RecoverPassword(empl_id);
+                ui->confirm_btn->setVisible(true);
+                ui->check_code_btn->setVisible(false);
+            }else{
+                ui->error_message->setText("Incorrect code");
+                ui->error_message->setVisible(true);
+            }
+        });
     }else{
+        ui->error_message->setText("There is no employee with this email!");
         ui->error_message->setVisible(true);
     }
     file.close();
