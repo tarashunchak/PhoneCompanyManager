@@ -2,11 +2,12 @@
 #include "ui_passwordrecoverypage.h"
 #include <QSqlQuery>
 #include <QRandomGenerator>
+#include <fstream>
 
 PasswordRecoveryPage::PasswordRecoveryPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::PasswordRecoveryPage)
-    , file("email_template_text.txt")
+    //, file("email_template_text.txt")
 {
     ui->setupUi(this);
     ui->return_to_login_btn->setIcon(QIcon{"./img/exit.png"});
@@ -28,22 +29,23 @@ void PasswordRecoveryPage::SendMessageToEmail(){
     query.bindValue(":email", email);
 
     if(query.exec() && query.next()){
-        if(!file.open(QIODevice::WriteOnly)){
+        /*if(!file.open(QIODevice::WriteOnly)){
             qDebug() << "cannot open file";
             return;
-        }
+        }*/
+        std::fstream emailFile("email_template_text.txt");
         code = "";
         for (int i = 0; i < 6; i++) {
             code += QString::number(QRandomGenerator::global()->bounded(10));
         }
-        QTextStream emailFile(&file);
+        //QTextStream emailFile(&file);
         emailFile << "From: tarashunchak43214321@gmail.com\r\n";
-        emailFile << "To: " + email + "\r\n";
+        emailFile << "To: " + email.toStdString() + "\r\n";
         emailFile << "Subject: Password Recovery\r\n";
         emailFile << "\r\n";
         emailFile << "Dear Team Member,\n"
                      "A password reset has been requested for your account. Use the following verification code to proceed:\n"
-                     "Password recovery code: " + code + "\r\n"
+                     "Password recovery code: " + code.toStdString() + "\r\n"
                      "For security reasons, do not share this code with anyone.\n"
                      "No administrator or colleague will ever ask you for this code. If you did not request a password reset,\n"
                      "please report this to the system administrator immediately.";
@@ -69,5 +71,5 @@ void PasswordRecoveryPage::SendMessageToEmail(){
 
         }
     }
-    file.close();
+    //file.close();
 }

@@ -3,10 +3,6 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include "includes/currentuser.h"
-#include <QNetworkAccessManager>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QNetworkReply>
 
 void Dashboard::setCustomersStatistics(){
     QSqlQuery query;

@@ -2,7 +2,6 @@
 #define MAINWIDGET_H
 
 #include <QWidget>
-#include <QWebSocket>
 #include <QStackedWidget>
 #include "includes/navigationmanager.h"
 #include "includes/buttonsstylemanager.h"

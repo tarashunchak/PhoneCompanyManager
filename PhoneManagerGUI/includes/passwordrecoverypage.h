@@ -25,7 +25,7 @@ signals:
 
 private:
     Ui::PasswordRecoveryPage *ui;
-    QFile file;
+    //QFile file;
     QProcess process;
 };
 

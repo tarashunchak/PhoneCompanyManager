@@ -19,7 +19,7 @@ DatabaseManager::DatabaseManager() {
         qDebug() << "Database Successfully Connected!";
     }
     QSqlQuery query;
-    if (!query.exec("SELECT 1")) {
+    if (!query.exec("SELECT 1;")) {
         qDebug() << "Database first query connection failed: " << query.lastError();
     } else {
         qDebug() << "Database connected and queary is valid!";
