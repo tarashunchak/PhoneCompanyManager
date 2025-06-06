@@ -8,14 +8,13 @@
 CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CustomersDetailsPage)
-    , qmodel(new QSqlTableModel{})
-    , req_qmodel(new QSqlTableModel{})
     , tariff_pie_chart(new PieChart{})
     , tariff_bar_chart(new BarChart{})
+    , TABLE_MODELS{new QSqlTableModel{/*req_qmodel*/}
+                   , new QSqlTableModel{/*payments_qmodel*/}
+                   , new QSqlTableModel{/*messages_qmodel*/}}
 {
     ui->setupUi(this);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->raise();
 
     tariff_pie_chart->setParent(ui->tariffs_history);
     tariff_pie_chart->resize(ui->tariffs_history->size());
@@ -25,7 +24,6 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
 
     ui->no_request_label->setVisible(false);
 
-    ui->tableView->setModel(qmodel);
     SetTableViewStyle();
 
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo_cust.svg"});
@@ -91,64 +89,45 @@ void CustomersDetailsPage::SetCustomerInfo(const uint id){
     ui->comment_textEdit->setPlainText(query.value("comment").toString());
     ui->comment_textEdit->setProperty("comment_id", query.value("comm_id"));
     if(!query.exec()){
-        qDebug() << "customers details page qmodel";
+        qDebug() << "customers details page TableModels::payments_qmodel";
     }
-    qmodel->setQuery(std::move(query));
+    TABLE_MODELS.payments_qmodel->setQuery(std::move(query));
 
     SetCharts();
 }
 
+void CustomersDetailsPage::SetPaymentsHistory()const{
+    QSqlQuery query;
+    query.prepare("SELECT * FROM payments "
+                  "WHERE cust_id = :cust_id;");
+    query.bindValue(":cust_id", curr_cust_id);
+    ui->no_payments_label->setVisible(!query.exec());
+    TABLE_MODELS.payments_qmodel->setQuery(std::move(query));
+}
+
 void CustomersDetailsPage::SetTableViewStyle(){
-    ui->requests_statistic_tableView->setModel(req_qmodel);
+    ui->requests_statistic_tableView->setModel(TABLE_MODELS.req_qmodel);
     ui->requests_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    ui->tableView->verticalHeader()->setVisible(false);
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    const static QString style{
-        "QHeaderView{"
-        "   height:30px;"
-        "	background-color:rgb(50, 40, 85);"
-        "	border:none;"
-        "   font-family:Lato, Arial, Consolas;"
-        "   font-size:16px;"
-        "}"
-        "QHeaderView:section:first{"
-        "	background-color:rgb(50, 40, 85);"
-        "	border:none;"
-        "	border-top-left-radius:10px;"
-        "   font-family:Lato, Arial, Consolas;"
-        "   font-size:16px;"
-        "}"
-        "QHeaderView:section:last{"
-        "	background-color:rgb(50, 40, 85);"
-        "	border:none;"
-        "	border-top-right-radius:10px;"
-        "   font-family:Lato, Arial, Consolas;"
-        "   font-size:16px;"
-        "}"
-    };
-    ui->tableView->horizontalHeader()->setStyleSheet(style);
-    ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
-    /*ui->tableView->setColumnWidth(0, 133);
-    ui->tableView->setColumnWidth(1, 133);
-    ui->tableView->setColumnWidth(2, 133);
-    ui->tableView->setColumnWidth(3, 133);
-    ui->tableView->setColumnWidth(4, 133);
-    ui->tableView->setColumnWidth(5, 133);
-    ui->tableView->setColumnWidth(6, 133);*/
+    ui->payments_statistic_tableView->setModel(TABLE_MODELS.payments_qmodel);
+    ui->payments_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->payments_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    /*ui->messages_statistic_tableView->setModel(TABLE_MODELS.messages_qmodel);
+    ui->messages_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->messages_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);*/
 }
 
 void CustomersDetailsPage::SetTariffsChart()const{
-    QSqlQuery tariff_query;
-    tariff_query.prepare("SELECT t.tariff_name AS name, t.id AS id "
+    QSqlQuery query;
+    query.prepare("SELECT t.tariff_name AS name, t.id AS id "
                          "FROM customers c "
                          "JOIN tariffs t ON t.id = c.tariff_id "
                          "WHERE c.id = :id;");
-    tariff_query.bindValue(":id", this->curr_cust_id);
-    if(!tariff_query.exec()){
-        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::tariff_query fault!!!: " << tariff_query.lastError();
+    query.bindValue(":id", this->curr_cust_id);
+    if(!query.exec()){
+        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::query fault!!!: " << query.lastError();
         return;
     }
 
@@ -157,28 +136,28 @@ void CustomersDetailsPage::SetTariffsChart()const{
     tariff_pie_chart->setVisible(is_pie_chart_active);
 
     if(is_pie_chart_active)
-        tariff_pie_chart->setQuery(std::move(tariff_query), "name", "id");
+        tariff_pie_chart->setQuery(std::move(query), "name", "id");
     else
-        tariff_bar_chart->setQuery(tariff_query, "id", "name");
+        tariff_bar_chart->setQuery(query, "id", "name");
 }
 
 void CustomersDetailsPage::SetRequestsHistory()const{
-    QSqlQuery request_query;
-    request_query.prepare("SELECT id AS ID, "
+    QSqlQuery query;
+    query.prepare("SELECT id AS ID, "
                         "date AS Date, "
                         "request_type AS Type "
                         "FROM requests "
                         "WHERE cust_id = :id "
                         "GROUP BY date ORDER BY date DESC;");
-    request_query.bindValue(":id", this->curr_cust_id);
-    if(!request_query.exec() || !request_query.next()){
-        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::request_query fault!!!: " << request_query.lastError();
+    query.bindValue(":id", this->curr_cust_id);
+    if(!query.exec() || !query.next()){
+        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::query fault!!!: " << query.lastError();
         ui->requests_statistic_tableView->setVisible(false);
         ui->no_request_label->setVisible(true);
         return;
     }
-    req_qmodel->setQuery(std::move(request_query));
-    if(!req_qmodel->rowCount()){
+    TABLE_MODELS.req_qmodel->setQuery(std::move(query));
+    if(!TABLE_MODELS.req_qmodel->rowCount()){
         ui->requests_statistic_tableView->setVisible(false);
         ui->no_request_label->setVisible(true);
     }else{
@@ -190,6 +169,7 @@ void CustomersDetailsPage::SetRequestsHistory()const{
 void CustomersDetailsPage::SetCharts(){
     SetTariffsChart();
     SetRequestsHistory();
+    SetPaymentsHistory();
 }
 
 void CustomersDetailsPage::SaveCommentToDB(){

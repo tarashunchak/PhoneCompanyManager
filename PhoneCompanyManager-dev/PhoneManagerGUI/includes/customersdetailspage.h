@@ -33,15 +33,22 @@ private:
     void SaveCommentToDB();
     void SetTariffsChart()const;
     void SetRequestsHistory()const;
+    void SetPaymentsHistory()const;
+    void SetMessagesHistory()const;
     void DeleteCustomerFromDB()const;
+
+    struct TableModels{
+        QSqlTableModel* req_qmodel;
+        QSqlTableModel* payments_qmodel;
+        QSqlTableModel* messages_qmodel;
+    };
 
 private:
     Ui::CustomersDetailsPage *ui;
-    QSqlTableModel* qmodel;
-    QSqlTableModel* req_qmodel;
     PieChart* tariff_pie_chart;
     BarChart* tariff_bar_chart;
     QTableView* table_view;
+    TableModels TABLE_MODELS;
     static uint curr_cust_id;
 };
 

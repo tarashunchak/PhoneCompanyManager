@@ -39,13 +39,13 @@ font-family:Lato, Arial, Consolas;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgba(0, 0, 0, 0.3);</string>
+     <string notr="true">background-color:rgba(0, 0, 0, 0.2);</string>
     </property>
     <widget class="QLabel" name="full_name_Label">
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>265</y>
+       <y>273</y>
        <width>340</width>
        <height>30</height>
       </rect>
@@ -64,7 +64,7 @@ font-size:20px;</string>
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>290</y>
+       <y>302</y>
        <width>250</width>
        <height>30</height>
       </rect>
@@ -83,7 +83,7 @@ font-size:20px;</string>
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>319</y>
+       <y>336</y>
        <width>140</width>
        <height>25</height>
       </rect>
@@ -212,7 +212,7 @@ border-radius:4px;</string>
        <x>50</x>
        <y>240</y>
        <width>245</width>
-       <height>170</height>
+       <height>190</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -258,7 +258,7 @@ padding-left:0px;</string>
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>344</y>
+       <y>364</y>
        <width>250</width>
        <height>25</height>
       </rect>
@@ -304,36 +304,11 @@ background-color:rgb(7, 84, 67);
       </size>
      </property>
     </widget>
-    <widget class="QPushButton" name="export_to_PDF_btn">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>430</y>
-       <width>130</width>
-       <height>34</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-background-color:rgb(27, 104, 87);
-color:white;
-font-family:Lato, Arial, Consolas;
-font-size:16px;
-border-radius:4px;
-border:1px solid rgba(255, 255, 255, 0.5);
-}QPushButton:hover{
-background-color:rgb(7, 84, 67);
-}</string>
-     </property>
-     <property name="text">
-      <string>Export to PDF</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="cust_id_label">
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>238</y>
+       <y>241</y>
        <width>250</width>
        <height>30</height>
       </rect>
@@ -450,48 +425,10 @@ background-color:rgb(7, 84, 67);
       <string>Save comment</string>
      </property>
     </widget>
-    <widget class="QWidget" name="details_widget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>530</y>
-       <width>931</width>
-       <height>450</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QTableView" name="tableView">
-        <property name="styleSheet">
-         <string notr="true">QTableView{
-	font-family:Lato;
-	font-size:16px;
-	background-color: white;
-	color:black;
-	border:none;
-	border-top-left-radius:10px;
-	border-top-right-radius:10px;
-}
-
-</string>
-        </property>
-        <attribute name="horizontalHeaderCascadingSectionResizes">
-         <bool>true</bool>
-        </attribute>
-        <attribute name="horizontalHeaderMinimumSectionSize">
-         <number>133</number>
-        </attribute>
-       </widget>
-      </item>
-     </layout>
-    </widget>
     <widget class="QWidget" name="delete_customer_widget" native="true">
      <property name="geometry">
       <rect>
-       <x>685</x>
+       <x>560</x>
        <y>450</y>
        <width>300</width>
        <height>180</height>
@@ -531,7 +468,7 @@ border-radius:4px;</string>
         <x>40</x>
         <y>140</y>
         <width>231</width>
-        <height>31</height>
+        <height>36</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
@@ -567,12 +504,14 @@ border-radius:4px;</string>
        </item>
       </layout>
      </widget>
+     <zorder>layoutWidget</zorder>
+     <zorder>label_2</zorder>
     </widget>
     <widget class="QLabel" name="current_balance_label">
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>370</y>
+       <y>391</y>
        <width>250</width>
        <height>25</height>
       </rect>
@@ -671,6 +610,110 @@ font-size:50px;</string>
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="payment_history_box" native="true">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>530</y>
+       <width>941</width>
+       <height>450</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius:5px;
+background-color:#73819C;</string>
+     </property>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>15</y>
+        <width>201</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Lato</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:white;
+font-family: Lato, Arial, Consolas;
+background-color:transparent;</string>
+      </property>
+      <property name="text">
+       <string>Payment history</string>
+      </property>
+     </widget>
+     <widget class="QTableView" name="payments_statistic_tableView">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>431</width>
+        <height>391</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QTableView{
+	font-family:Lato, Arial, Consolas;
+	font-size:16px;
+	background-color: white;
+	color:black;
+	border:none;
+}
+
+</string>
+      </property>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+     </widget>
+     <widget class="QLabel" name="no_payments_label">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>921</width>
+        <height>390</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:white;
+color:black;
+font-family:Lato, Arial, Consolas;
+font-size:50px;</string>
+      </property>
+      <property name="text">
+       <string>No Info</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+    </widget>
+    <zorder>payment_history_box</zorder>
+    <zorder>full_name_Label</zorder>
+    <zorder>phone_Label</zorder>
+    <zorder>reg_date_Label</zorder>
+    <zorder>cust_profile_pic</zorder>
+    <zorder>return_btn</zorder>
+    <zorder>tariffs_history</zorder>
+    <zorder>label_4</zorder>
+    <zorder>delete_customer_btn</zorder>
+    <zorder>listWidget</zorder>
+    <zorder>current_tariff_label</zorder>
+    <zorder>open_chat_btn</zorder>
+    <zorder>cust_id_label</zorder>
+    <zorder>charts_comboBox</zorder>
+    <zorder>comment_textEdit</zorder>
+    <zorder>label</zorder>
+    <zorder>save_comment_btn</zorder>
+    <zorder>delete_customer_widget</zorder>
+    <zorder>current_balance_label</zorder>
+    <zorder>request_history_box</zorder>
    </widget>
   </widget>
  </widget>
