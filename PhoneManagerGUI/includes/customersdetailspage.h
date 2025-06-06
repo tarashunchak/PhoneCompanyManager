@@ -5,7 +5,6 @@
 #include <QSqlTableModel>
 #include "piechart.h"
 #include "barchart.h"
-#include "linechart.h"
 #include <QTableView>
 
 namespace Ui {
@@ -33,15 +32,15 @@ private:
     void SetCharts();
     void SaveCommentToDB();
     void SetTariffsChart()const;
-    void SetUsageChart()const;
+    void SetRequestsHistory()const;
     void DeleteCustomerFromDB()const;
 
 private:
     Ui::CustomersDetailsPage *ui;
     QSqlTableModel* qmodel;
+    QSqlTableModel* req_qmodel;
     PieChart* tariff_pie_chart;
     BarChart* tariff_bar_chart;
-    LineChart* usage_chart;
     QTableView* table_view;
     static uint curr_cust_id;
 };

@@ -135,12 +135,12 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         card->setMaximumSize(290, 120);
         card->setStyleSheet(
             "QPushButton{"
-            "	font-family:Lato, Consolas;"
+            "	font-family:Lato, Arial, Consolas;"
             "	border-radius:8px;"
-            "	background-color:rgb(51, 51, 51);"
+            "	background-color:#434C70;"
             "}"
             "QPushButton:hover{"
-            "	background-color:rgb(71, 71, 71);"
+            "	background-color:#6C769A;"
             "}");
 
         QLabel* image = new QLabel(card);

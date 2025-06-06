@@ -9,9 +9,9 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CustomersDetailsPage)
     , qmodel(new QSqlTableModel{})
+    , req_qmodel(new QSqlTableModel{})
     , tariff_pie_chart(new PieChart{})
     , tariff_bar_chart(new BarChart{})
-    , usage_chart(new LineChart{})
 {
     ui->setupUi(this);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -23,9 +23,7 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     tariff_bar_chart->setParent(ui->tariffs_history);
     tariff_bar_chart->resize(ui->tariffs_history->size());
 
-    usage_chart->setParent(ui->usage_history);
-    usage_chart->resize(ui->usage_history->size());
-    ui->no_usage_label->setVisible(false);
+    ui->no_request_label->setVisible(false);
 
     ui->tableView->setModel(qmodel);
     SetTableViewStyle();
@@ -101,6 +99,10 @@ void CustomersDetailsPage::SetCustomerInfo(const uint id){
 }
 
 void CustomersDetailsPage::SetTableViewStyle(){
+    ui->requests_statistic_tableView->setModel(req_qmodel);
+    ui->requests_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
     ui->tableView->verticalHeader()->setVisible(false);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -160,31 +162,34 @@ void CustomersDetailsPage::SetTariffsChart()const{
         tariff_bar_chart->setQuery(tariff_query, "id", "name");
 }
 
-void CustomersDetailsPage::SetUsageChart()const{
-    QSqlQuery usage_query;
-    usage_query.prepare("SELECT date AS usage_date, "
-                        "COUNT(id) AS count "
-                        "FROM usage "
+void CustomersDetailsPage::SetRequestsHistory()const{
+    QSqlQuery request_query;
+    request_query.prepare("SELECT id AS ID, "
+                        "date AS Date, "
+                        "request_type AS Type "
+                        "FROM requests "
                         "WHERE cust_id = :id "
-                        "AND date >= DATE(CURRENT_DATE, '-7 days') "
-                        "GROUP BY date ORDER BY date ASC;");
-
-    usage_query.bindValue(":id", this->curr_cust_id);
-    if(!usage_query.exec()){
-        usage_chart->setVisible(false);
-        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::usage_query fault!!!: " << usage_query.lastError();
-        ui->no_usage_label->setVisible(true);
+                        "GROUP BY date ORDER BY date DESC;");
+    request_query.bindValue(":id", this->curr_cust_id);
+    if(!request_query.exec() || !request_query.next()){
+        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::request_query fault!!!: " << request_query.lastError();
+        ui->requests_statistic_tableView->setVisible(false);
+        ui->no_request_label->setVisible(true);
         return;
     }
-    ui->no_usage_label->setVisible(false);
-    usage_chart->setVisible(true);
-    usage_chart->resize(ui->usage_history->size());
-    usage_chart->setQuery(std::move(usage_query), "count", "usage_date");
+    req_qmodel->setQuery(std::move(request_query));
+    if(!req_qmodel->rowCount()){
+        ui->requests_statistic_tableView->setVisible(false);
+        ui->no_request_label->setVisible(true);
+    }else{
+        ui->requests_statistic_tableView->setVisible(true);
+        ui->no_request_label->setVisible(false);
+    }
 }
 
 void CustomersDetailsPage::SetCharts(){
     SetTariffsChart();
-    SetUsageChart();
+    SetRequestsHistory();
 }
 
 void CustomersDetailsPage::SaveCommentToDB(){

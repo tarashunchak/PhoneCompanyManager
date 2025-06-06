@@ -110,13 +110,13 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         card->setMaximumSize(290, 120);
         card->setStyleSheet(
             "QPushButton{"
-            "	background-color:rgba(51, 51, 51, 1);"
+            "	font-family:Lato, Arial, Consolas;"
             "	border-radius:8px;"
+            "	background-color:#434C70;"
             "}"
             "QPushButton:hover{"
-            "	background-color:rgba(71, 71, 71, 1);"
-            "}"
-        );
+            "	background-color:#6C769A;"
+            "}");
 
         QLabel* image = new QLabel(card);
         image->setPixmap(pixmap);

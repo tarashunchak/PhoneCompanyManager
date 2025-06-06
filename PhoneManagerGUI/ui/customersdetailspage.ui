@@ -14,8 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">font-family:Lato;
-background-color:white;</string>
+   <string notr="true">font-family:Lato, Arial, Consolas;</string>
   </property>
   <widget class="QWidget" name="widget_2" native="true">
    <property name="geometry">
@@ -40,13 +39,13 @@ font-family:Lato, Arial, Consolas;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgba(115, 120, 125, 1);</string>
+     <string notr="true">background-color:rgba(0, 0, 0, 0.3);</string>
     </property>
     <widget class="QLabel" name="full_name_Label">
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>272</y>
+       <y>265</y>
        <width>340</width>
        <height>30</height>
       </rect>
@@ -65,7 +64,7 @@ font-size:20px;</string>
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>302</y>
+       <y>290</y>
        <width>250</width>
        <height>30</height>
       </rect>
@@ -84,7 +83,7 @@ font-size:20px;</string>
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>335</y>
+       <y>319</y>
        <width>140</width>
        <height>25</height>
       </rect>
@@ -109,7 +108,8 @@ font-size:20px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border:none;</string>
+      <string notr="true">border:none;
+background-color:transparent;</string>
      </property>
      <property name="text">
       <string/>
@@ -129,7 +129,8 @@ font-size:20px;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">border:none;
-border-radius:4px;</string>
+border-radius:4px;
+background-color:transparent;</string>
      </property>
      <property name="text">
       <string/>
@@ -178,37 +179,6 @@ font-family: Lato;
      <property name="text">
       <string>Tariffs History For Last Year</string>
      </property>
-    </widget>
-    <widget class="QWidget" name="usage_history" native="true">
-     <property name="geometry">
-      <rect>
-       <x>1020</x>
-       <y>30</y>
-       <width>450</width>
-       <height>450</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:white;
-border-radius:6px;</string>
-     </property>
-     <widget class="QLabel" name="no_usage_label">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>190</y>
-        <width>141</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color:black;
-font-size:40px;</string>
-      </property>
-      <property name="text">
-       <string>No Info</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QPushButton" name="delete_customer_btn">
      <property name="geometry">
@@ -278,12 +248,17 @@ padding-left:0px;</string>
        <string>Current tariff   :</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>Balance          :</string>
+      </property>
+     </item>
     </widget>
     <widget class="QLabel" name="current_tariff_label">
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>364</y>
+       <y>344</y>
        <width>250</width>
        <height>25</height>
       </rect>
@@ -358,7 +333,7 @@ background-color:rgb(7, 84, 67);
      <property name="geometry">
       <rect>
        <x>300</x>
-       <y>242</y>
+       <y>238</y>
        <width>250</width>
        <height>30</height>
       </rect>
@@ -550,7 +525,7 @@ border-radius:4px;</string>
        <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -591,6 +566,109 @@ border-radius:4px;</string>
         </widget>
        </item>
       </layout>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="current_balance_label">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>370</y>
+       <width>250</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:transparent;
+color:black;
+font-family:Consolas;
+font-size:20px;</string>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="request_history_box" native="true">
+     <property name="geometry">
+      <rect>
+       <x>1020</x>
+       <y>30</y>
+       <width>450</width>
+       <height>450</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius:5px;
+background-color:#73819C;</string>
+     </property>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>15</y>
+        <width>141</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Lato</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:white;
+font-family: Lato, Arial, Consolas;
+background-color:transparent;</string>
+      </property>
+      <property name="text">
+       <string>Request history</string>
+      </property>
+     </widget>
+     <widget class="QTableView" name="requests_statistic_tableView">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>431</width>
+        <height>391</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QTableView{
+	font-family:Lato, Arial, Consolas;
+	font-size:16px;
+	background-color: white;
+	color:black;
+	border:none;
+}
+
+</string>
+      </property>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+     </widget>
+     <widget class="QLabel" name="no_request_label">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>430</width>
+        <height>390</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:white;
+color:black;
+font-family:Lato, Arial, Consolas;
+font-size:50px;</string>
+      </property>
+      <property name="text">
+       <string>No Info</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
      </widget>
     </widget>
    </widget>

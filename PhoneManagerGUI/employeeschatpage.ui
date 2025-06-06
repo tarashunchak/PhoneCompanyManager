@@ -41,7 +41,7 @@ color:white;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color:white;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 font-size:16px;
 padding-left:18px;
 background-color:rgb(20, 20, 20);
@@ -149,7 +149,7 @@ background-color:white;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font-family:Lato, Consolas;
+     <string notr="true">font-family:Lato, Arial, Consolas;
 font-size:24px;
 background-color:transparent;
 border:none;
@@ -169,7 +169,7 @@ color:white;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font-family:Lato, Consolas;
+     <string notr="true">font-family:Lato, Arial, Consolas;
 font-size:16px;
 background-color:transparent;
 border:none;</string>
@@ -190,7 +190,7 @@ border:none;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">color:white;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 font-size:20px;
 padding-left:40px;
 background-color:rgb(30, 30, 30);
@@ -311,7 +311,7 @@ color:white;</string>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 color:white;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 font-size:18px;
 border-radius:4px;
 background-color:rgb(56, 54, 106);
@@ -334,7 +334,7 @@ background-color:rgb(36, 34, 86);
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font-family:Lato, Consolas;
+     <string notr="true">font-family:Lato, Arial, Consolas;
 font-size:20px;
 background-color:transparent;
 color:white;
