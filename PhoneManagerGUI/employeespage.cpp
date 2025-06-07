@@ -4,6 +4,8 @@
 #include <QScrollArea>
 #include <QLabel>
 #include "includes/currentuser.h"
+#include "includes/databasemanager.h"
+#include <QSqlRecord>
 
 EmployeesPage::EmployeesPage(QWidget *parent)
     : QWidget(parent)
@@ -70,19 +72,51 @@ void EmployeesPage::setCurrentUser()const{
 }
 
 void EmployeesPage::FindEmployeesByName(){
-    static bool ok;
-    const uint input = ui->lineEdit->text().toUInt(&ok);
-    QSqlQuery query;
-    query.prepare("SELECT * FROM employees "
-                  "WHERE LOWER(first_name) LIKE LOWER(:name) "
-                  "OR LOWER(last_name) LIKE LOWER(:name) "
-                  "OR LOWER(first_name || ' ' || last_name) LIKE LOWER(:name) "
-                          + QString{ok ? "OR id = :id;" : ";"});
-
-    query.bindValue(":name", ui->lineEdit->text() + "%");
-    if(ok)
-        query.bindValue(":id", input);
+    auto query = DatabaseManager::findByName("employees", ui->lineEdit->text());
     SetEmployeesCards(std::move(query));
+}
+
+namespace {
+    constexpr uint CARD_MAX_WIDTH = 290;
+    constexpr uint CARD_MAX_HEIGHT = 120;
+    constexpr uint CARDS_PER_ROW = 5;
+
+    QPushButton* createEmployeeCard(const QSqlRecord& record
+                                     , const QPixmap& pixmap
+                                     , QWidget* parent = nullptr)
+    {
+        QPushButton* card = new QPushButton{parent};
+        card->setMinimumSize({CARD_MAX_WIDTH, CARD_MAX_HEIGHT});
+        card->setMaximumSize({CARD_MAX_WIDTH, CARD_MAX_HEIGHT});
+        card->setStyleSheet(
+            "QPushButton{"
+            "	font-family:Lato, Arial, Consolas;"
+            "	border-radius:8px;"
+            "	background-color:#434C70;"
+            "}"
+            "QPushButton:hover{"
+            "	background-color:#6C769A;"
+            "}");
+        QLabel* image = new QLabel(card);
+        image->setPixmap(pixmap);
+        image->setGeometry(20, 25, 50, 50);
+        image->setStyleSheet("background-color:transparent;");
+
+        QLabel* full_name = new QLabel(record.value("first_name").toString()
+                                           + " " + record.value("last_name").toString(), card);
+        full_name->setGeometry(85, 35, 250, 20);
+        full_name->setStyleSheet("background-color:transparent;"
+                                 "color:white;"
+                                 "font-size:18px;");
+
+        QLabel* empl_id = new QLabel("ID:" + record.value("id").toString(), card);
+
+        empl_id->setGeometry(85, 60, 100, 20);
+        empl_id->setStyleSheet("background-color:transparent;"
+                               "color:white;"
+                               "font-size:16px;");
+        return card;
+    }
 }
 
 void EmployeesPage::SetEmployeesCards(QSqlQuery query){
@@ -94,55 +128,27 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
             delete item;
         }
     }
-    if(!query.exec()){
+    if(!query.isActive()){
         query.prepare("SELECT * FROM employees;");
         if(!query.exec()){
             qDebug() << "SetEmployeesCards query fault!" << query.lastError();
             return;
         }
     }
-    int rows = 0;
-    int cols = 0;
+    uint rows = 0;
+    uint cols = 0;
 
     while(query.next()){
-        QPushButton* card = new QPushButton;
-        card->setMinimumSize(290, 120);
-        card->setMaximumSize(290, 120);
-        card->setStyleSheet(
-            "QPushButton{"
-            "	font-family:Lato, Arial, Consolas;"
-            "	border-radius:8px;"
-            "	background-color:#434C70;"
-            "}"
-            "QPushButton:hover{"
-            "	background-color:#6C769A;"
-            "}");
-
-        QLabel* image = new QLabel(card);
-        image->setPixmap(pixmap);
-        image->setGeometry(20, 25, 50, 50);
-        image->setStyleSheet("background-color:transparent;");
-
-        QLabel* full_name = new QLabel(query.value("first_name").toString()
-                            + " " + query.value("last_name").toString(), card);
-        full_name->setGeometry(85, 35, 250, 20);
-        full_name->setStyleSheet("background-color:transparent;"
-                                "color:white;"
-                                "font-size:18px;");
-
-        QLabel* empl_id = new QLabel("ID:" + query.value("id").toString(), card);
-        
-        empl_id->setGeometry(85, 60, 100, 20);
-        empl_id->setStyleSheet("background-color:transparent;"
-                               "color:white;"
-                               "font-size:16px;");
+        auto card = createEmployeeCard(query.record(), pixmap, this);
 
         ui->gridLayout->addWidget(card, rows, cols);
 
         cols++;
-        if(cols % 5 == 0){
+        if(cols >= CARDS_PER_ROW){
             cols = 0;
             rows++;
         }
+        const uint empl_id = query.value("id").toUInt();
+        connect(card, &QPushButton::clicked, this, [this, empl_id](){emit employee_selected(empl_id);});
     }
 }

@@ -24,6 +24,7 @@ public:
     void close_filter_widget();
 
 signals:
+    void employee_selected(const uint);
 
 public slots:
     void setCurrentUser()const;

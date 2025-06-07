@@ -7,6 +7,7 @@
 #include <QScrollBar>
 #include "includes/currentuser.h"
 #include <QTimer>
+#include "includes/databasemanager.h"
 
 Chat::Chat(QFrame *parent)
     : QFrame (parent)
@@ -67,16 +68,7 @@ void Chat::SendMessage(){
     {
         return;
     }
-    QSqlQuery query;
-    query.prepare("INSERT INTO messages(text, sender_participant_id, chat_id) "
-                  "VALUES(:message, :origin_id, :chat_id);");
-    query.bindValue(":message", ui->lineEdit->text());
-    query.bindValue(":origin_id", CurrentUser::getCurrentUserID());
-    query.bindValue(":chat_id", curr_chat_id);
-    if(!query.exec()){
-        qDebug() << "SendMessaget()const fault!: " << query.lastError();
-        return;
-    }
+    DatabaseManager::sendMessage(ui->lineEdit->text(), curr_chat_id);
     ui->lineEdit->clear();
     DisplayLastMessage();
 }
@@ -179,7 +171,7 @@ bool Chat::is_exist(){
                   "JOIN chat_participants cp_empl ON cp_empl.chat_id = ch.id "
                   "JOIN participants p_empl ON p_empl.id = cp_empl.participants_id "
                   "JOIN messages m ON m.chat_id = ch.id "
-                  "WHERE cp.is_corporate = false "
+                  "WHERE ch.is_corporate = false "
                   "AND p_cust.role = 'customer' "
                   "     AND p_cust.reference_id = :cust_id "
                   "AND p_empl.role = 'employee' "

@@ -15,8 +15,8 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget
     , tariffsPage(new TariffsPage{})
     , requestsPage(new RequestsPage{})
     , customersDetailsPage(new CustomersDetailsPage{})
-    , tasksPage(new TasksPage{})
     , employeesChatPage(new EmployeesChatPage{})
+    , employeesDetailsPage(new EmployeesDetailsPage{})
     , left_side_menu(side_menu)
 {
     sWidget->addWidget(loginPage);
@@ -28,8 +28,8 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget
     sWidget->addWidget(tariffsPage);
     sWidget->addWidget(requestsPage);
     sWidget->addWidget(customersDetailsPage);
-    sWidget->addWidget(tasksPage);
     sWidget->addWidget(employeesChatPage);
+    sWidget->addWidget(employeesDetailsPage);
 
     sWidget->setCurrentWidget(loginPage);
 
@@ -78,6 +78,12 @@ void NavigationManager::setUpNavigation(){
     });
 
     //Employees Page Signals/Slots connections
+    connect(employeesPage, &EmployeesPage::employee_selected
+            , this, &NavigationManager::showEmployeesDetailsPage);
+
+    //Employees Details Page Signals/Slots connections
+    connect(employeesDetailsPage, &EmployeesDetailsPage::on_return_btn_clicked
+            , this, &NavigationManager::showEmployeesPage);
 
     //Requests Page Signals/Slots connections
 }
@@ -141,16 +147,10 @@ void NavigationManager::showRegistrationPage()const{
     sWidget->setCurrentWidget(registrationPage);
 }
 
-void NavigationManager::showCustomersDetailsPage(const int id)const{
+void NavigationManager::showCustomersDetailsPage(const uint id)const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
     customersDetailsPage->SetCustomerInfo(id);
     sWidget->setCurrentWidget(customersDetailsPage);
-}
-
-void NavigationManager::showTasksPage()const{
-    ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TASKS_BTN);
-    tasksPage->showCreatedByMe();
-    sWidget->setCurrentWidget(tasksPage);
 }
 
 void NavigationManager::showChatsPage()const{
@@ -164,4 +164,9 @@ void NavigationManager::showChatsPage()const{
 void NavigationManager::showPasswordRecoveryPage()const{
     hide_side_menu(left_side_menu, sWidget);
     sWidget->setCurrentWidget(passwordRecoveryPage);
+}
+
+void NavigationManager::showEmployeesDetailsPage(const uint id)const{
+    employeesDetailsPage->SetEmployeeInfo(id);
+    sWidget->setCurrentWidget(employeesDetailsPage);
 }

@@ -4,28 +4,38 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QHeaderView>
+#include "includes/databasemanager.h"
+
+QString CustomersDetailsPage::CurrentCustomer::id = {};
+QString CustomersDetailsPage::CurrentCustomer::first_name = {};
+QString CustomersDetailsPage::CurrentCustomer::last_name = {};
+QString CustomersDetailsPage::CurrentCustomer::phone = {};
+QString CustomersDetailsPage::CurrentCustomer::email = {};
+QString CustomersDetailsPage::CurrentCustomer::reg_date = {};
+QString CustomersDetailsPage::CurrentCustomer::date_of_B = {};
+QString CustomersDetailsPage::CurrentCustomer::tariff_name = {};
+QString CustomersDetailsPage::CurrentCustomer::tariff_id = {};
+QString CustomersDetailsPage::CurrentCustomer::comment_text = {};
+QString CustomersDetailsPage::CurrentCustomer::comment_id = {};
+QString CustomersDetailsPage::CurrentCustomer::balance = {};
+QString CustomersDetailsPage::CurrentCustomer::employee_id = {};
+QString CustomersDetailsPage::CurrentCustomer::is_active = {};
 
 CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CustomersDetailsPage)
-    , qmodel(new QSqlTableModel{})
-    , req_qmodel(new QSqlTableModel{})
     , tariff_pie_chart(new PieChart{})
-    , tariff_bar_chart(new BarChart{})
+    , TABLE_MODELS{new QSqlTableModel{/*req_qmodel*/}
+                   , new QSqlTableModel{/*payments_qmodel*/}
+                   , new QSqlTableModel{/*messages_qmodel*/}}
 {
     ui->setupUi(this);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->raise();
 
     tariff_pie_chart->setParent(ui->tariffs_history);
     tariff_pie_chart->resize(ui->tariffs_history->size());
 
-    tariff_bar_chart->setParent(ui->tariffs_history);
-    tariff_bar_chart->resize(ui->tariffs_history->size());
-
     ui->no_request_label->setVisible(false);
 
-    ui->tableView->setModel(qmodel);
     SetTableViewStyle();
 
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo_cust.svg"});
@@ -43,15 +53,17 @@ CustomersDetailsPage::~CustomersDetailsPage()
     delete ui;
 }
 
-uint CustomersDetailsPage::curr_cust_id = 0;
-
 void CustomersDetailsPage::SetConnections(){
     connect(ui->return_btn, &QPushButton::clicked, this, [this](){emit on_return_btn_clicked();});
     connect(ui->open_chat_btn, &QPushButton::clicked, this, [this](){
         emit on_open_chat_btn_clicked(ui->phone_Label->text());
     });
-    connect(ui->charts_comboBox, &QComboBox::currentIndexChanged, this, &CustomersDetailsPage::SetCharts);
-    connect(ui->save_comment_btn, &QPushButton::clicked, this, &CustomersDetailsPage::SaveCommentToDB);
+    connect(ui->save_comment_btn, &QPushButton::clicked, this, [this](){
+        DatabaseManager::saveCommentToDB(DatabaseManager::PAGE::CUSTOMERS_PAGE
+                                         , ui->cust_id_label->property("id").toInt()
+                                         , ui->comment_textEdit->property("comment_id").toInt()
+                                         , ui->comment_textEdit->toPlainText());
+    });
     connect(ui->delete_customer_btn, &QPushButton::clicked, ui->delete_customer_widget, &QWidget::show);
     connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
         ui->delete_customer_widget->close();
@@ -62,123 +74,86 @@ void CustomersDetailsPage::SetConnections(){
 }
 
 void CustomersDetailsPage::SetCustomerInfo(const uint id){
-    this->curr_cust_id = id;
-    QSqlQuery query;
-    query.prepare("SELECT c.id AS \"Cust. ID\", "
-                  "(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS \"Full name\", "
-                  "c.phone AS \"Phone\", "
-                  "c.date AS \"Reg. date\", "
-                  "t.tariff_name AS \"Tariff\", "
-                  "cm.comment_text AS comment, "
-                  "COALESCE(c.comment_id, -1) AS comm_id "
-                  "FROM customers c "
-                  "JOIN tariffs t ON t.id = c.tariff_id "
-                  "LEFT JOIN comments cm ON cm.id = c.comment_id "
-                  "WHERE c.id = :id;");
-    query.bindValue(":id", this->curr_cust_id);
+    auto query = DatabaseManager::currentCustomer(id);
+    ui->current_balance_label->setText(CurrentCustomer::balance);
+    ui->cust_id_label->setText(CurrentCustomer::id);
+    ui->cust_id_label->setProperty("id", CurrentCustomer::id);
+    ui->full_name_Label->setText(CurrentCustomer::first_name + " " + CurrentCustomer::last_name);
+    ui->phone_Label->setText(CurrentCustomer::phone);
+    ui->reg_date_Label->setText(CurrentCustomer::reg_date);
+    ui->current_tariff_label->setText(CurrentCustomer::tariff_name);
+    ui->comment_textEdit->setPlainText(CurrentCustomer::comment_text);
+    ui->comment_textEdit->setProperty("comment_id", CurrentCustomer::comment_id);
 
-    if(!query.exec() || !query.next()){
-        qDebug() << "In CustomersDetailsPage::SetCustomersInfo fault!!!: " << query.lastError();
-        return;
-    }
-
-    ui->cust_id_label->setText(query.value("Cust. ID").toString());
-    ui->cust_id_label->setProperty("cust_id", query.value("Cust. ID"));
-    ui->full_name_Label->setText(query.value("Full name").toString());
-    ui->phone_Label->setText(query.value("Phone").toString());
-    ui->reg_date_Label->setText(query.value("Reg. date").toString().left(10));
-    ui->current_tariff_label->setText(query.value("Tariff").toString());
-    ui->comment_textEdit->setPlainText(query.value("comment").toString());
-    ui->comment_textEdit->setProperty("comment_id", query.value("comm_id"));
-    if(!query.exec()){
-        qDebug() << "customers details page qmodel";
-    }
-    qmodel->setQuery(std::move(query));
+    TABLE_MODELS.payments_qmodel->setQuery(std::move(query));
 
     SetCharts();
 }
 
+void CustomersDetailsPage::SetPaymentsHistory()const{
+    QSqlQuery query;
+    query.prepare("SELECT * FROM payments "
+                  "WHERE cust_id = :cust_id;");
+    query.bindValue(":cust_id", CurrentCustomer::id);
+    ui->no_payments_label->setVisible(!query.exec());
+    TABLE_MODELS.payments_qmodel->setQuery(std::move(query));
+}
+
 void CustomersDetailsPage::SetTableViewStyle(){
-    ui->requests_statistic_tableView->setModel(req_qmodel);
+    ui->requests_statistic_tableView->setModel(TABLE_MODELS.req_qmodel);
     ui->requests_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    ui->tableView->verticalHeader()->setVisible(false);
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    const static QString style{
+    ui->payments_statistic_tableView->setModel(TABLE_MODELS.payments_qmodel);
+    ui->payments_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->payments_statistic_tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->payments_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->payments_statistic_tableView->horizontalHeader()->setStyleSheet(
         "QHeaderView{"
-        "   height:30px;"
-        "	background-color:rgb(50, 40, 85);"
-        "	border:none;"
+        "   border:1px solid rgba(0, 0, 0, 0.4);"
         "   font-family:Lato, Arial, Consolas;"
-        "   font-size:16px;"
+        "   font-size:18px;"
+        "   color:black;"
+        "   height:36px;"
         "}"
-        "QHeaderView:section:first{"
-        "	background-color:rgb(50, 40, 85);"
-        "	border:none;"
-        "	border-top-left-radius:10px;"
-        "   font-family:Lato, Arial, Consolas;"
-        "   font-size:16px;"
-        "}"
-        "QHeaderView:section:last{"
-        "	background-color:rgb(50, 40, 85);"
-        "	border:none;"
-        "	border-top-right-radius:10px;"
-        "   font-family:Lato, Arial, Consolas;"
-        "   font-size:16px;"
-        "}"
-    };
-    ui->tableView->horizontalHeader()->setStyleSheet(style);
-    ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
-    /*ui->tableView->setColumnWidth(0, 133);
-    ui->tableView->setColumnWidth(1, 133);
-    ui->tableView->setColumnWidth(2, 133);
-    ui->tableView->setColumnWidth(3, 133);
-    ui->tableView->setColumnWidth(4, 133);
-    ui->tableView->setColumnWidth(5, 133);
-    ui->tableView->setColumnWidth(6, 133);*/
+    );
+
+    /*ui->messages_statistic_tableView->setModel(TABLE_MODELS.messages_qmodel);
+    ui->messages_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->messages_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);*/
 }
 
 void CustomersDetailsPage::SetTariffsChart()const{
-    QSqlQuery tariff_query;
-    tariff_query.prepare("SELECT t.tariff_name AS name, t.id AS id "
+    QSqlQuery query;
+    query.prepare("SELECT t.tariff_name AS name, t.id AS id "
                          "FROM customers c "
                          "JOIN tariffs t ON t.id = c.tariff_id "
                          "WHERE c.id = :id;");
-    tariff_query.bindValue(":id", this->curr_cust_id);
-    if(!tariff_query.exec()){
-        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::tariff_query fault!!!: " << tariff_query.lastError();
+    query.bindValue(":id", CurrentCustomer::id);
+    if(!query.exec()){
+        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::query fault!!!: " << query.lastError();
         return;
     }
-
-    bool is_pie_chart_active = ui->charts_comboBox->currentIndex();
-    tariff_bar_chart->setVisible(!is_pie_chart_active);
-    tariff_pie_chart->setVisible(is_pie_chart_active);
-
-    if(is_pie_chart_active)
-        tariff_pie_chart->setQuery(std::move(tariff_query), "name", "id");
-    else
-        tariff_bar_chart->setQuery(tariff_query, "id", "name");
+    tariff_pie_chart->setQuery(std::move(query), "name", "id");
 }
 
 void CustomersDetailsPage::SetRequestsHistory()const{
-    QSqlQuery request_query;
-    request_query.prepare("SELECT id AS ID, "
-                        "date AS Date, "
-                        "request_type AS Type "
-                        "FROM requests "
-                        "WHERE cust_id = :id "
-                        "GROUP BY date ORDER BY date DESC;");
-    request_query.bindValue(":id", this->curr_cust_id);
-    if(!request_query.exec() || !request_query.next()){
-        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::request_query fault!!!: " << request_query.lastError();
+    QSqlQuery query;
+    query.prepare("SELECT id AS ID, "
+                  "date AS Date, "
+                  "request_type AS Type "
+                  "FROM requests "
+                  "WHERE cust_id = :id "
+                  "GROUP BY date ORDER BY date DESC;");
+    query.bindValue(":id", CurrentCustomer::id);
+    if(!query.exec() || !query.next()){
+        qDebug() << "In CustomersDetailsPage::SetCustomersInfo::query fault!!!: " << query.lastError();
         ui->requests_statistic_tableView->setVisible(false);
         ui->no_request_label->setVisible(true);
         return;
     }
-    req_qmodel->setQuery(std::move(request_query));
-    if(!req_qmodel->rowCount()){
+    TABLE_MODELS.req_qmodel->setQuery(std::move(query));
+    if(!TABLE_MODELS.req_qmodel->rowCount()){
         ui->requests_statistic_tableView->setVisible(false);
         ui->no_request_label->setVisible(true);
     }else{
@@ -190,49 +165,14 @@ void CustomersDetailsPage::SetRequestsHistory()const{
 void CustomersDetailsPage::SetCharts(){
     SetTariffsChart();
     SetRequestsHistory();
-}
-
-void CustomersDetailsPage::SaveCommentToDB(){
-    static QSqlQuery query;
-    int comment_id = ui->comment_textEdit->property("comment_id").toInt();
-    if(comment_id == -1){
-        query.prepare("INSERT INTO comments(comment_text, written_by_id) "
-                      "VALUES(:text, :my_id) RETURNING id;");
-        query.bindValue(":text", ui->comment_textEdit->toPlainText());
-        query.bindValue(":my_id", CurrentUser::getCurrentUserID());
-
-        if(!query.exec() || !query.next()){
-            qDebug() << "insert into comment query fault: " << query.lastError();
-            return;
-        }
-        comment_id = query.value("id").toInt();
-        query.clear();
-        query.prepare("UPDATE customers "
-                      "SET comment_id = :comm_id "
-                      "WHERE id = :cust_id;");
-        query.bindValue(":comm_id", comment_id);
-        query.bindValue(":cust_id", ui->cust_id_label->property("cust_id").toInt());
-
-        if(!query.exec())
-            qDebug() << "update customers comment_id query fault: " << query.lastError();
-
-        return;
-    }
-    query.clear();
-    query.prepare("UPDATE comments "
-                  "SET comment_text = :text "
-                  "WHERE id = :comm_id;");
-    query.bindValue(":text", ui->comment_textEdit->toPlainText());
-    query.bindValue(":comm_id", ui->comment_textEdit->property("comment_id").toUInt());
-    if(!query.exec())
-        qDebug() << "update comments query fault: " << query.lastError();
+    SetPaymentsHistory();
 }
 
 void CustomersDetailsPage::DeleteCustomerFromDB()const{
     QSqlQuery query;
     query.prepare("DELETE FROM customers WHERE id = :cust_id;");
-    qDebug() << "delete customer id = " << curr_cust_id;
-    query.bindValue(":cust_id", curr_cust_id);
+    qDebug() << "delete customer id = " << CurrentCustomer::id;
+    query.bindValue(":cust_id", CurrentCustomer::id);
     if(!query.exec())
         qDebug() << "DeleteCustomerFromDB() fault " << query.lastError();
 }

@@ -329,7 +329,7 @@ background-color:transparent;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">font-size:14px;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 background-color:transparent;</string>
    </property>
    <widget class="QLabel" name="SMS_label">
@@ -415,7 +415,7 @@ background-color:transparent;</string>
 background-color:white;
 color:black;
 font-size:20px;
-font-family:Lato, Consolas;
+font-family:Lato, Arial, Consolas;
 }
 QPushButton:hover{
 	background-color:rgb(200, 200, 200);

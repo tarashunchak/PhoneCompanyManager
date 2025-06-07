@@ -429,51 +429,11 @@ background-color:transparent;</string>
      <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="tasks_btn">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>605</y>
-      <width>230</width>
-      <height>45</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-    font-family: Lato;
-	padding-left:35px;
-    border-radius: 5px;
-	border:none;
-    background-color:rgba(80, 80, 80, 0.6);
-    font-size: 24px;
-    color: white;
-    text-align: left;
-}
-
-QPushButton:hover {
-    background-color: rgba(87, 91, 129, 1);
-}
-</string>
-    </property>
-    <property name="text">
-     <string>Tasks</string>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>ui/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/requests.png</normaloff>ui/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/img/requests.png</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>30</width>
-      <height>30</height>
-     </size>
-    </property>
-   </widget>
    <widget class="Line" name="line_3">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>710</y>
+      <y>665</y>
       <width>230</width>
       <height>1</height>
      </rect>
@@ -485,31 +445,11 @@ QPushButton:hover {
      <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>710</y>
-      <width>230</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QComboBox{
-	background-color:transparent;
-	color:white;
-	font-family:Lato, Consolas;
-	font-size:16px;
-	border:none;
-	border-radius:0px;
-}</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="chats_btn">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>655</y>
+      <y>605</y>
       <width>230</width>
       <height>45</height>
      </rect>
@@ -576,9 +516,7 @@ background-color:transparent;</string>
    <zorder>log_out_btn</zorder>
    <zorder>name_label</zorder>
    <zorder>line_2</zorder>
-   <zorder>tasks_btn</zorder>
    <zorder>line_3</zorder>
-   <zorder>comboBox</zorder>
    <zorder>chats_btn</zorder>
    <zorder>logo_label</zorder>
   </widget>

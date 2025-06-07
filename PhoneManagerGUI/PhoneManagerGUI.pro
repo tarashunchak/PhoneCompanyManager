@@ -45,8 +45,7 @@ SOURCES += \
     table_view_for_requestpage.cpp \
     tariffcard.cpp \
     tariffeditwidget.cpp \
-    tariffspage.cpp \
-    taskspage.cpp
+    tariffspage.cpp
 
 HEADERS += \
     employeeschatpage.h \
@@ -80,14 +79,12 @@ HEADERS += \
     includes/linechart.h \
     includes/passwordrecoverypage.h \
     includes/piechart.h \
-    includes/taskspage.h \
     includes/insertcustomerdialog.h \
     includes/insertemployeedialog.h \
     includes/mainwidget.h \
     includes/messagebox.h \
     includes/pushbuttondelegate.h \
     includes/tariffeditwidget.h \
-    includes/taskspage.h \
     requeststabelview.h
 
 FORMS += \
@@ -97,7 +94,6 @@ FORMS += \
     ui/insertemployeedialog.ui \
     ui/mainwidget.ui \
     ui/tariffeditwidget.ui \
-    ui/taskspage.ui \
     ui/chat.ui \
     ui/customersdetailspage.ui \
     ui/customerspage.ui \
@@ -114,8 +110,7 @@ FORMS += \
     ui/requestspage.ui \
     ui/tariffcard.ui \
     ui/tariffeditwidget.ui \
-    ui/tariffspage.ui \
-    ui/taskspage.ui
+    ui/tariffspage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

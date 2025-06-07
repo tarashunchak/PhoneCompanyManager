@@ -192,6 +192,8 @@ background-color:rgba(42, 42, 42, 0.3);</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(40, 40, 43);
+color:white;
+font-family:Lato, Arial, Consolas;
 </string>
    </property>
    <widget class="QPushButton" name="apply_filter_btn">
@@ -233,9 +235,9 @@ background-color:rgb(7, 84, 67);
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>270</y>
-      <width>241</width>
+      <width>261</width>
       <height>381</height>
      </rect>
     </property>
@@ -245,7 +247,9 @@ background-color:rgb(7, 84, 67);
        <item>
         <widget class="QLabel" name="label_2">
          <property name="styleSheet">
-          <string notr="true">color:white;</string>
+          <string notr="true">color:white;
+font-size:18px;
+font-family:Lato, Arial, Consolas;</string>
          </property>
          <property name="text">
           <string>Order by</string>
@@ -256,7 +260,10 @@ background-color:rgb(7, 84, 67);
         <widget class="QComboBox" name="sort_by_comboBox">
          <property name="styleSheet">
           <string notr="true">border:1px solid rgba(255, 255, 255, 0.4);
-background-color:rgba(255, 255, 255, 0.1);</string>
+background-color:rgba(255, 255, 255, 0.1);
+color:white;
+font-size:24px;
+font-family:Lato, Arial, Consolas;</string>
          </property>
          <item>
           <property name="text">
@@ -287,7 +294,9 @@ background-color:rgba(255, 255, 255, 0.1);</string>
        <item>
         <widget class="QLabel" name="label_3">
          <property name="styleSheet">
-          <string notr="true">color:white;</string>
+          <string notr="true">color:white;
+font-size:18px;
+font-family:Lato, Arial, Consolas;</string>
          </property>
          <property name="text">
           <string>Tariff</string>
@@ -298,7 +307,10 @@ background-color:rgba(255, 255, 255, 0.1);</string>
         <widget class="QComboBox" name="tariffs_comboBox">
          <property name="styleSheet">
           <string notr="true">border:1px solid rgba(255, 255, 255, 0.4);
-background-color:rgba(255, 255, 255, 0.1);</string>
+background-color:rgba(255, 255, 255, 0.1);
+color:white;
+font-size:24px;
+font-family:Lato, Arial, Consolas;</string>
          </property>
          <item>
           <property name="text">
@@ -324,7 +336,9 @@ background-color:rgba(255, 255, 255, 0.1);</string>
        <item>
         <widget class="QLabel" name="label_4">
          <property name="styleSheet">
-          <string notr="true">color:white;</string>
+          <string notr="true">color:white;
+font-size:18px;
+font-family:Lato, Arial, Consolas;</string>
          </property>
          <property name="text">
           <string>Added by</string>
@@ -341,7 +355,10 @@ background-color:rgba(255, 255, 255, 0.1);</string>
          </property>
          <property name="styleSheet">
           <string notr="true">border:1px solid rgba(255, 255, 255, 0.4);
-background-color:rgba(255, 255, 255, 0.1);</string>
+background-color:rgba(255, 255, 255, 0.1);
+color:white;
+font-size:24px;
+font-family:Lato, Arial, Consolas;</string>
          </property>
          <property name="maxVisibleItems">
           <number>5</number>
@@ -370,7 +387,9 @@ background-color:rgba(255, 255, 255, 0.1);</string>
        <item>
         <widget class="QLabel" name="label_5">
          <property name="styleSheet">
-          <string notr="true">color:white;</string>
+          <string notr="true">color:white;
+font-size:18px;
+font-family:Lato, Arial, Consolas;</string>
          </property>
          <property name="text">
           <string>Numbers</string>
@@ -381,7 +400,10 @@ background-color:rgba(255, 255, 255, 0.1);</string>
         <widget class="QComboBox" name="number_comboBox">
          <property name="styleSheet">
           <string notr="true">border:1px solid rgba(255, 255, 255, 0.4);
-background-color:rgba(255, 255, 255, 0.1);</string>
+background-color:rgba(255, 255, 255, 0.1);
+color:white;
+font-size:24px;
+font-family:Lato, Arial, Consolas;</string>
          </property>
          <item>
           <property name="text">
@@ -421,7 +443,8 @@ border-bottom-left-radius:4px;
 background-color:transparent;
 border:1px solid white;
 color:white;
-height:30px;</string>
+height:30px;
+font-size:16px;</string>
          </property>
          <property name="text">
           <string>Active</string>
@@ -436,7 +459,8 @@ background-color:transparent;
 border:1px solid white;
 color:black;
 height:30px;
-color:white;</string>
+color:white;
+font-size:16px;</string>
          </property>
          <property name="text">
           <string>All</string>
@@ -451,7 +475,8 @@ border-bottom-right-radius:4px;
 background-color:white;
 border:1px solid white;
 color:black;
-height:30px;</string>
+height:30px;
+font-size:16px;</string>
          </property>
          <property name="text">
           <string>Inactive</string>

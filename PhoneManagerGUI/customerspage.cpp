@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QListView>
+#include "includes/databasemanager.h"
+#include <QSqlRecord>
 
 CustomersPage::CustomersPage(QWidget *parent)
     : QWidget(parent)
@@ -41,6 +43,44 @@ CustomersPage::~CustomersPage()
     delete ui;
 }
 
+namespace{
+    const QString left{
+        "QPushButton{"
+        "border-top-right-radius:0px;"
+        "border-bottom-right-radius:0px;"
+        "border-top-left-radius:4px;"
+        "border-bottom-left-radius:4px;"
+    };
+    const QString right{
+        "QPushButton{"
+        "border-top-left-radius:0px;"
+        "border-bottom-left-radius:0px;"
+        "border-top-right-radius:4px;"
+        "border-bottom-right-radius:4px;"
+    };
+    const QString center{
+        "QPushButton{"
+        "border-radius:0px;"
+    };
+    const QString both{
+        "font-size:18px;"
+        "border:1px solid rgb(255, 255, 255);"
+        "height:30px;"
+        "}"
+    };
+    const QString inactive{
+        "QPushButton:hover{"
+        "background-color:rgba(200, 200, 200, 0.3);"
+        "}"
+    };
+    const QString active_right{right + "background-color:white;color:black;" + both};
+    const QString inactive_right{right + "background-color:transparent;color:white;" + both + inactive};
+    const QString active_left{left + "background-color:white;color:black;" + both};
+    const QString inactive_left{left + "background-color:transparent;color:white;" + both + inactive};
+    const QString active_center{center + "background-color:white;color:black;" + both};
+    const QString inactive_center{center + "background-color:transparent;color:white;" + both + inactive};
+}
+
 void CustomersPage::SetConnections(){
     connect(ui->lineEdit, &QLineEdit::textEdited
             , this, &CustomersPage::FindCustomersByName);
@@ -51,42 +91,6 @@ void CustomersPage::SetConnections(){
     connect(ui->close_open_filter_btn, &QPushButton::clicked
             , this, &CustomersPage::open_close_filter_widget);
     connect(ui->apply_filter_btn, &QPushButton::clicked, this, &CustomersPage::apply_filters);
-    static const QString left{
-        "QPushButton{"
-        "border-top-right-radius:0px;"
-        "border-bottom-right-radius:0px;"
-        "border-top-left-radius:4px;"
-        "border-bottom-left-radius:4px;"
-    };
-    static const QString right{
-        "QPushButton{"
-        "border-top-left-radius:0px;"
-        "border-bottom-left-radius:0px;"
-        "border-top-right-radius:4px;"
-        "border-bottom-right-radius:4px;"
-    };
-    static const QString center{
-        "QPushButton{"
-        "border-radius:0px;"
-    };
-    static const QString both{
-        "font-size:18px;"
-        "border:1px solid rgb(255, 255, 255);"
-        "height:30px;"
-        "}"
-    };
-    static const QString inactive{
-        "QPushButton:hover{"
-        "background-color:rgba(200, 200, 200, 0.3);"
-        "}"
-    };
-    static const QString active_right{right + "background-color:white;color:black;" + both};
-    static const QString inactive_right{right + "background-color:transparent;color:white;" + both + inactive};
-    static const QString active_left{left + "background-color:white;color:black;" + both};
-    static const QString inactive_left{left + "background-color:transparent;color:white;" + both + inactive};
-    static const QString active_center{center + "background-color:white;color:black;" + both};
-    static const QString inactive_center{center + "background-color:transparent;color:white;" + both + inactive};
-
     connect(ui->active_btn, &QPushButton::clicked, this, [&, this](){
         ui->active_btn->setStyleSheet(active_left);
         ui->inactive_btn->setStyleSheet(inactive_right);
@@ -109,30 +113,19 @@ void CustomersPage::SetConnections(){
     });
 }
 
-void CustomersPage::SetCustomersCards(QSqlQuery query){
-    static QPixmap pixmap{"./img/customer.png"};
-    QLayout* layout = ui->gridLayout;
-    if(layout){
-        while(QLayoutItem* item = layout->takeAt(0)){
-            delete item->widget();
-            delete item;
-        }
-    }
-    if(!query.exec()){
-        query.prepare("SELECT * FROM customers;");
-        if(!query.exec()){
-            qDebug() << "SetCustomersCards Query fault!!!: " << query.lastError();
-            return;
-        }
-    }
+namespace {
+    constexpr uint CARD_MAX_WIDTH = 290;
+    constexpr uint CARD_MAX_HEIGHT = 120;
+    constexpr uint CARDS_PER_ROW = 5;
 
-    int cols = 0;
-    int rows = 0;
-
-    while(query.next()){
-        QPushButton* card = new QPushButton;
-        card->setMinimumSize(290, 120);
-        card->setMaximumSize(290, 120);
+    QPushButton* createCustomerCard(const QSqlRecord& record
+                                     , const QPixmap& pixmap
+                                     , QWidget* parent = nullptr)
+    {
+        QPushButton* card = new QPushButton{parent};
+        card->setMinimumSize(CARD_MAX_WIDTH, CARD_MAX_HEIGHT);
+        card->setMaximumSize(CARD_MAX_WIDTH, CARD_MAX_HEIGHT);
+        card->setProperty("id", record.value("id").toInt());
         card->setStyleSheet(
             "QPushButton{"
             "	font-family:Lato, Arial, Consolas;"
@@ -148,25 +141,50 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         image->setGeometry(16, 25, 50, 50);
         image->setStyleSheet("background-color:transparent;");
 
-        QLabel* phone = new QLabel("Phone: " + query.value("phone").toString(), card);
+        QLabel* phone = new QLabel("Phone: " + record.value("phone").toString(), card);
         phone->setGeometry(80, 35, 200, 20);
         phone->setStyleSheet("background-color:transparent;color:white;font-size:18px;");
 
-        QLabel* full_name = new QLabel(query.value("first_name").toString()
-                                    + query.value("last_name").toString(), card);
+        QLabel* full_name = new QLabel(record.value("first_name").toString()
+                                           + record.value("last_name").toString(), card);
 
         full_name->setGeometry(80, 60, 250, 20);
         full_name->setStyleSheet("background-color:transparent;color:white;font-size:14px;");
 
+        return card;
+    }
+}
+
+void CustomersPage::SetCustomersCards(QSqlQuery query){
+    static QPixmap pixmap{"./img/customer.png"};
+    QLayout* layout = ui->gridLayout;
+    if(layout){
+        while(QLayoutItem* item = layout->takeAt(0)){
+            delete item->widget();
+            delete item;
+        }
+    }
+    if(!query.exec()){
+        query.prepare("SELECT * FROM customers ORDER BY date DESC;");
+        if(!query.exec()){
+            qDebug() << "SetCustomersCards Query fault!!!: " << query.lastError();
+            return;
+        }
+    }
+
+    uint cols = 0;
+    uint rows = 0;
+
+    while(query.next()){
+        auto card = createCustomerCard(query.record(), pixmap, this);
         ui->gridLayout->addWidget(card, rows, cols);
-        const int id = query.value("id").toInt();
-        connect(card, &QPushButton::clicked, this, [this, id](){
+        connect(card, &QPushButton::clicked, this, [this, card](){
             ui->lineEdit->clear();
-            emit customer_selected(id);
+            emit customer_selected(card->property("id").toInt());
         });
 
         cols++;
-        if(cols % 5 == 0){
+        if(cols >= CARDS_PER_ROW){
             cols = 0;
             rows++;
         }
@@ -174,13 +192,6 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
 }
 
 void CustomersPage::FindCustomersByName(){
-    QSqlQuery query;
-    query.prepare("SELECT * FROM customers "
-                  "WHERE LOWER(first_name) LIKE LOWER(:text) "
-                  "OR LOWER(last_name) LIKE LOWER(:text) "
-                  "OR LOWER(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) LIKE LOWER(:text) "
-                  "OR LOWER(phone) LIKE LOWER(:text);");
-    QString text = ui->lineEdit->text() + "%";
-    query.bindValue(":text", text);
+    auto query = DatabaseManager::findByName("customers", ui->lineEdit->text());
     SetCustomersCards(std::move(query));
 }

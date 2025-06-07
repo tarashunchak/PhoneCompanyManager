@@ -6,6 +6,7 @@
 #include "piechart.h"
 #include "barchart.h"
 #include <QTableView>
+#include <QDate>
 
 namespace Ui {
 class CustomersDetailsPage;
@@ -18,6 +19,22 @@ class CustomersDetailsPage : public QWidget
 public:
     explicit CustomersDetailsPage(QWidget *parent = nullptr);
     ~CustomersDetailsPage();
+    struct CurrentCustomer{
+        static QString id;
+        static QString first_name;
+        static QString last_name;
+        static QString phone;
+        static QString email;
+        static QString reg_date;
+        static QString date_of_B;
+        static QString tariff_name;
+        static QString tariff_id;
+        static QString comment_text;
+        static QString comment_id;
+        static QString balance;
+        static QString employee_id;
+        static QString is_active;
+    };
 
 public slots:
     void SetCustomerInfo(const uint);
@@ -30,19 +47,23 @@ private:
     void SetConnections();
     void SetTableViewStyle();
     void SetCharts();
-    void SaveCommentToDB();
     void SetTariffsChart()const;
     void SetRequestsHistory()const;
+    void SetPaymentsHistory()const;
+    void SetMessagesHistory()const;
     void DeleteCustomerFromDB()const;
+
+    struct TableModels{
+        QSqlTableModel* req_qmodel;
+        QSqlTableModel* payments_qmodel;
+        QSqlTableModel* messages_qmodel;
+    };
 
 private:
     Ui::CustomersDetailsPage *ui;
-    QSqlTableModel* qmodel;
-    QSqlTableModel* req_qmodel;
     PieChart* tariff_pie_chart;
-    BarChart* tariff_bar_chart;
     QTableView* table_view;
-    static uint curr_cust_id;
+    TableModels TABLE_MODELS;
 };
 
 #endif // CUSTOMERSDETAILSPAGE_H

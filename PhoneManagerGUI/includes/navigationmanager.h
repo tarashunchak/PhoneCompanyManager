@@ -13,8 +13,8 @@
 #include "tariffspage.h"
 #include "requestspage.h"
 #include "customersdetailspage.h"
-#include "taskspage.h"
 #include "employeeschatpage.h"
+#include "employeesdetailspage.h"
 
 class NavigationManager: public QObject
 {
@@ -32,9 +32,9 @@ public slots:
     void showEmployeesPage()const;
     void showTariffsPage()const;
     void showRequestsPage()const;
-    void showCustomersDetailsPage(const int)const;
-    void showTasksPage()const;
+    void showCustomersDetailsPage(const uint)const;
     void showChatsPage()const;
+    void showEmployeesDetailsPage(const uint)const;
 
 private: /*Methods*/
     void setUpNavigation();
@@ -56,8 +56,8 @@ private:
     TariffsPage* tariffsPage;
     RequestsPage* requestsPage;
     CustomersDetailsPage* customersDetailsPage;
-    TasksPage* tasksPage;
     EmployeesChatPage* employeesChatPage;
+    EmployeesDetailsPage* employeesDetailsPage;
     QWidget* left_side_menu;
 };
 

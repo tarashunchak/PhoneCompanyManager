@@ -5,7 +5,7 @@
 #include <QSqlRecord>
 #include "includes/comboboxdelegate.h"
 #include "includes/pushbuttondelegate.h"
-#include "includes/currentuser.h"
+#include "includes/databasemanager.h"
 #include <QStandardItemModel>
 #include <QHeaderView>
 #include <QMenu>
@@ -17,28 +17,30 @@ enum ACTIVE_BTN : unsigned char{
     HISTORY
 };
 
-void RequestsPage::setActiveButton(const uchar button){
-    static QString both{
+namespace{
+    const QString both{
         "QPushButton{"
         "height:40px;"
         "color:black;"
-        "font-family:Lato, Consolas;"
+        "font-family:Lato, Arial, Consolas;"
         "font-size:22px;"
         "border-top-left-radius:5px;"
         "border-top-right-radius:5px;"};
-    static QString active(both +
+    const QString active(both +
         "background-color:white;"
         "}"
         "QPushButton:hover{"
         "background-color:rgb(180, 180, 180);"
         "}");
-    static QString inactive(both +
+    const QString inactive(both +
         "background-color:rgb(200, 200, 200);"
         "}"
         "QPushButton:hover{"
         "background-color:rgb(220, 220, 220);"
         "}");
+}
 
+void RequestsPage::setActiveButton(const uchar button){
     ui->unassigned_req_btn->setStyleSheet(button == 0 ? active : inactive);
     ui->in_progress_req_btn->setStyleSheet(button == 1 ? active : inactive);
     ui->complete_req_btn->setStyleSheet(button == 2 ? active : inactive);
@@ -47,11 +49,7 @@ void RequestsPage::setActiveButton(const uchar button){
 
 void RequestsPage::showUnassignmentRequests(){
     ui->save_btn->setVisible(false);
-    QSqlQuery query;
-    query.prepare("SELECT id AS \"ID\", cust_id AS \"Cust. ID\", "
-                  "request_type AS \"Req. type\", "
-                  "status AS \"Status\", date AS \"Date\" "
-                  "FROM requests WHERE assigned_to_id = -1;");
+    auto query = DatabaseManager::unassignedRequests();
     if(!query.exec()){
         qDebug() << "showUnassignmentRequests()const query fault: " << query.lastError().text();
         qDebug() << "showUnassignmentRequests()const last query: " << query.lastQuery();
@@ -99,15 +97,7 @@ void RequestsPage::showUnassignmentRequests(){
 
 void RequestsPage::showInProgressRequests(){
     ui->save_btn->setVisible(true);
-    QSqlQuery query;
-    query.prepare("SELECT id AS \"ID\", cust_id AS \"Cust. ID\", "
-                  "request_type AS \"Req. type\", "
-                  "status AS \"Status\", date AS \"Date\" "
-                  "FROM requests "
-                  "WHERE status = 'In Progress' "
-                  "AND assigned_to_id = :id;");
-
-    query.bindValue(":id", CurrentUser::getCurrentUserID());
+    auto query = DatabaseManager::inProgressRequests();
     if(!query.exec()){
         ui->no_requests_label->setVisible(true);
         qDebug() << "showInProgressRequests()const query fault: " << query.lastError();
@@ -141,11 +131,7 @@ void RequestsPage::showInProgressRequests(){
 
 void RequestsPage::showCompletedRequests(){
     ui->save_btn->setVisible(false);
-    QSqlQuery query;
-    query.prepare("SELECT * FROM requests "
-                  "WHERE status = 'Confirmed' OR status = 'Rejected' "
-                  "AND assigned_to_id = :id;");
-    query.bindValue(":id", CurrentUser::getCurrentUserID());
+    auto query = DatabaseManager::completedRequests();
     if(!query.exec())
         qDebug() << "showCompletedRequests()const query fault: " << query.lastError();
 
@@ -162,17 +148,7 @@ void RequestsPage::showCompletedRequests(){
 
 void RequestsPage::showRequestsHistory(){
     ui->save_btn->setVisible(false);
-    QSqlQuery query;
-    query.prepare("SELECT r.id AS \"ID\", "
-                  "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '') "
-                  "|| ' ID(' || c.id || ')') AS \"Customer\", "
-                  "r.request_type AS \"Req. type\", "
-                  "r.status AS \"Status\", r.date AS \"Date\", "
-                  "(COALESCE(e.first_name, '') || ' ' || COALESCE(e.last_name, '') "
-                  "|| ' ID(' || e.id  || ')') AS \"Handled by\" "
-                  "FROM requests r "
-                  "LEFT JOIN employees e ON e.id = r.assigned_to_id "
-                  "LEFT JOIN customers c ON c.id = r.cust_id;");
+    auto query = DatabaseManager::requestsHistory(DatabaseManager::PAGE::REQUESTS_PAGE);
     if(!query.exec())
         qDebug() << "requests history query fault: " << query.lastError();
 

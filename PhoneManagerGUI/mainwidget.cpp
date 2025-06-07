@@ -21,7 +21,6 @@ MainWidget::MainWidget(QWidget *parent)
         ui->employees_btn,
         ui->tariffs_btn,
         ui->requests_btn,
-        ui->tasks_btn,
         ui->chats_btn
     };
     buttons_style_manager = new ButtonsStyleManager{buttons};
@@ -85,10 +84,6 @@ void MainWidget::SetupConnections(){
     connect(this, &MainWidget::on_requests_btn_clicked, this, [this](){
         buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
         navigation_manager->showRequestsPage();
-    });
-    connect(this, &MainWidget::on_tasks_btn_clicked, this, [this](){
-        buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TASKS_BTN);
-        navigation_manager->showTasksPage();
     });
     connect(this, &MainWidget::on_log_out_btn_clicked, this, [this](){
         navigation_manager->showLoginPage();

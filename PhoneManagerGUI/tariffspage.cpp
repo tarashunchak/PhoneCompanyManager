@@ -25,15 +25,16 @@ TariffsPage::~TariffsPage()
 
 void TariffsPage::setCurrentUser(){
     QSqlQuery query;
-    query.prepare("SELECT e.full_name AS name, "
-                  "p.position_name AS position "
-                  "FROM employees e"
+    query.prepare("SELECT p.position_name AS position "
+                  "FROM employees e "
                   "JOIN positions p ON p.id = e.position_id "
                   "WHERE e.id = :empl_id;");
-    const uint32_t empl_id = CurrentUser::getCurrentUserID();
+    const uint empl_id = CurrentUser::getCurrentEmployeeID();
     query.bindValue(":empl_id", empl_id);
     if(query.exec() && query.next()){
-        ui->add_tariff_btn->setVisible((query.value("position").toString() == "Administrator"));
+        bool is_admin = query.value("position").toString() == "Administrator";
+        ui->add_tariff_btn->setVisible(is_admin);
+        TariffCard::setEditable(is_admin);
     }else{
         qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
         return;

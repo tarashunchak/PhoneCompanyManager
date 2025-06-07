@@ -6,6 +6,20 @@
 #include <QScrollBar>
 #include <QTimer>
 
+//ChatUnits struct
+uint EmployeesChatPage::ChatUnits::user_id = 0;
+uint EmployeesChatPage::ChatUnits::chat_id = 0;
+uint EmployeesChatPage::ChatUnits::my_participant_id = 0;
+uint EmployeesChatPage::ChatUnits::partner_participant_id = 0;
+
+void EmployeesChatPage::ChatUnits::reset(){
+    user_id = 0;
+    chat_id = 0;
+    my_participant_id = 0;
+    partner_participant_id = 0;
+}
+
+//EmployeesChatPage methods
 EmployeesChatPage::EmployeesChatPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::EmployeesChatPage)
@@ -52,7 +66,7 @@ static void clearLayout(QLayout* layout){
 }
 
 void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
-    if(!query.exec()){
+    if(!query.isActive()){
         query.prepare("SELECT u.id AS user_id, c.id AS chat_id, "
                       "e.first_name AS partner_fname, "
                       "e.last_name AS partner_lname, e.photo AS profile_pic "
@@ -61,10 +75,10 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
                       "JOIN chat_participants cp2 ON cp2.chat_id = c.id "
                       "JOIN participants p1 ON p1.id = cp1.participants_id "
                       "JOIN participants p2 ON p2.id = cp2.participants_id "
-                      "JOIN users u ON u.id = cp2.participants_id "
+                      "JOIN users u ON u.id = p2.reference_id "
                       "JOIN employees e ON e.id = u.empl_id "
                       "WHERE p1.role = 'employee' AND p2.role = 'employee' "
-                      "AND cp1.participants_id = :my_id AND cp2.reference_id != :my_id;");
+                      "AND p1.reference_id = :my_id AND p2.reference_id != :my_id;");
 
         query.bindValue(":my_id", CurrentUser::getCurrentUserID());
         if(!query.exec()){
@@ -145,83 +159,90 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
 void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& full_name
                                            , QLabel* partner_label, QPixmap pixmap)
 {
-    this->chat_id = chat_id;
+    ChatUnits::chat_id = chat_id;
     QSqlQuery query;
-    query.prepare("SELECT * FROM messages "
-                  "WHERE chat_id = :chat_id;");
-    query.bindValue(":chat_id", this->chat_id);
+    query.prepare("SELECT m.text AS message_text, "
+                  "p.reference_id AS sender_id "
+                  "FROM messages m "
+                  "JOIN participants p ON p.id = m.sender_participant_id "
+                  "WHERE m.chat_id = :chat_id;");
+    query.bindValue(":chat_id", ChatUnits::chat_id);
 
     if(!query.exec()){
-        this->chat_id = 0;
+        ChatUnits::chat_id = 0;
         qDebug() << "fillChatsWidget()const query fault: " << query.lastError();
         return;
     }else{
+        clearLayout(ui->messages_vLayout);
+        if(partner_label)
+            ChatUnits::user_id = partner_label->property("id").toUInt();
 
-    clearLayout(ui->messages_vLayout);
-    if(partner_label)
-        this->user_id = partner_label->property("id").toUInt();
+        qDebug() << "my_id = " << CurrentUser::getCurrentUserID();
+        qDebug() << "user_id = " << ChatUnits::user_id;
 
-    qDebug() << "my_id = " << CurrentUser::getCurrentUserID();
-    qDebug() << "user_id = " << user_id;
+        uint row = 0;
+        while(query.next()){
+            QHBoxLayout* message_hLayout = new QHBoxLayout{};
+            QLabel* label = new QLabel{query.value("message_text").toString()};
 
-    while(query.next()){
-        QHBoxLayout* message_hLayout = new QHBoxLayout{};
-        QLabel* label = new QLabel{query.value("text").toString()};
-
-        label->setContentsMargins(10, 10, 10, 10);
-        label->setWordWrap(true);
-        label->setMaximumWidth(340);
-        QWidget* widget = new QWidget{};
-        if(query.value("sender_id").toUInt() == CurrentUser::getCurrentUserID()){
-            message_hLayout->addStretch();
-            message_hLayout->addWidget(label);
-            label->setStyleSheet(
-            "QLabel{"
-            "	background-color: rgb(95, 85, 160);"
-            "	font-size:16px;"
-            "	font-family:Lato, Arial, Consolas;"
-            "	border-radius:6px;"
-            "   color:white;"
-            "}"
-            );
-        }else{
-            message_hLayout->addWidget(label);
-            message_hLayout->addStretch();
-            label->setStyleSheet(
-            "QLabel{"
-            "	background-color: #2b2b2b;"
-            "	font-size:16px;"
-            "	font-family:Lato, Arial, Consolas;"
-            "	border-radius:6px;"
-            "   color:white;"
-            "}"
-            );
+            label->setContentsMargins(10, 10, 10, 10);
+            label->setWordWrap(true);
+            label->setMaximumWidth(340);
+            QWidget* widget = new QWidget{};
+            if(query.value("sender_id").toUInt() == CurrentUser::getCurrentUserID()){
+                message_hLayout->addStretch();
+                message_hLayout->addWidget(label);
+                label->setStyleSheet(
+                "QLabel{"
+                "	background-color: rgb(95, 85, 160);"
+                "	font-size:16px;"
+                "	font-family:Lato, Arial, Consolas;"
+                "	border-radius:6px;"
+                "   color:white;"
+                "}"
+                );
+            }else{
+                message_hLayout->addWidget(label);
+                message_hLayout->addStretch();
+                label->setStyleSheet(
+                "QLabel{"
+                "	background-color: #2b2b2b;"
+                "	font-size:16px;"
+                "	font-family:Lato, Arial, Consolas;"
+                "	border-radius:6px;"
+                "   color:white;"
+                "}"
+                );
+            }
+            message_hLayout->addWidget(widget);
+            ui->messages_vLayout->addLayout(message_hLayout);
+            ui->messages_vLayout->setAlignment(Qt::AlignBottom);
+            row++;
         }
-        message_hLayout->addWidget(widget);
-        ui->messages_vLayout->addLayout(message_hLayout);
-        ui->messages_vLayout->setAlignment(Qt::AlignBottom);
-    }
+        ui->empty_chat_widget->setVisible(row == 0);
     }
     query.prepare("SELECT u.id AS user_id, cp.last_seen AS ls "
                   "FROM chat_participants cp "
-                  "JOIN users u ON u.id = cp.user_id "
-                  "WHERE cp.chat_id = :chat_id AND cp.user_id != :my_id;");
-    query.bindValue(":chat_id", this->chat_id);
+                  "JOIN participants p ON p.id = cp.participants_id "
+                  "JOIN users u ON u.id = p.reference_id "
+                  "WHERE cp.chat_id = :chat_id AND p.reference_id != :my_id "
+                  "AND p.role = 'employee';");
+    query.bindValue(":chat_id", ChatUnits::chat_id);
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
     if(!query.exec()){
         qDebug() << "getting partner id fault!!!";
     }
     if(!query.next()){
         ui->empty_chat_widget->setVisible(true);
-        this->chat_id = 0;
+        ChatUnits::chat_id = 0;
         connect(ui->say_hello_btn, &QPushButton::clicked, this, [this](){
             ui->message_input_lineEdit->setText("HI!!!");
             sendMessage();
         });
         qDebug() << "getting partner next id fault!!!";
     }else{
-        this->user_id = query.value("user_id").toUInt();
-        qDebug() << "user_id fillMessageWidget = " << user_id;
+        ChatUnits::user_id = query.value("user_id").toUInt();
+        qDebug() << "user_id fillMessageWidget = " << ChatUnits::user_id;
         ui->empty_chat_widget->setVisible(false);
     }
 
@@ -239,7 +260,7 @@ void EmployeesChatPage::fillMessagesWidget(const int chat_id, const QString& ful
             "border-radius:25px;"
     );
 
-    qDebug() << "fill messages user_id: " << user_id;
+    qDebug() << "fill messages user_id: " << ChatUnits::user_id;
 }
 
 void EmployeesChatPage::searchChats(){
@@ -269,50 +290,9 @@ void EmployeesChatPage::searchChats(){
 }
 
 void EmployeesChatPage::sendMessage(){
-    if(ui->message_input_lineEdit->text().isEmpty() || this->user_id == 0)
+    if(ui->message_input_lineEdit->text().isEmpty() || ChatUnits::user_id == 0)
         return;
     QSqlQuery query;
-    if(this->chat_id == 0){
-        qDebug() << "No chat";
-        query.prepare("INSERT INTO chats(is_corporate) VALUES(true) RETURNING id AS ID;");
-        if(!query.exec() || !query.next()){
-            qDebug() << "insert into chats query fault: " << query.lastError();
-            return;
-        }
-
-        this->chat_id = query.value("ID").toInt();
-        if(chat_id == 0){
-            qDebug() << "chat id == 0";
-            return;
-        }
-        query.prepare("INSERT INTO participants(role, reference_id) "
-                      "VALUES('employee', :partner_id) RETURNING id AS ID;");
-        query.bindValue(":partner_id", this->user_id);
-        if(!query.exec() || !query.next()){
-            qDebug() << "insert into participants user_id query fault: " << query.lastError();
-            return;
-        }
-        this->user_id = query.value("ID").toUInt();
-
-        query.prepare("INSERT INTO chat_participants(chat_id, participants_id) "
-                      "VALUES(:chat_id, :user_id);");
-        query.bindValue(":chat_id", this->chat_id);
-        query.bindValue(":user_id", this->user_id);
-        if(!query.exec()){
-            qDebug() << "insert into chat_participants user_id query fault: " << query.lastError();
-            return;
-        }
-
-        query.prepare("INSERT INTO chat_participants(chat_id, user_id) "
-                      "VALUES(:chat_id, :my_id);");
-        query.bindValue(":chat_id", this->chat_id);
-        query.bindValue(":my_id", CurrentUser::getCurrentUserID());
-
-        if(!query.exec()){
-            qDebug() << "insert into chat_participants my_id query fault: " << query.lastError();
-            return;
-        }
-    }
     query.prepare("SELECT c.id "
                   "FROM chats c "
                   "JOIN chat_participants cp1 ON cp1.chat_id = c.id "
@@ -321,24 +301,82 @@ void EmployeesChatPage::sendMessage(){
                   "JOIN participants p2 ON p2.id = cp2.participants_id "
                   "WHERE p1.reference_id = :user_id AND p2.reference_id = :my_id "
                   "AND c.is_corporate = true;"
-                  );
-    query.bindValue(":user_id", this->user_id);
+    );
+    query.bindValue(":user_id", ChatUnits::user_id);
+    query.bindValue(":my_id", CurrentUser::getCurrentUserID());
+    if(!query.exec() || !query.next() || ChatUnits::chat_id == 0){
+        qDebug() << "No chat";
+        query.prepare("INSERT INTO chats(is_corporate) VALUES(true) RETURNING id AS ID;");
+        if(!query.exec() || !query.next()){
+            qDebug() << "insert into chats query fault: " << query.lastError();
+            return;
+        }
+
+        ChatUnits::chat_id = query.value("ID").toInt();
+        if(ChatUnits::chat_id == 0){
+            qDebug() << "chat id == 0";
+            return;
+        }
+        query.prepare("INSERT INTO participants(role, reference_id) "
+                      "VALUES('employee', :partner_id), ('employee', :my_id) RETURNING id AS ID;");
+        query.bindValue(":partner_id", ChatUnits::user_id);
+        query.bindValue(":my_id", CurrentUser::getCurrentUserID());
+        if(!query.exec()){
+            qDebug() << "insert into participants user_id query fault: " << query.lastError();
+            return;
+        }else{
+            uint8_t row = 0;
+            while(query.next()){
+                uint id = query.value("ID").toUInt();
+                if(row == 0)
+                    ChatUnits::partner_participant_id = id;
+                else if(row == 1)
+                    ChatUnits::my_participant_id = id;
+                ++row;
+            }
+            if(row != 2){
+                qDebug() << "Expected 2 participants!";
+                return;
+            }
+        }
+
+        query.prepare("INSERT INTO chat_participants(chat_id, participants_id) "
+                      "VALUES(:chat_id, :part_id), (:chat_id, :my_id);");
+        query.bindValue(":chat_id", ChatUnits::chat_id);
+        query.bindValue(":part_id", ChatUnits::partner_participant_id);
+        query.bindValue(":my_id", ChatUnits::my_participant_id);
+        if(!query.exec()){
+            qDebug() << "insert into chat_participants user_id query fault: " << query.lastError();
+            return;
+        }
+
+    }
+    /*query.prepare("SELECT c.id "
+                  "FROM chats c "
+                  "JOIN chat_participants cp1 ON cp1.chat_id = c.id "
+                  "JOIN chat_participants cp2 ON cp2.chat_id = c.id "
+                  "JOIN participants p1 ON p1.id = cp1.participants_id "
+                  "JOIN participants p2 ON p2.id = cp2.participants_id "
+                  "WHERE p1.reference_id = :user_id AND p2.reference_id = :my_id "
+                  "AND c.is_corporate = true;"
+    );
+    query.bindValue(":user_id", ChatUnits::user_id);
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
     if(!query.exec() || !query.next()){
         qDebug() << "new Chat query fault!";
         return;
-    }
+    }*/
 
     query.prepare("INSERT INTO messages(text, sender_participant_id, chat_id) "
                   "VALUES(:text, :sender_id, :chat_id);");
     query.bindValue(":text", ui->message_input_lineEdit->text());
-    query.bindValue(":sender_id", CurrentUser::getCurrentUserID());
-    query.bindValue(":chat_id", this->chat_id);
+    query.bindValue(":sender_id", ChatUnits::my_participant_id);
+    query.bindValue(":chat_id", ChatUnits::chat_id);
     query.exec();
     ui->message_input_lineEdit->clear();
-    qDebug() << "send message user_id: " << this->user_id;
+    qDebug() << "send message user_id: " << ChatUnits::user_id;
     fillChatsWidget();
-    fillMessagesWidget(this->chat_id, {});
+    fillMessagesWidget(ChatUnits::chat_id, {});
     QTimer::singleShot(200, this, [this](){
         ui->messages_scrollArea->verticalScrollBar()->setValue(
                     ui->messages_scrollArea->verticalScrollBar()->maximum());

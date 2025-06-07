@@ -27,6 +27,16 @@ TariffCard::~TariffCard()
     delete ui;
 }
 
+bool TariffCard::is_editable = false;
+
+void TariffCard::setEditable(const bool statement){
+    is_editable = statement;
+}
+
+bool TariffCard::isEditable(){
+    return is_editable;
+}
+
 void TariffCard::SetActiveButtonStatement(bool is_active){
     if(is_active){
         ui->active_inactive_swithc_btn->setText("active");
@@ -79,6 +89,7 @@ void TariffCard::setConnections()const{
 }
 
 void TariffCard::setTariffInfoFromQuery(QSqlRecord record){
+    ui->edit_btn->setVisible(is_editable);
     QString tariff_id = record.value("id").toString();
     ui->tariff_name->setText(record.value("tariff_name").toString());
     ui->id_label->setText("ID:" + tariff_id);

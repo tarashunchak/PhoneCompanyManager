@@ -2,41 +2,22 @@
 #include "ui_dashboard.h"
 #include <QSqlQuery>
 #include <QSqlError>
+#include "includes/databasemanager.h"
 
 void Dashboard::setCustomersStatistics(){
-    QSqlQuery query;
-    QString interval{ui->cust_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
-    if (ui->cust_date_comboBox->currentIndex()) {
-        query.prepare("SELECT COUNT(id) AS cust_count, date "
-                      "FROM customers "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE, '" + interval + "') "
-                      "GROUP BY date ORDER BY date DESC;");
-    }else {
-        query.prepare("SELECT COUNT(*) AS cust_count, date "
-                      "FROM customers "
-                      "WHERE DATE(date) = DATE(CURRENT_DATE) "
-                      "GROUP BY date ORDER BY date DESC;");
-    }
-    bool is_not_empty = cust_bar_chart->setQuery(query, "cust_count", "date");
-    ui->empty_cust_stat->setVisible(!is_not_empty);
+    QString period{ui->cust_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
+    bool is_today =  !ui->cust_date_comboBox->currentIndex();
+    auto query = DatabaseManager::newCustomersByPeriod(is_today, period);
+    bool is_empty = !cust_bar_chart->setQuery(std::move(query), "cust_count", "date");
+    ui->empty_cust_stat->setVisible(is_empty);
     ui->customers_statistic->setStyleSheet("background-color: transparent;");
 }
 
 void Dashboard::setRequestsStatistics(){
-    QSqlQuery query;
-    QString interval{ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
-    if(ui->req_date_comboBox->currentIndex()){
-        query.prepare("SELECT COUNT(*) AS req_count FROM requests "
-                          "WHERE date >= DATE(CURRENT_DATE, '" + interval + "') "
-                          "GROUP BY date ORDER BY date;");
-    }else{
-        query.prepare("SELECT COUNT(*) AS req_count FROM requests "
-                "WHERE date = CURRENT_DATE "
-                "GROUP BY date ORDER BY date;");
-    }
-
+    QString period{ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
+    bool is_today = !ui->requests_period_comboBox->currentIndex();
+    auto query = DatabaseManager::newRequestsByPeriod(is_today, period);
     ui->empty_req_stat->setVisible(!req_bar_chart->setQuery(query, "req_count"));
-
     req_bar_chart->resize(ui->requests_statistic->size());
 }
 
@@ -57,14 +38,8 @@ void Dashboard::setTariffsStatistics(){
 }
 
 void Dashboard::setRequestsHistory(){
-    QString limit{std::to_string((ui->requests_period_comboBox->currentIndex() + 1) * 10).c_str()};
-    QSqlQuery query;
-    query.prepare("SELECT r.id AS \"ID\", "
-                  "c.phone AS \"Phone\", "
-                  "r.date AS \"Date\" "
-                  "FROM requests r "
-                  "JOIN customers c ON c.id = r.cust_id "
-                  "ORDER BY r.id DESC LIMIT " + limit + ";");
+    QString period{std::to_string((ui->requests_period_comboBox->currentIndex() + 1) * 10).c_str()};
+    auto query = DatabaseManager::requestsHistory(DatabaseManager::PAGE::DASHBOARD_PAGE, period);
     if(!query.exec()){
         qDebug() << "setRequestsHistory() fault: " << query.lastError();
         return;
