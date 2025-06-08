@@ -3,6 +3,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include "includes/currentuser.h"
+#include "includes/databasemanager.h"
 
 InsertCustomerDialog::InsertCustomerDialog(QWidget *parent)
     : QDialog(parent)
@@ -53,30 +54,15 @@ void InsertCustomerDialog::InsertCustomerToDB(){
                     ? ui->last_name_lineEdit->text() : "";
     QString phone = ui->phone_lineEdit->text();
     QString email = ui->email_lineEdit->text();
-    QDate bday = ui->bday_dateEdit->date();
+    QString bday = ui->bday_dateEdit->date().toString();
     const uint tariff_id = ui->tariff_comboBox->currentData().toUInt();
     if(!fname.isEmpty()
         && !lname.isEmpty()
         && !phone.isEmpty())
     {
-        query.prepare("INSERT INTO customers(first_name, last_name, phone, date_of_B, tariff_id, email, employee_id) "
-                      "VALUES(:fname, :lname, :phone, :bday, :tariff_id, :email, :empl_id)");
-
-        query.bindValue(":fname", fname);
-        query.bindValue(":lname", lname);
-        query.bindValue(":phone", phone);
-        query.bindValue(":bday", bday);
-        query.bindValue(":tariff_id", tariff_id);
-        query.bindValue(":email", email.isEmpty() ? "NULL" : email);
-        query.bindValue(":empl_id", CurrentUser::getCurrentUserID());
-
-        if(!query.exec()){
-            qDebug() << "InsertCustomerToDB() query fault: " << query.lastError();
-            ui->incorrect_data_label->setVisible(true);
-        }else{
-            ui->incorrect_data_label->setVisible(false);
-            clearWidgets();
-        }
+        DatabaseManager::insertToDB(DatabaseManager::TABLE::CUSTOMERS
+                                    , std::tie(fname, lname, phone, email, bday, tariff_id
+                                                , CurrentUser::getCurrentUserID()));
     }else{
         ui->incorrect_data_label->setVisible(true);
     }

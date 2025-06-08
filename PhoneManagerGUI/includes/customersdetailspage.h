@@ -51,7 +51,6 @@ private:
     void SetRequestsHistory()const;
     void SetPaymentsHistory()const;
     void SetMessagesHistory()const;
-    void DeleteCustomerFromDB()const;
 
     struct TableModels{
         QSqlTableModel* req_qmodel;

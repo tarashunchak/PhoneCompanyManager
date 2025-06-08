@@ -72,7 +72,7 @@ void EmployeesPage::setCurrentUser()const{
 }
 
 void EmployeesPage::FindEmployeesByName(){
-    auto query = DatabaseManager::findByName("employees", ui->lineEdit->text());
+    auto query = DatabaseManager::findByName(DatabaseManager::TABLE::EMPLOYEES, ui->lineEdit->text());
     SetEmployeesCards(std::move(query));
 }
 

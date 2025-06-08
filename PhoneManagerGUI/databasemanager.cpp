@@ -5,17 +5,55 @@
 #include "includes/customersdetailspage.h"
 #include "employeesdetailspage.h"
 
-DatabaseManager::DatabaseManager() {
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("./database/database.db");
 
-    /*db = QSqlDatabase::addDatabase("QPSQL");
-    db.setConnectOptions("sslmode=require");
-    db.setHostName("db.kdehjeyheklfhkifcftq.supabase.co");
+QString DatabaseManager::tableToString(TABLE table){
+    switch (table) {
+    case TABLE::CUSTOMERS :
+        return "customers";
+    case TABLE::EMPLOYEES :
+        return "employees";
+    case TABLE::USERS :
+        return "users";
+    case TABLE::TARIFFS :
+        return "tariffs";
+    case TABLE::CHATS :
+        return "chats";
+    case TABLE::CHAT_PARTICIPANTS :
+        return "chat_participants";
+    case TABLE::PARTICIPANTS :
+        return "participants";
+    case TABLE::DEPATMENTS :
+        return "departments";
+    case TABLE::POSITIONS :
+        return "positions";
+    case TABLE::PAYMENTS :
+        return "payments";
+    case TABLE::MESSAGES :
+        return "messages";
+    case TABLE::COMMENTS :
+        return "commenst";
+    case TABLE::REQUESTS :
+        return "requests";
+    case TABLE::USAGE :
+        return "usages";
+    }
+    return {};
+}
+
+void deleteFromCustomers(const uint);
+void deleteFromEmployees(const uint);
+
+DatabaseManager::DatabaseManager() {
+    //db = QSqlDatabase::addDatabase("QSQLITE");
+    //db.setDatabaseName("./database/database.db");
+
+    db = QSqlDatabase::addDatabase("QPSQL");
+    db.setHostName("ep-divine-sun-a83zg48v-pooler.eastus2.azure.neon.tech");
     db.setPort(5432);
-    db.setDatabaseName("postgres");
-    db.setUserName("postgres");
-    db.setPassword("new_pass123321!");*/
+    db.setDatabaseName("neondb");
+    db.setUserName("neondb_owner");
+    db.setPassword("npg_qILNuP6Diz1Z");
+    db.setConnectOptions("sslmode=require");
 
     if (!db.open()) {
         qDebug() << "Database Connection Error:" << db.lastError().text();
@@ -52,23 +90,34 @@ bool DatabaseManager::isConnected() {
     return db.isOpen();
 }
 
-QSqlQuery DatabaseManager::findByName(const QString& table, const QString& text){
-    //if customers or employees
-    QString query_str = {"SELECT * FROM " + table +
+QSqlQuery DatabaseManager::findByName(TABLE table, const QString& text){
+    static QString query_str{};
+    query_str = "";
+    if(table == TABLE::CUSTOMERS || table == TABLE::EMPLOYEES)
+        query_str = {"SELECT * FROM " + tableToString(table) +
                          " WHERE LOWER(first_name) LIKE LOWER(:text) "
                          "OR LOWER(last_name) LIKE LOWER(:text) "
                          "OR LOWER(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) LIKE LOWER(:text) "};
-    if(table == "customers"){
+    else if(table == TABLE::TARIFFS)
+        query_str = "SELECT * FROM tariffs "
+                     "WHERE LOWER(tariff_name) LIKE LOWER(:text) "
+                     "OR id = :id;";
+
+    switch (table){
+    case TABLE::CUSTOMERS : {
         query_str += "OR LOWER(phone) LIKE LOWER(:text) ";
-    }else if(table == "employees"){
-        query_str += "OR id = :id ";
+        break;
     }
-    query_str += ";";
+    case TABLE::EMPLOYEES : {
+        query_str += "OR id = :id ";
+        break;
+    }
+    }
 
     QSqlQuery query;
     query.prepare(query_str);
     query.bindValue(":text", text + "%");
-    if(table == "employees")
+    if(table == TABLE::EMPLOYEES || table == TABLE::TARIFFS)
         query.bindValue(":id", text);
     query.exec();
     return query;
@@ -112,7 +161,22 @@ QSqlQuery DatabaseManager::completedRequests(){
 
 QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
     QSqlQuery query;
-    if(page == PAGE::REQUESTS_PAGE){
+    if(page == PAGE::EMPLOYEES_DETAILS_PAGE){
+        query.prepare("SELECT id AS ID, date AS Date"
+                      ", request_type AS Type, cust_id AS \"Cust. ID\", "
+                      "status AS Status "
+                      "FROM requests WHERE assigned_to_id = :id "
+                      "ORDER BY DATE(date) DESC;");
+        query.bindValue(":id", EmployeesDetailsPage::CurrentEmployee::id);
+    }else if(page == PAGE::CUSTOMERS_DETAILS_PAGE){
+        query.prepare("SELECT id AS ID, "
+                      "date AS Date, "
+                      "request_type AS Type "
+                      "FROM requests "
+                      "WHERE cust_id = :id "
+                      "ORDER BY DATE(date) DESC;");
+        query.bindValue(":id", CustomersDetailsPage::CurrentCustomer::id);
+    }else if(page == PAGE::REQUESTS_PAGE){
         query.prepare("SELECT r.id AS \"ID\", "
                       "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '') "
                       "|| ' ID(' || c.id || ')') AS \"Customer\", "
@@ -123,7 +187,7 @@ QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
                       "FROM requests r "
                       "LEFT JOIN employees e ON e.id = r.assigned_to_id "
                       "LEFT JOIN customers c ON c.id = r.cust_id;");
-    }else if(page == PAGE::DASHBOARD_PAGE){
+    }else if(page == PAGE::DASHBOARD_PAGE && !period.isEmpty()){
         query.prepare("SELECT r.id AS \"ID\", "
                       "c.phone AS \"Phone\", "
                       "r.date AS \"String\" "
@@ -131,6 +195,7 @@ QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
                       "JOIN customers c ON c.id = r.cust_id "
                       "ORDER BY r.id DESC LIMIT " + period + ";");
     }
+
     return query;
 }
 
@@ -140,12 +205,12 @@ QSqlQuery DatabaseManager::newCustomersByPeriod(const bool is_today, QString per
         query.prepare("SELECT COUNT(*) AS cust_count, date "
                       "FROM customers "
                       "WHERE DATE(date) = DATE(CURRENT_DATE) "
-                      "GROUP BY date ORDER BY date DESC;");
+                      "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }else{
         query.prepare("SELECT COUNT(id) AS cust_count, date "
                       "FROM customers "
                       "WHERE DATE(date) >= DATE(CURRENT_DATE, '" + period + "') "
-                      "GROUP BY date ORDER BY date DESC;");
+                      "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }
     return query;
 }
@@ -156,12 +221,12 @@ QSqlQuery DatabaseManager::newRequestsByPeriod(const bool is_today, QString peri
         query.prepare("SELECT COUNT(*) AS req_count, date "
                       "FROM requests "
                       "WHERE DATE(date) = DATE(CURRENT_DATE) "
-                      "GROUP BY date ORDER BY date DESC;");
+                      "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }else{
         query.prepare("SELECT COUNT(id) AS req_count, date "
                       "FROM requests "
                       "WHERE DATE(date) >= DATE(CURRENT_DATE, '" + period + "') "
-                                 "GROUP BY date ORDER BY date DESC;");
+                                 "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }
     return query;
 }
@@ -285,10 +350,10 @@ QSqlQuery DatabaseManager::currentEmployee(const uint curr_empl_id){
     return query;
 }
 
-void DatabaseManager::saveCommentToDB(PAGE page, int entity_id, int comment_id
+void DatabaseManager::saveCommentToDB(TABLE table, int entity_id, int comment_id
                                       , const QString& comment_text)
 {
-    QString table{page == PAGE::CUSTOMERS_PAGE ? "customers" : "employees"};
+    QString table_str{table == TABLE::CUSTOMERS ? "customers" : "employees"};
     static QSqlQuery query;
     if(comment_id == -1){
         query.prepare("INSERT INTO comments(comment_text, written_by_id) "
@@ -302,7 +367,7 @@ void DatabaseManager::saveCommentToDB(PAGE page, int entity_id, int comment_id
         }
         comment_id = query.value("id").toInt();
         query.clear();
-        QString query_str{"UPDATE " + table +
+        QString query_str{"UPDATE " + table_str +
                           " SET comment_id = :comm_id "
                           "WHERE id = :entity_id;"};
         query.prepare(query_str);
@@ -322,4 +387,41 @@ void DatabaseManager::saveCommentToDB(PAGE page, int entity_id, int comment_id
     query.bindValue(":comm_id", comment_id);
     if(!query.exec())
         qDebug() << "update comments query fault: " << query.lastError();
+}
+
+void DatabaseManager::deleteRecord(TABLE table, const uint id){
+    switch(table){
+    case TABLE::CUSTOMERS : {
+        deleteFromCustomers(id);
+        break;
+    }
+    case TABLE::EMPLOYEES : {
+        deleteFromEmployees(id);
+        break;
+    }
+    }
+}
+
+QSqlQuery DatabaseManager::departments(){
+    return QSqlQuery{"SELECT * FROM departments"};
+}
+
+QSqlQuery DatabaseManager::positions(){
+    return QSqlQuery{"SELECT * FROM positions"};
+}
+
+void deleteFromCustomers(const uint id){
+    QSqlQuery query;
+    query.prepare("DELETE FROM customers "
+                  "WHERE id = :id;");
+    query.bindValue(":id", id);
+    query.exec();
+}
+
+void deleteFromEmployees(const uint id){
+    QSqlQuery query;
+    query.prepare("DELETE FROM employees "
+                  "WHERE id = :id;");
+    query.bindValue(":id", id);
+    query.exec();
 }

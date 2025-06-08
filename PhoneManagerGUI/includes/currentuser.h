@@ -9,8 +9,8 @@ private:
     CurrentUser(const CurrentUser&) = delete;
     CurrentUser& operator=(const CurrentUser&) = delete;
 public:
-    static unsigned int getCurrentUserID();
-    static unsigned int getCurrentEmployeeID();
+    static const unsigned int& getCurrentUserID();
+    static const unsigned int& getCurrentEmployeeID();
     static void setCurrentUserID(const unsigned int);
     static void setCurrentEmployeeID(const unsigned int);
 private:

@@ -21,6 +21,7 @@ SOURCES += \
     dashboard.cpp \
     dashboardseries.cpp \
     databasemanager.cpp \
+    dbmeta.cpp \
     employeeschatpage.cpp \
     employeesdetailspage.cpp \
     employeespage.cpp \

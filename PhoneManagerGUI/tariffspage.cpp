@@ -6,6 +6,7 @@
 #include <QSqlRecord>
 #include <QScrollArea>
 #include "includes/tariffcard.h"
+#include "includes/databasemanager.h"
 
 TariffsPage::TariffsPage(QWidget *parent)
     : QWidget(parent)
@@ -93,12 +94,7 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
 }
 
 void TariffsPage::FindTariffInDB(){
-    QSqlQuery query;
-    query.prepare("SELECT * FROM tariffs "
-                  "WHERE LOWER(tariff_name) LIKE LOWER(:name) OR id = :id;");
     QString text{ui->lineEdit->text()};
-    query.bindValue(":name", text + "%");
-    query.bindValue(":id", text);
-
+    auto query = DatabaseManager::findByName(DatabaseManager::TABLE::TARIFFS, text);
     setTariffsCards(std::move(query));
 }

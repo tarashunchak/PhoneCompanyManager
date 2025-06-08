@@ -1,6 +1,5 @@
 #include "includes/customersdetailspage.h"
 #include "ui_customersdetailspage.h"
-#include "includes/currentuser.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QHeaderView>
@@ -59,18 +58,18 @@ void CustomersDetailsPage::SetConnections(){
         emit on_open_chat_btn_clicked(ui->phone_Label->text());
     });
     connect(ui->save_comment_btn, &QPushButton::clicked, this, [this](){
-        DatabaseManager::saveCommentToDB(DatabaseManager::PAGE::CUSTOMERS_PAGE
+        DatabaseManager::saveCommentToDB(DatabaseManager::TABLE::CUSTOMERS
                                          , ui->cust_id_label->property("id").toInt()
                                          , ui->comment_textEdit->property("comment_id").toInt()
                                          , ui->comment_textEdit->toPlainText());
     });
     connect(ui->delete_customer_btn, &QPushButton::clicked, ui->delete_customer_widget, &QWidget::show);
+    connect(ui->cancel_btn, &QPushButton::clicked, ui->delete_customer_widget, &QWidget::close);
     connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
         ui->delete_customer_widget->close();
-        DeleteCustomerFromDB();
+        DatabaseManager::deleteRecord(DatabaseManager::TABLE::CUSTOMERS, CurrentCustomer::id.toUInt());
         emit on_return_btn_clicked();
     });
-    connect(ui->cancel_btn, &QPushButton::clicked, ui->delete_customer_widget, &QWidget::close);
 }
 
 void CustomersDetailsPage::SetCustomerInfo(const uint id){
@@ -117,10 +116,6 @@ void CustomersDetailsPage::SetTableViewStyle(){
         "   height:36px;"
         "}"
     );
-
-    /*ui->messages_statistic_tableView->setModel(TABLE_MODELS.messages_qmodel);
-    ui->messages_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->messages_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);*/
 }
 
 void CustomersDetailsPage::SetTariffsChart()const{
@@ -138,14 +133,7 @@ void CustomersDetailsPage::SetTariffsChart()const{
 }
 
 void CustomersDetailsPage::SetRequestsHistory()const{
-    QSqlQuery query;
-    query.prepare("SELECT id AS ID, "
-                  "date AS Date, "
-                  "request_type AS Type "
-                  "FROM requests "
-                  "WHERE cust_id = :id "
-                  "GROUP BY date ORDER BY date DESC;");
-    query.bindValue(":id", CurrentCustomer::id);
+    auto query = DatabaseManager::requestsHistory(DatabaseManager::PAGE::CUSTOMERS_DETAILS_PAGE);
     if(!query.exec() || !query.next()){
         qDebug() << "In CustomersDetailsPage::SetCustomersInfo::query fault!!!: " << query.lastError();
         ui->requests_statistic_tableView->setVisible(false);
@@ -166,13 +154,4 @@ void CustomersDetailsPage::SetCharts(){
     SetTariffsChart();
     SetRequestsHistory();
     SetPaymentsHistory();
-}
-
-void CustomersDetailsPage::DeleteCustomerFromDB()const{
-    QSqlQuery query;
-    query.prepare("DELETE FROM customers WHERE id = :cust_id;");
-    qDebug() << "delete customer id = " << CurrentCustomer::id;
-    query.bindValue(":cust_id", CurrentCustomer::id);
-    if(!query.exec())
-        qDebug() << "DeleteCustomerFromDB() fault " << query.lastError();
 }

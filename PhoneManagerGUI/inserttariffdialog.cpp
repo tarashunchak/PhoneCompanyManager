@@ -2,6 +2,7 @@
 #include "ui_inserttariffdialog.h"
 #include <QSqlQuery>
 #include <QSqlError>
+#include "includes/databasemanager.h"
 
 InsertTariffDialog::InsertTariffDialog(QWidget *parent)
     : QDialog(parent)
@@ -39,19 +40,10 @@ void InsertTariffDialog::InsertTariffToDB(){
     if(daily_p_ok && monthly_p_ok
         && call_minutes_ok && internet_GB_ok
         && !name.isEmpty()){
-
-        QSqlQuery query;
-        query.prepare("INSERT INTO tariffs(tariff_name, monthly_price, daily_price, call_minutes, internet_GB) "
-                      "VALUES(:name, :monthly, :daily, :minutes, :internet);");
-        query.bindValue(":name", name);
-        query.bindValue(":monthly", monthly_p);
-        query.bindValue(":daily", daily_p);
-        query.bindValue(":minutes", call_minutes);
-        query.bindValue(":internet", internet_GB);
-
-        if(!query.exec()){
-            qDebug() << "Insert tariff to DB fault!" << query.lastError();
-        }else{
+        bool is_inserted = DatabaseManager::insertToDB(DatabaseManager::TABLE::TARIFFS,
+                                                       std::tie(name, monthly_p, daily_p
+                                                       , call_minutes, internet_GB));
+        if(is_inserted){
             clearWidgets();
         }
     }

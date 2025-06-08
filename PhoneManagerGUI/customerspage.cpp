@@ -192,6 +192,6 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
 }
 
 void CustomersPage::FindCustomersByName(){
-    auto query = DatabaseManager::findByName("customers", ui->lineEdit->text());
+    auto query = DatabaseManager::findByName(DatabaseManager::TABLE::CUSTOMERS, ui->lineEdit->text());
     SetCustomersCards(std::move(query));
 }

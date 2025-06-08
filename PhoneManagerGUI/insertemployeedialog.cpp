@@ -2,6 +2,7 @@
 #include "ui_insertemployeedialog.h"
 #include <QSqlQuery>
 #include <QSqlError>
+#include "includes/databasemanager.h"
 
 InsertEmployeeDialog::InsertEmployeeDialog(QDialog* parent)
     : QDialog(parent)
@@ -22,45 +23,35 @@ InsertEmployeeDialog::~InsertEmployeeDialog()
 }
 
 void InsertEmployeeDialog::updateComboBoxData(){
-    QSqlQuery query;
-    query.prepare("SELECT * FROM departments;");
-    query.exec();
-    while(query.next()){
+    auto query = DatabaseManager::departments();
+    while(query.next())
         ui->department_comboBox->addItem(query.value("department_name").toString()
                                          , query.value("id").toInt());
-    }
 
-    query.prepare("SELECT * FROM positions;");
-    query.exec();
-    while(query.next()){
+    query = DatabaseManager::positions();
+    while(query.next())
         ui->position_comboBox->addItem(query.value("position_name").toString()
                                        , query.value("id").toInt());
-    }
 }
 
 void InsertEmployeeDialog::InsertEmployeeToDB(){
-    QString first_name = ui->first_name_lineEdit->text();
-    QString last_name = ui->last_name_lineEdit->text();
+    QString fname = ui->first_name_lineEdit->text();
+    QString lname = ui->last_name_lineEdit->text();
     QString phone = ui->phone_lineEdit->text();
     QString email = ui->email_lineEdit->text();
-    if(!first_name.isEmpty()
-        && !last_name.isEmpty()
+    QString date_of_B = ui->B_date_dateEdit->date().toString();
+    QString hire_date = ui->hire_date_dateEdit->date().toString();
+    const uint department_id = ui->department_comboBox->currentData().toUInt();
+    const uint position_id = ui->position_comboBox->currentData().toUInt();
+    if(!fname.isEmpty()
+        && !lname.isEmpty()
         && !phone.isEmpty()
         && !email.isEmpty())
     {
-        QSqlQuery query;
-        query.prepare("INSERT INTO employees (first_name, last_name, phone, email, "
-                      "department_id, position_id) "
-                      "VALUES(:fname, :lname, :phone, :email, :d_id, :p_id);");
-        query.bindValue(":fname", first_name);
-        query.bindValue(":lname", last_name);
-        query.bindValue(":phone", phone);
-        query.bindValue(":email", email);
-        query.bindValue(":d_id", ui->department_comboBox->currentData().toInt());
-        query.bindValue(":p_id", ui->position_comboBox->currentData().toInt());
-
-        if(!query.exec()){
-            qDebug() << "InsertEmployeeDialog::InsertEmployeeToDB() query fault: " << query.lastError();
+        bool is_inserted = DatabaseManager::insertToDB(DatabaseManager::TABLE::EMPLOYEES,
+                                                       std::tie(fname, lname, phone, email, date_of_B
+                                                                , hire_date, department_id, position_id));
+        if(is_inserted){
             ui->incorrect_data_label->setVisible(true);
         }else{
             ui->incorrect_data_label->setVisible(false);
