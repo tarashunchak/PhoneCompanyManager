@@ -224,7 +224,7 @@ border-radius:18px;</string>
    <property name="styleSheet">
     <string notr="true">color:white;
 font-family:Lato, Arial, Consolas;
-font-size:20px;
+font-size:24px;
 background-color:transparent;</string>
    </property>
    <property name="text">

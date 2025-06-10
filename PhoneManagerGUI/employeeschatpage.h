@@ -17,18 +17,20 @@ public:
     explicit EmployeesChatPage(QWidget *parent = nullptr);
     ~EmployeesChatPage();
     void fillChatsWidget(QSqlQuery query = QSqlQuery{});
-    void fillMessagesWidget(const int, const QString&
+    void fillMessagesWidget(const uint, const uint, const QString&
                             , QLabel* partner_label = nullptr
                             , QPixmap pixmap = QPixmap{});
     void updateLastSeenTimestamp();
-private:
     struct ChatUnits{
-        static uint user_id;
+        static const bool is_corporate = true;
+        static bool is_chat_exist;
+        static uint partner_id;
         static uint chat_id;
         static uint my_participant_id;
         static uint partner_participant_id;
         static void reset();
     };
+private:
     void searchChats();
     void sendMessage();
     void chat_is_empty();

@@ -10,7 +10,6 @@ class MessageBox : public QFrame
     Q_OBJECT
 public:
     [[nodiscard]] MessageBox(QFrame* parent = nullptr);
-    //Set message data of message-box.
     void SetMessageText(QString);
     void SetMessageDateTime(QString);
 

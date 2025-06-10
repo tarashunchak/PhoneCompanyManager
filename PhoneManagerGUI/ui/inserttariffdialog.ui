@@ -106,7 +106,7 @@ font-size:36px;</string>
        <widget class="QLineEdit" name="tariff_name_lineEdit">
         <property name="styleSheet">
          <string notr="true">background-color:rgba(0, 0, 0, 0.2);
-color:black;
+color:white;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
@@ -144,7 +144,7 @@ padding-left:4px;</string>
          <widget class="QLineEdit" name="daily_p_lineEdit">
           <property name="styleSheet">
            <string notr="true">background-color:rgba(0, 0, 0, 0.2);
-color:black;
+color:white;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
@@ -177,7 +177,7 @@ padding-left:4px;</string>
          <widget class="QLineEdit" name="internet_GB_lineEdit">
           <property name="styleSheet">
            <string notr="true">background-color:rgba(0, 0, 0, 0.2);
-color:black;
+color:white;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
@@ -210,7 +210,7 @@ padding-left:4px;</string>
          <widget class="QLineEdit" name="call_minutes_lineEdit">
           <property name="styleSheet">
            <string notr="true">background-color:rgba(0, 0, 0, 0.2);
-color:black;
+color:white;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;
@@ -243,7 +243,7 @@ padding-left:4px;</string>
          <widget class="QLineEdit" name="monthly_p_lineEdit">
           <property name="styleSheet">
            <string notr="true">background-color:rgba(0, 0, 0, 0.2);
-color:black;
+color:white;
 font-family:Lato, Consolas;
 font-size:18px;
 border-radius:4px;

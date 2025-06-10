@@ -3,6 +3,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include "includes/databasemanager.h"
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
 
 InsertEmployeeDialog::InsertEmployeeDialog(QDialog* parent)
     : QDialog(parent)

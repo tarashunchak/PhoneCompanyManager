@@ -52,6 +52,7 @@ HEADERS += \
     employeeschatpage.h \
     employeesdetailspage.h \
     includes/chat.h \
+    includes/chat_type_traits.h \
     includes/comboboxdelegate.h \
     includes/authmanager.h \
     includes/barchart.h \

@@ -44,16 +44,16 @@ void deleteFromCustomers(const uint);
 void deleteFromEmployees(const uint);
 
 DatabaseManager::DatabaseManager() {
-    //db = QSqlDatabase::addDatabase("QSQLITE");
-    //db.setDatabaseName("./database/database.db");
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("./database/database.db");
 
-    db = QSqlDatabase::addDatabase("QPSQL");
+    /*db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("ep-divine-sun-a83zg48v-pooler.eastus2.azure.neon.tech");
     db.setPort(5432);
     db.setDatabaseName("neondb");
     db.setUserName("neondb_owner");
     db.setPassword("npg_qILNuP6Diz1Z");
-    db.setConnectOptions("sslmode=require");
+    db.setConnectOptions("sslmode=require");*/
 
     if (!db.open()) {
         qDebug() << "Database Connection Error:" << db.lastError().text();
@@ -95,9 +95,9 @@ QSqlQuery DatabaseManager::findByName(TABLE table, const QString& text){
     query_str = "";
     if(table == TABLE::CUSTOMERS || table == TABLE::EMPLOYEES)
         query_str = {"SELECT * FROM " + tableToString(table) +
-                         " WHERE LOWER(first_name) LIKE LOWER(:text) "
-                         "OR LOWER(last_name) LIKE LOWER(:text) "
-                         "OR LOWER(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) LIKE LOWER(:text) "};
+                     " WHERE LOWER(first_name) LIKE LOWER(:text) "
+                     "OR LOWER(last_name) LIKE LOWER(:text) "
+                     "OR LOWER(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) LIKE LOWER(:text) "};
     else if(table == TABLE::TARIFFS)
         query_str = "SELECT * FROM tariffs "
                      "WHERE LOWER(tariff_name) LIKE LOWER(:text) "
@@ -289,19 +289,6 @@ QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
     return query;
 }
 
-void DatabaseManager::sendMessage(const QString& message_text, const uint chat_id){
-    QSqlQuery query;
-    query.prepare("INSERT INTO messages(text, sender_participant_id, chat_id) "
-                  "VALUES(:message, :origin_id, :chat_id);");
-    query.bindValue(":message", message_text);
-    query.bindValue(":origin_id", CurrentUser::getCurrentUserID());
-    query.bindValue(":chat_id", chat_id);
-    if(!query.exec()){
-        qDebug() << "SendMessaget()const fault!: " << query.lastError();
-        return;
-    }
-}
-
 QSqlQuery DatabaseManager::currentEmployee(const uint curr_empl_id){
     QSqlQuery query;
     query.prepare("SELECT e.id AS \"Empl. ID\", "
@@ -424,4 +411,38 @@ void deleteFromEmployees(const uint id){
                   "WHERE id = :id;");
     query.bindValue(":id", id);
     query.exec();
+}
+
+QSqlQuery DatabaseManager::MyAllCorporateChats(){
+    QSqlQuery query;
+    query.prepare("SELECT DISTINCT u.id AS user_id, c.id AS chat_id, "
+                  "e.first_name AS partner_fname, "
+                  "e.last_name AS partner_lname, e.photo AS profile_pic "
+                  "FROM chats c "
+                  "JOIN chat_participants cp1 ON cp1.chat_id = c.id "
+                  "JOIN chat_participants cp2 ON cp2.chat_id = c.id "
+                  "JOIN participants p1 ON p1.id = cp1.participants_id "
+                  "JOIN participants p2 ON p2.id = cp2.participants_id "
+                  "JOIN users u ON u.id = p2.reference_id "
+                  "JOIN employees e ON e.id = u.empl_id "
+                  "WHERE (p1.role = 'employee' AND p2.role = 'employee') "
+                  "AND (p1.reference_id = :my_id AND p2.reference_id != :my_id);");
+    query.bindValue(":my_id", CurrentUser::getCurrentUserID());
+    return query;
+}
+
+QSqlQuery DatabaseManager::AllMessageFromSupportChat(){
+    QSqlQuery query;
+    query.prepare("SELECT m.text AS text, c.id AS chat_id, "
+                  "m.sender_participant_id AS sender_id "
+                  "FROM messages m "
+                  "JOIN chats c ON c.id = m.chat_id "
+                  "JOIN chat_participants cp1 ON cp1.chat_id = c.id "
+                  "JOIN chat_participants cp2 ON cp2.chat_id = c.id "
+                  "JOIN participants p1 ON p1.id = cp1.participants_id "
+                  "JOIN participants p2 ON p2.id = cp2.participants_id "
+                  "WHERE p1.role = 'employee' AND p2.role = 'customer' "
+                  "AND p1.reference_id = :my_id AND p2.reference_id != :my_id;");
+    query.bindValue(":my_id", CurrentUser::getCurrentUserID());
+    return query;
 }

@@ -17,6 +17,15 @@ class Chat : public QFrame
 public:
     explicit Chat(QFrame *parent = nullptr);
     ~Chat();
+    struct ChatUnits{
+        static const bool is_corporate = false;
+        static bool is_chat_exist;
+        static uint partner_id;
+        static uint chat_id;
+        static uint my_participant_id;
+        static uint partner_participant_id;
+        static void reset();
+    };
 
 public slots:
     void SendMessage();
@@ -34,8 +43,6 @@ private:
     QScrollArea* scrollArea;
     QWidget* mainWidget;
     QVBoxLayout* innerVBoxLayout;
-    static uint curr_chat_id;
-    static uint curr_cust_id;
 };
 
 
