@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomersPage</class>
+ <widget class="QWidget" name="CustomersPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1670</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="cursor">
+   <cursorShape>ArrowCursor</cursorShape>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">font-family:Lato;
+background-color:white;</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1670</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgba(200, 200, 200, 1);</string>
+   </property>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>1300</x>
+      <y>23</y>
+      <width>290</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size:14px;
+color:black;
+text-align:left;
+padding-left:4px;
+padding-bottom:2px;
+border:none;
+border-radius:4px;
+background-color:rgb(220, 220, 220);
+font-family:Lato, Arial, Consolas;</string>
+    </property>
+    <property name="placeholderText">
+     <string>Search Customers by name or phone</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>351</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-family:Lato;
+font-size:32px;
+padding-left:20px;
+color:black;
+background-color:transparent;</string>
+    </property>
+    <property name="text">
+     <string>Customers list page</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="add_cust_btn">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>23</y>
+      <width>140</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:white;
+color:black;
+font-family:Lato, Arial, Consolas;
+border:none;
+border-radius:4px;
+font-size:16px;
+}
+QPushButton:hover{
+	background-color:rgb(220, 220, 220);
+}</string>
+    </property>
+    <property name="text">
+     <string>Add Customer</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="close_open_filter_btn">
+    <property name="geometry">
+     <rect>
+      <x>1590</x>
+      <y>23</y>
+      <width>30</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size:14px;
+color:black;
+text-align:left;
+padding-left:4px;
+padding-bottom:2px;
+border:none;
+border-top-right-radius:4px;
+border-bottom-right-radius:4px;
+background-color:rgb(27, 104, 87);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>1030</y>
+     <width>1670</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border:none;
+background-color:rgba(42, 42, 42, 0.3);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Shape::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Shadow::Raised</enum>
+   </property>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>80</y>
+     <width>1670</width>
+     <height>981</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1668</width>
+      <height>979</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>-20</x>
+       <y>0</y>
+       <width>1691</width>
+       <height>991</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout"/>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="filter_widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>1670</x>
+     <y>0</y>
+     <width>280</width>
+     <height>1080</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(40, 40, 43);
+color:white;
+font-family:Lato, Arial, Consolas;
+</string>
+   </property>
+   <widget class="QPushButton" name="apply_filter_btn">
+    <property name="geometry">
+     <rect>
+      <x>55</x>
+      <y>950</y>
+      <width>160</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:rgb(27, 104, 87);
+border-radius:24px;
+border:1px solid rgba(255, 255, 255, 0.5);
+}
+QPushButton:hover{
+background-color:rgb(7, 84, 67);
+}</string>
+    </property>
+    <property name="text">
+     <string>Apply filters</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="filter_pic">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>40</y>
+      <width>200</width>
+      <height>200</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>270</y>
+      <width>261</width>
+      <height>381</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="styleSheet">
+          <string notr="true">color:white;
+font-size:18px;
+font-family:Lato, Arial, Consolas;</string>
+         </property>
+         <property name="text">
+          <string>Order by</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="sort_by_comboBox">
+         <property name="styleSheet">
+          <string notr="true">border:1px solid rgba(255, 255, 255, 0.4);
+background-color:rgba(255, 255, 255, 0.1);
+color:white;
+font-size:24px;
+font-family:Lato, Arial, Consolas;</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>By date (newest)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>By name (a-z)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>By name (z-a)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>By date (oldest)</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="styleSheet">
+          <string notr="true">color:white;
+font-size:18px;
+font-family:Lato, Arial, Consolas;</string>
+         </property>
+         <property name="text">
+          <string>Tariff</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="tariffs_comboBox">
+         <property name="styleSheet">
+          <string notr="true">border:1px solid rgba(255, 255, 255, 0.4);
+background-color:rgba(255, 255, 255, 0.1);
+color:white;
+font-size:24px;
+font-family:Lato, Arial, Consolas;</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>All</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>+38099</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>+38066</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="styleSheet">
+          <string notr="true">color:white;
+font-size:18px;
+font-family:Lato, Arial, Consolas;</string>
+         </property>
+         <property name="text">
+          <string>Added by</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="employees_comboBox">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>240</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:1px solid rgba(255, 255, 255, 0.4);
+background-color:rgba(255, 255, 255, 0.1);
+color:white;
+font-size:24px;
+font-family:Lato, Arial, Consolas;</string>
+         </property>
+         <property name="maxVisibleItems">
+          <number>5</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>All</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>+38099</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>+38066</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="styleSheet">
+          <string notr="true">color:white;
+font-size:18px;
+font-family:Lato, Arial, Consolas;</string>
+         </property>
+         <property name="text">
+          <string>Numbers</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="number_comboBox">
+         <property name="styleSheet">
+          <string notr="true">border:1px solid rgba(255, 255, 255, 0.4);
+background-color:rgba(255, 255, 255, 0.1);
+color:white;
+font-size:24px;
+font-family:Lato, Arial, Consolas;</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>All</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>+38099</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>+38066</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="sizeConstraint">
+        <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="active_btn">
+         <property name="styleSheet">
+          <string notr="true">border-top-left-radius:4px;
+border-bottom-left-radius:4px;
+background-color:transparent;
+border:1px solid white;
+color:white;
+height:30px;
+font-size:16px;</string>
+         </property>
+         <property name="text">
+          <string>Active</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="all_by_activity_btn">
+         <property name="styleSheet">
+          <string notr="true">border-radius:0px;
+background-color:transparent;
+border:1px solid white;
+color:black;
+height:30px;
+color:white;
+font-size:16px;</string>
+         </property>
+         <property name="text">
+          <string>All</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="inactive_btn">
+         <property name="styleSheet">
+          <string notr="true">border-top-right-radius:4px;
+border-bottom-right-radius:4px;
+background-color:white;
+border:1px solid white;
+color:black;
+height:30px;
+font-size:16px;</string>
+         </property>
+         <property name="text">
+          <string>Inactive</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <zorder>widget</zorder>
+  <zorder>scrollArea</zorder>
+  <zorder>frame</zorder>
+  <zorder>filter_widget</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
