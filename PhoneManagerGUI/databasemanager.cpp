@@ -417,7 +417,8 @@ QSqlQuery DatabaseManager::MyAllCorporateChats(){
     QSqlQuery query;
     query.prepare("SELECT DISTINCT u.id AS user_id, c.id AS chat_id, "
                   "e.first_name AS partner_fname, "
-                  "e.last_name AS partner_lname, e.photo AS profile_pic "
+                  "e.last_name AS partner_lname, e.photo AS profile_pic, "
+                  "p2.id AS part_id "
                   "FROM chats c "
                   "JOIN chat_participants cp1 ON cp1.chat_id = c.id "
                   "JOIN chat_participants cp2 ON cp2.chat_id = c.id "

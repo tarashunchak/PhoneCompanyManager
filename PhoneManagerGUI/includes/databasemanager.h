@@ -108,24 +108,22 @@ public:
     template <typename T>
     static bool initChatIfNeeded(){
         if(T::ChatUnits::is_chat_exist == false){
-            if(!insertToDB<TABLE::PARTICIPANTS, T>(false, T::ChatUnits::is_corporate)){
-                qDebug() << "partner_participant is not inserted: ";
-                return false;
+            if constexpr(is_not_corporate<T>::value){
+                if(!insertToDB<TABLE::PARTICIPANTS, T>(T::ChatUnits::is_corporate)){
+                    qDebug() << "partner_participant is not inserted: ";
+                    return false;
+                }
             }
-            if(!insertToDB<TABLE::PARTICIPANTS, T>(true, true)){
-                qDebug() << "me_participant is not inserted: ";
-                return false;
-            }
-            if(!insertToDB<TABLE::CHATS, T>(T::ChatUnits::is_corporate)){
+            if(!insertToDB<TABLE::CHATS, T>()){
                 qDebug() << "chat is not inserted: ";
                 return false;
             }
             if(!insertToDB<TABLE::CHAT_PARTICIPANTS, T>(true)){
-                qDebug() << "chat_participant1 is not inserted: ";
+                qDebug() << "me_chat_participant1 is not inserted: ";
                 return false;
             }
             if(!insertToDB<TABLE::CHAT_PARTICIPANTS, T>(false)){
-                qDebug() << "chat_participant2 is not inserted: ";
+                qDebug() << "part_chat_participant is not inserted: ";
                 return false;
             }
         }
@@ -134,8 +132,7 @@ public:
 
     template <typename T> requires(HasChatUnits<T>)
     static void sendMessage(const QString& message_text){
-        if(T::ChatUnits::chat_id == 0)
-            if(!initChatIfNeeded<T>()) return;
+        if(!initChatIfNeeded<T>()) return;
 
         bool is_message_sended = insertToDB<TABLE::MESSAGES, T>(message_text);
         if(!is_message_sended)
@@ -175,12 +172,14 @@ public:
     }
 
     template <TABLE table, typename T> requires(HasChatUnits<T> && table == TABLE::CHATS)
-    static bool insertToDB(bool is_corporate) {
+    static bool insertToDB() {
+        static constexpr bool is_corp = is_corporate<T>::value;
         QSqlQuery query;
         query.prepare("INSERT INTO chats(is_corporate) "
                       "VALUES(:is_corp) RETURNING id;");
-        query.bindValue(":is_corp", uint(is_corporate));
+        query.bindValue(":is_corp", is_corp);
         if(query.exec() && query.next()){
+            T::ChatUnits::is_chat_exist = true;
             T::ChatUnits::chat_id = query.value("id").toUInt();
             qDebug() << "insert chats id: " << T::ChatUnits::chat_id;
             return true;
@@ -189,7 +188,7 @@ public:
     };
 
     template <TABLE table, typename T> requires(HasChatUnits<T> && table == TABLE::PARTICIPANTS)
-    static bool insertToDB(bool is_curr_user, bool is_employee) {
+    static bool insertToDB(bool is_employee) {
         static QString role;
         static uint id;
         if(is_employee){
@@ -205,14 +204,8 @@ public:
         query.bindValue(":role", role);
         query.bindValue(":ref_id", id);
         if(query.exec() && query.next()){
-            if(is_curr_user){
-                T::ChatUnits::my_participant_id = query.value("id").toUInt();
-                qDebug() << T::ChatUnits::my_participant_id;
-            }else{
-                T::ChatUnits::partner_participant_id = query.value("id").toUInt();
-                qDebug() << T::ChatUnits::partner_participant_id;
-            }
-            qDebug() << "insert chats id: " << T::ChatUnits::chat_id;
+            T::ChatUnits::partner_participant_id = query.value("id").toUInt();
+            qDebug() << T::ChatUnits::partner_participant_id;
             return true;
         }
         return false;

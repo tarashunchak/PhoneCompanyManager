@@ -4,11 +4,21 @@
 #include <type_traits>
 #include "employeeschatpage.h"
 
+template <bool>
+struct bool_constant : std::true_type {};
+
+template <>
+struct bool_constant<false> : std::false_type{};
+
 template <typename T>
 struct is_corporate : public std::false_type{};
 
 template <>
 struct is_corporate<EmployeesChatPage> : public std::true_type{};
+
+template <typename T>
+struct is_not_corporate : public bool_constant<!is_corporate<T>::value>{};
+
 
 template <typename T>
 concept HasChatUnits = requires{

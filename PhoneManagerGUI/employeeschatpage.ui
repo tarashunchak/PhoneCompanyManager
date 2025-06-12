@@ -210,10 +210,10 @@ border:1px solid rgba(140, 140, 140, 0.4);</string>
    <property name="styleSheet">
     <string notr="true">QPushButton{
 border-radius:30px;
-background-color:rgb(56, 54, 106);
+background-color:#986BE4;
 }
 QPushButton:hover{
-background-color:rgb(36, 34, 86);	
+background-color:#A789DB;	
 }</string>
    </property>
    <property name="text">

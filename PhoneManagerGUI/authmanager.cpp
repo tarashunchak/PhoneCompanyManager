@@ -4,13 +4,20 @@
 #include <QByteArray>
 #include <QCryptographicHash>
 #include "includes/currentuser.h"
+#include "employeeschatpage.h"
+#include "includes/chat.h"
 
 void AuthManager::authenticate(const QString& username, const QString& password){
     //QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
     QSqlQuery query;
-    query.prepare("SELECT * FROM users "
-                  "WHERE username = :user "
-                  "AND password = :pass;");
+    query.prepare("SELECT u.id AS user_id, "
+                  "u.empl_id AS empl_id, "
+                  "p.id AS part_id "
+                  "FROM participants p "
+                  "JOIN users u ON u.id = p.reference_id "
+                  "WHERE p.role = 'employee' "
+                  "AND u.username = :user "
+                  "AND u.password = :pass;");
 
     query.bindValue(":user", username);
     query.bindValue(":pass", password);
@@ -22,8 +29,11 @@ void AuthManager::authenticate(const QString& username, const QString& password)
     }
 
     if(query.next()){
-        const uint userID = query.value("id").toUInt();
+        const uint userID = query.value("user_id").toUInt();
         const uint emplID = query.value("empl_id").toUInt();
+        const uint participant_id = query.value("part_id").toUInt();
+        EmployeesChatPage::ChatUnits::my_participant_id = participant_id;
+        Chat::ChatUnits::my_participant_id = participant_id;
         CurrentUser::setCurrentUserID(userID);
         CurrentUser::setCurrentEmployeeID(emplID);
         emit authSuccess();

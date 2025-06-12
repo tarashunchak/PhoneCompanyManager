@@ -19,23 +19,11 @@ EmployeesPage::EmployeesPage(QWidget *parent)
     SetEmployeesCards();
     ui->scrollAreaWidgetContents->setLayout(ui->gridLayout);
 
-    ui->filter_pic->setPixmap(QPixmap{"./img/filter.png"});
-    ui->close_open_filter_btn->setIcon(QIcon{"./img/filter.svg"});
-    ui->close_open_filter_btn->setIconSize(QSize{24, 24});
-    filter_animation = new QPropertyAnimation{ui->filter_widget, "pos"};
-    filter_animation->setDuration(200);
-
     ui->gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->gridLayout->setHorizontalSpacing(34);
     ui->gridLayout->setVerticalSpacing(40);
     ui->gridLayout->setContentsMargins(40, 40, 0, 0);
     ui->scrollArea->setWidgetResizable(true);
-
-    ui->sort_by_comboBox->clear();
-    ui->sort_by_comboBox->addItem("By date(newest)", " ORDER BY date DESC;");
-    ui->sort_by_comboBox->addItem("By name(a-z)", " ORDER BY first_name ASC;");
-    ui->sort_by_comboBox->addItem("By name(z-a)", " ORDER BY first_name DESC;");
-    ui->sort_by_comboBox->addItem("By date(oldest)", " ORDER BY date ASC;");
 }
 
 EmployeesPage::~EmployeesPage()
@@ -50,9 +38,6 @@ void EmployeesPage::SetConnections(){
             , &InsertEmployeeDialog::exec);
     connect(ui->add_empl_btn, &QPushButton::clicked, insert_employee_dialog
             , &InsertEmployeeDialog::updateComboBoxData);
-    connect(ui->close_open_filter_btn, &QPushButton::clicked
-            , this, &EmployeesPage::open_close_filter_widget);
-    connect(ui->apply_filter_btn, &QPushButton::clicked, this, &EmployeesPage::apply_filters);
 }
 
 void EmployeesPage::setCurrentUser()const{

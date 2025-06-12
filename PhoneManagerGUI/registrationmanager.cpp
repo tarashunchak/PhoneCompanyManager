@@ -32,13 +32,20 @@ void RegistrationManager::is_exist(const QString& email){
 void RegistrationManager::registerNewUser(const QString& user, const QString& pass){
     QSqlQuery query;
     query.prepare("INSERT INTO users(empl_id, username, password) "
-                  "VALUES(:e_id, :username, :pass);");
+                  "VALUES(:e_id, :username, :pass) RETURNING id;");
     query.bindValue(":e_id", empl_id);
     query.bindValue(":username", user);
     query.bindValue(":pass", pass);
     empl_id = 0;
-    if(query.exec()){
-        emit successful_registration();
+    uint inserted_user_id;
+    if(query.exec() && query.next()){
+        inserted_user_id = query.value("id").toUInt();
+        query.prepare("INSERT INTO participants(role, reference_id) "
+                      "VALUES(employee, :u_id);");
+        query.bindValue(":u_id", inserted_user_id);
+        if(query.exec() && query.next()){
+            emit successful_registration();
+        }
     }else{
         emit unsuccessful_registration();
     }

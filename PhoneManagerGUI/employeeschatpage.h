@@ -17,7 +17,7 @@ public:
     explicit EmployeesChatPage(QWidget *parent = nullptr);
     ~EmployeesChatPage();
     void fillChatsWidget(QSqlQuery query = QSqlQuery{});
-    void fillMessagesWidget(const uint, const uint, const QString&
+    void fillMessagesWidget(const uint, const QString&
                             , QLabel* partner_label = nullptr
                             , QPixmap pixmap = QPixmap{});
     void updateLastSeenTimestamp();

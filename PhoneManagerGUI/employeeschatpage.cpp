@@ -33,8 +33,8 @@ EmployeesChatPage::EmployeesChatPage(QWidget *parent)
     ui->verticalLayoutWidget->setParent(ui->chats_widget);
     ui->chats_scrollArea->setWidget(ui->chats_widget);
 
-    ui->send_message_btn->setIcon(QIcon{"./img/paper-plane.svg"});
-    ui->send_message_btn->setIconSize({30, 30});
+    ui->send_message_btn->setIcon(QIcon{"./img/white_paper_plane.svg"});
+    ui->send_message_btn->setIconSize({28, 28});
     ui->empty_chat_widget->setVisible(false);
     ui->message_area_widget->setStyleSheet("background:url(./img/wall_telegram_light.jpg);");
     connect(ui->search_lineEdit, &QLineEdit::textEdited, this, &EmployeesChatPage::searchChats);
@@ -136,14 +136,17 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
             "	color:white;"
             "}"
         );
-
-        const uint partner_id = query.value("user_id").toUInt();
-        qDebug() << "fillChatsWidget() partner_id = " << partner_id;
+        const uint partner_part_id = query.value("part_id").toUInt();
+        const uint partner_user_id = query.value("user_id").toUInt();
+        qDebug() << "fillChatsWidget() partner_user_id = " << partner_user_id;
+        qDebug() << "fillChatsWidget() partner_part_id = " << partner_part_id;
+        partner_name->setProperty("partner_user_id", partner_user_id);
+        partner_name->setProperty("partner_part_id", partner_part_id);
 
         ui->chats_vLayout->addWidget(chat_widget);
 
-        connect(chat_widget, &QPushButton::clicked, this, [this, tmp_chat_id, full_name, pixmap, partner_name, partner_id](){
-            fillMessagesWidget(tmp_chat_id, partner_id, full_name, partner_name
+        connect(chat_widget, &QPushButton::clicked, this, [this, tmp_chat_id, full_name, pixmap, partner_name](){
+            fillMessagesWidget(tmp_chat_id, full_name, partner_name
                                , pixmap.scaled(50, 50, Qt::KeepAspectRatioByExpanding));
         });
     }
@@ -153,10 +156,16 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query){
     ui->chats_widget->setLayout(ui->chats_vLayout);
 }
 
-void EmployeesChatPage::fillMessagesWidget(const uint chat_id, const uint partner_id
-                                           ,const QString& full_name, QLabel* partner_label, QPixmap pixmap)
+void EmployeesChatPage::fillMessagesWidget(const uint chat_id, const QString& full_name
+                                           , QLabel* partner_label, QPixmap pixmap)
 {
+    clearLayout(ui->messages_vLayout);
+
+    ChatUnits::is_chat_exist = static_cast<bool>(chat_id);
+
     ChatUnits::chat_id = chat_id;
+    qDebug() << "fillMessagesWidget " << ChatUnits::chat_id;
+
     QSqlQuery messageQuery;
     messageQuery.prepare("SELECT m.text AS message_text, p.reference_id AS sender_id "
                          "FROM messages m "
@@ -165,17 +174,22 @@ void EmployeesChatPage::fillMessagesWidget(const uint chat_id, const uint partne
     messageQuery.bindValue(":chat_id", ChatUnits::chat_id);
 
     if (!messageQuery.exec()) {
-        ChatUnits::chat_id = 0;
+        //ChatUnits::chat_id = 0;
+        //ChatUnits::is_chat_exist = false;
+        ui->empty_chat_widget->setVisible(ui->messages_vLayout->isEmpty());
         qDebug() << "fillChatsWidget() const query fault: " << messageQuery.lastError();
         return;
+    }else{
+        if(partner_label){
+            ChatUnits::partner_id = partner_label->property("partner_user_id").toUInt();
+            ChatUnits::partner_participant_id = partner_label->property("partner_part_id").toUInt();
+        }
+        //ChatUnits::is_chat_exist = false;
+        qDebug() << "my_id = " << CurrentUser::getCurrentUserID();
+        qDebug() << "partner_user_id messages = " << ChatUnits::partner_id;
+        qDebug() << "partner_part_id messages = " << ChatUnits::partner_participant_id;
     }
 
-    ChatUnits::partner_id = partner_id;
-
-    qDebug() << "my_id = " << CurrentUser::getCurrentUserID();
-    qDebug() << "user_id = " << ChatUnits::partner_id;
-
-    uint row = 0;
     while (messageQuery.next()) {
         QHBoxLayout* message_hLayout = new QHBoxLayout{};
         QLabel* label = new QLabel{messageQuery.value("message_text").toString()};
@@ -210,39 +224,31 @@ void EmployeesChatPage::fillMessagesWidget(const uint chat_id, const uint partne
         }
         message_hLayout->addWidget(widget);
         ui->messages_vLayout->addLayout(message_hLayout);
-        row++;
     }
-    ui->empty_chat_widget->setVisible(ui->messages_vLayout->isEmpty());
     ui->messages_vLayout->setAlignment(Qt::AlignBottom);
 
     QSqlQuery partnerQuery;
-    partnerQuery.prepare("SELECT u.id AS partner_id, p1.id AS partner_part_id, "
-                         "cp_part.last_seen AS ls, p2.id AS my_part_id "
+    partnerQuery.prepare("SELECT cp_part.last_seen AS ls, p2.id AS my_part_id "
                          "FROM chat_participants cp_part "
                          "JOIN participants p1 ON p1.id = cp_part.participants_id "
                          "JOIN users u ON u.id = p1.reference_id "
                          "JOIN chat_participants cp_me ON cp_me.chat_id = cp_part.chat_id "
                          "JOIN participants p2 ON p2.id = cp_me.participants_id "
-                         "WHERE cp_part.chat_id = :chat_id AND p1.reference_id = :cust_id "
+                         "WHERE cp_part.chat_id = :chat_id AND p1.reference_id = :part_id "
                          "AND p2.reference_id = :my_id "
                          "AND (p1.role = 'employee' AND p2.role = 'employee');");
     partnerQuery.bindValue(":chat_id", ChatUnits::chat_id);
     partnerQuery.bindValue(":my_id", CurrentUser::getCurrentUserID());
-    partnerQuery.bindValue(":cust_id", ChatUnits::partner_id);
+    partnerQuery.bindValue(":part_id", ChatUnits::partner_id);
 
-    if (!partnerQuery.exec()) {
-        qDebug() << "getting partner id fault!!!" << partnerQuery.lastError().text();
-    }
-
-    if (!partnerQuery.next()) {
+    if (!partnerQuery.exec() && !partnerQuery.next()) {
         ui->empty_chat_widget->setVisible(true);
         ChatUnits::chat_id = 0;
+        //ChatUnits::is_chat_exist = false;
         qDebug() << "getting partner next id fault!!!";
         return;
     } else {
-        ChatUnits::my_participant_id = partnerQuery.value("my_part_id").toUInt();
-        ChatUnits::partner_participant_id = partnerQuery.value("partner_part_id").toUInt();
-        ChatUnits::partner_id = partnerQuery.value("partner_id").toUInt();
+        //ChatUnits::is_chat_exist = false;
         ui->last_seen_label->setText(partnerQuery.value("ls").toString());
         ui->empty_chat_widget->setVisible(false);
     }
@@ -269,9 +275,11 @@ void EmployeesChatPage::searchChats(){
         "e.last_name AS partner_lname, "
         "e.photo AS profile_pic, "
         "e.id AS empl_id, "
-        "u.id AS user_id "
+        "u.id AS user_id, "
+        "p.id AS part_id "
         "FROM users u "
         "JOIN employees e ON e.id = u.empl_id "
+        "JOIN participants p ON p.reference_id = u.id "
         "WHERE u.id != :my_id "
         "AND (LOWER(e.first_name) LIKE LOWER(:text) "
         "OR LOWER(e.last_name) LIKE LOWER(:text));"
@@ -295,7 +303,7 @@ void EmployeesChatPage::sendMessage(){
     ui->message_input_lineEdit->clear();
     qDebug() << "send message to partner_id: " << ChatUnits::partner_id;
     fillChatsWidget();
-    fillMessagesWidget(ChatUnits::chat_id, ChatUnits::partner_id, {});
+    fillMessagesWidget(ChatUnits::chat_id, {});
     QTimer::singleShot(200, this, [this](){
         ui->messages_scrollArea->verticalScrollBar()->setValue(
                     ui->messages_scrollArea->verticalScrollBar()->maximum());
