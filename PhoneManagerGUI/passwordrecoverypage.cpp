@@ -22,20 +22,40 @@ PasswordRecoveryPage::~PasswordRecoveryPage()
 {
     delete ui;
 }
+static void clearWidgets(const Ui::PasswordRecoveryPage* ui){
+    ui->recovery_widget->setVisible(false);
+    ui->confirmed_widget->setVisible(true);
+    ui->confirm_btn->setVisible(true);
+    ui->check_code_btn->setVisible(false);
+    ui->new_pass_LineEdit->clear();
+    ui->repeated_pass_LineEdit->clear();
+    ui->code_LineEdit->clear();
+    ui->email_LineEdit->clear();
+}
 
 void PasswordRecoveryPage::RecoverPassword(const uint empl_id)const{
-    QSqlQuery query;
-    query.prepare("UPDATE users "
-                  "SET password = :new_pass "
-                  "WHERE empl_id = :empl_id;");
-    query.bindValue(":new_pass", "");
-    query.bindValue(":empl_id", empl_id);
-    query.exec();
+    QSqlQuery query(QSqlDatabase::database("remote"));
+    if(ui->new_pass_LineEdit->text() == ui->repeated_pass_LineEdit->text()
+        && ui->repeated_pass_LineEdit->text().size() > 8)
+    {
+        ui->error_message->setVisible(false);
+        query.prepare("UPDATE users "
+                      "SET password = :new_pass "
+                      "WHERE empl_id = :empl_id;");
+        query.bindValue(":new_pass", ui->repeated_pass_LineEdit->text());
+        query.bindValue(":empl_id", empl_id);
+        query.exec();
+        clearWidgets(ui);
+        void on_return_to_login_btn_clicked();
+    }else{
+        ui->error_message->setText("Password must contain at least 8 charachters");
+        ui->error_message->setVisible(true);
+    }
 }
 
 void PasswordRecoveryPage::SendMessageToEmail(){
     static QString code{};
-    static QSqlQuery query;
+    static QSqlQuery query(QSqlDatabase::database("remote"));
     QString email = ui->email_LineEdit->text();
     query.prepare("SELECT * FROM employees WHERE email = :email;");
     query.bindValue(":email", email);

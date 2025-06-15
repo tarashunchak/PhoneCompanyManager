@@ -18,7 +18,7 @@ class EmployeesPage : public QWidget
 public:
     explicit EmployeesPage(QWidget *parent = nullptr);
     ~EmployeesPage();
-    void SetEmployeesCards(QSqlQuery query = QSqlQuery());
+    void SetEmployeesCards(QSqlQuery query = QSqlQuery(QSqlDatabase::database("local")));
 
 signals:
     void employee_selected(const uint);

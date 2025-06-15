@@ -4,13 +4,16 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
-#include "includes/currentuser.h"
-#include "includes/chat.h"
-#include "includes/messagebox.h"
+#include "currentuser.h"
+#include "supportchat.h"
+#include "messagebox.h"
 #include "chat_type_traits.h"
+#include <QtConcurrent/QtConcurrent>
 
-class DatabaseManager
+
+class DatabaseManager : public QObject
 {
+    Q_OBJECT
 private:
     DatabaseManager& operator=(const DatabaseManager&) = delete;
     DatabaseManager(const DatabaseManager&) = delete;
@@ -18,15 +21,16 @@ private:
     ~DatabaseManager();
     struct Columns{
         static QMap<QString, QStringList> columns;
+        static QMap<QString, QStringList> all_columns;
     };
 public:
-    enum class PAGE : uint{
+       enum class PAGE : uint{
         DASHBOARD_PAGE = 0u,
         CUSTOMERS_PAGE,
         EMPLOYEES_PAGE,
         REQUESTS_PAGE,
         TARIFFS_PAGE,
-        CHAT_PAGE,
+        SUPPORT_CHAT,
         CUSTOMERS_DETAILS_PAGE,
         EMPLOYEES_DETAILS_PAGE,
         EMPLOYEES_CHATS_PAGE
@@ -40,7 +44,7 @@ public:
         CHATS,
         CHAT_PARTICIPANTS,
         PARTICIPANTS,
-        DEPATMENTS,
+        DEPARTMENTS,
         POSITIONS,
         COMMENTS,
         MESSAGES,
@@ -56,11 +60,15 @@ public:
         DESC
     };
     //
+
     static DatabaseManager& instance();
     static QSqlDatabase& getDatabase();
     static bool isConnected();
+    static void cleanUpConnections();
     /*------------------------------------*/
     /*------------------------------------*/
+    static void syncAllTables();
+    static void syncTable(TABLE);
     static QSqlQuery findByName(TABLE, const QString&);
     static QSqlQuery inProgressRequests();
     static QSqlQuery unassignedRequests();
@@ -75,20 +83,41 @@ public:
     static QSqlQuery currentCustomer(const uint);
     static QSqlQuery currentEmployee(const uint);
     static void saveCommentToDB(TABLE, int, int, const QString&);
-    static void deleteRecord(TABLE, const uint);
-    /*------------------------------------*/
-    /*------------------------------------*/
-
 
     /*------------------------------------*/
     /*------------------------------------*/
-    template <PAGE page> requires(page == PAGE::CHAT_PAGE)
+
+    /*------------------------------------*/
+    /*------------------------------------*/
+    template <TABLE table, typename T>
+    static QSqlQuery selectRecord(const QString& row, const T& identifier){
+        static QString table_str = tableToString(table);
+        QString query_str{"SELECT * FROM " + table_str
+                + " WHERE " + row + " = ?;"};
+        QSqlQuery query(local_db);
+        query.prepare(query_str);
+        query.addBindValue(identifier);
+        return query;
+    };
+
+    template <TABLE table, typename T>
+    static void deleteRecord(const QString& row, const T& identifier){
+        static QString table_str = tableToString(table);
+        QString query_str{"DELETE FROM " + table_str + " WHERE " + row + " = ?;"};
+        QSqlQuery query(remote_db);
+        query.prepare(query_str);
+        query.addBindValue(identifier);
+        query.exec();
+    };
+
+    template <PAGE page> requires(page == PAGE::SUPPORT_CHAT)
     static MessageBox* lastMessage() {
-        QSqlQuery query;
+        QSqlQuery query(remote_db);
         query.prepare("SELECT * FROM messages "
-                      "WHERE chat_id = :chat_id "
+                      "WHERE chat_id = ? "
                       "ORDER BY id DESC LIMIT 1;");
-        query.bindValue(":chat_id", Chat::ChatUnits::chat_id);
+        query.addBindValue(SupportChat::ChatUnits::chat_id);
+        qDebug() << "support chat_id = " << SupportChat::ChatUnits::chat_id;
         if(!query.exec() || !query.next())
             return nullptr;
         MessageBox* message_box = new MessageBox{};
@@ -99,9 +128,9 @@ public:
 
     template <typename T> requires(HasChatUnits<T>)
     static QSqlQuery allMessagesFromCurrentChat(){
-        QSqlQuery query;
-        query.prepare("SELECT * FROM messages WHERE chat_id = :chat_id;");
-        query.bindValue(":chat_id", T::ChatUnits::chat_id);
+        QSqlQuery query(remote_db);
+        query.prepare("SELECT * FROM messages WHERE chat_id = ?;");
+        query.addBindValue(T::ChatUnits::chat_id);
         return query;
     }
 
@@ -110,7 +139,7 @@ public:
         if(T::ChatUnits::is_chat_exist == false){
             if constexpr(is_not_corporate<T>::value){
                 if(!insertToDB<TABLE::PARTICIPANTS, T>(T::ChatUnits::is_corporate)){
-                    qDebug() << "partner_participant is not inserted: ";
+                    qDebug() << "partner_participant is not inserted: " << T::ChatUnits::partner_id;
                     return false;
                 }
             }
@@ -133,10 +162,14 @@ public:
     template <typename T> requires(HasChatUnits<T>)
     static void sendMessage(const QString& message_text){
         if(!initChatIfNeeded<T>()) return;
+        static bool is_message_sended;
+        //QtConcurrent::run([message_text](){
+            is_message_sended = insertToDB<TABLE::MESSAGES, T>(message_text);
+        //});
 
-        bool is_message_sended = insertToDB<TABLE::MESSAGES, T>(message_text);
         if(!is_message_sended)
             qDebug() << "sendMessage query error";
+        QtConcurrent::run(&DatabaseManager::syncAllTables);
     };
 
     template <typename... Args>
@@ -144,46 +177,73 @@ public:
         QString table_str = tableToString(table);
         int count = Columns::columns[table_str].size();
         QString place_holder{};
-        for(int i = 0; i < count-1; ++i){
+        for(int i = 0; i < count - 1; ++i){
             place_holder += "?, ";
         }
         place_holder += "?";
         QString query_str = QString{"INSERT INTO %1 (%2) VALUES (%3);"}
                                 .arg(table_str).arg(Columns::columns[table_str].join(", "))
                                 .arg(place_holder);
-        QSqlQuery query;
+        QSqlQuery query(remote_db);
         query.prepare(query_str);
         std::apply([&query](const auto&... data){
             (..., query.addBindValue(data));
         }, args);
+        if (!remote_db.isOpen()) {
+            if (!remote_db.open()) {
+                qDebug() << "Database reopen failed: " << remote_db.lastError();
+                return false;
+            }
+        }
+        QtConcurrent::run(&DatabaseManager::syncAllTables);
         return query.exec();
     };
 
     template <TABLE table, typename T> requires(HasChatUnits<T> && table == TABLE::MESSAGES)
     static bool insertToDB(const QString& message_text) {
-        QSqlQuery query;
+        QSqlQuery query(remote_db);
         query.prepare("INSERT INTO messages(text, sender_participant_id, chat_id) "
-                      "VALUES(:text, :sender_id, :chat_id);");
-        query.bindValue(":text", message_text);
-        query.bindValue(":sender_id", T::ChatUnits::my_participant_id);
-        query.bindValue(":chat_id", T::ChatUnits::chat_id);
+                      "VALUES(?, ?, ?);");
+        query.addBindValue(message_text);
+        query.addBindValue(T::ChatUnits::my_participant_id);
+        query.addBindValue(T::ChatUnits::chat_id);
         qDebug() << "insert messages my_id = " << T::ChatUnits::my_participant_id;
-        return query.exec();
+        if (!remote_db.isOpen()) {
+            if (!remote_db.open()) {
+                qDebug() << "Database reopen failed: " << remote_db.lastError();
+                return false;
+            }
+        }
+        if(!query.exec()){
+            return false;
+        }
+        QtConcurrent::run(&DatabaseManager::syncAllTables);
+        return true;
     }
 
     template <TABLE table, typename T> requires(HasChatUnits<T> && table == TABLE::CHATS)
     static bool insertToDB() {
         static constexpr bool is_corp = is_corporate<T>::value;
-        QSqlQuery query;
+        QSqlQuery query(remote_db);
         query.prepare("INSERT INTO chats(is_corporate) "
-                      "VALUES(:is_corp) RETURNING id;");
-        query.bindValue(":is_corp", is_corp);
+                      "VALUES(?) RETURNING id;");
+        query.addBindValue(is_corp);
+        QtConcurrent::run(&DatabaseManager::syncAllTables);
+        if (!remote_db.isOpen()) {
+            if (!remote_db.open()) {
+                qDebug() << "Database reopen failed: " << remote_db.lastError();
+                query.clear();
+                return false;
+            }
+        }
         if(query.exec() && query.next()){
             T::ChatUnits::is_chat_exist = true;
             T::ChatUnits::chat_id = query.value("id").toUInt();
             qDebug() << "insert chats id: " << T::ChatUnits::chat_id;
+            query.clear();
             return true;
         }
+        query.clear();
         return false;
     };
 
@@ -198,16 +258,26 @@ public:
             role = "customer";
             id = T::ChatUnits::partner_id;
         }
-        QSqlQuery query;
+        QSqlQuery query(remote_db);
         query.prepare("INSERT INTO participants (role, reference_id) "
-                      "VALUES(:role, :ref_id) RETURNING id;");
-        query.bindValue(":role", role);
-        query.bindValue(":ref_id", id);
+                      "VALUES(?, ?) RETURNING id;");
+        query.addBindValue(role);
+        query.addBindValue(id);
+        if (!remote_db.isOpen()) {
+            if (!remote_db.open()) {
+                qDebug() << "Database reopen failed: " << remote_db.lastError();
+                query.clear();
+                return false;
+            }
+        }
         if(query.exec() && query.next()){
             T::ChatUnits::partner_participant_id = query.value("id").toUInt();
             qDebug() << T::ChatUnits::partner_participant_id;
+            QtConcurrent::run([](){syncAllTables();});
+            query.clear();
             return true;
         }
+        query.clear();
         return false;
     };
 
@@ -219,20 +289,24 @@ public:
         else
             id = T::ChatUnits::partner_participant_id;
 
-        QSqlQuery query;
+        QSqlQuery query(remote_db);
         query.prepare("INSERT INTO chat_participants (chat_id, participants_id) "
-                      "VALUES(:chat_id, :part_id);");
-        query.bindValue(":chat_id", T::ChatUnits::chat_id);
-        query.bindValue(":part_id", id);
+                      "VALUES(?, ?);");
+        query.addBindValue(T::ChatUnits::chat_id);
+        query.addBindValue(id);
         qDebug() << "insert chats id: " << T::ChatUnits::chat_id;
+        if (!remote_db.isOpen()) {
+            if (!remote_db.open()) {
+                qDebug() << "Database reopen failed: " << remote_db.lastError();
+                return false;
+            }
+        }
         return query.exec();
     };
     /*------------------------------------*/
     /*------------------------------------*/
-
 private:
-    static QSqlDatabase db;
+    static QSqlDatabase remote_db;
+    static QSqlDatabase local_db;
 };
-
-
 #endif // DATABASEMANAGER_H

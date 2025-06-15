@@ -5,7 +5,7 @@
 #include <QStackedWidget>
 #include "includes/navigationmanager.h"
 #include "includes/buttonsstylemanager.h"
-#include "includes/chat.h"
+#include "includes/supportchat.h"
 
 namespace Ui {
 class MainWidget;
@@ -29,12 +29,15 @@ signals:
     void on_log_out_btn_clicked();
     void on_tasks_btn_clicked();
 
+public slots:
+    void on_leave_session_btn_clicked();
+
 private:
     void SetCurrentUserInfo();
 
 private:
     Ui::MainWidget *ui;
-    Chat* chat;
+    SupportChat* chat;
     NavigationManager* navigation_manager;
     ButtonsStyleManager* buttons_style_manager;
 };

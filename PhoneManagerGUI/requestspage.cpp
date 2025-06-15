@@ -1,6 +1,5 @@
 #include "includes/requestspage.h"
 #include "ui_requestspage.h"
-#include "includes/currentuser.h"
 #include <QSqlQuery>
 #include <QSqlError>
 
@@ -33,7 +32,7 @@ void RequestsPage::SetConnections(){
     connect(ui->complete_req_btn, &QPushButton::clicked, this, &RequestsPage::showCompletedRequests);
     connect(ui->history_btn, &QPushButton::clicked, this, &RequestsPage::showRequestsHistory);
     connect(ui->save_btn, &QPushButton::clicked, this, [this](){
-        QSqlQuery query;
+        QSqlQuery query(QSqlDatabase::database("remote"));
         QAbstractItemModel* model = req_tableView->model();
         QModelIndex index{};
         for(int i = 0; i < model->rowCount(); ++i){

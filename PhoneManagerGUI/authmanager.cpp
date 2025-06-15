@@ -5,22 +5,23 @@
 #include <QCryptographicHash>
 #include "includes/currentuser.h"
 #include "employeeschatpage.h"
-#include "includes/chat.h"
+#include "includes/supportchat.h"
+#include "includes/databasemanager.h"
 
 void AuthManager::authenticate(const QString& username, const QString& password){
     //QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT u.id AS user_id, "
                   "u.empl_id AS empl_id, "
                   "p.id AS part_id "
                   "FROM participants p "
                   "JOIN users u ON u.id = p.reference_id "
                   "WHERE p.role = 'employee' "
-                  "AND u.username = :user "
-                  "AND u.password = :pass;");
+                  "AND u.username = ? "
+                  "AND u.password = ?;");
 
-    query.bindValue(":user", username);
-    query.bindValue(":pass", password);
+    query.addBindValue(username);
+    query.addBindValue(password);
 
     if (!query.exec()) {
         qDebug() << "Auth query error:" << query.lastError();
@@ -33,9 +34,10 @@ void AuthManager::authenticate(const QString& username, const QString& password)
         const uint emplID = query.value("empl_id").toUInt();
         const uint participant_id = query.value("part_id").toUInt();
         EmployeesChatPage::ChatUnits::my_participant_id = participant_id;
-        Chat::ChatUnits::my_participant_id = participant_id;
+        SupportChat::ChatUnits::my_participant_id = participant_id;
         CurrentUser::setCurrentUserID(userID);
         CurrentUser::setCurrentEmployeeID(emplID);
+        QtConcurrent::run(&DatabaseManager::syncAllTables);
         emit authSuccess();
     }else{
         qDebug() << "Invalid username or password!";

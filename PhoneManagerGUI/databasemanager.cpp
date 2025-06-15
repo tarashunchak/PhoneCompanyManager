@@ -4,7 +4,8 @@
 #include "includes/currentuser.h"
 #include "includes/customersdetailspage.h"
 #include "employeesdetailspage.h"
-
+#include <QSqlDriver>
+#include <QObject>
 
 QString DatabaseManager::tableToString(TABLE table){
     switch (table) {
@@ -22,7 +23,7 @@ QString DatabaseManager::tableToString(TABLE table){
         return "chat_participants";
     case TABLE::PARTICIPANTS :
         return "participants";
-    case TABLE::DEPATMENTS :
+    case TABLE::DEPARTMENTS :
         return "departments";
     case TABLE::POSITIONS :
         return "positions";
@@ -31,7 +32,7 @@ QString DatabaseManager::tableToString(TABLE table){
     case TABLE::MESSAGES :
         return "messages";
     case TABLE::COMMENTS :
-        return "commenst";
+        return "comments";
     case TABLE::REQUESTS :
         return "requests";
     case TABLE::USAGE :
@@ -40,40 +41,54 @@ QString DatabaseManager::tableToString(TABLE table){
     return {};
 }
 
-void deleteFromCustomers(const uint);
-void deleteFromEmployees(const uint);
+DatabaseManager::DatabaseManager()
+{
+    local_db = QSqlDatabase::addDatabase("QSQLITE", "local");
+    local_db.setDatabaseName("./database/database.db");
 
-DatabaseManager::DatabaseManager() {
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("./database/database.db");
+    remote_db = QSqlDatabase::addDatabase("QPSQL", "remote");
+    QString host = "ep-divine-sun-a83zg48v-pooler.eastus2.azure.neon.tech";
+    QString dbName = "neondb";
+    QString user = "neondb_owner";
+    QString password = "npg_qILNuP6Diz1Z";
+    int port = 5432;
 
-    /*db = QSqlDatabase::addDatabase("QPSQL");
-    db.setHostName("ep-divine-sun-a83zg48v-pooler.eastus2.azure.neon.tech");
-    db.setPort(5432);
-    db.setDatabaseName("neondb");
-    db.setUserName("neondb_owner");
-    db.setPassword("npg_qILNuP6Diz1Z");
-    db.setConnectOptions("sslmode=require");*/
+    remote_db.setHostName(host);
+    remote_db.setPort(port);
+    remote_db.setDatabaseName(dbName);
+    remote_db.setUserName(user);
+    remote_db.setPassword(password);
+    remote_db.setConnectOptions("sslmode=require");
 
-    if (!db.open()) {
-        qDebug() << "Database Connection Error:" << db.lastError().text();
+    if (!remote_db.open() || !local_db.open()) {
+        qDebug() << "Database Connection Error:" << remote_db.lastError().text();
     } else {
         qDebug() << "Database Successfully Connected!";
     }
-    QSqlQuery query;
-    if (!query.exec("SELECT 1")) {
-        qDebug() << "Database first query connection failed: " << query.lastError();
+    QSqlQuery remote_query(remote_db);
+    QSqlQuery local_query(local_db);
+    if (!remote_query.exec("LISTEN new_message;")  || !local_query.exec("SELECT 1")) {
+        qDebug() << "Database first query connection failed: " << remote_query.lastError();
     } else {
         qDebug() << "Database connected and queary is valid!";
     }
 }
 
-QSqlDatabase DatabaseManager::db = QSqlDatabase{};
+QSqlDatabase DatabaseManager::remote_db = QSqlDatabase{};
+QSqlDatabase DatabaseManager::local_db = QSqlDatabase{};
 
 DatabaseManager::~DatabaseManager() {
-    if (db.isOpen()) {
-        db.close();
+    if (remote_db.isOpen() || local_db.isOpen()) {
+        remote_db.close();
+        local_db.close();
         qDebug() << "Database Is Closed!";
+    }
+    cleanUpConnections();
+}
+
+void DatabaseManager::cleanUpConnections(){
+    for(const QString& remove_db : QSqlDatabase::connectionNames()){
+        QSqlDatabase::removeDatabase(remove_db);
     }
 }
 
@@ -83,11 +98,122 @@ DatabaseManager& DatabaseManager::instance() {
 }
 
 QSqlDatabase& DatabaseManager::getDatabase() {
-    return db;
+    return local_db;
 }
 
 bool DatabaseManager::isConnected() {
-    return db.isOpen();
+    return local_db.isOpen();
+}
+
+void DatabaseManager::syncAllTables(){
+    using enum TABLE;
+    static const QList<TABLE> tables{
+        POSITIONS, DEPARTMENTS, USERS, EMPLOYEES
+        ,CUSTOMERS, TARIFFS, REQUESTS, CHATS
+        ,CHAT_PARTICIPANTS, PARTICIPANTS, /*USAGE,*/ COMMENTS, MESSAGES
+    };
+    for(auto table : tables)
+        syncTable(table);
+}
+
+void DatabaseManager::syncTable(TABLE table){
+    QString thread_id = QString::number(reinterpret_cast<quintptr>(QThread::currentThreadId()));
+    QString remote_conn_name = QString{"remote_sync_%1"}.arg(thread_id);
+    QString local_conn_name = QString{"local_sync_%1"}.arg(thread_id);
+
+    if(QSqlDatabase::contains(remote_conn_name))
+        QSqlDatabase::removeDatabase(remote_conn_name);
+    if(QSqlDatabase::contains(local_conn_name))
+        QSqlDatabase::removeDatabase(local_conn_name);
+
+    {
+        QSqlDatabase local_sync = QSqlDatabase::addDatabase("QSQLITE", local_conn_name);
+        local_sync.setDatabaseName("./database/database.db");
+
+        QSqlDatabase remote_sync = QSqlDatabase::addDatabase("QPSQL", remote_conn_name);
+        static QString host = "ep-divine-sun-a83zg48v-pooler.eastus2.azure.neon.tech";
+        static QString dbName = "neondb";
+        static QString user = "neondb_owner";
+        static QString password = "npg_qILNuP6Diz1Z";
+        static int port = 5432;
+
+        remote_sync.setHostName(host);
+        remote_sync.setPort(port);
+        remote_sync.setDatabaseName(dbName);
+        remote_sync.setUserName(user);
+        remote_sync.setPassword(password);
+        remote_sync.setConnectOptions("sslmode=require");
+
+        QString table_str = tableToString(table);
+        QSqlQuery remote_query(remote_sync);
+        if (!remote_sync.isOpen() || !local_sync.isOpen()) {
+            if (!remote_sync.open() || !local_sync.open()) {
+                remote_sync.close();
+                qDebug() << "Database reopen failed: " << remote_sync.lastError();
+                return;
+            }
+        }
+        QString query_str = "SELECT * FROM " + table_str + ";";
+        remote_query.prepare(query_str);
+        if(!remote_query.exec()){
+            qDebug() << "Error to exec remote query";
+            return;
+        }
+
+        local_sync.transaction();
+        QSqlQuery clear_sqlite_query(local_sync);
+        if(!clear_sqlite_query.exec("DELETE FROM " + table_str + ";")){
+            qDebug() << "Clear " << table_str << " error";
+            local_db.rollback();
+            return;
+        }
+
+        QStringList columns = Columns::all_columns[table_str];
+        int count = columns.size();
+
+        QString place_holder{};
+        for(int i = 0; i < count - 1; ++i){
+            place_holder += "?, ";
+        }
+        place_holder += "?";
+
+        QString insert_query_str = QString{"INSERT INTO %1 (%2) VALUES (%3);"}
+                                .arg(table_str).arg(columns.join(", "))
+                                .arg(place_holder);
+        QSqlQuery insert_query(local_sync);
+        insert_query.prepare(insert_query_str);
+
+        bool is_ok = true;
+        while(remote_query.next()){
+            insert_query.clear();
+            insert_query.prepare(insert_query_str);
+            for(const auto& col : columns){
+                insert_query.addBindValue(remote_query.value(col).toString());
+            }
+            if (!remote_sync.isOpen() || !local_sync.isOpen()) {
+                if (!remote_sync.open() || !local_sync.open()) {
+                    qDebug() << "Database reopen failed: " << remote_sync.lastError();
+                    return;
+                }
+            }
+            if(!insert_query.exec()){
+                qDebug() << "insert " + table_str + " to SQLite error";
+                is_ok = false;
+                break;
+            }
+        }
+        if(is_ok)
+            local_sync.commit();
+        else
+            local_sync.rollback();
+
+        remote_query.clear();
+        clear_sqlite_query.clear();
+        insert_query.clear();
+
+        remote_sync.close();
+        local_sync.close();
+    }
 }
 
 QSqlQuery DatabaseManager::findByName(TABLE table, const QString& text){
@@ -114,17 +240,18 @@ QSqlQuery DatabaseManager::findByName(TABLE table, const QString& text){
     }
     }
 
-    QSqlQuery query;
+    QSqlQuery query(local_db);
     query.prepare(query_str);
     query.bindValue(":text", text + "%");
     if(table == TABLE::EMPLOYEES || table == TABLE::TARIFFS)
         query.bindValue(":id", text);
+    if(!remote_db.isOpen()) remote_db.open();
     query.exec();
     return query;
 }
 
 QSqlQuery DatabaseManager::inProgressRequests(){
-    QSqlQuery query;
+    QSqlQuery query(local_db);
     query.prepare("SELECT r.id AS \"ID\", "
                   "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Customer\", "
                   "r.request_type AS \"Req. type\", "
@@ -134,11 +261,12 @@ QSqlQuery DatabaseManager::inProgressRequests(){
                   "WHERE r.status = 'In Progress' "
                   "AND r.assigned_to_id = :my_user_id;");
     query.bindValue(":my_user_id", CurrentUser::getCurrentUserID());
+    //QtConcurrent::run(&DatabaseManager::syncAllTables);
     return query;
 }
 
 QSqlQuery DatabaseManager::unassignedRequests(){
-    QSqlQuery query;
+    QSqlQuery query(local_db);
     query.prepare("SELECT r.id AS \"ID\", "
                   "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Customer\", "
                   "r.request_type AS \"Req. type\", "
@@ -150,7 +278,7 @@ QSqlQuery DatabaseManager::unassignedRequests(){
 }
 
 QSqlQuery DatabaseManager::completedRequests(){
-    QSqlQuery query;
+    QSqlQuery query(local_db);
     query.prepare("SELECT * FROM requests "
                   "WHERE (status = 'Confirmed' "
                   "OR status = 'Rejected') "
@@ -160,7 +288,7 @@ QSqlQuery DatabaseManager::completedRequests(){
 }
 
 QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
-    QSqlQuery query;
+    QSqlQuery query(local_db);
     if(page == PAGE::EMPLOYEES_DETAILS_PAGE){
         query.prepare("SELECT id AS ID, date AS Date"
                       ", request_type AS Type, cust_id AS \"Cust. ID\", "
@@ -200,23 +328,23 @@ QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
 }
 
 QSqlQuery DatabaseManager::newCustomersByPeriod(const bool is_today, QString period){
-    QSqlQuery query;
+    QSqlQuery query(local_db);
     if(is_today){
-        query.prepare("SELECT COUNT(*) AS cust_count, date "
+        query.prepare("SELECT COUNT(*) AS cust_count, DATETIME(date) AS date "
                       "FROM customers "
                       "WHERE DATE(date) = DATE(CURRENT_DATE) "
                       "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }else{
-        query.prepare("SELECT COUNT(id) AS cust_count, date "
+        query.prepare("SELECT COUNT(id) AS cust_count, DATETIME(date) AS date "
                       "FROM customers "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE, '" + period + "') "
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE + INTERVAL '" + period + "') "
                       "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }
     return query;
 }
 
 QSqlQuery DatabaseManager::newRequestsByPeriod(const bool is_today, QString period){
-    QSqlQuery query;
+    QSqlQuery query(local_db);
     if(is_today){
         query.prepare("SELECT COUNT(*) AS req_count, date "
                       "FROM requests "
@@ -225,14 +353,16 @@ QSqlQuery DatabaseManager::newRequestsByPeriod(const bool is_today, QString peri
     }else{
         query.prepare("SELECT COUNT(id) AS req_count, date "
                       "FROM requests "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE, '" + period + "') "
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE + INTERVAL '" + period + "') "
                                  "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }
     return query;
 }
 
 QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
-    QSqlQuery query;
+    QtConcurrent::run(&DatabaseManager::syncAllTables);
+    QTimer::singleShot(1000, nullptr, nullptr);
+    QSqlQuery query(local_db);
     query.prepare("SELECT c.id AS \"Cust. ID\", "
                   "c.first_name AS \"First name\", "
                   "c.last_name AS \"Last name\", "
@@ -251,8 +381,9 @@ QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
                   "JOIN tariffs t ON t.id = c.tariff_id "
                   "LEFT JOIN employees e ON e.id = c.employee_id "
                   "LEFT JOIN comments cm ON cm.id = c.comment_id "
-                  "WHERE c.id = :id;");
-    query.bindValue(":id", curr_cust_id);
+                  "WHERE c.id = ?;");
+    query.addBindValue(curr_cust_id);
+    if(!remote_db.isOpen()) remote_db.open();
     if(query.exec() && query.next()){
         CustomersDetailsPage::CurrentCustomer::id = query.value("Cust. ID").toString();
         CustomersDetailsPage::CurrentCustomer::first_name = query.value("First name").toString();
@@ -284,19 +415,19 @@ QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
                   "FROM customers c "
                   "JOIN tariffs t ON t.id = c.tariff_id "
                   "LEFT JOIN comments cm ON cm.id = c.comment_id "
-                  "WHERE c.id = :id;");
-    query.bindValue(":id", curr_cust_id);
+                  "WHERE c.id = ?;");
+    query.addBindValue(curr_cust_id);
     return query;
 }
 
 QSqlQuery DatabaseManager::currentEmployee(const uint curr_empl_id){
-    QSqlQuery query;
+    QSqlQuery query(local_db);
     query.prepare("SELECT e.id AS \"Empl. ID\", "
                   "e.first_name AS \"First name\", "
                   "e.last_name AS \"Last name\", "
                   "e.phone AS \"Phone\", "
                   "COALESCE(e.email, '') AS \"Email\", "
-                  "e.date_of_B AS \"B-DAY\", "
+                  "e.date_of_b AS \"B-DAY\", "
                   "e.is_active AS \"Is active\", "
                   "e.hire_date AS \"Hire date\", "
                   "e.photo AS \"Photo\", "
@@ -306,14 +437,15 @@ QSqlQuery DatabaseManager::currentEmployee(const uint curr_empl_id){
                   "e.position_id AS \"Position ID\", "
                   "p.position_name AS \"Position name\", "
                   "cm.comment_text AS \"Comment text\", "
-                  "COALESCE(e.comment_id, -1) AS \"Comment ID\" "
+                  "e.comment_id AS \"Comment ID\" "
                   "FROM employees e "
                   "LEFT JOIN departments d ON d.id = e.department_id "
                   "LEFT JOIN positions p ON p.id = e.position_id "
                   "LEFT JOIN comments cm ON cm.id = e.comment_id "
-                  "WHERE e.id = :id;");
-    query.bindValue(":id", curr_empl_id);
+                  "WHERE e.id = ?;");
+    query.addBindValue(curr_empl_id);
 
+    if(!remote_db.isOpen()) remote_db.open();
     if(query.exec() && query.next()){
         EmployeesDetailsPage::CurrentEmployee::id = query.value("Empl. ID").toString();
         EmployeesDetailsPage::CurrentEmployee::first_name = query.value("First name").toString();
@@ -330,91 +462,63 @@ QSqlQuery DatabaseManager::currentEmployee(const uint curr_empl_id){
         EmployeesDetailsPage::CurrentEmployee::is_active = query.value("Is active").toString();
         EmployeesDetailsPage::CurrentEmployee::date_of_B = query.value("B-DAY").toString();
         EmployeesDetailsPage::CurrentEmployee::comment_text = query.value("Comment text").toString();
-        EmployeesDetailsPage::CurrentEmployee::comment_id = query.value("Comment ID").toString();
+        qDebug() << "comment_id" << (EmployeesDetailsPage::CurrentEmployee::comment_id = query.value("Comment ID").toString());
     }else{
         qDebug() << "CurrentEmployee query error: " << query.lastError();
     }
+    QtConcurrent::run(&DatabaseManager::syncAllTables);
     return query;
 }
 
 void DatabaseManager::saveCommentToDB(TABLE table, int entity_id, int comment_id
                                       , const QString& comment_text)
 {
-    QString table_str{table == TABLE::CUSTOMERS ? "customers" : "employees"};
-    static QSqlQuery query;
+    QString table_str = tableToString(table);
+    QSqlQuery query(remote_db);
+    qDebug() << "comment_id = " << comment_id;
     if(comment_id == -1){
         query.prepare("INSERT INTO comments(comment_text, written_by_id) "
-                      "VALUES(:text, :my_id) RETURNING id;");
-        query.bindValue(":text", comment_text);
-        query.bindValue(":my_id", CurrentUser::getCurrentUserID());
+                      "VALUES(?, ?) RETURNING id;");
+        query.addBindValue(comment_text);
+        query.addBindValue(CurrentUser::getCurrentEmployeeID());
 
+        if(!remote_db.isOpen()) remote_db.open();
         if(!query.exec() || !query.next()){
             qDebug() << "insert into comment query fault: " << query.lastError();
             return;
         }
         comment_id = query.value("id").toInt();
-        query.clear();
         QString query_str{"UPDATE " + table_str +
-                          " SET comment_id = :comm_id "
-                          "WHERE id = :entity_id;"};
+                          " SET comment_id = ? "
+                          "WHERE id = ?;"};
         query.prepare(query_str);
-        query.bindValue(":comm_id", comment_id);
-        query.bindValue(":entity_id", entity_id);
+        query.addBindValue(comment_id);
+        query.addBindValue(entity_id);
 
-        if(!query.exec())
-            qDebug() << "update customers || employees comment_id query fault: " << query.lastError();
-
-        return;
+    }else{
+        query.prepare("UPDATE comments "
+                      "SET comment_text = ? "
+                      "WHERE id = ?;");
+        query.addBindValue(comment_text);
+        query.addBindValue(comment_id);
     }
-    query.clear();
-    query.prepare("UPDATE comments "
-                  "SET comment_text = :text "
-                  "WHERE id = :comm_id;");
-    query.bindValue(":text", comment_text);
-    query.bindValue(":comm_id", comment_id);
+    if(!remote_db.isOpen()) remote_db.open();
     if(!query.exec())
         qDebug() << "update comments query fault: " << query.lastError();
-}
-
-void DatabaseManager::deleteRecord(TABLE table, const uint id){
-    switch(table){
-    case TABLE::CUSTOMERS : {
-        deleteFromCustomers(id);
-        break;
-    }
-    case TABLE::EMPLOYEES : {
-        deleteFromEmployees(id);
-        break;
-    }
-    }
+    query.clear();
+    QtConcurrent::run(&DatabaseManager::syncAllTables);
 }
 
 QSqlQuery DatabaseManager::departments(){
-    return QSqlQuery{"SELECT * FROM departments"};
+    return QSqlQuery{"SELECT * FROM departments;", local_db};
 }
 
 QSqlQuery DatabaseManager::positions(){
-    return QSqlQuery{"SELECT * FROM positions"};
-}
-
-void deleteFromCustomers(const uint id){
-    QSqlQuery query;
-    query.prepare("DELETE FROM customers "
-                  "WHERE id = :id;");
-    query.bindValue(":id", id);
-    query.exec();
-}
-
-void deleteFromEmployees(const uint id){
-    QSqlQuery query;
-    query.prepare("DELETE FROM employees "
-                  "WHERE id = :id;");
-    query.bindValue(":id", id);
-    query.exec();
+    return QSqlQuery{"SELECT * FROM positions;", local_db};
 }
 
 QSqlQuery DatabaseManager::MyAllCorporateChats(){
-    QSqlQuery query;
+    QSqlQuery query(local_db);
     query.prepare("SELECT DISTINCT u.id AS user_id, c.id AS chat_id, "
                   "e.first_name AS partner_fname, "
                   "e.last_name AS partner_lname, e.photo AS profile_pic, "
@@ -429,11 +533,13 @@ QSqlQuery DatabaseManager::MyAllCorporateChats(){
                   "WHERE (p1.role = 'employee' AND p2.role = 'employee') "
                   "AND (p1.reference_id = :my_id AND p2.reference_id != :my_id);");
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
+    QtConcurrent::run(&DatabaseManager::syncAllTables);
     return query;
 }
 
 QSqlQuery DatabaseManager::AllMessageFromSupportChat(){
-    QSqlQuery query;
+    if(!remote_db.isOpen()) remote_db.open();
+    QSqlQuery query(remote_db);
     query.prepare("SELECT m.text AS text, c.id AS chat_id, "
                   "m.sender_participant_id AS sender_id "
                   "FROM messages m "

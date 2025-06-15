@@ -19,7 +19,7 @@ private slots:
     void InsertTariffToDB();
 
 private: /*Methods*/
-    void setConnections()const;
+    void setConnections();
     void clearWidgets()const;
 
 private:

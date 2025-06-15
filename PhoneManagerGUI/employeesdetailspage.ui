@@ -35,7 +35,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgba(0, 0, 0, 0.2);</string>
+     <string notr="true">background-color:rgba(0, 0, 0, 0.1);</string>
     </property>
     <widget class="QLabel" name="full_name_Label">
      <property name="geometry">
@@ -124,9 +124,9 @@ background-color:transparent;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border:none;
-border-radius:4px;
-background-color:transparent;</string>
+      <string notr="true">border:1px solid rgba(0, 0, 0, 0.2);
+border-radius:6px;
+background-color:rgba(255, 255, 255, 0.4);</string>
      </property>
      <property name="text">
       <string/>
@@ -189,8 +189,9 @@ font-family: Lato;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border:none;
-border-radius:4px;</string>
+      <string notr="true">border:1px solid rgba(0, 0, 0, 0.2);
+border-radius:6px;
+background-color:rgba(255, 255, 255, 0.4);</string>
      </property>
      <property name="text">
       <string/>
@@ -318,17 +319,17 @@ padding-top:10px;</string>
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>651</x>
+       <x>650</x>
        <y>30</y>
-       <width>328</width>
+       <width>330</width>
        <height>35</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">color:black;
+      <string notr="true">color:white;
 font-size:24px;
 font-family:Lato, Consolas;
-background-color:rgba(0, 0, 0, 0.2);
+background-color:#73819C;
 border:1px solid rgba(0, 0, 0, 0.4);
 border-top-right-radius:6px;
 border-top-left-radius:6px;</string>
@@ -343,9 +344,9 @@ border-top-left-radius:6px;</string>
     <widget class="QPushButton" name="save_comment_btn">
      <property name="geometry">
       <rect>
-       <x>651</x>
+       <x>650</x>
        <y>440</y>
-       <width>329</width>
+       <width>330</width>
        <height>40</height>
       </rect>
      </property>

@@ -7,8 +7,9 @@ class RegistrationManager : public QObject
 {
     Q_OBJECT
 public:
-    RegistrationManager();
-    ~RegistrationManager();
+    RegistrationManager() = default;
+    ~RegistrationManager() = default;
+
 public slots:
     void registerNewUser(const QString&, const QString&);
     void is_exist(const QString&);
@@ -19,6 +20,7 @@ signals:
     void unsuccessful_registration();
     void successful_registration();
     void not_allowed_to_registration();
+    void employee_allready_registered();
 
 private:/*Methods*/
     void setConnections();

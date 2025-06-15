@@ -43,6 +43,7 @@ signals:
 
 private:
     void SetConnections();
+    void SetTableViewStyle();
 
     struct TableModels{
         QSqlTableModel* req_qmodel = new QSqlTableModel{};

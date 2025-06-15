@@ -8,7 +8,7 @@ void CustomersPage::updateFilterWidgets(){
 }
 
 void CustomersPage::fillTariffsComboBox(){
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare("SELECT * FROM tariffs;");
     if(!query.exec()){
         qDebug() << "fillTariffsComboBox() query fault!";
@@ -23,7 +23,7 @@ void CustomersPage::fillTariffsComboBox(){
 }
 
 void CustomersPage::fillEmployeesComboBox(){
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare("SELECT e.id, "
                   "(COALESCE(e.first_name, '') "
                   "|| ' ' || "
@@ -83,18 +83,18 @@ void CustomersPage::apply_filters(){
 
     bool is_active_btn = ui->all_by_activity_btn->property("status").toBool();
     QString query_str{"SELECT * FROM customers WHERE is_active = :status "};
-    //if(is_active_btn) query_str += " OR is_active != :status ";
-    //if(!empl_id.isEmpty()) query_str += " AND " + empl_id;
-    //if(!tariff_id.isEmpty()) query_str += " AND " + tariff_id;
-    //if(!phone.isEmpty()) query_str += " AND phone LIKE :phone";
+    if(is_active_btn) query_str += " OR is_active != :status ";
+    if(!empl_id.isEmpty()) query_str += " AND " + empl_id;
+    if(!tariff_id.isEmpty()) query_str += " AND " + tariff_id;
+    if(!phone.isEmpty()) query_str += " AND phone LIKE :phone";
     query_str += order_by;
 
     /**/is_active_btn = ui->active_btn->property("status").toBool();
 
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare(query_str);
     query.bindValue(":status", is_active_btn);
-    //query.bindValue(":phone", phone);
+    query.bindValue(":phone", phone);
 
     if(!query.exec())
         qDebug() << "apply filters fault: " << query.lastError();

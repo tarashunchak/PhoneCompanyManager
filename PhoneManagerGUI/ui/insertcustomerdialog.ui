@@ -127,10 +127,10 @@ background-color:transparent;
       <item>
        <widget class="QLineEdit" name="first_name_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+         <string notr="true">background-color:rgba(255, 255, 255, 0.2);
 color:black;
-font-family:Lato, Consolas;
-font-size:18px;
+font-family:Lato, Arial, Consolas;
+font-size:20px;
 border-radius:4px;
 border:1px solid black;
 padding-left:4px;</string>
@@ -160,10 +160,10 @@ padding-left:4px;</string>
       <item>
        <widget class="QLineEdit" name="last_name_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+         <string notr="true">background-color:rgba(255, 255, 255, 0.2);
 color:black;
-font-family:Lato, Consolas;
-font-size:18px;
+font-family:Lato, Arial, Consolas;
+font-size:20px;
 border-radius:4px;
 border:1px solid black;
 padding-left:4px;</string>
@@ -225,10 +225,10 @@ border-radius:5px;</string>
       <item>
        <widget class="QLineEdit" name="phone_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+         <string notr="true">background-color:rgba(255, 255, 255, 0.2);
 color:black;
-font-family:Lato, Consolas;
-font-size:18px;
+font-family:Lato, Arial, Consolas;
+font-size:20px;
 border-radius:4px;
 border:1px solid black;
 padding-left:4px;</string>
@@ -305,10 +305,10 @@ border-radius:5px;</string>
       <item>
        <widget class="QLineEdit" name="email_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+         <string notr="true">background-color:rgba(255, 255, 255, 0.2);
 color:black;
-font-family:Lato, Consolas;
-font-size:18px;
+font-family:Lato, Arial, Consolas;
+font-size:20px;
 border-radius:4px;
 border:1px solid black;
 padding-left:4px;</string>
@@ -318,6 +318,30 @@ padding-left:4px;</string>
      </layout>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="return_btn">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>10</y>
+     <width>40</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border:none;
+border-radius:4px;
+background-color:transparent;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>80</width>
+     <height>80</height>
+    </size>
+   </property>
   </widget>
  </widget>
  <resources/>

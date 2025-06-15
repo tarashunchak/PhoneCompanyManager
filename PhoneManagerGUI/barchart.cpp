@@ -44,8 +44,9 @@ void BarChart::resize(const QSize& size){
 bool BarChart::setQuery(QSqlQuery query, const QString& field_name, const QString& label){
     if(!query.exec()){
         qDebug() << "Sql query error in BarChart(): " << query.lastError();
-        chart->removeAxis(chart->axisX());
-        chart->removeAxis(chart->axisY());
+        if(chart->axes(Qt::Horizontal).contains(chart->axisX()))
+        //chart->removeAxis(chart->axisX());
+        //chart->removeAxis(chart->axisY());
         return false;
     }
 

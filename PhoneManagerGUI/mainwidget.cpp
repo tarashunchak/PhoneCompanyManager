@@ -7,7 +7,7 @@
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::MainWidget)
-    , chat(new Chat{})
+    , chat(new SupportChat{})
 {
     ui->setupUi(this);
     ui->close_open_chat_btn->setIcon(QIcon{"./img/chat.svg"});
@@ -34,6 +34,8 @@ MainWidget::MainWidget(QWidget *parent)
     chat->setGeometry(this->size().width() - 80 - chat->size().width()
                       ,this->size().height() - 80 - chat->size().height()
                       ,chat->size().width(), chat->size().height());
+    ui->leave_session_btn->setIcon(QIcon{"./img/quit_icon.svg"});
+    ui->leave_session_btn->setIconSize(QSize{50, 50});
 }
 
 MainWidget::~MainWidget()
@@ -42,7 +44,7 @@ MainWidget::~MainWidget()
 }
 
 void MainWidget::SetCurrentUserInfo(){
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare("SELECT e.photo AS profile_pic, "
                   "(COALESCE(e.first_name, '') "
                   "|| ' ' || COALESCE(e.last_name, '')) AS full_name "
@@ -92,13 +94,21 @@ void MainWidget::SetupConnections(){
         navigation_manager->showChatsPage();
     });
     connect(navigation_manager, &NavigationManager::show_small_buttons, ui->close_open_chat_btn, [this](){
+        ui->leave_session_btn->setVisible(false);
         ui->close_open_chat_btn->setVisible(true);
     });
     connect(navigation_manager, &NavigationManager::hide_small_buttons, ui->close_open_chat_btn, [this](){
+        ui->leave_session_btn->setVisible(true);
+        chat->close();
         ui->close_open_chat_btn->setVisible(false);
     });
     connect(navigation_manager, &NavigationManager::open_chat, this, [this](const QString& phone){
         chat->show();
         chat->SetPhoneNumber(phone);
     });
+}
+
+void MainWidget::on_leave_session_btn_clicked()
+{
+    QCoreApplication::quit();
 }

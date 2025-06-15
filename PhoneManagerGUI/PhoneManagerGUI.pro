@@ -2,7 +2,7 @@ QT       += core gui sql charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++20
+CONFIG += c++20 sanitize_address
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -12,7 +12,6 @@ SOURCES += \
     authmanager.cpp \
     barchart.cpp \
     buttonsstylemanager.cpp \
-    chat.cpp \
     comboboxdelegate.cpp \
     currentuser.cpp \
     customersdetailspage.cpp \
@@ -34,6 +33,7 @@ SOURCES += \
     mainwidget.cpp \
     mainwindow.cpp \
     messagebox.cpp \
+    messagechecker.cpp \
     navigationmanager.cpp \
     passwordrecoverypage.cpp \
     piechart.cpp \
@@ -42,6 +42,7 @@ SOURCES += \
     registrationpage.cpp \
     requestspage.cpp \
     requeststabelview.cpp \
+    supportchat.cpp \
     table_view_for_requestpage.cpp \
     tariffcard.cpp \
     tariffeditwidget.cpp \
@@ -50,7 +51,6 @@ SOURCES += \
 HEADERS += \
     employeeschatpage.h \
     employeesdetailspage.h \
-    includes/chat.h \
     includes/chat_type_traits.h \
     includes/comboboxdelegate.h \
     includes/authmanager.h \
@@ -74,6 +74,7 @@ HEADERS += \
     includes/registrationmanager.h \
     includes/registrationpage.h \
     includes/requestspage.h \
+    includes/supportchat.h \
     includes/tariffcard.h \
     includes/tariffeditwidget.h \
     includes/tariffspage.h \
@@ -86,6 +87,7 @@ HEADERS += \
     includes/messagebox.h \
     includes/pushbuttondelegate.h \
     includes/tariffeditwidget.h \
+    messagechecker.h \
     requeststabelview.h
 
 FORMS += \
@@ -94,8 +96,8 @@ FORMS += \
     ui/insertcustomerdialog.ui \
     ui/insertemployeedialog.ui \
     ui/mainwidget.ui \
+    ui/supportchat.ui \
     ui/tariffeditwidget.ui \
-    ui/chat.ui \
     ui/customersdetailspage.ui \
     ui/customerspage.ui \
     ui/dashboard.ui \
@@ -112,6 +114,9 @@ FORMS += \
     ui/tariffcard.ui \
     ui/tariffeditwidget.ui \
     ui/tariffspage.ui
+
+INCLUDEPATH += C:/msys64/mingw64/include
+LIBS += -LC:/msys64/mingw64/lib -lpq
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -25,6 +25,9 @@
      <height>1080</height>
     </rect>
    </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
    <widget class="QWidget" name="page"/>
    <widget class="QWidget" name="page_2"/>
   </widget>
@@ -550,6 +553,22 @@ QPushButton:hover{
      <width>40</width>
      <height>40</height>
     </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="leave_session_btn">
+   <property name="geometry">
+    <rect>
+     <x>1840</x>
+     <y>30</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:transparent;</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

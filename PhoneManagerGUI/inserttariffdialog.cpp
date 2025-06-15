@@ -10,10 +10,12 @@ InsertTariffDialog::InsertTariffDialog(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowTitle("Insert tariff");
+    this->setWindowFlag(Qt::FramelessWindowHint);
     setModal(true);
     setMinimumSize(440, 320);
     setMaximumSize(440, 320);
     setConnections();
+    ui->return_btn->setIcon(QIcon{"./img/exit.png"});
 }
 
 InsertTariffDialog::~InsertTariffDialog()
@@ -21,8 +23,12 @@ InsertTariffDialog::~InsertTariffDialog()
     delete ui;
 }
 
-void InsertTariffDialog::setConnections()const{
+void InsertTariffDialog::setConnections(){
     connect(ui->confirm_addition_btn, &QPushButton::clicked, this, &InsertTariffDialog::InsertTariffToDB);
+    connect(ui->return_btn, &QPushButton::clicked, this, [this](){
+        clearWidgets();
+        this->close();
+    });
 }
 
 void InsertTariffDialog::InsertTariffToDB(){

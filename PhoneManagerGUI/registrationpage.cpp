@@ -50,6 +50,11 @@ void RegistrationPage::SetConnections(){
         ui->error_message->setVisible(true);
     });
     connect(reg_manager, &RegistrationManager::successful_registration, this, [this](){
+        ui->confirm_btn->setGeometry(800, 590, 320, 40);
+        ui->confirmed_widget->setVisible(false);
+        ui->email_LineEdit->clear();
+        ui->password_LineEdit->clear();
+        ui->rep_password_LineEdit->clear();
         emit successful_registration();
     });
     connect(this, &RegistrationPage::on_return_to_login_btn_clicked, this, [this](){
@@ -58,5 +63,9 @@ void RegistrationPage::SetConnections(){
         ui->email_LineEdit->clear();
         ui->password_LineEdit->clear();
         ui->rep_password_LineEdit->clear();
+    });
+    connect(reg_manager, &RegistrationManager::employee_allready_registered, this, [this](){
+        ui->error_message->setText("This employee allready registered");
+        ui->error_message->setVisible(true);
     });
 }

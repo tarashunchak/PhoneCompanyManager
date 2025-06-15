@@ -30,11 +30,11 @@ EmployeesDetailsPage::EmployeesDetailsPage(QWidget *parent)
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo_cust.svg"});
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
     ui->delete_employee_btn->setIcon(QIcon{"./img/delete_can.png"});
-    ui->delete_employee_btn->setStyleSheet("background-color:transparent;");
 
     ui->requests_statistic_tableView->setModel(TABLE_MODELS.req_qmodel);
     ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
+    SetTableViewStyle();
     SetConnections();
 }
 
@@ -45,16 +45,18 @@ EmployeesDetailsPage::~EmployeesDetailsPage()
 
 void EmployeesDetailsPage::SetConnections(){
     connect(ui->save_comment_btn, &QPushButton::clicked, this, [this](){
+        int comment_id = CurrentEmployee::comment_id.toInt();
+        QString text = ui->comment_textEdit->toPlainText();
         DatabaseManager::saveCommentToDB(DatabaseManager::TABLE::EMPLOYEES
-                                         , ui->empl_id_Label->property("id").toInt()
-                                         , ui->comment_textEdit->property("comment_id").toInt()
-                                         , ui->comment_textEdit->toPlainText());
+                               , CurrentEmployee::id.toUInt(), comment_id, text);
     });
     connect(ui->delete_employee_btn, &QPushButton::clicked, ui->delete_employee_widget, &QWidget::show);
     connect(ui->cancel_btn, &QPushButton::clicked, ui->delete_employee_widget, &QWidget::close);
     connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
         ui->delete_employee_widget->close();
-        DatabaseManager::deleteRecord(DatabaseManager::TABLE::EMPLOYEES, CurrentEmployee::id.toUInt());
+        QtConcurrent::run([](){
+            DatabaseManager::deleteRecord<DatabaseManager::TABLE::EMPLOYEES>("id", CurrentEmployee::id.toUInt());
+        });
         emit on_return_btn_clicked();
     });
 }
@@ -62,16 +64,12 @@ void EmployeesDetailsPage::SetConnections(){
 void EmployeesDetailsPage::SetEmployeeInfo(const uint empl_id){
     auto query = DatabaseManager::currentEmployee(empl_id);
     ui->empl_id_Label->setText(CurrentEmployee::id);
-    ui->empl_id_Label->setProperty("id", CurrentEmployee::id);
     ui->phone_Label->setText(CurrentEmployee::first_name + " " + CurrentEmployee::last_name);
     ui->email_Label->setText(CurrentEmployee::phone);
     ui->full_name_Label->setText(CurrentEmployee::email);
     ui->department_Label->setText(CurrentEmployee::department_name);
-    ui->department_Label->setProperty("department_id", CurrentEmployee::department_id);
     ui->position_Label->setText(CurrentEmployee::position_name);
-    ui->position_Label->setProperty("position_id", CurrentEmployee::position_id);
     ui->comment_textEdit->setPlainText(CurrentEmployee::comment_text);
-    ui->comment_textEdit->setProperty("comment_id", CurrentEmployee::comment_id);
     SetRequestsHistory();
 }
 
@@ -87,4 +85,20 @@ void EmployeesDetailsPage::SetRequestsHistory()const{
     bool is_model_empty = !TABLE_MODELS.req_qmodel->rowCount();
     ui->requests_statistic_tableView->setVisible(!is_model_empty);
     ui->no_requests_label->setVisible(is_model_empty);
+}
+
+void EmployeesDetailsPage::SetTableViewStyle(){
+    ui->requests_statistic_tableView->setModel(TABLE_MODELS.req_qmodel);
+    ui->requests_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    ui->requests_statistic_tableView->horizontalHeader()->setStyleSheet(
+        "QHeaderView{"
+        "   border:1px solid rgba(0, 0, 0, 0.4);"
+        "   font-family:Lato, Arial, Consolas;"
+        "   font-size:18px;"
+        "   color:black;"
+        "   height:36px;"
+        "}"
+        );
 }

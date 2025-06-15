@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QSqlQuery>
 #include <QLabel>
+#include "messagechecker.h"
 
 namespace Ui {
 class EmployeesChatPage;
@@ -16,11 +17,12 @@ class EmployeesChatPage : public QWidget
 public:
     explicit EmployeesChatPage(QWidget *parent = nullptr);
     ~EmployeesChatPage();
-    void fillChatsWidget(QSqlQuery query = QSqlQuery{});
+    void fillChatsWidget(QSqlQuery query = QSqlQuery{QSqlDatabase::database("local")}, bool is_search_res = false);
     void fillMessagesWidget(const uint, const QString&
                             , QLabel* partner_label = nullptr
                             , QPixmap pixmap = QPixmap{});
     void updateLastSeenTimestamp();
+    void closeCurrentChat();
     struct ChatUnits{
         static const bool is_corporate = true;
         static bool is_chat_exist;
@@ -36,6 +38,7 @@ private:
     void chat_is_empty();
 private:
     Ui::EmployeesChatPage *ui;
+    MessageChecker* checker;
 };
 
 #endif // EMPLOYEESCHATPAGE_H

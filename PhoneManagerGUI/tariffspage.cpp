@@ -25,19 +25,19 @@ TariffsPage::~TariffsPage()
 }
 
 void TariffsPage::setCurrentUser(){
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare("SELECT p.position_name AS position "
                   "FROM employees e "
                   "JOIN positions p ON p.id = e.position_id "
-                  "WHERE e.id = :empl_id;");
+                  "WHERE e.id = ?;");
     const uint empl_id = CurrentUser::getCurrentEmployeeID();
-    query.bindValue(":empl_id", empl_id);
+    query.addBindValue(empl_id);
     if(query.exec() && query.next()){
         bool is_admin = query.value("position").toString() == "Administrator";
         ui->add_tariff_btn->setVisible(is_admin);
         TariffCard::setEditable(is_admin);
     }else{
-        qDebug() << "setCurrentUser Dashboard Page fault!" << query.lastError();
+        qDebug() << "setCurrentUser Tariffs Page fault!" << query.lastError();
         return;
     }
 }

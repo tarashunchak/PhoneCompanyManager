@@ -17,12 +17,12 @@ void Dashboard::setRequestsStatistics(){
     QString period{ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
     bool is_today = !ui->requests_period_comboBox->currentIndex();
     auto query = DatabaseManager::newRequestsByPeriod(is_today, period);
-    ui->empty_req_stat->setVisible(!req_bar_chart->setQuery(query, "req_count"));
+    ui->empty_req_stat->setVisible(!req_bar_chart->setQuery(std::move(query), "req_count"));
     req_bar_chart->resize(ui->requests_statistic->size());
 }
 
 void Dashboard::setTariffsStatistics(){
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare("SELECT COUNT(c.id) AS count, t.tariff_name AS name "
                   "FROM tariffs t "
                   "JOIN customers c ON c.tariff_id = t.id "
@@ -38,7 +38,7 @@ void Dashboard::setTariffsStatistics(){
 }
 
 void Dashboard::setRequestsHistory(){
-    QString period{std::to_string((ui->requests_period_comboBox->currentIndex() + 1) * 10).c_str()};
+    QString period{QString::number((ui->requests_period_comboBox->currentIndex() + 1) * 10)};
     auto query = DatabaseManager::requestsHistory(DatabaseManager::PAGE::DASHBOARD_PAGE, period);
     if(!query.exec()){
         qDebug() << "setRequestsHistory() fault: " << query.lastError();

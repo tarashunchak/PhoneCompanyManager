@@ -40,7 +40,7 @@ CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     ui->cust_profile_pic->setPixmap(QPixmap{"./img/profile_photo_cust.svg"});
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
     ui->delete_customer_btn->setIcon(QIcon{"./img/delete_can.png"});
-    ui->delete_customer_btn->setStyleSheet("background-color:transparent;");
+    //ui->delete_customer_btn->setStyleSheet("background-color:transparent;");
 
     ui->delete_customer_widget->close();
 
@@ -58,16 +58,16 @@ void CustomersDetailsPage::SetConnections(){
         emit on_open_chat_btn_clicked(ui->phone_Label->text());
     });
     connect(ui->save_comment_btn, &QPushButton::clicked, this, [this](){
+        int comment_id = CurrentCustomer::comment_id.toInt();
+        QString text = ui->comment_textEdit->toPlainText();
         DatabaseManager::saveCommentToDB(DatabaseManager::TABLE::CUSTOMERS
-                                         , ui->cust_id_label->property("id").toInt()
-                                         , ui->comment_textEdit->property("comment_id").toInt()
-                                         , ui->comment_textEdit->toPlainText());
+                                     , CurrentCustomer::id.toUInt(), comment_id, text);
     });
     connect(ui->delete_customer_btn, &QPushButton::clicked, ui->delete_customer_widget, &QWidget::show);
     connect(ui->cancel_btn, &QPushButton::clicked, ui->delete_customer_widget, &QWidget::close);
     connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
         ui->delete_customer_widget->close();
-        DatabaseManager::deleteRecord(DatabaseManager::TABLE::CUSTOMERS, CurrentCustomer::id.toUInt());
+        DatabaseManager::deleteRecord<DatabaseManager::TABLE::CUSTOMERS>("id", CurrentCustomer::id.toUInt());
         emit on_return_btn_clicked();
     });
 }
@@ -76,13 +76,11 @@ void CustomersDetailsPage::SetCustomerInfo(const uint id){
     auto query = DatabaseManager::currentCustomer(id);
     ui->current_balance_label->setText(CurrentCustomer::balance);
     ui->cust_id_label->setText(CurrentCustomer::id);
-    ui->cust_id_label->setProperty("id", CurrentCustomer::id);
     ui->full_name_Label->setText(CurrentCustomer::first_name + " " + CurrentCustomer::last_name);
     ui->phone_Label->setText(CurrentCustomer::phone);
     ui->reg_date_Label->setText(CurrentCustomer::reg_date);
     ui->current_tariff_label->setText(CurrentCustomer::tariff_name);
     ui->comment_textEdit->setPlainText(CurrentCustomer::comment_text);
-    ui->comment_textEdit->setProperty("comment_id", CurrentCustomer::comment_id);
 
     TABLE_MODELS.payments_qmodel->setQuery(std::move(query));
 
@@ -90,10 +88,7 @@ void CustomersDetailsPage::SetCustomerInfo(const uint id){
 }
 
 void CustomersDetailsPage::SetPaymentsHistory()const{
-    QSqlQuery query;
-    query.prepare("SELECT * FROM payments "
-                  "WHERE cust_id = :cust_id;");
-    query.bindValue(":cust_id", CurrentCustomer::id);
+    auto query = DatabaseManager::selectRecord<DatabaseManager::TABLE::PAYMENTS>("cust_id", CurrentCustomer::id);
     ui->no_payments_label->setVisible(!query.exec());
     TABLE_MODELS.payments_qmodel->setQuery(std::move(query));
 }
@@ -119,7 +114,7 @@ void CustomersDetailsPage::SetTableViewStyle(){
 }
 
 void CustomersDetailsPage::SetTariffsChart()const{
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare("SELECT t.tariff_name AS name, t.id AS id "
                          "FROM customers c "
                          "JOIN tariffs t ON t.id = c.tariff_id "

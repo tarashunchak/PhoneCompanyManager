@@ -189,6 +189,7 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
             rows++;
         }
     }
+    query.clear();
 }
 
 void CustomersPage::FindCustomersByName(){

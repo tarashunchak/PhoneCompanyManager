@@ -41,7 +41,7 @@ void EmployeesPage::SetConnections(){
 }
 
 void EmployeesPage::setCurrentUser()const{
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare("SELECT p.position_name AS POS_NAME "
                   "FROM users "
                   "JOIN employees e ON e.id = users.empl_id "
@@ -136,4 +136,5 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         const uint empl_id = query.value("id").toUInt();
         connect(card, &QPushButton::clicked, this, [this, empl_id](){emit employee_selected(empl_id);});
     }
+    query.clear();
 }

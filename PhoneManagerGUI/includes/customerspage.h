@@ -17,7 +17,7 @@ class CustomersPage : public QWidget
 public:
     explicit CustomersPage(QWidget *parent = nullptr);
     ~CustomersPage();
-    void SetCustomersCards(QSqlQuery query = QSqlQuery());
+    void SetCustomersCards(QSqlQuery query = QSqlQuery(QSqlDatabase::database("local")));
     void updateFilterWidgets();
     void open_filter_widget();
     void close_filter_widget();

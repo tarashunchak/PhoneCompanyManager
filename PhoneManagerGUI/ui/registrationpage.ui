@@ -47,8 +47,8 @@
    <property name="styleSheet">
     <string notr="true">border-radius:4px;
 background-color:white;
+font-family:Lato, Arial, Consolas;
 color:black;
-font-family:Lato, Consolas;
 border:1px solid rgba(0, 0, 0, 0.6);</string>
    </property>
    <property name="placeholderText">
@@ -144,6 +144,7 @@ font-family:Lato, Arial, Consolas;</string>
     <property name="styleSheet">
      <string notr="true">border-radius:4px;
 background-color:white;
+font-family:Lato, Arial, Consolas;
 color:black;
 border:1px solid rgba(0, 0, 0, 0.6);</string>
     </property>
@@ -194,6 +195,7 @@ border:1px solid rgba(0, 0, 0, 0.6);</string>
     <property name="styleSheet">
      <string notr="true">border-radius:4px;
 background-color:white;
+font-family:Lato, Arial, Consolas;
 color:black;
 border:1px solid rgba(0, 0, 0, 0.6);</string>
     </property>
@@ -254,16 +256,16 @@ border:none;</string>
   <widget class="QLabel" name="error_message">
    <property name="geometry">
     <rect>
-     <x>805</x>
+     <x>750</x>
      <y>564</y>
-     <width>310</width>
+     <width>410</width>
      <height>25</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">text-align:center;
 background-color:transparent;
-font-size:16px;
+font-size:18px;
 color:rgb(252, 41, 41);
 font-family:Lato, Arial, Consolas;</string>
    </property>

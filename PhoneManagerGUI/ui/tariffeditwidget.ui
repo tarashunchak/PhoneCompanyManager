@@ -111,10 +111,10 @@ font-size:36px;</string>
       <item>
        <widget class="QLineEdit" name="messages_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+         <string notr="true">background-color:rgba(255, 255, 255, 0.2);
 color:black;
-font-family:Lato, Consolas;
-font-size:18px;
+font-family:Lato, Arial, Consolas;
+font-size:20px;
 border-radius:4px;
 border:1px solid black;
 padding-left:4px;</string>
@@ -135,10 +135,10 @@ padding-left:4px;</string>
       <item>
        <widget class="QLineEdit" name="daily_price_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+         <string notr="true">background-color:rgba(255, 255, 255, 0.2);
 color:black;
-font-family:Lato, Consolas;
-font-size:18px;
+font-family:Lato, Arial, Consolas;
+font-size:20px;
 border-radius:4px;
 border:1px solid black;
 padding-left:4px;</string>
@@ -159,10 +159,10 @@ padding-left:4px;</string>
       <item>
        <widget class="QLineEdit" name="internet_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+         <string notr="true">background-color:rgba(255, 255, 255, 0.2);
 color:black;
-font-family:Lato, Consolas;
-font-size:18px;
+font-family:Lato, Arial, Consolas;
+font-size:20px;
 border-radius:4px;
 border:1px solid black;
 padding-left:4px;</string>
@@ -183,10 +183,10 @@ padding-left:4px;</string>
       <item>
        <widget class="QLineEdit" name="call_minutes_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+         <string notr="true">background-color:rgba(255, 255, 255, 0.2);
 color:black;
-font-family:Lato, Consolas;
-font-size:18px;
+font-family:Lato, Arial, Consolas;
+font-size:20px;
 border-radius:4px;
 border:1px solid black;
 padding-left:4px;</string>
@@ -207,10 +207,10 @@ padding-left:4px;</string>
       <item>
        <widget class="QLineEdit" name="monthly_price_lineEdit">
         <property name="styleSheet">
-         <string notr="true">background-color:rgba(0, 0, 0, 0.2);
+         <string notr="true">background-color:rgba(255, 255, 255, 0.2);
 color:black;
-font-family:Lato, Consolas;
-font-size:18px;
+font-family:Lato, Arial, Consolas;
+font-size:20px;
 border-radius:4px;
 border:1px solid black;
 padding-left:4px;</string>
@@ -243,6 +243,109 @@ background-color:transparent;
    <property name="alignment">
     <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
+  </widget>
+  <widget class="QPushButton" name="delete_tariff_btn">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>20</y>
+     <width>40</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border:none;
+border-radius:4px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>80</width>
+     <height>80</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QWidget" name="delete_tariff_widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>90</y>
+     <width>300</width>
+     <height>180</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(155,160, 165);
+color:black;
+font-family:Lato, Arial, Consolas;
+border:1px solid black;
+border-radius:5px;</string>
+   </property>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>1</x>
+      <y>1</y>
+      <width>298</width>
+      <height>139</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:none;
+font-size:36px;
+border-radius:4px;</string>
+    </property>
+    <property name="text">
+     <string>Are you sure?</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="confirm_btn">
+    <property name="geometry">
+     <rect>
+      <x>41</x>
+      <y>143</y>
+      <width>111</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;
+font-size:16px;
+border:1px solid black;
+padding-top:5px;
+padding-bottom:5px;
+border-radius:4px;</string>
+    </property>
+    <property name="text">
+     <string>Confirm</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cancel_btn">
+    <property name="geometry">
+     <rect>
+      <x>159</x>
+      <y>143</y>
+      <width>101</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;
+font-size:16px;
+border:1px solid black;
+padding-top:5px;
+padding-bottom:5px;
+border-radius:4px;</string>
+    </property>
+    <property name="text">
+     <string>Cancel</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

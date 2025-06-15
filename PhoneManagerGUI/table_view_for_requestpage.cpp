@@ -98,13 +98,16 @@ void RequestsPage::showUnassignmentRequests(){
 void RequestsPage::showInProgressRequests(){
     ui->save_btn->setVisible(true);
     auto query = DatabaseManager::inProgressRequests();
+    int counter = -1;
     if(!query.exec()){
         ui->no_requests_label->setVisible(true);
+        ui->save_btn->setVisible(false);
         qDebug() << "showInProgressRequests()const query fault: " << query.lastError();
     }else{
         ui->no_requests_label->setVisible(false);
         QStandardItemModel* model = new QStandardItemModel{ui->scrollAreaWidgetContents};
         while(query.next()){
+            counter++;
             QList<QStandardItem*> items;
             for(int col = 0; col < query.record().count(); ++col){
                 items.append(new QStandardItem{query.value(col).toString()});
@@ -124,6 +127,7 @@ void RequestsPage::showInProgressRequests(){
         }
         headers << "Action";
         model->setHorizontalHeaderLabels(headers);
+        ui->save_btn->setVisible(counter > 0);
     }
     req_tableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
     setActiveButton(IN_PROGRESS);

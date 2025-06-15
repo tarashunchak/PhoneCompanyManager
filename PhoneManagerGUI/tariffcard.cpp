@@ -1,6 +1,8 @@
 #include "includes/tariffcard.h"
 #include "ui_tariffcard.h"
 #include <QSqlQuery>
+#include <QtConcurrent/QtConcurrent>
+#include "includes/databasemanager.h"
 
 TariffCard::TariffCard(QFrame *parent)
     : QFrame(parent)
@@ -101,7 +103,7 @@ void TariffCard::setTariffInfoFromQuery(QSqlRecord record){
     SetActiveButtonStatement(record.value("is_active").toBool());
 
     connect(ui->active_inactive_swithc_btn, &QPushButton::clicked, this, [this, tariff_id]{
-        QSqlQuery query;
+        QSqlQuery query(QSqlDatabase::database("remote"));
         query.prepare("UPDATE tariffs "
                       "SET is_active = :status "
                       "WHERE id = :tariff_id;");
@@ -112,6 +114,7 @@ void TariffCard::setTariffInfoFromQuery(QSqlRecord record){
             qDebug() << "update tariff status fault";
 
         SetActiveButtonStatement((ui->active_inactive_swithc_btn->text() == "inactive"));
+        QtConcurrent::run([](){DatabaseManager::syncAllTables();});
     });
     connect(ui->daily_btn, &QPushButton::clicked, this, [this, record](){
         ui->price_label->setText(record.value("daily_price").toString() + "$");

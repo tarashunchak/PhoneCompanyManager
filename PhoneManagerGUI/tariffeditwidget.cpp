@@ -3,6 +3,7 @@
 
 #include <QSqlQuery>
 #include <QSqlError>
+#include "includes/databasemanager.h"
 
 TariffEditWidget::TariffEditWidget(QWidget *parent)
     : QWidget(parent)
@@ -12,7 +13,15 @@ TariffEditWidget::TariffEditWidget(QWidget *parent)
     this->setWindowTitle("Tariff data edit");
     connect(ui->calcel_btn, &QPushButton::clicked, this, &TariffEditWidget::discardChanges);
     connect(ui->save_btn, &QPushButton::clicked, this, &TariffEditWidget::saveChanges);
+    connect(ui->delete_tariff_btn, &QPushButton::clicked, ui->delete_tariff_widget, &QWidget::show);
+    connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
+        DatabaseManager::deleteRecord<DatabaseManager::TABLE::TARIFFS>("id", tariff_id);
+        ui->delete_tariff_widget->close();
+    });
+    connect(ui->cancel_btn, &QPushButton::clicked, ui->delete_tariff_widget, &QWidget::close);
+    ui->delete_tariff_widget->close();
     ui->incorrect_data_label->setVisible(false);
+    ui->delete_tariff_btn->setIcon(QIcon{"./img/delete_can.png"});
 }
 
 TariffEditWidget::~TariffEditWidget()
@@ -22,21 +31,21 @@ TariffEditWidget::~TariffEditWidget()
 
 void TariffEditWidget::setTariffInformation(const uint tmptariff_id){
     this->tariff_id = tmptariff_id;
-    QSqlQuery query;
-    query.prepare("SELECT * FROM tariffs "
+    /*QSqlQuery records;
+    records.prepare("SELECT * FROM tariffs "
                   "WHERE id = :tariff_id;");
-    query.bindValue(":tariff_id", tariff_id);
-
-    if(!query.exec() || !query.next()){
+    records.bindValue(":tariff_id", tariff_id);*/
+    auto records = DatabaseManager::selectRecord<DatabaseManager::TABLE::TARIFFS>("id", tariff_id);
+    if(!records.exec() || !records.next()){
         qDebug() << "setTariffInformation fault";
         return;
     }
-    ui->tariff_name_label->setText(query.value("tariff_name").toString());
-    ui->daily_price_lineEdit->setText(query.value("daily_price").toString());
-    ui->monthly_price_lineEdit->setText(query.value("monthly_price").toString());
-    ui->call_minutes_lineEdit->setText(query.value("call_minutes").toString());
-    ui->internet_lineEdit->setText(query.value("internet_GB").toString());
-    ui->messages_lineEdit->setText(query.value("messages").toString());
+    ui->tariff_name_label->setText(records.value("tariff_name").toString());
+    ui->daily_price_lineEdit->setText(records.value("daily_price").toString());
+    ui->monthly_price_lineEdit->setText(records.value("monthly_price").toString());
+    ui->call_minutes_lineEdit->setText(records.value("call_minutes").toString());
+    ui->internet_lineEdit->setText(records.value("internet_gb").toString());
+    ui->messages_lineEdit->setText(records.value("messages").toString());
 }
 
 void TariffEditWidget::saveChanges(){
@@ -57,24 +66,28 @@ void TariffEditWidget::saveChanges(){
         && messages_ok){
 
         ui->incorrect_data_label->setVisible(false);
-        QSqlQuery query;
-        query.prepare("UPDATE tariffs "
+        QSqlQuery records(QSqlDatabase::database("remote"));
+        records.prepare("UPDATE tariffs "
               "SET daily_price = :daily_p, "
               "monthly_price = :mth_p, "
               "call_minutes = :c_minutes, "
-              "internet_GB = :gb, "
+              "internet_gb = :gb, "
               "messages = :messages "
               "WHERE id = :tariff_id;");
-        query.bindValue(":daily_p", daily_p);
-        query.bindValue(":mth_p", monthly_p);
-        query.bindValue(":c_minutes", call_minutes);
-        query.bindValue(":gb", internet_GB);
-        query.bindValue(":messages", messages);
-        query.bindValue(":tariff_id", tariff_id);
-        if(!query.exec())
-            qDebug() << "update tariff data fault" << query.lastError();
-        else
-            discardChanges();
+        records.bindValue(":daily_p", daily_p);
+        records.bindValue(":mth_p", monthly_p);
+        records.bindValue(":c_minutes", call_minutes);
+        records.bindValue(":gb", internet_GB);
+        records.bindValue(":messages", messages);
+        records.bindValue(":tariff_id", tariff_id);
+        if(!records.exec())
+            qDebug() << "update tariff data fault" << records.lastError();
+        else{
+            QtConcurrent::run([this](){
+                discardChanges();
+                DatabaseManager::syncAllTables();
+            });
+        };
     }else
         ui->incorrect_data_label->setVisible(true);
 }

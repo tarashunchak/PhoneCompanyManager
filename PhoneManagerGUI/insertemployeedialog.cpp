@@ -12,11 +12,17 @@ InsertEmployeeDialog::InsertEmployeeDialog(QDialog* parent)
 {
     ui->setupUi(this);
     this->setWindowTitle("Insert employee");
-    this->setMinimumSize(500, 376);
-    this->setMaximumSize(500, 376);
+    this->setMinimumSize(500, 420);
+    this->setMaximumSize(500, 420);
+    this->setWindowFlag(Qt::FramelessWindowHint);
     connect(ui->confirm_addition, &QPushButton::clicked, this, &InsertEmployeeDialog::InsertEmployeeToDB);
+    connect(ui->return_btn, &QPushButton::clicked, this, [this](){
+        clearWidgets();
+        this->close();
+    });
     updateComboBoxData();
     ui->incorrect_data_label->setVisible(false);
+    ui->return_btn->setIcon(QIcon{"./img/exit.png"});
 }
 
 InsertEmployeeDialog::~InsertEmployeeDialog()

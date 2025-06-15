@@ -83,7 +83,7 @@ void Dashboard::setTableViewStyles(){
 }
 
 void Dashboard::setTableViewConnection(){
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare("SELECT c.id AS \"Cust. ID\", "
                   "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Full Name\", "
                   "c.phone AS \"Phone\", "
@@ -93,9 +93,9 @@ void Dashboard::setTableViewConnection(){
                   "c.is_active AS \"Is Active\" "
                   "FROM customers c "
                   "LEFT JOIN employees e ON e.id = c.employee_id "
-                  "WHERE c.date >= DATE('now', '-"
-                  + QString{std::to_string((ui->customers_period_comboBox->currentIndex()+1)*10).c_str()} + " days') "
-                  "ORDER BY c.date DESC;"
+                  "WHERE DATE(c.date) >= DATE(CURRENT_DATE + INTERVAL '-"
+                  + QString::number((ui->customers_period_comboBox->currentIndex()+1)*10) + " days') "
+                  "ORDER BY DATE(c.date) DESC;"
         );
     if(!query.exec())
         qDebug() << "dashboard tableView fault" << query.lastError().text();

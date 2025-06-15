@@ -2,6 +2,16 @@
 #include "includes/currentuser.h"
 #include "includes/buttonsstylemanager.h"
 
+static void hide_side_menu(QWidget* menu, QStackedWidget* sWidget){
+    sWidget->setGeometry(0, 0, 1920, 1080);
+    menu->setVisible(false);
+}
+
+static void show_side_menu(QWidget* menu, QStackedWidget* sWidget){
+    sWidget->setGeometry(250, 0, 1670, 1080);
+    menu->setVisible(true);
+}
+
 NavigationManager::NavigationManager(QStackedWidget* sWidget
                                      , QObject* parent, QWidget* side_menu)
     : QObject(parent)
@@ -32,7 +42,6 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget
     sWidget->addWidget(employeesDetailsPage);
 
     sWidget->setCurrentWidget(loginPage);
-
     setUpNavigation();
 }
 
@@ -88,19 +97,10 @@ void NavigationManager::setUpNavigation(){
     //Requests Page Signals/Slots connections
 }
 
-static void hide_side_menu(QWidget* menu, QStackedWidget* sWidget){
-    sWidget->setGeometry(0, 0, 1920, 1080);
-    menu->setVisible(false);
-}
-
-static void show_side_menu(QWidget* menu, QStackedWidget* sWidget){
-    sWidget->setGeometry(250, 0, 1670, 1080);
-    menu->setVisible(true);
-}
-
 void NavigationManager::showLoginPage()const{
     hide_side_menu(left_side_menu, sWidget);
     CurrentUser::setCurrentUserID(-1);
+    employeesChatPage->closeCurrentChat();
     sWidget->setCurrentWidget(loginPage);
     emit hide_small_buttons();
 }

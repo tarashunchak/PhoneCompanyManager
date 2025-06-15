@@ -11,10 +11,18 @@ InsertCustomerDialog::InsertCustomerDialog(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowTitle("Insert customer");
+    this->setWindowFlag(Qt::FramelessWindowHint);
+    this->setMinimumSize(QSize{500, 340});
+    this->setMaximumSize(QSize{500, 340});
     ui->incorrect_data_label->setVisible(false);
     updateComboBoxData();
     connect(ui->confirm_addition, &QPushButton::clicked
             , this, &InsertCustomerDialog::InsertCustomerToDB);
+    connect(ui->return_btn, &QPushButton::clicked, this, [this](){
+        clearWidgets();
+        this->close();
+    });
+    ui->return_btn->setIcon(QIcon{"./img/exit.png"});
 }
 
 InsertCustomerDialog::~InsertCustomerDialog()
@@ -31,12 +39,13 @@ void InsertCustomerDialog::clearWidgets(){
 }
 
 void InsertCustomerDialog::updateComboBoxData(){
-    QSqlQuery query;
+    QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare("SELECT * FROM tariffs WHERE is_active = true;");
     query.exec();
     while(query.next())
         ui->tariff_comboBox->addItem(query.value("tariff_name").toString()
                                      , query.value("id").toUInt());
+    query.clear();
 }
 
 static bool is_correct_name(const QString& str){
@@ -47,7 +56,6 @@ static bool is_correct_name(const QString& str){
 }
 
 void InsertCustomerDialog::InsertCustomerToDB(){
-    static QSqlQuery query;
     QString fname = is_correct_name(ui->first_name_lineEdit->text())
                     ? ui->first_name_lineEdit->text() : "";
     QString lname = is_correct_name(ui->last_name_lineEdit->text())

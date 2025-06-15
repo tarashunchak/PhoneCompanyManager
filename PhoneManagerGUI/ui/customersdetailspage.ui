@@ -39,7 +39,7 @@ font-family:Lato, Arial, Consolas;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgba(0, 0, 0, 0.2);</string>
+     <string notr="true">background-color:rgba(0, 0, 0, 0.1);</string>
     </property>
     <widget class="QLabel" name="full_name_Label">
      <property name="geometry">
@@ -128,9 +128,9 @@ background-color:transparent;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border:none;
-border-radius:4px;
-background-color:transparent;</string>
+      <string notr="true">border:1px solid rgba(0, 0, 0, 0.2);
+border-radius:6px;
+background-color:rgba(255, 255, 255, 0.4);</string>
      </property>
      <property name="text">
       <string/>
@@ -140,47 +140,6 @@ background-color:transparent;</string>
        <width>80</width>
        <height>80</height>
       </size>
-     </property>
-    </widget>
-    <widget class="QWidget" name="tariffs_history" native="true">
-     <property name="geometry">
-      <rect>
-       <x>1020</x>
-       <y>530</y>
-       <width>450</width>
-       <height>450</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:transparent;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_4">
-     <property name="geometry">
-      <rect>
-       <x>1020</x>
-       <y>490</y>
-       <width>450</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Lato</family>
-       <pointsize>20</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color:black;
-background-color:transparent;
-font-family: Lato;
-</string>
-     </property>
-     <property name="text">
-      <string>Tariffs History For Last Year</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="delete_customer_btn">
@@ -193,8 +152,9 @@ font-family: Lato;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border:none;
-border-radius:4px;</string>
+      <string notr="true">border:1px solid rgba(0, 0, 0, 0.2);
+border-radius:6px;
+background-color:rgba(255, 255, 255, 0.4);</string>
      </property>
      <property name="text">
       <string/>
@@ -348,17 +308,17 @@ padding-top:10px;</string>
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>651</x>
+       <x>650</x>
        <y>30</y>
-       <width>328</width>
+       <width>330</width>
        <height>35</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">color:black;
+      <string notr="true">color:white;
 font-size:24px;
 font-family:Lato, Consolas;
-background-color:rgba(0, 0, 0, 0.2);
+background-color:#73819C;
 border:1px solid rgba(0, 0, 0, 0.4);
 border-top-right-radius:6px;
 border-top-left-radius:6px;</string>
@@ -373,9 +333,9 @@ border-top-left-radius:6px;</string>
     <widget class="QPushButton" name="save_comment_btn">
      <property name="geometry">
       <rect>
-       <x>651</x>
+       <x>650</x>
        <y>440</y>
-       <width>329</width>
+       <width>330</width>
        <height>40</height>
       </rect>
      </property>
@@ -666,15 +626,70 @@ font-size:50px;</string>
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="request_history_box_2" native="true">
+     <property name="geometry">
+      <rect>
+       <x>1020</x>
+       <y>530</y>
+       <width>450</width>
+       <height>450</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius:5px;
+background-color:#73819C;</string>
+     </property>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>15</y>
+        <width>431</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Lato</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:white;
+font-family: Lato, Arial, Consolas;
+background-color:transparent;</string>
+      </property>
+      <property name="text">
+       <string>Tariffs History For Last Year</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="tariffs_history" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>40</y>
+        <width>450</width>
+        <height>410</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget{
+	font-family:Lato, Arial, Consolas;
+	font-size:16px;
+	background-color: transparent;
+	color:black;
+	border:none;
+}
+
+</string>
+      </property>
+     </widget>
+    </widget>
     <zorder>payment_history_box</zorder>
     <zorder>full_name_Label</zorder>
     <zorder>phone_Label</zorder>
     <zorder>reg_date_Label</zorder>
     <zorder>cust_profile_pic</zorder>
-    <zorder>return_btn</zorder>
-    <zorder>tariffs_history</zorder>
-    <zorder>label_4</zorder>
-    <zorder>delete_customer_btn</zorder>
     <zorder>listWidget</zorder>
     <zorder>current_tariff_label</zorder>
     <zorder>open_chat_btn</zorder>
@@ -685,6 +700,9 @@ font-size:50px;</string>
     <zorder>delete_customer_widget</zorder>
     <zorder>current_balance_label</zorder>
     <zorder>request_history_box</zorder>
+    <zorder>request_history_box_2</zorder>
+    <zorder>delete_customer_btn</zorder>
+    <zorder>return_btn</zorder>
    </widget>
   </widget>
  </widget>
