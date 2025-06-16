@@ -75,22 +75,22 @@ void RequestsPage::showUnassignmentRequests(){
         headers << "Action";
         model->setHorizontalHeaderLabels(headers);
         ui->no_requests_label->setVisible(model->rowCount() == 0);
-        req_tableView->setModel(model);
-        req_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        ui->req_tableView->setModel(model);
+        ui->req_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-        req_tableView->setStyleSheet(
+        ui->req_tableView->setStyleSheet(
             "font-family:Consolas;"
             "font-size:16px;"
             "background-color:white;"
             "color:black;"
         );
 
-        req_tableView->horizontalHeader()->setStyleSheet("background-color:rgb(120, 120, 120);");
-        req_tableView->verticalHeader()->setVisible(false);
+        ui->req_tableView->horizontalHeader()->setStyleSheet("background-color:rgb(120, 120, 120);");
+        ui->req_tableView->verticalHeader()->setVisible(false);
 
         PushButtonDelegate* button_delegate = new PushButtonDelegate{this};
         connect(button_delegate, &PushButtonDelegate::successfully_updated, this, &RequestsPage::showUnassignmentRequests);
-        req_tableView->setItemDelegateForColumn(model->columnCount() - 1, button_delegate);
+        ui->req_tableView->setItemDelegateForColumn(model->columnCount() - 1, button_delegate);
     }
     setActiveButton(UNASSIGNED);
 }
@@ -117,8 +117,8 @@ void RequestsPage::showInProgressRequests(){
             model->appendRow(items);
         }
         ui->no_requests_label->setVisible(model->rowCount() == 0);
-        req_tableView->setModel(model);
-        req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1
+        ui->req_tableView->setModel(model);
+        ui->req_tableView->setItemDelegateForColumn(ui->req_tableView->model()->columnCount()-1
                                 , new ComboBoxDelegate{{"Do nothing", "Confirm", "Reject"}});
 
         QStringList headers{};
@@ -129,7 +129,7 @@ void RequestsPage::showInProgressRequests(){
         model->setHorizontalHeaderLabels(headers);
         ui->save_btn->setVisible(counter > 0);
     }
-    req_tableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    ui->req_tableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
     setActiveButton(IN_PROGRESS);
 }
 
@@ -143,24 +143,24 @@ void RequestsPage::showCompletedRequests(){
     qmodel->setQuery(std::move(query));
 
     ui->no_requests_label->setVisible(qmodel->rowCount() == 0);
-    req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, nullptr);
-    req_tableView->setModel(qmodel);
-    req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->req_tableView->setModel(qmodel);
+    ui->req_tableView->setItemDelegateForColumn(ui->req_tableView->model()->columnCount()-1, nullptr);
+    ui->req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     setActiveButton(COMPLETED);
 }
 
 
 void RequestsPage::showRequestsHistory(){
     ui->save_btn->setVisible(false);
-    auto query = DatabaseManager::requestsHistory(DatabaseManager::PAGE::REQUESTS_PAGE);
+    auto query = DatabaseManager::requestsHistory(PAGE::REQUESTS_PAGE);
     if(!query.exec())
         qDebug() << "requests history query fault: " << query.lastError();
 
     qmodel->setQuery(std::move(query));
 
     ui->no_requests_label->setVisible(qmodel->rowCount() == 0);
-    req_tableView->setItemDelegateForColumn(req_tableView->model()->columnCount()-1, nullptr);
-    req_tableView->setModel(qmodel);
-    req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->req_tableView->setModel(qmodel);
+    ui->req_tableView->setItemDelegateForColumn(ui->req_tableView->model()->columnCount()-1, nullptr);
+    ui->req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     setActiveButton(HISTORY);
 }

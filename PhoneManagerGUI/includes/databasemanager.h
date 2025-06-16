@@ -8,8 +8,8 @@
 #include "supportchat.h"
 #include "messagebox.h"
 #include "chat_type_traits.h"
-#include <QtConcurrent/QtConcurrent>
-
+#include "databasesynchronizer.h"
+#include "DB_ENUMS.h"
 
 class DatabaseManager : public QObject
 {
@@ -19,37 +19,11 @@ private:
     DatabaseManager(const DatabaseManager&) = delete;
     DatabaseManager();
     ~DatabaseManager();
+public:
+
     struct Columns{
         static QMap<QString, QStringList> columns;
         static QMap<QString, QStringList> all_columns;
-    };
-public:
-       enum class PAGE : uint{
-        DASHBOARD_PAGE = 0u,
-        CUSTOMERS_PAGE,
-        EMPLOYEES_PAGE,
-        REQUESTS_PAGE,
-        TARIFFS_PAGE,
-        SUPPORT_CHAT,
-        CUSTOMERS_DETAILS_PAGE,
-        EMPLOYEES_DETAILS_PAGE,
-        EMPLOYEES_CHATS_PAGE
-    };
-    enum class TABLE : uint{
-        USERS = 0u,
-        EMPLOYEES,
-        CUSTOMERS,
-        TARIFFS,
-        REQUESTS,
-        CHATS,
-        CHAT_PARTICIPANTS,
-        PARTICIPANTS,
-        DEPARTMENTS,
-        POSITIONS,
-        COMMENTS,
-        MESSAGES,
-        PAYMENTS,
-        USAGE
     };
 
     static QString tableToString(TABLE);
@@ -65,10 +39,10 @@ public:
     static QSqlDatabase& getDatabase();
     static bool isConnected();
     static void cleanUpConnections();
+    static DatabaseSynchronizer* getSynchronizer();
     /*------------------------------------*/
     /*------------------------------------*/
-    static void syncAllTables();
-    static void syncTable(TABLE);
+    static void startSyncTables();
     static QSqlQuery findByName(TABLE, const QString&);
     static QSqlQuery inProgressRequests();
     static QSqlQuery unassignedRequests();
@@ -103,7 +77,9 @@ public:
     template <TABLE table, typename T>
     static void deleteRecord(const QString& row, const T& identifier){
         static QString table_str = tableToString(table);
-        QString query_str{"DELETE FROM " + table_str + " WHERE " + row + " = ?;"};
+        QString query_str{"UPDATE " + table_str +
+                          " SET is_visible = false "
+                          " WHERE " + row + " = ?;"};
         QSqlQuery query(remote_db);
         query.prepare(query_str);
         query.addBindValue(identifier);
@@ -128,7 +104,7 @@ public:
 
     template <typename T> requires(HasChatUnits<T>)
     static QSqlQuery allMessagesFromCurrentChat(){
-        QSqlQuery query(remote_db);
+        QSqlQuery query(local_db);
         query.prepare("SELECT * FROM messages WHERE chat_id = ?;");
         query.addBindValue(T::ChatUnits::chat_id);
         return query;
@@ -163,13 +139,14 @@ public:
     static void sendMessage(const QString& message_text){
         if(!initChatIfNeeded<T>()) return;
         static bool is_message_sended;
-        //QtConcurrent::run([message_text](){
+        //;::run([message_text](){
             is_message_sended = insertToDB<TABLE::MESSAGES, T>(message_text);
         //});
 
         if(!is_message_sended)
             qDebug() << "sendMessage query error";
-        QtConcurrent::run(&DatabaseManager::syncAllTables);
+        ;
+        //;::run(&DatabaseManager::syncAllTables);
     };
 
     template <typename... Args>
@@ -195,7 +172,7 @@ public:
                 return false;
             }
         }
-        QtConcurrent::run(&DatabaseManager::syncAllTables);
+        ;
         return query.exec();
     };
 
@@ -217,7 +194,7 @@ public:
         if(!query.exec()){
             return false;
         }
-        QtConcurrent::run(&DatabaseManager::syncAllTables);
+        ;
         return true;
     }
 
@@ -228,7 +205,7 @@ public:
         query.prepare("INSERT INTO chats(is_corporate) "
                       "VALUES(?) RETURNING id;");
         query.addBindValue(is_corp);
-        QtConcurrent::run(&DatabaseManager::syncAllTables);
+        ;
         if (!remote_db.isOpen()) {
             if (!remote_db.open()) {
                 qDebug() << "Database reopen failed: " << remote_db.lastError();
@@ -273,7 +250,6 @@ public:
         if(query.exec() && query.next()){
             T::ChatUnits::partner_participant_id = query.value("id").toUInt();
             qDebug() << T::ChatUnits::partner_participant_id;
-            QtConcurrent::run([](){syncAllTables();});
             query.clear();
             return true;
         }
@@ -306,6 +282,7 @@ public:
     /*------------------------------------*/
     /*------------------------------------*/
 private:
+    DatabaseSynchronizer syncronizer;
     static QSqlDatabase remote_db;
     static QSqlDatabase local_db;
 };

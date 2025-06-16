@@ -2,6 +2,7 @@
 #include "ui_employeesdetailspage.h"
 #include "includes/databasemanager.h"
 #include <QSqlQuery>
+#include <QtConcurrent/QtConcurrent>
 
 QString EmployeesDetailsPage::CurrentEmployee::id = {};
 QString EmployeesDetailsPage::CurrentEmployee::first_name = {};
@@ -31,6 +32,8 @@ EmployeesDetailsPage::EmployeesDetailsPage(QWidget *parent)
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
     ui->delete_employee_btn->setIcon(QIcon{"./img/delete_can.png"});
 
+    ui->customers_statistic_tableView->setModel(TABLE_MODELS.cust_qmodel);
+    ui->customers_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->requests_statistic_tableView->setModel(TABLE_MODELS.req_qmodel);
     ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
@@ -47,7 +50,7 @@ void EmployeesDetailsPage::SetConnections(){
     connect(ui->save_comment_btn, &QPushButton::clicked, this, [this](){
         int comment_id = CurrentEmployee::comment_id.toInt();
         QString text = ui->comment_textEdit->toPlainText();
-        DatabaseManager::saveCommentToDB(DatabaseManager::TABLE::EMPLOYEES
+        DatabaseManager::saveCommentToDB(TABLE::EMPLOYEES
                                , CurrentEmployee::id.toUInt(), comment_id, text);
     });
     connect(ui->delete_employee_btn, &QPushButton::clicked, ui->delete_employee_widget, &QWidget::show);
@@ -55,7 +58,7 @@ void EmployeesDetailsPage::SetConnections(){
     connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
         ui->delete_employee_widget->close();
         QtConcurrent::run([](){
-            DatabaseManager::deleteRecord<DatabaseManager::TABLE::EMPLOYEES>("id", CurrentEmployee::id.toUInt());
+            DatabaseManager::deleteRecord<TABLE::EMPLOYEES>("id", CurrentEmployee::id.toUInt());
         });
         emit on_return_btn_clicked();
     });
@@ -73,12 +76,25 @@ void EmployeesDetailsPage::SetEmployeeInfo(const uint empl_id){
     SetRequestsHistory();
 }
 
+void EmployeesDetailsPage::SetCustomersHistory()const{
+    QSqlQuery query(QSqlDatabase::database("local"));
+    query.prepare("SELECT id AS ID, "
+                  "(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS \"Full name\""
+                  "phone AS Phone "
+                  "FROM customers "
+                  "WHERE added_by_id = ?;");
+    query.addBindValue(CurrentEmployee::id);
+    if(!query.exec())
+        qDebug() << "cannot select customers history on employee details page";
+    TABLE_MODELS.cust_qmodel->setQuery(std::move(query));
+}
+
 void EmployeesDetailsPage::SetRequestsHistory()const{
-    auto query = DatabaseManager::requestsHistory(DatabaseManager::PAGE::EMPLOYEES_DETAILS_PAGE);
+    auto query = DatabaseManager::requestsHistory(PAGE::EMPLOYEES_DETAILS_PAGE);
     if(!query.exec() || !query.next()){
         qDebug() << "In EmployeesDetailsPage::SetRequestsHistory::query fault!!!: " << query.lastError();
-        ui->requests_statistic_tableView2->setVisible(false);
-        ui->no_payments_label->setVisible(true);
+        ui->requests_statistic_tableView->setVisible(false);
+        ui->no_customers_label->setVisible(true);
         return;
     }
     TABLE_MODELS.req_qmodel->setQuery(std::move(query));

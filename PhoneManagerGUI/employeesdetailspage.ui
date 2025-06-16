@@ -138,47 +138,6 @@ background-color:rgba(255, 255, 255, 0.4);</string>
       </size>
      </property>
     </widget>
-    <widget class="QWidget" name="tariffs_history" native="true">
-     <property name="geometry">
-      <rect>
-       <x>1020</x>
-       <y>530</y>
-       <width>450</width>
-       <height>450</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:transparent;</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_4">
-     <property name="geometry">
-      <rect>
-       <x>1020</x>
-       <y>490</y>
-       <width>450</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Lato</family>
-       <pointsize>20</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color:black;
-background-color:transparent;
-font-family: Lato;
-</string>
-     </property>
-     <property name="text">
-      <string>Tariffs History For Last Year</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
     <widget class="QPushButton" name="delete_employee_btn">
      <property name="geometry">
       <rect>
@@ -414,12 +373,17 @@ border-radius:4px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:white;
-font-size:16px;
+       <string notr="true">QPushButton{
+color:black;
+background-color:white;
+font-family:Lato, Arial, Consolas;
 border:1px solid black;
-padding-top:5px;
-padding-bottom:5px;
-border-radius:4px;</string>
+border-radius:4px;
+font-size:16px;
+}
+QPushButton:hover{
+	background-color:rgb(200, 200, 200);
+}</string>
       </property>
       <property name="text">
        <string>Confirm</string>
@@ -435,12 +399,17 @@ border-radius:4px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:white;
-font-size:16px;
+       <string notr="true">QPushButton{
+color:black;
+background-color:white;
+font-family:Lato, Arial, Consolas;
 border:1px solid black;
-padding-top:5px;
-padding-bottom:5px;
-border-radius:4px;</string>
+border-radius:4px;
+font-size:16px;
+}
+QPushButton:hover{
+	background-color:rgb(200, 200, 200);
+}</string>
       </property>
       <property name="text">
        <string>Cancel</string>
@@ -494,19 +463,20 @@ background-color:#73819C;</string>
       <property name="font">
        <font>
         <family>Lato</family>
-        <pointsize>14</pointsize>
+        <pointsize>-1</pointsize>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">color:white;
 font-family: Lato, Arial, Consolas;
-background-color:transparent;</string>
+background-color:transparent;
+font-size:24px;</string>
       </property>
       <property name="text">
-       <string>Handled requests history</string>
+       <string>Added customers</string>
       </property>
      </widget>
-     <widget class="QTableView" name="requests_statistic_tableView2">
+     <widget class="QTableView" name="customers_statistic_tableView">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -530,7 +500,7 @@ background-color:transparent;</string>
        <bool>false</bool>
       </attribute>
      </widget>
-     <widget class="QLabel" name="no_payments_label">
+     <widget class="QLabel" name="no_customers_label">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -571,20 +541,21 @@ background-color:#73819C;</string>
        <rect>
         <x>20</x>
         <y>15</y>
-        <width>241</width>
+        <width>271</width>
         <height>25</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Lato</family>
-        <pointsize>14</pointsize>
+        <pointsize>-1</pointsize>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">color:white;
 font-family: Lato, Arial, Consolas;
-background-color:transparent;</string>
+background-color:transparent;
+font-size:24px;</string>
       </property>
       <property name="text">
        <string>Handled requests history</string>
@@ -656,14 +627,97 @@ font-size:20px;</string>
       <string>TextLabel</string>
      </property>
     </widget>
+    <widget class="QWidget" name="current_customers_box" native="true">
+     <property name="geometry">
+      <rect>
+       <x>1020</x>
+       <y>530</y>
+       <width>450</width>
+       <height>450</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius:5px;
+background-color:#73819C;</string>
+     </property>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>15</y>
+        <width>411</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Lato</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:white;
+font-family: Lato, Arial, Consolas;
+background-color:transparent;
+font-size:24px;</string>
+      </property>
+      <property name="text">
+       <string>Current customers</string>
+      </property>
+     </widget>
+     <widget class="QTableView" name="current_customers_tableView">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>431</width>
+        <height>391</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QTableView{
+	font-family:Lato, Arial, Consolas;
+	font-size:16px;
+	background-color: white;
+	color:black;
+	border:none;
+}
+
+</string>
+      </property>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+     </widget>
+     <widget class="QLabel" name="no_curr_customers_label">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>430</width>
+        <height>390</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:white;
+color:black;
+font-family:Lato, Arial, Consolas;
+font-size:50px;</string>
+      </property>
+      <property name="text">
+       <string>No Info</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+    </widget>
     <zorder>payment_history_box</zorder>
     <zorder>full_name_Label</zorder>
     <zorder>phone_Label</zorder>
     <zorder>email_Label</zorder>
     <zorder>cust_profile_pic</zorder>
     <zorder>return_btn</zorder>
-    <zorder>tariffs_history</zorder>
-    <zorder>label_4</zorder>
     <zorder>delete_employee_btn</zorder>
     <zorder>listWidget</zorder>
     <zorder>hire_date_Label</zorder>
@@ -675,6 +729,7 @@ font-size:20px;</string>
     <zorder>department_Label</zorder>
     <zorder>request_history_box</zorder>
     <zorder>position_Label</zorder>
+    <zorder>current_customers_box</zorder>
    </widget>
   </widget>
  </widget>

@@ -39,13 +39,12 @@ void InsertCustomerDialog::clearWidgets(){
 }
 
 void InsertCustomerDialog::updateComboBoxData(){
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT * FROM tariffs WHERE is_active = true;");
     query.exec();
     while(query.next())
         ui->tariff_comboBox->addItem(query.value("tariff_name").toString()
                                      , query.value("id").toUInt());
-    query.clear();
 }
 
 static bool is_correct_name(const QString& str){
@@ -68,7 +67,7 @@ void InsertCustomerDialog::InsertCustomerToDB(){
         && !lname.isEmpty()
         && !phone.isEmpty())
     {
-        DatabaseManager::insertToDB(DatabaseManager::TABLE::CUSTOMERS
+        DatabaseManager::insertToDB(TABLE::CUSTOMERS
                                     , std::tie(fname, lname, phone, email, bday, tariff_id
                                                 , CurrentUser::getCurrentUserID()));
     }else{

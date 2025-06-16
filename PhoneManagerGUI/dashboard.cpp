@@ -1,6 +1,5 @@
 #include "includes/dashboard.h"
 #include "ui_dashboard.h"
-
 #include <QSqlQuery>
 #include <QSqlError>
 
@@ -55,7 +54,10 @@ void Dashboard::setTableViewStyles(){
     ui->tableView->horizontalHeader()->setFixedHeight(30);
     ui->tableView->verticalHeader()->setVisible(false);
     ui->requests_statistic_tableView->verticalHeader()->setVisible(false);
-    ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->requests_statistic_tableView->setColumnWidth(0, 80);
+    ui->requests_statistic_tableView->setColumnWidth(1, 190);
+    ui->requests_statistic_tableView->setColumnWidth(2, 200);
     ui->tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     ui->requests_statistic_tableView->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
     const static QString style{
@@ -92,9 +94,10 @@ void Dashboard::setTableViewConnection(){
                   "(COALESCE(e.first_name, '') || ' ' || COALESCE(e.last_name, '')) AS \"Added By\", "
                   "c.is_active AS \"Is Active\" "
                   "FROM customers c "
-                  "LEFT JOIN employees e ON e.id = c.employee_id "
-                  "WHERE DATE(c.date) >= DATE(CURRENT_DATE + INTERVAL '-"
+                  "LEFT JOIN employees e ON e.id = c.added_by_id "
+                  "WHERE DATE(c.date) >= DATE(CURRENT_DATE, '-"
                   + QString::number((ui->customers_period_comboBox->currentIndex()+1)*10) + " days') "
+                  "AND c.is_visible = true "
                   "ORDER BY DATE(c.date) DESC;"
         );
     if(!query.exec())

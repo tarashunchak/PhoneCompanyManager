@@ -30,7 +30,8 @@ private:
 private:
     Ui::RequestsPage *ui;
     QSqlTableModel* qmodel;
-    RequestsTabelView* req_tableView;
+    //RequestsTabelView* req_tableView;
+    QTableView* req_tableView;
 };
 
 #endif // REQUESTSPAGE_H

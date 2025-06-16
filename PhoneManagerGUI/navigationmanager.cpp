@@ -45,6 +45,8 @@ NavigationManager::NavigationManager(QStackedWidget* sWidget
     setUpNavigation();
 }
 
+bool NavigationManager::is_chat_page = false;
+
 void NavigationManager::setUpNavigation(){
     //Login Page Signals/Slots connections
     connect(loginPage, &LoginPage::login_succsess
@@ -95,6 +97,12 @@ void NavigationManager::setUpNavigation(){
             , this, &NavigationManager::showEmployeesPage);
 
     //Requests Page Signals/Slots connections
+    connect(employeesChatPage, &EmployeesChatPage::on_partner_profile_pic_btn_clicked
+            , this, &NavigationManager::showEmployeesDetailsPage);
+
+    connect(employeesChatPage, &EmployeesChatPage::notify_employee, this, [this](){
+        emit notify_employee();
+    });
 }
 
 void NavigationManager::showLoginPage()const{
@@ -106,6 +114,7 @@ void NavigationManager::showLoginPage()const{
 }
 
 void NavigationManager::showDashboardPage()const{
+    is_chat_page = false;
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::DASHBOARD_BTN);
     show_side_menu(left_side_menu, sWidget);
     dashboardPage->setCustomersStatistics();
@@ -115,6 +124,7 @@ void NavigationManager::showDashboardPage()const{
 }
 
 void NavigationManager::showCustomersPage()const{
+    is_chat_page = false;
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
     customersPage->SetCustomersCards();
     customersPage->updateFilterWidgets();
@@ -123,6 +133,7 @@ void NavigationManager::showCustomersPage()const{
 }
 
 void NavigationManager::showEmployeesPage()const{
+    is_chat_page = false;
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::EMPLOYEES_BTN);
     employeesPage->SetEmployeesCards();
     employeesPage->setCurrentUser();
@@ -130,6 +141,7 @@ void NavigationManager::showEmployeesPage()const{
 }
 
 void NavigationManager::showTariffsPage()const{
+    is_chat_page = false;
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TARIFFS_BTN);
     tariffsPage->setCurrentUser();
     tariffsPage->setTariffsCards();
@@ -137,6 +149,7 @@ void NavigationManager::showTariffsPage()const{
 }
 
 void NavigationManager::showRequestsPage()const{
+    is_chat_page = false;
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
     requestsPage->showUnassignmentRequests();
     sWidget->setCurrentWidget(requestsPage);
@@ -148,12 +161,15 @@ void NavigationManager::showRegistrationPage()const{
 }
 
 void NavigationManager::showCustomersDetailsPage(const uint id)const{
+    is_chat_page = false;
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
     customersDetailsPage->SetCustomerInfo(id);
     sWidget->setCurrentWidget(customersDetailsPage);
 }
 
 void NavigationManager::showChatsPage()const{
+    is_chat_page = true;
+    emit notify_employee();
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CHATS_BTN);
     show_side_menu(left_side_menu, sWidget);
     employeesChatPage->fillChatsWidget();
@@ -167,6 +183,7 @@ void NavigationManager::showPasswordRecoveryPage()const{
 }
 
 void NavigationManager::showEmployeesDetailsPage(const uint id)const{
+    is_chat_page = false;
     employeesDetailsPage->SetEmployeeInfo(id);
     sWidget->setCurrentWidget(employeesDetailsPage);
 }

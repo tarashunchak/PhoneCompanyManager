@@ -7,24 +7,31 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>420</height>
+    <height>410</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(155,160, 165);
-font-family:Lato, Arial, Consolas;
+   <string notr="true">QWidget{
+background-color:rgb(155,160, 165);
+border:none;
+}
+QLabel{
 color:black;
-font-size:18px;</string>
+font-family:Lato, Arial, Consolas;
+font-size:18px;
+border:none;
+background-color:transparent;
+};</string>
   </property>
   <widget class="QLabel" name="header_label">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>0</x>
      <y>10</y>
-     <width>240</width>
+     <width>500</width>
      <height>50</height>
     </rect>
    </property>
@@ -41,20 +48,24 @@ font-size:36px;</string>
    <property name="text">
     <string>Add Employee</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QPushButton" name="confirm_addition">
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>375</y>
+     <y>360</y>
      <width>100</width>
-     <height>25</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
 color:black;
 background-color:white;
+font-family:Lato, Arial, Consolas;
 border:1px solid black;
 border-radius:4px;
 font-size:16px;
@@ -71,7 +82,7 @@ QPushButton:hover{
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>340</y>
+     <y>330</y>
      <width>500</width>
      <height>25</height>
     </rect>
@@ -195,7 +206,7 @@ padding-left:4px;</string>
         <property name="styleSheet">
          <string notr="true">background-color:#424242;
 border:none;
-font-size:20px;
+font-size:18px;
 color:white;
 padding-left:6px;
 border-radius:5px;</string>
@@ -266,7 +277,7 @@ padding-left:4px;</string>
         <property name="styleSheet">
          <string notr="true">background-color:#424242;
 border:none;
-font-size:20px;
+font-size:18px;
 color:white;
 padding-left:6px;
 border-radius:5px;</string>
@@ -340,7 +351,7 @@ padding-left:4px;</string>
         <property name="styleSheet">
          <string notr="true">background-color:#424242;
 border:none;
-font-size:20px;
+font-size:22px;
 color:white;
 padding-left:6px;
 border-radius:5px;</string>
@@ -375,7 +386,7 @@ border-radius:5px;</string>
         <property name="styleSheet">
          <string notr="true">background-color:#424242;
 border:none;
-font-size:20px;
+font-size:22px;
 color:white;
 padding-left:6px;
 border-radius:5px;</string>

@@ -13,7 +13,7 @@ BarChart::BarChart()
         , chart(new QChart{})
 {
     bar_series->setBarWidth(1);
-    chart->setTheme(QChart::ChartThemeHighContrast);
+    chart->setTheme(QChart::ChartThemeLight);
     chart->setAnimationOptions(QChart::SeriesAnimations);
 
     chart_view->setChart(chart);
@@ -27,7 +27,7 @@ BarChart::BarChart(QWidget* parent)
         , chart(new QChart{})
 {
     bar_series->setBarWidth(1);
-    chart->setTheme(QChart::ChartThemeHighContrast);
+    chart->setTheme(QChart::ChartThemeLight);
     chart->setAnimationOptions(QChart::SeriesAnimations);
 
     chart_view->setChart(chart);
@@ -44,9 +44,8 @@ void BarChart::resize(const QSize& size){
 bool BarChart::setQuery(QSqlQuery query, const QString& field_name, const QString& label){
     if(!query.exec()){
         qDebug() << "Sql query error in BarChart(): " << query.lastError();
-        if(chart->axes(Qt::Horizontal).contains(chart->axisX()))
-        //chart->removeAxis(chart->axisX());
-        //chart->removeAxis(chart->axisY());
+        chart->removeAxis(chart->axisX());
+        chart->removeAxis(chart->axisY());
         return false;
     }
 

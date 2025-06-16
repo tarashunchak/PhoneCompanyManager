@@ -39,7 +39,7 @@ void Dashboard::setTariffsStatistics(){
 
 void Dashboard::setRequestsHistory(){
     QString period{QString::number((ui->requests_period_comboBox->currentIndex() + 1) * 10)};
-    auto query = DatabaseManager::requestsHistory(DatabaseManager::PAGE::DASHBOARD_PAGE, period);
+    auto query = DatabaseManager::requestsHistory(PAGE::DASHBOARD_PAGE, period);
     if(!query.exec()){
         qDebug() << "setRequestsHistory() fault: " << query.lastError();
         return;

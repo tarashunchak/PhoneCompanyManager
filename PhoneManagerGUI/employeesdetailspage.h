@@ -37,6 +37,7 @@ public:
 public slots:
     void SetEmployeeInfo(const uint);
     void SetRequestsHistory()const;
+    void SetCustomersHistory()const;
 
 signals:
     void on_return_btn_clicked();
@@ -47,6 +48,7 @@ private:
 
     struct TableModels{
         QSqlTableModel* req_qmodel = new QSqlTableModel{};
+        QSqlTableModel* cust_qmodel = new QSqlTableModel{};
     };
 
 private:

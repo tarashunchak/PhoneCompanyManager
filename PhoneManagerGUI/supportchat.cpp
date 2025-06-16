@@ -36,6 +36,7 @@ SupportChat::SupportChat(QFrame *parent)
     , scrollArea(new QScrollArea{})
     , mainWidget(new QWidget{})
     , innerVBoxLayout(new QVBoxLayout{})
+    , checker(new MessageChecker{})
 {
     ui->setupUi(this);
     ui->phone_lineEdit->setVisible(false);
@@ -48,9 +49,15 @@ SupportChat::SupportChat(QFrame *parent)
     scrollArea->setWidget(mainWidget);
     scrollArea->verticalScrollBar()->setVisible(true);
     ui->verticalLayout->addWidget(scrollArea);
-    this->setWindowTitle("Interactive SupportChat");
+    this->setWindowTitle("Support Chat");
     phone_choose_handler();
     this->setWindowFlags(Qt::Widget | Qt::CustomizeWindowHint);
+    connect(checker, &MessageChecker::new_message_detected, this, [this](){
+        static QSqlQuery query;
+        query = DatabaseManager::allMessagesFromCurrentChat<SupportChat>();
+        DisplayAllMessages(query);
+    });
+    checker->startCheck();
 }
 
 SupportChat::~SupportChat(){
@@ -63,7 +70,7 @@ static void ScrollDown_ScrollBar(QScrollBar* sb){
 
 static bool is_all_chars_empty(QString str){
     if(str.isEmpty()){
-        return false;
+        return true;
     }else{
         int i = 0;
         for(const auto& ch : str.toStdString()){
@@ -73,35 +80,32 @@ static bool is_all_chars_empty(QString str){
                 ++i;
         }
         if(i == str.length())
-            return false;
+            return true;
     }
-    return true;
+    return false;
 }
 
 void SupportChat::SendMessage(){
     if(is_valid_partner){
-        if(!is_all_chars_empty(ui->lineEdit->text())
-                || !is_all_chars_empty(ui->phone_btn->text()))
+        if(is_all_chars_empty(ui->lineEdit->text())
+                || is_all_chars_empty(ui->phone_btn->text()))
             return;
         DatabaseManager::sendMessage<SupportChat>(ui->lineEdit->text());
         ui->lineEdit->clear();
-        DisplayLastMessage();
+        //DisplayLastMessage();
     }
 }
+
+extern void clearLayout(QLayout*);
 
 void SupportChat::DisplayAllMessages(QSqlQuery& query){
     if(!query.exec()){
         qDebug() << "DisplayAllMessages()const fault!: " << query.lastError();
         return;
     }
-    QLayout* layout = innerVBoxLayout;
-    if(layout){
-        while(QLayoutItem* item = layout->takeAt(0)){
-            delete item->widget();
-            delete item;
-        }
-        layout = nullptr;
-    }
+
+    clearLayout(innerVBoxLayout);
+
     int counter = 0;
     while(true){
         if(!query.next()){
@@ -122,14 +126,14 @@ void SupportChat::DisplayAllMessages(QSqlQuery& query){
         mainWidget->updateGeometry();
     }
 
-    QTimer::singleShot(100, this, [this](){
+    QTimer::singleShot(500, this, [this](){
         ScrollDown_ScrollBar(scrollArea->verticalScrollBar());
     });
 }
 
 void SupportChat::DisplayLastMessage()const{
     ui->empty_chat_label->setVisible(false);
-    MessageBox* message = new MessageBox{DatabaseManager::lastMessage<DatabaseManager::PAGE::SUPPORT_CHAT>()};
+    MessageBox* message = DatabaseManager::lastMessage<PAGE::SUPPORT_CHAT>();
     if(!message){
         qDebug() << "display all messages fault";
         return;
@@ -137,7 +141,7 @@ void SupportChat::DisplayLastMessage()const{
     innerVBoxLayout->addWidget(message);
     mainWidget->adjustSize();
     mainWidget->updateGeometry();
-    QTimer::singleShot(100, this, [this](){
+    QTimer::singleShot(500, this, [this](){
         ScrollDown_ScrollBar(scrollArea->verticalScrollBar());
     });
 }
@@ -156,7 +160,7 @@ void SupportChat::phone_choose_handler(){
 }
 
 bool SupportChat::is_exist(){
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT ch.id AS CHAT_ID, "
                   "p_cust.id AS P1_ID, p_empl.id AS P2_ID "
                   "FROM chats ch "
@@ -164,8 +168,7 @@ bool SupportChat::is_exist(){
                   "JOIN participants p_cust ON p_cust.id = cp_cust.participants_id "
                   "JOIN chat_participants cp_empl ON cp_empl.chat_id = ch.id "
                   "JOIN participants p_empl ON p_empl.id = cp_empl.participants_id "
-                  "WHERE ch.is_corporate = false "
-                  "AND (p_cust.role = 'customer' "
+                  "WHERE (p_cust.role = 'customer' "
                   "     AND p_cust.reference_id = :cust_id) "
                   "AND (p_empl.role = 'employee' "
                   "     AND p_empl.reference_id = :empl_id);");
@@ -175,51 +178,48 @@ bool SupportChat::is_exist(){
     if(!query.exec() || !query.next()){
         qDebug() << "Ooh nooo: " << query.lastError();
         ui->phone_btn->setVisible(true);
-        ui->phone_btn->setText("Chose phone number");
         ui->phone_lineEdit->setVisible(false);
         ui->empty_chat_label->setVisible(true);
         ChatUnits::chat_id = 0;
         ChatUnits::is_chat_exist = false;
+        is_valid_partner = true;
         return false;
     }
     ui->empty_chat_label->setVisible(false);
     ChatUnits::is_chat_exist = true;
     ChatUnits::chat_id = query.value("CHAT_ID").toUInt();
-    scrollArea->verticalScrollBar()->setVisible(true);
+    qDebug() << "SUPPORT CHAT CHAT_ID = " << ChatUnits::chat_id;
+    checker->setChatID(ChatUnits::chat_id);
     query = DatabaseManager::allMessagesFromCurrentChat<SupportChat>();
     DisplayAllMessages(query);
     scrollArea->verticalScrollBar()->setValue(ui->verticalLayout->count());
-    scrollArea->verticalScrollBar()->setVisible(false);
     return true;
 }
 
 void SupportChat::SetPhoneNumber(const QString& phone){
-    auto record = DatabaseManager::selectRecord<DatabaseManager::TABLE::CUSTOMERS>("phone", phone);
+    QSqlQuery query(QSqlDatabase::database("remote"));
+    query.prepare("SELECT * FROM customers "
+                   "WHERE phone = ? "
+                   "AND employee_id = ?;");
+    query.addBindValue(phone);
+    query.addBindValue(CurrentUser::getCurrentEmployeeID());
 
-    if(!record.exec()){
+    if(!query.exec() || !query.next()){
         ui->empty_chat_label->setVisible(true);
         ui->phone_btn->setText("Chose phone number");
         ui->phone_lineEdit->setVisible(false);
+        ui->phone_lineEdit->clear();
         ui->phone_btn->setVisible(true);
-        is_valid_partner = false;
-        return;
-    }
-    if(!record.next()){
-        ui->empty_chat_label->setVisible(true);
-        ui->phone_btn->setText("Chose phone number");
-        ui->phone_lineEdit->setVisible(false);
-        ui->phone_btn->setVisible(true);
+        ChatUnits::chat_id = 0;
+        ChatUnits::is_chat_exist = false;
         is_valid_partner = false;
         return;
     }
 
-    ChatUnits::partner_id = record.value("id").toUInt();
+    ChatUnits::partner_id = query.value("id").toUInt();
     ui->empty_chat_label->setVisible(false);
     is_valid_partner = true;
     ui->phone_btn->setText(phone);
-    is_exist();
-
-    ui->phone_lineEdit->setVisible(false);
-    ui->phone_btn->setText(phone);
     ui->phone_btn->setVisible(true);
+    is_exist();
 }

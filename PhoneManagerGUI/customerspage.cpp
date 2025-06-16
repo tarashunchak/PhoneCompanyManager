@@ -165,7 +165,9 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
         }
     }
     if(!query.exec()){
-        query.prepare("SELECT * FROM customers ORDER BY date DESC;");
+        query.prepare("SELECT * FROM customers "
+                      "WHERE is_visible = 'true' "
+                      "ORDER BY date DESC;");
         if(!query.exec()){
             qDebug() << "SetCustomersCards Query fault!!!: " << query.lastError();
             return;
@@ -193,6 +195,6 @@ void CustomersPage::SetCustomersCards(QSqlQuery query){
 }
 
 void CustomersPage::FindCustomersByName(){
-    auto query = DatabaseManager::findByName(DatabaseManager::TABLE::CUSTOMERS, ui->lineEdit->text());
+    auto query = DatabaseManager::findByName(TABLE::CUSTOMERS, ui->lineEdit->text());
     SetCustomersCards(std::move(query));
 }

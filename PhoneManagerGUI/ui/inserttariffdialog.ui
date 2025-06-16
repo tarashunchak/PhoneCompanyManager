@@ -7,17 +7,24 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>320</height>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(155,160, 165);
-font-family:Lato, Arial, Consolas;
+   <string notr="true">QWidget{
+background-color:rgb(155,160, 165);
+border:none;
+}
+QLabel{
 color:black;
-font-size:18px;</string>
+font-family:Lato, Arial, Consolas;
+font-size:18px;
+border:none;
+background-color:transparent;
+};</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -26,15 +33,16 @@ font-size:18px;</string>
    <property name="geometry">
     <rect>
      <x>170</x>
-     <y>270</y>
+     <y>280</y>
      <width>100</width>
-     <height>25</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
 color:black;
 background-color:white;
+font-family:Lato, Arial, Consolas;
 border:1px solid black;
 border-radius:4px;
 font-size:16px;
@@ -50,9 +58,9 @@ QPushButton:hover{
   <widget class="QLabel" name="header_label">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>0</x>
      <y>10</y>
-     <width>160</width>
+     <width>440</width>
      <height>40</height>
     </rect>
    </property>
@@ -77,9 +85,9 @@ font-size:36px;</string>
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>50</y>
+     <y>60</y>
      <width>381</width>
-     <height>208</height>
+     <height>191</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -282,10 +290,34 @@ background-color:transparent;</string>
     </size>
    </property>
   </widget>
+  <widget class="QLabel" name="incorrect_data_label">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>250</y>
+     <width>440</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red;
+font-family:Lato, Arial, Consolas;
+font-size:18px;
+background-color:transparent;
+</string>
+   </property>
+   <property name="text">
+    <string>Incorrect data!!!</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
   <zorder>layoutWidget</zorder>
   <zorder>confirm_addition_btn</zorder>
   <zorder>header_label</zorder>
   <zorder>return_btn</zorder>
+  <zorder>incorrect_data_label</zorder>
  </widget>
  <resources/>
  <connections/>

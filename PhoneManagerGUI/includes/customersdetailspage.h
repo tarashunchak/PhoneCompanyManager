@@ -34,6 +34,7 @@ public:
         static QString balance;
         static QString employee_id;
         static QString is_active;
+        static QString added_by_id;
     };
 
 public slots:

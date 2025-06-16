@@ -247,10 +247,10 @@ font-size:20px;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton{
-	background-color:rgb(27, 104, 87);
+	background-color:rgb(37, 114, 97);
 	color:white;
 	font-family:Lato, Arial, Consolas;
-	font-size:16px;
+	font-size:18px;
 	border-radius:4px;
 	border:1px solid rgba(255, 255, 255, 0.5);
 }QPushButton:hover{
@@ -403,12 +403,17 @@ border-radius:4px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:white;
-font-size:16px;
+       <string notr="true">QPushButton{
+color:black;
+background-color:white;
+font-family:Lato, Arial, Consolas;
 border:1px solid black;
-padding-top:5px;
-padding-bottom:5px;
-border-radius:4px;</string>
+border-radius:4px;
+font-size:16px;
+}
+QPushButton:hover{
+	background-color:rgb(200, 200, 200);
+}</string>
       </property>
       <property name="text">
        <string>Confirm</string>
@@ -424,12 +429,17 @@ border-radius:4px;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:white;
-font-size:16px;
+       <string notr="true">QPushButton{
+color:black;
+background-color:white;
+font-family:Lato, Arial, Consolas;
 border:1px solid black;
-padding-top:5px;
-padding-bottom:5px;
-border-radius:4px;</string>
+border-radius:4px;
+font-size:16px;
+}
+QPushButton:hover{
+	background-color:rgb(200, 200, 200);
+}</string>
       </property>
       <property name="text">
        <string>Cancel</string>
@@ -476,20 +486,21 @@ background-color:#73819C;</string>
        <rect>
         <x>20</x>
         <y>15</y>
-        <width>141</width>
+        <width>171</width>
         <height>25</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Lato</family>
-        <pointsize>14</pointsize>
+        <pointsize>-1</pointsize>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">color:white;
 font-family: Lato, Arial, Consolas;
-background-color:transparent;</string>
+background-color:transparent;
+font-size:24px;</string>
       </property>
       <property name="text">
        <string>Request history</string>
@@ -567,13 +578,14 @@ background-color:#73819C;</string>
       <property name="font">
        <font>
         <family>Lato</family>
-        <pointsize>14</pointsize>
+        <pointsize>-1</pointsize>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">color:white;
 font-family: Lato, Arial, Consolas;
-background-color:transparent;</string>
+background-color:transparent;
+font-size:24px;</string>
       </property>
       <property name="text">
        <string>Payment history</string>
@@ -644,20 +656,21 @@ background-color:#73819C;</string>
        <rect>
         <x>20</x>
         <y>15</y>
-        <width>431</width>
+        <width>421</width>
         <height>25</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Lato</family>
-        <pointsize>14</pointsize>
+        <pointsize>-1</pointsize>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">color:white;
 font-family: Lato, Arial, Consolas;
-background-color:transparent;</string>
+background-color:transparent;
+font-size:24px;</string>
       </property>
       <property name="text">
        <string>Tariffs History For Last Year</string>

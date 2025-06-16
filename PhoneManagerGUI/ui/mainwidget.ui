@@ -508,6 +508,24 @@ background-color:transparent;</string>
      <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="not_read_message_label">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>610</y>
+      <width>14</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:lime;
+border:1px solid rgba(0, 0, 0, 0.6);
+border-radius:7px;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>dashboard_btn</zorder>
    <zorder>customers_btn</zorder>
    <zorder>side_menu_logo</zorder>
@@ -522,6 +540,7 @@ background-color:transparent;</string>
    <zorder>line_3</zorder>
    <zorder>chats_btn</zorder>
    <zorder>logo_label</zorder>
+   <zorder>not_read_message_label</zorder>
   </widget>
   <widget class="QPushButton" name="close_open_calc_btn">
    <property name="enabled">

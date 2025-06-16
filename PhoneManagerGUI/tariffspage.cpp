@@ -58,11 +58,11 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
         }
     }
 
-    if(!query.exec()){
-        query.prepare("SELECT * FROM tariffs;");
+    //if(!query.exec()){
+    //    query.prepare("SELECT * FROM tariffs;");
         if(!query.exec())
             qDebug() << "TariffsPage::setTariffsCards(QSqlQuery) query fault: " << query.lastError();
-    }
+    //}
 
     uint8_t cols = 0;
     uint8_t rows = 0;
@@ -95,6 +95,6 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
 
 void TariffsPage::FindTariffInDB(){
     QString text{ui->lineEdit->text()};
-    auto query = DatabaseManager::findByName(DatabaseManager::TABLE::TARIFFS, text);
+    auto query = DatabaseManager::findByName(TABLE::TARIFFS, text);
     setTariffsCards(std::move(query));
 }

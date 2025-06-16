@@ -5,20 +5,21 @@
 #include <QHeaderView>
 #include "includes/databasemanager.h"
 
-QString CustomersDetailsPage::CurrentCustomer::id = {};
-QString CustomersDetailsPage::CurrentCustomer::first_name = {};
-QString CustomersDetailsPage::CurrentCustomer::last_name = {};
-QString CustomersDetailsPage::CurrentCustomer::phone = {};
-QString CustomersDetailsPage::CurrentCustomer::email = {};
-QString CustomersDetailsPage::CurrentCustomer::reg_date = {};
-QString CustomersDetailsPage::CurrentCustomer::date_of_B = {};
-QString CustomersDetailsPage::CurrentCustomer::tariff_name = {};
-QString CustomersDetailsPage::CurrentCustomer::tariff_id = {};
-QString CustomersDetailsPage::CurrentCustomer::comment_text = {};
-QString CustomersDetailsPage::CurrentCustomer::comment_id = {};
-QString CustomersDetailsPage::CurrentCustomer::balance = {};
-QString CustomersDetailsPage::CurrentCustomer::employee_id = {};
-QString CustomersDetailsPage::CurrentCustomer::is_active = {};
+QString CustomersDetailsPage::CurrentCustomer::id{};
+QString CustomersDetailsPage::CurrentCustomer::first_name{};
+QString CustomersDetailsPage::CurrentCustomer::last_name{};
+QString CustomersDetailsPage::CurrentCustomer::phone{};
+QString CustomersDetailsPage::CurrentCustomer::email{};
+QString CustomersDetailsPage::CurrentCustomer::reg_date{};
+QString CustomersDetailsPage::CurrentCustomer::date_of_B{};
+QString CustomersDetailsPage::CurrentCustomer::tariff_name{};
+QString CustomersDetailsPage::CurrentCustomer::tariff_id{};
+QString CustomersDetailsPage::CurrentCustomer::comment_text{};
+QString CustomersDetailsPage::CurrentCustomer::comment_id{};
+QString CustomersDetailsPage::CurrentCustomer::balance{};
+QString CustomersDetailsPage::CurrentCustomer::employee_id{};
+QString CustomersDetailsPage::CurrentCustomer::is_active{};
+QString CustomersDetailsPage::CurrentCustomer::added_by_id{};
 
 CustomersDetailsPage::CustomersDetailsPage(QWidget *parent)
     : QWidget(parent)
@@ -60,14 +61,14 @@ void CustomersDetailsPage::SetConnections(){
     connect(ui->save_comment_btn, &QPushButton::clicked, this, [this](){
         int comment_id = CurrentCustomer::comment_id.toInt();
         QString text = ui->comment_textEdit->toPlainText();
-        DatabaseManager::saveCommentToDB(DatabaseManager::TABLE::CUSTOMERS
+        DatabaseManager::saveCommentToDB(TABLE::CUSTOMERS
                                      , CurrentCustomer::id.toUInt(), comment_id, text);
     });
     connect(ui->delete_customer_btn, &QPushButton::clicked, ui->delete_customer_widget, &QWidget::show);
     connect(ui->cancel_btn, &QPushButton::clicked, ui->delete_customer_widget, &QWidget::close);
     connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
         ui->delete_customer_widget->close();
-        DatabaseManager::deleteRecord<DatabaseManager::TABLE::CUSTOMERS>("id", CurrentCustomer::id.toUInt());
+        DatabaseManager::deleteRecord<TABLE::CUSTOMERS>("id", CurrentCustomer::id.toUInt());
         emit on_return_btn_clicked();
     });
 }
@@ -81,14 +82,14 @@ void CustomersDetailsPage::SetCustomerInfo(const uint id){
     ui->reg_date_Label->setText(CurrentCustomer::reg_date);
     ui->current_tariff_label->setText(CurrentCustomer::tariff_name);
     ui->comment_textEdit->setPlainText(CurrentCustomer::comment_text);
-
+    ui->open_chat_btn->setVisible(CurrentCustomer::employee_id.toUInt() == CurrentUser::getCurrentEmployeeID());
     TABLE_MODELS.payments_qmodel->setQuery(std::move(query));
 
     SetCharts();
 }
 
 void CustomersDetailsPage::SetPaymentsHistory()const{
-    auto query = DatabaseManager::selectRecord<DatabaseManager::TABLE::PAYMENTS>("cust_id", CurrentCustomer::id);
+    auto query = DatabaseManager::selectRecord<TABLE::PAYMENTS>("cust_id", CurrentCustomer::id);
     ui->no_payments_label->setVisible(!query.exec());
     TABLE_MODELS.payments_qmodel->setQuery(std::move(query));
 }
@@ -128,7 +129,7 @@ void CustomersDetailsPage::SetTariffsChart()const{
 }
 
 void CustomersDetailsPage::SetRequestsHistory()const{
-    auto query = DatabaseManager::requestsHistory(DatabaseManager::PAGE::CUSTOMERS_DETAILS_PAGE);
+    auto query = DatabaseManager::requestsHistory(PAGE::CUSTOMERS_DETAILS_PAGE);
     if(!query.exec() || !query.next()){
         qDebug() << "In CustomersDetailsPage::SetCustomersInfo::query fault!!!: " << query.lastError();
         ui->requests_statistic_tableView->setVisible(false);

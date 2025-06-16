@@ -22,6 +22,7 @@ class NavigationManager: public QObject
 public:
     NavigationManager(QStackedWidget*, QObject*, QWidget*);
     ~NavigationManager() = default;
+    static bool is_chat_page;
 
 public slots:
     void showLoginPage()const;
@@ -43,6 +44,8 @@ signals:
     void show_small_buttons()const;
     void hide_small_buttons()const;
     void open_chat(const QString&);
+    void notify_employee()const;
+    void hide_notifying_circle()const;
 
 private:
     QStackedWidget* sWidget;

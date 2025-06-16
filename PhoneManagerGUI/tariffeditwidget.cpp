@@ -1,9 +1,9 @@
 #include "includes/tariffeditwidget.h"
 #include "ui_tariffeditwidget.h"
-
 #include <QSqlQuery>
 #include <QSqlError>
 #include "includes/databasemanager.h"
+#include <QtConcurrent/QtConcurrent>
 
 TariffEditWidget::TariffEditWidget(QWidget *parent)
     : QWidget(parent)
@@ -15,7 +15,7 @@ TariffEditWidget::TariffEditWidget(QWidget *parent)
     connect(ui->save_btn, &QPushButton::clicked, this, &TariffEditWidget::saveChanges);
     connect(ui->delete_tariff_btn, &QPushButton::clicked, ui->delete_tariff_widget, &QWidget::show);
     connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
-        DatabaseManager::deleteRecord<DatabaseManager::TABLE::TARIFFS>("id", tariff_id);
+        DatabaseManager::deleteRecord<TABLE::TARIFFS>("id", tariff_id);
         ui->delete_tariff_widget->close();
     });
     connect(ui->cancel_btn, &QPushButton::clicked, ui->delete_tariff_widget, &QWidget::close);
@@ -35,7 +35,7 @@ void TariffEditWidget::setTariffInformation(const uint tmptariff_id){
     records.prepare("SELECT * FROM tariffs "
                   "WHERE id = :tariff_id;");
     records.bindValue(":tariff_id", tariff_id);*/
-    auto records = DatabaseManager::selectRecord<DatabaseManager::TABLE::TARIFFS>("id", tariff_id);
+    auto records = DatabaseManager::selectRecord<TABLE::TARIFFS>("id", tariff_id);
     if(!records.exec() || !records.next()){
         qDebug() << "setTariffInformation fault";
         return;
@@ -85,8 +85,8 @@ void TariffEditWidget::saveChanges(){
         else{
             QtConcurrent::run([this](){
                 discardChanges();
-                DatabaseManager::syncAllTables();
             });
+            DatabaseManager::startSyncTables();
         };
     }else
         ui->incorrect_data_label->setVisible(true);

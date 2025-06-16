@@ -37,7 +37,8 @@ void AuthManager::authenticate(const QString& username, const QString& password)
         SupportChat::ChatUnits::my_participant_id = participant_id;
         CurrentUser::setCurrentUserID(userID);
         CurrentUser::setCurrentEmployeeID(emplID);
-        QtConcurrent::run(&DatabaseManager::syncAllTables);
+        //QtConcurrent::run(&DatabaseManager::syncAllTables);
+        DatabaseManager::startSyncTables();
         emit authSuccess();
     }else{
         qDebug() << "Invalid username or password!";

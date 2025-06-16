@@ -46,7 +46,7 @@ void EmployeesPage::setCurrentUser()const{
                   "FROM users "
                   "JOIN employees e ON e.id = users.empl_id "
                   "JOIN positions p ON p.id = e.position_id "
-                  "WHERE users.id = :id");
+                  "WHERE users.id = :id;");
 
     query.bindValue(":id", CurrentUser::getCurrentUserID());
 
@@ -57,7 +57,7 @@ void EmployeesPage::setCurrentUser()const{
 }
 
 void EmployeesPage::FindEmployeesByName(){
-    auto query = DatabaseManager::findByName(DatabaseManager::TABLE::EMPLOYEES, ui->lineEdit->text());
+    auto query = DatabaseManager::findByName(TABLE::EMPLOYEES, ui->lineEdit->text());
     SetEmployeesCards(std::move(query));
 }
 
@@ -114,7 +114,8 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
         }
     }
     if(!query.isActive()){
-        query.prepare("SELECT * FROM employees;");
+        query.prepare("SELECT * FROM employees "
+                      "WHERE is_visible = 'true';");
         if(!query.exec()){
             qDebug() << "SetEmployeesCards query fault!" << query.lastError();
             return;

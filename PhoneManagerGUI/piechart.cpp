@@ -6,7 +6,7 @@ PieChart::PieChart()
     , pie_series(new QPieSeries{})
     , chart(new QChart{})
 {
-    chart->setTheme(QChart::ChartThemeHighContrast);
+    chart->setTheme(QChart::ChartThemeLight);
     chart->setAnimationOptions(QChart::AllAnimations);
     chart_view->setChart(chart);
     chart_view->setParent(this);
@@ -19,7 +19,7 @@ PieChart::PieChart(QWidget* parent)
     , pie_series(new QPieSeries{})
     , chart(new QChart{})
 {
-    chart->setTheme(QChart::ChartThemeQt);
+    chart->setTheme(QChart::ChartThemeLight);
     chart->setAnimationOptions(QChart::AllAnimations);
     chart_view->setChart(chart);
     chart_view->setParent(this);
@@ -53,7 +53,7 @@ void PieChart::setQuery(QSqlQuery query, QString label_for_query, QString value_
         slice->setLabelPosition(QPieSlice::LabelInsideNormal);
         connect(slice, &QPieSlice::hovered, this, [slice](bool is_hovered){
             QColor color = slice->color();
-            if(color.red() + 40 < 255 || color.green() + 40 < 255 || color.blue() + 40 < 255){
+            if(color.red() + 40 < 255 && color.green() + 40 < 255 && color.blue() + 40 < 255){
                 slice->setColor(is_hovered ? QColor(color.red() + 20, color.green() + 20, color.blue() + 20)
                                        : QColor(color.red() - 20, color.green() - 20, color.blue() - 20));
             }else{

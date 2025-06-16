@@ -36,6 +36,7 @@ MainWidget::MainWidget(QWidget *parent)
                       ,chat->size().width(), chat->size().height());
     ui->leave_session_btn->setIcon(QIcon{"./img/quit_icon.svg"});
     ui->leave_session_btn->setIconSize(QSize{50, 50});
+    //ui->not_read_message_label->setVisible(false);
 }
 
 MainWidget::~MainWidget()
@@ -68,23 +69,24 @@ void MainWidget::SetupConnections(){
         chat->setVisible(!chat->isVisible());
     });
     connect(this, &MainWidget::on_dashboard_btn_clicked, this, [this](){
-        buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::DASHBOARD_BTN);
+        //buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::DASHBOARD_BTN);
+        NavigationManager::is_chat_page = false;
         navigation_manager->showDashboardPage();
     });
     connect(this, &MainWidget::on_customers_btn_clicked, this, [this](){
-        buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
+        //buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CUSTOMERS_BTN);
         navigation_manager->showCustomersPage();
     });
     connect(this, &MainWidget::on_employees_btn_clicked, this, [this](){
-        buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::EMPLOYEES_BTN);
+        //buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::EMPLOYEES_BTN);
         navigation_manager->showEmployeesPage();
     });
     connect(this, &MainWidget::on_tariffs_btn_clicked, this, [this](){
-        buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TARIFFS_BTN);
+        //buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::TARIFFS_BTN);
         navigation_manager->showTariffsPage();
     });
     connect(this, &MainWidget::on_requests_btn_clicked, this, [this](){
-        buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
+        //buttons_style_manager->SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::REQUESTS_BTN);
         navigation_manager->showRequestsPage();
     });
     connect(this, &MainWidget::on_log_out_btn_clicked, this, [this](){
@@ -105,6 +107,9 @@ void MainWidget::SetupConnections(){
     connect(navigation_manager, &NavigationManager::open_chat, this, [this](const QString& phone){
         chat->show();
         chat->SetPhoneNumber(phone);
+    });
+    connect(navigation_manager, &NavigationManager::notify_employee, this, [this](){
+        ui->not_read_message_label->setVisible(!NavigationManager::is_chat_page);
     });
 }
 

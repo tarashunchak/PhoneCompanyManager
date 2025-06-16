@@ -1,21 +1,20 @@
 #ifndef MESSAGECHECKER_H
 #define MESSAGECHECKER_H
-
 #include <QObject>
-
-extern "C"{
-    #include <libpq-fe.h>
-};
+#include <QThread>
 
 class MessageChecker : public QObject {
     Q_OBJECT
+
 public:
     MessageChecker(QObject* parent = nullptr);
-    ~MessageChecker() = default;
+    ~MessageChecker();
     void setChatID(const uint);
+    void startCheck();
 
 signals:
     void new_message_detected();
+    void cycle_finished();
 
 private slots:
     void checkForNewMessages();
@@ -23,6 +22,7 @@ private slots:
 private:
     std::atomic<uint> last_message_id = 0u;
     std::atomic<uint> chat_id = 0u;
+    QThread* thread;
 };
 
 #endif // MESSAGECHECKER_H

@@ -1,0 +1,33 @@
+#ifndef DB_ENUMS_H
+#define DB_ENUMS_H
+
+enum class PAGE : unsigned char{
+    DASHBOARD_PAGE,
+    CUSTOMERS_PAGE,
+    EMPLOYEES_PAGE,
+    REQUESTS_PAGE,
+    TARIFFS_PAGE,
+    SUPPORT_CHAT,
+    CUSTOMERS_DETAILS_PAGE,
+    EMPLOYEES_DETAILS_PAGE,
+    EMPLOYEES_CHATS_PAGE
+};
+
+enum class TABLE : unsigned char{
+    USERS,
+    EMPLOYEES,
+    CUSTOMERS,
+    TARIFFS,
+    REQUESTS,
+    CHATS,
+    CHAT_PARTICIPANTS,
+    PARTICIPANTS,
+    DEPARTMENTS,
+    POSITIONS,
+    COMMENTS,
+    MESSAGES,
+    PAYMENTS,
+    USAGE
+};
+
+#endif // DB_ENUMS_H

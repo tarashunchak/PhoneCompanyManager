@@ -30,9 +30,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">color:white;
-background-color:rgb(25, 30, 35);
-border-radius:5px;
-font-family:Robotic;</string>
+background-color:rgb(45, 50, 55);
+font-family:Lato, Arial, Robotic;</string>
   </property>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
@@ -44,10 +43,7 @@ font-family:Robotic;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(45, 45, 45);
-border:none;
-border-bottom-right-radius:0px;
-border-bottom-left-radius:0px;</string>
+    <string notr="true">background-color:rgb(45, 45, 45);</string>
    </property>
    <widget class="QLineEdit" name="phone_lineEdit">
     <property name="geometry">
@@ -113,7 +109,7 @@ border-radius:0px;</string>
     </property>
     <property name="font">
      <font>
-      <family>Robotic</family>
+      <family>Lato</family>
       <pointsize>14</pointsize>
      </font>
     </property>

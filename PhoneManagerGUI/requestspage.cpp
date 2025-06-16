@@ -10,11 +10,12 @@ RequestsPage::RequestsPage(QWidget *parent)
     , req_tableView(new RequestsTabelView{this})
 {
     ui->setupUi(this);
-    req_tableView->setParent(ui->scrollAreaWidgetContents);
-    req_tableView->setGeometry(0, 0, 1670, 970);
-    req_tableView->setModel(qmodel);
-    req_tableView->setMouseTracking(true);
-    req_tableView->viewport()->setMouseTracking(true);
+    ui->req_tableView->setParent(ui->scrollAreaWidgetContents);
+    ui->req_tableView->setGeometry(0, 0, 1670, 970);
+    ui->req_tableView->setModel(qmodel);
+    ui->req_tableView->setMouseTracking(true);
+    ui->req_tableView->viewport()->setMouseTracking(true);
+    //ui->req_tableView->horizontalHeader()->setStyleSheet("");
     ui->save_btn->raise();
     ui->save_btn->raise();
     ui->scrollArea->setWidgetResizable(true);
@@ -33,7 +34,7 @@ void RequestsPage::SetConnections(){
     connect(ui->history_btn, &QPushButton::clicked, this, &RequestsPage::showRequestsHistory);
     connect(ui->save_btn, &QPushButton::clicked, this, [this](){
         QSqlQuery query(QSqlDatabase::database("remote"));
-        QAbstractItemModel* model = req_tableView->model();
+        QAbstractItemModel* model = ui->req_tableView->model();
         QModelIndex index{};
         for(int i = 0; i < model->rowCount(); ++i){
             index = model->index(i, model->columnCount()-1);

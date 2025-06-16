@@ -12,10 +12,11 @@ InsertTariffDialog::InsertTariffDialog(QWidget *parent)
     this->setWindowTitle("Insert tariff");
     this->setWindowFlag(Qt::FramelessWindowHint);
     setModal(true);
-    setMinimumSize(440, 320);
-    setMaximumSize(440, 320);
+    setMinimumSize(440, 330);
+    setMaximumSize(440, 330);
     setConnections();
     ui->return_btn->setIcon(QIcon{"./img/exit.png"});
+    ui->incorrect_data_label->setVisible(false);
 }
 
 InsertTariffDialog::~InsertTariffDialog()
@@ -45,13 +46,17 @@ void InsertTariffDialog::InsertTariffToDB(){
 
     if(daily_p_ok && monthly_p_ok
         && call_minutes_ok && internet_GB_ok
-        && !name.isEmpty()){
-        bool is_inserted = DatabaseManager::insertToDB(DatabaseManager::TABLE::TARIFFS,
+        && !name.isEmpty())
+    {
+        ui->incorrect_data_label->setVisible(false);
+        bool is_inserted = DatabaseManager::insertToDB(TABLE::TARIFFS,
                                                        std::tie(name, monthly_p, daily_p
                                                        , call_minutes, internet_GB));
         if(is_inserted){
             clearWidgets();
         }
+    }else{
+        ui->incorrect_data_label->setVisible(true);
     }
 }
 

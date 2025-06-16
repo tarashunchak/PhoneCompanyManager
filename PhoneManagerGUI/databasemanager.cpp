@@ -6,6 +6,7 @@
 #include "employeesdetailspage.h"
 #include <QSqlDriver>
 #include <QObject>
+#include <QtConcurrent/QtConcurrent>
 
 QString DatabaseManager::tableToString(TABLE table){
     switch (table) {
@@ -74,8 +75,8 @@ DatabaseManager::DatabaseManager()
     }
 }
 
-QSqlDatabase DatabaseManager::remote_db = QSqlDatabase{};
-QSqlDatabase DatabaseManager::local_db = QSqlDatabase{};
+QSqlDatabase DatabaseManager::remote_db{};
+QSqlDatabase DatabaseManager::local_db{};
 
 DatabaseManager::~DatabaseManager() {
     if (remote_db.isOpen() || local_db.isOpen()) {
@@ -101,122 +102,26 @@ QSqlDatabase& DatabaseManager::getDatabase() {
     return local_db;
 }
 
+DatabaseSynchronizer* DatabaseManager::getSynchronizer(){
+    return &instance().syncronizer;
+}
+
 bool DatabaseManager::isConnected() {
     return local_db.isOpen();
 }
 
-void DatabaseManager::syncAllTables(){
+void DatabaseManager::startSyncTables(){
     using enum TABLE;
     static const QList<TABLE> tables{
         POSITIONS, DEPARTMENTS, USERS, EMPLOYEES
         ,CUSTOMERS, TARIFFS, REQUESTS, CHATS
         ,CHAT_PARTICIPANTS, PARTICIPANTS, /*USAGE,*/ COMMENTS, MESSAGES
     };
-    for(auto table : tables)
-        syncTable(table);
-}
-
-void DatabaseManager::syncTable(TABLE table){
-    QString thread_id = QString::number(reinterpret_cast<quintptr>(QThread::currentThreadId()));
-    QString remote_conn_name = QString{"remote_sync_%1"}.arg(thread_id);
-    QString local_conn_name = QString{"local_sync_%1"}.arg(thread_id);
-
-    if(QSqlDatabase::contains(remote_conn_name))
-        QSqlDatabase::removeDatabase(remote_conn_name);
-    if(QSqlDatabase::contains(local_conn_name))
-        QSqlDatabase::removeDatabase(local_conn_name);
-
-    {
-        QSqlDatabase local_sync = QSqlDatabase::addDatabase("QSQLITE", local_conn_name);
-        local_sync.setDatabaseName("./database/database.db");
-
-        QSqlDatabase remote_sync = QSqlDatabase::addDatabase("QPSQL", remote_conn_name);
-        static QString host = "ep-divine-sun-a83zg48v-pooler.eastus2.azure.neon.tech";
-        static QString dbName = "neondb";
-        static QString user = "neondb_owner";
-        static QString password = "npg_qILNuP6Diz1Z";
-        static int port = 5432;
-
-        remote_sync.setHostName(host);
-        remote_sync.setPort(port);
-        remote_sync.setDatabaseName(dbName);
-        remote_sync.setUserName(user);
-        remote_sync.setPassword(password);
-        remote_sync.setConnectOptions("sslmode=require");
-
-        QString table_str = tableToString(table);
-        QSqlQuery remote_query(remote_sync);
-        if (!remote_sync.isOpen() || !local_sync.isOpen()) {
-            if (!remote_sync.open() || !local_sync.open()) {
-                remote_sync.close();
-                qDebug() << "Database reopen failed: " << remote_sync.lastError();
-                return;
-            }
-        }
-        QString query_str = "SELECT * FROM " + table_str + ";";
-        remote_query.prepare(query_str);
-        if(!remote_query.exec()){
-            qDebug() << "Error to exec remote query";
-            return;
-        }
-
-        local_sync.transaction();
-        QSqlQuery clear_sqlite_query(local_sync);
-        if(!clear_sqlite_query.exec("DELETE FROM " + table_str + ";")){
-            qDebug() << "Clear " << table_str << " error";
-            local_db.rollback();
-            return;
-        }
-
-        QStringList columns = Columns::all_columns[table_str];
-        int count = columns.size();
-
-        QString place_holder{};
-        for(int i = 0; i < count - 1; ++i){
-            place_holder += "?, ";
-        }
-        place_holder += "?";
-
-        QString insert_query_str = QString{"INSERT INTO %1 (%2) VALUES (%3);"}
-                                .arg(table_str).arg(columns.join(", "))
-                                .arg(place_holder);
-        QSqlQuery insert_query(local_sync);
-        insert_query.prepare(insert_query_str);
-
-        bool is_ok = true;
-        while(remote_query.next()){
-            insert_query.clear();
-            insert_query.prepare(insert_query_str);
-            for(const auto& col : columns){
-                insert_query.addBindValue(remote_query.value(col).toString());
-            }
-            if (!remote_sync.isOpen() || !local_sync.isOpen()) {
-                if (!remote_sync.open() || !local_sync.open()) {
-                    qDebug() << "Database reopen failed: " << remote_sync.lastError();
-                    return;
-                }
-            }
-            if(!insert_query.exec()){
-                qDebug() << "insert " + table_str + " to SQLite error";
-                is_ok = false;
-                break;
-            }
-        }
-        if(is_ok)
-            local_sync.commit();
-        else
-            local_sync.rollback();
-
-        remote_query.clear();
-        clear_sqlite_query.clear();
-        insert_query.clear();
-
-        remote_sync.close();
-        local_sync.close();
-    }
+    instance().syncronizer.startSync(tables);
 }
 
 QSqlQuery DatabaseManager::findByName(TABLE table, const QString& text){
+
     static QString query_str{};
     query_str = "";
     if(table == TABLE::CUSTOMERS || table == TABLE::EMPLOYEES)
@@ -255,13 +160,13 @@ QSqlQuery DatabaseManager::inProgressRequests(){
     query.prepare("SELECT r.id AS \"ID\", "
                   "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Customer\", "
                   "r.request_type AS \"Req. type\", "
-                  "r.status AS \"Status\", r.date AS \"String\" "
+                  "r.status AS \"Status\", "
+                  "REPLACE(SUBSTR(r.date, 1, 19), 'T', ' ') AS \"Date\" "
                   "FROM requests r "
                   "JOIN customers c ON c.id = r.cust_id "
                   "WHERE r.status = 'In Progress' "
                   "AND r.assigned_to_id = :my_user_id;");
     query.bindValue(":my_user_id", CurrentUser::getCurrentUserID());
-    //QtConcurrent::run(&DatabaseManager::syncAllTables);
     return query;
 }
 
@@ -270,7 +175,8 @@ QSqlQuery DatabaseManager::unassignedRequests(){
     query.prepare("SELECT r.id AS \"ID\", "
                   "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Customer\", "
                   "r.request_type AS \"Req. type\", "
-                  "r.status AS \"Status\", r.date AS \"String\" "
+                  "r.status AS \"Status\", "
+                  "REPLACE(SUBSTR(r.date, 1, 19), 'T', ' ') AS \"Date\" "
                   "FROM requests r "
                   "JOIN customers c ON c.id = r.cust_id "
                   "WHERE assigned_to_id = -1;");
@@ -309,7 +215,8 @@ QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
                       "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '') "
                       "|| ' ID(' || c.id || ')') AS \"Customer\", "
                       "r.request_type AS \"Req. type\", "
-                      "r.status AS \"Status\", r.date AS \"String\", "
+                      "r.status AS \"Status\", "
+                      "REPLACE(SUBSTR(r.date, 1, 19), 'T', ' ') AS \"Date\", "
                       "(COALESCE(e.first_name, '') || ' ' || COALESCE(e.last_name, '') "
                       "|| ' ID(' || e.id  || ')') AS \"Handled by\" "
                       "FROM requests r "
@@ -318,7 +225,7 @@ QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
     }else if(page == PAGE::DASHBOARD_PAGE && !period.isEmpty()){
         query.prepare("SELECT r.id AS \"ID\", "
                       "c.phone AS \"Phone\", "
-                      "r.date AS \"String\" "
+                      "REPLACE(SUBSTR(r.date, 1, 19), 'T', ' ') AS \"Date\" "
                       "FROM requests r "
                       "JOIN customers c ON c.id = r.cust_id "
                       "ORDER BY r.id DESC LIMIT " + period + ";");
@@ -330,14 +237,14 @@ QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
 QSqlQuery DatabaseManager::newCustomersByPeriod(const bool is_today, QString period){
     QSqlQuery query(local_db);
     if(is_today){
-        query.prepare("SELECT COUNT(*) AS cust_count, DATETIME(date) AS date "
+        query.prepare("SELECT COUNT(id) AS cust_count, DATETIME(date) AS date "
                       "FROM customers "
                       "WHERE DATE(date) = DATE(CURRENT_DATE) "
                       "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }else{
         query.prepare("SELECT COUNT(id) AS cust_count, DATETIME(date) AS date "
                       "FROM customers "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE + INTERVAL '" + period + "') "
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE,'" + period + "') "
                       "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }
     return query;
@@ -346,22 +253,20 @@ QSqlQuery DatabaseManager::newCustomersByPeriod(const bool is_today, QString per
 QSqlQuery DatabaseManager::newRequestsByPeriod(const bool is_today, QString period){
     QSqlQuery query(local_db);
     if(is_today){
-        query.prepare("SELECT COUNT(*) AS req_count, date "
+        query.prepare("SELECT COUNT(id) AS req_count, date "
                       "FROM requests "
                       "WHERE DATE(date) = DATE(CURRENT_DATE) "
                       "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }else{
         query.prepare("SELECT COUNT(id) AS req_count, date "
                       "FROM requests "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE + INTERVAL '" + period + "') "
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE, '" + period + "') "
                                  "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }
     return query;
 }
 
 QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
-    QtConcurrent::run(&DatabaseManager::syncAllTables);
-    QTimer::singleShot(1000, nullptr, nullptr);
     QSqlQuery query(local_db);
     query.prepare("SELECT c.id AS \"Cust. ID\", "
                   "c.first_name AS \"First name\", "
@@ -376,10 +281,10 @@ QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
                   "t.tariff_name AS \"Tariff\", "
                   "cm.comment_text AS \"Comment text\", "
                   "COALESCE(c.comment_id, -1) AS \"Comment ID\", "
-                  "e.id  AS \"Employee ID\" "
+                  "c.employee_id  AS \"Employee ID\", "
+                  "c.added_by_id AS \"Added by ID\" "
                   "FROM customers c "
                   "JOIN tariffs t ON t.id = c.tariff_id "
-                  "LEFT JOIN employees e ON e.id = c.employee_id "
                   "LEFT JOIN comments cm ON cm.id = c.comment_id "
                   "WHERE c.id = ?;");
     query.addBindValue(curr_cust_id);
@@ -399,6 +304,7 @@ QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
         CustomersDetailsPage::CurrentCustomer::balance = query.value("Balance").toString();
         CustomersDetailsPage::CurrentCustomer::employee_id = query.value("Employee ID").toString();
         CustomersDetailsPage::CurrentCustomer::is_active = query.value("Is active").toString();
+        CustomersDetailsPage::CurrentCustomer::added_by_id = query.value("Added by ID").toString();
     }else{
         qDebug() << "currentCustomers query error: id = " << curr_cust_id;
         qDebug() << "currentCustomers query error text = " << query.lastError();
@@ -466,7 +372,7 @@ QSqlQuery DatabaseManager::currentEmployee(const uint curr_empl_id){
     }else{
         qDebug() << "CurrentEmployee query error: " << query.lastError();
     }
-    QtConcurrent::run(&DatabaseManager::syncAllTables);
+
     return query;
 }
 
@@ -506,7 +412,7 @@ void DatabaseManager::saveCommentToDB(TABLE table, int entity_id, int comment_id
     if(!query.exec())
         qDebug() << "update comments query fault: " << query.lastError();
     query.clear();
-    QtConcurrent::run(&DatabaseManager::syncAllTables);
+
 }
 
 QSqlQuery DatabaseManager::departments(){
@@ -533,7 +439,6 @@ QSqlQuery DatabaseManager::MyAllCorporateChats(){
                   "WHERE (p1.role = 'employee' AND p2.role = 'employee') "
                   "AND (p1.reference_id = :my_id AND p2.reference_id != :my_id);");
     query.bindValue(":my_id", CurrentUser::getCurrentUserID());
-    QtConcurrent::run(&DatabaseManager::syncAllTables);
     return query;
 }
 

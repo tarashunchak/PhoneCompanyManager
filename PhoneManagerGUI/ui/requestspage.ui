@@ -217,9 +217,20 @@ border:none;
     <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
   </widget>
+  <widget class="QTableView" name="req_tableView">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>110</y>
+     <width>1671</width>
+     <height>971</height>
+    </rect>
+   </property>
+  </widget>
   <zorder>layoutWidget</zorder>
   <zorder>label</zorder>
   <zorder>scrollArea</zorder>
+  <zorder>req_tableView</zorder>
   <zorder>no_requests_label</zorder>
  </widget>
  <resources/>

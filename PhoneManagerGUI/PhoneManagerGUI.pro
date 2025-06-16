@@ -20,6 +20,7 @@ SOURCES += \
     dashboard.cpp \
     dashboardseries.cpp \
     databasemanager.cpp \
+    databasesynchronizer.cpp \
     dbmeta.cpp \
     employeeschatpage.cpp \
     employeesdetailspage.cpp \
@@ -49,6 +50,8 @@ SOURCES += \
     tariffspage.cpp
 
 HEADERS += \
+    DB_ENUMS.h \
+    databasesynchronizer.h \
     employeeschatpage.h \
     employeesdetailspage.h \
     includes/chat_type_traits.h \

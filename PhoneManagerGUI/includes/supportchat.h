@@ -5,6 +5,7 @@
 #include <QScrollArea>
 #include <QVBoxLayout>
 #include <QSqlQuery>
+#include "messagechecker.h"
 
 namespace Ui {
 class ChatUI;
@@ -44,6 +45,7 @@ private:
     QScrollArea* scrollArea;
     QWidget* mainWidget;
     QVBoxLayout* innerVBoxLayout;
+    MessageChecker* checker;
     static bool is_valid_partner;
 };
 

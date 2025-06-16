@@ -56,7 +56,7 @@ void InsertEmployeeDialog::InsertEmployeeToDB(){
         && !phone.isEmpty()
         && !email.isEmpty())
     {
-        bool is_inserted = DatabaseManager::insertToDB(DatabaseManager::TABLE::EMPLOYEES,
+        bool is_inserted = DatabaseManager::insertToDB(TABLE::EMPLOYEES,
                                                        std::tie(fname, lname, phone, email, date_of_B
                                                                 , hire_date, department_id, position_id));
         if(is_inserted){

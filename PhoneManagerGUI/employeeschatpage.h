@@ -36,6 +36,11 @@ private:
     void searchChats();
     void sendMessage();
     void chat_is_empty();
+
+signals:
+    void on_partner_profile_pic_btn_clicked(const uint);
+    void notify_employee();
+
 private:
     Ui::EmployeesChatPage *ui;
     MessageChecker* checker;
