@@ -98,7 +98,7 @@ void RequestsPage::showUnassignmentRequests(){
 void RequestsPage::showInProgressRequests(){
     ui->save_btn->setVisible(true);
     auto query = DatabaseManager::inProgressRequests();
-    int counter = -1;
+    int counter = 0;
     if(!query.exec()){
         ui->no_requests_label->setVisible(true);
         ui->save_btn->setVisible(false);
@@ -164,7 +164,7 @@ void RequestsPage::showRequestsHistory(){
 
     ui->no_requests_label->setVisible(qmodel->rowCount() == 0);
     ui->req_tableView->setModel(qmodel);
-    ui->req_tableView->setItemDelegateForColumn(ui->req_tableView->model()->columnCount()-1, nullptr);
+    ui->req_tableView->setItemDelegateForColumn(ui->req_tableView->model()->columnCount()-2, nullptr);
     ui->req_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     setActiveButton(HISTORY);
 }

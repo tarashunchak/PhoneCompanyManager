@@ -2,7 +2,6 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QTimer>
-#include "includes/currentuser.h"
 #include "employeeschatpage.h"
 #include <QApplication>
 #include "includes/navigationmanager.h"
@@ -13,7 +12,7 @@ MessageChecker::MessageChecker(QObject* parrent)
 {
     connect(thread, &QThread::started, this, &MessageChecker::checkForNewMessages);
     connect(this, &MessageChecker::cycle_finished, this, [this](){
-        QTimer::singleShot(5000, this, [this](){
+        QTimer::singleShot(3000, this, [this](){
             if(!thread->isRunning())
                 thread->start();
             checkForNewMessages();
@@ -74,10 +73,11 @@ void MessageChecker::checkForNewMessages(){
                 if(last_message_id < max_id){
                     qDebug() << "message received";
                     last_message_id = max_id;
-                    if(query.value("sender_id").toUInt() != CurrentUser::getCurrentEmployeeID()){
-                        if(!NavigationManager::is_chat_page)
+                    if(query.value("sender_id").toUInt() != EmployeesChatPage::ChatUnits::my_participant_id){
+                        if(!NavigationManager::is_chat_page){
                             QApplication::beep();
-                        emit notify_employee();
+                            emit notify_employee();
+                        }
                     }
                     emit new_message_detected();
                 }

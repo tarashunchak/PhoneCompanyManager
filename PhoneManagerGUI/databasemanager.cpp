@@ -68,7 +68,7 @@ DatabaseManager::DatabaseManager()
     }
     QSqlQuery remote_query(remote_db);
     QSqlQuery local_query(local_db);
-    if (!remote_query.exec("LISTEN new_message;")  || !local_query.exec("SELECT 1")) {
+    if (!remote_query.exec("SELECT 1;")  || !local_query.exec("SELECT 1")) {
         qDebug() << "Database first query connection failed: " << remote_query.lastError();
     } else {
         qDebug() << "Database connected and queary is valid!";
@@ -79,7 +79,7 @@ QSqlDatabase DatabaseManager::remote_db{};
 QSqlDatabase DatabaseManager::local_db{};
 
 DatabaseManager::~DatabaseManager() {
-    if (remote_db.isOpen() || local_db.isOpen()) {
+    if (remote_db.isOpen() || remote_db.isOpen()) {
         remote_db.close();
         local_db.close();
         qDebug() << "Database Is Closed!";
@@ -99,7 +99,7 @@ DatabaseManager& DatabaseManager::instance() {
 }
 
 QSqlDatabase& DatabaseManager::getDatabase() {
-    return local_db;
+    return remote_db;
 }
 
 DatabaseSynchronizer* DatabaseManager::getSynchronizer(){
@@ -107,7 +107,7 @@ DatabaseSynchronizer* DatabaseManager::getSynchronizer(){
 }
 
 bool DatabaseManager::isConnected() {
-    return local_db.isOpen();
+    return remote_db.isOpen();
 }
 
 void DatabaseManager::startSyncTables(){
@@ -122,13 +122,10 @@ void DatabaseManager::startSyncTables(){
 
 QSqlQuery DatabaseManager::findByName(TABLE table, const QString& text){
 
-    static QString query_str{};
-    query_str = "";
+    QString query_str{};
     if(table == TABLE::CUSTOMERS || table == TABLE::EMPLOYEES)
         query_str = {"SELECT * FROM " + tableToString(table) +
-                     " WHERE LOWER(first_name) LIKE LOWER(:text) "
-                     "OR LOWER(last_name) LIKE LOWER(:text) "
-                     "OR LOWER(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) LIKE LOWER(:text) "};
+                     " WHERE LOWER(first_name || ' ' || last_name) LIKE LOWER(:text) "};
     else if(table == TABLE::TARIFFS)
         query_str = "SELECT * FROM tariffs "
                      "WHERE LOWER(tariff_name) LIKE LOWER(:text) "
@@ -136,47 +133,48 @@ QSqlQuery DatabaseManager::findByName(TABLE table, const QString& text){
 
     switch (table){
     case TABLE::CUSTOMERS : {
-        query_str += "OR LOWER(phone) LIKE LOWER(:text) ";
+        query_str += "OR LOWER(phone) LIKE LOWER(:text);";
         break;
     }
     case TABLE::EMPLOYEES : {
-        query_str += "OR id = :id ";
+        query_str += "OR id = :id;";
         break;
     }
     }
 
-    QSqlQuery query(local_db);
+    QSqlQuery query(remote_db);
     query.prepare(query_str);
     query.bindValue(":text", text + "%");
     if(table == TABLE::EMPLOYEES || table == TABLE::TARIFFS)
         query.bindValue(":id", text);
-    if(!remote_db.isOpen()) remote_db.open();
     query.exec();
     return query;
 }
 
 QSqlQuery DatabaseManager::inProgressRequests(){
-    QSqlQuery query(local_db);
+    QSqlQuery query(remote_db);
     query.prepare("SELECT r.id AS \"ID\", "
-                  "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Customer\", "
+                  "(c.first_name || ' ' || c.last_name) AS \"Customer\", "
                   "r.request_type AS \"Req. type\", "
                   "r.status AS \"Status\", "
-                  "REPLACE(SUBSTR(r.date, 1, 19), 'T', ' ') AS \"Date\" "
+                  "TO_CHAR(r.date, 'YYYY-MM-DD HH24:MI') AS \"Date\", "
+                  "r.cust_id  AS cust_id, "
+                  "r.tariff_id  AS tariff_id "
                   "FROM requests r "
                   "JOIN customers c ON c.id = r.cust_id "
                   "WHERE r.status = 'In Progress' "
-                  "AND r.assigned_to_id = :my_user_id;");
-    query.bindValue(":my_user_id", CurrentUser::getCurrentUserID());
+                  "AND r.assigned_to_id = :my_empl_id;");
+    query.bindValue(":my_empl_id", CurrentUser::getCurrentEmployeeID());
     return query;
 }
 
 QSqlQuery DatabaseManager::unassignedRequests(){
-    QSqlQuery query(local_db);
+    QSqlQuery query(remote_db);
     query.prepare("SELECT r.id AS \"ID\", "
-                  "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Customer\", "
+                  "(c.first_name || ' ' || c.last_name) AS \"Customer\", "
                   "r.request_type AS \"Req. type\", "
                   "r.status AS \"Status\", "
-                  "REPLACE(SUBSTR(r.date, 1, 19), 'T', ' ') AS \"Date\" "
+                  "TO_CHAR(r.date, 'YYYY-MM-DD HH24:MI') AS \"Date\" "
                   "FROM requests r "
                   "JOIN customers c ON c.id = r.cust_id "
                   "WHERE assigned_to_id = -1;");
@@ -184,23 +182,31 @@ QSqlQuery DatabaseManager::unassignedRequests(){
 }
 
 QSqlQuery DatabaseManager::completedRequests(){
-    QSqlQuery query(local_db);
-    query.prepare("SELECT * FROM requests "
-                  "WHERE (status = 'Confirmed' "
-                  "OR status = 'Rejected') "
-                  "AND assigned_to_id = :my_user_id;");
-    query.bindValue(":my_user_id", CurrentUser::getCurrentUserID());
+    QSqlQuery query(remote_db);
+    query.prepare("SELECT r.id AS \"ID\", "
+                  "(c.first_name || ' ' || c.last_name) AS \"Customer\", "
+                  "r.request_type AS \"Req. type\", "
+                  "r.status AS \"Status\", "
+                  "TO_CHAR(r.date, 'YYYY-MM-DD HH24:MI') AS \"Date\", "
+                  "TO_CHAR(r.processing_date, 'YYYY-MM-DD HH24:MI') AS \"Processing date\" "
+                  "FROM requests r "
+                  "JOIN customers c ON c.id = r.cust_id "
+                  "WHERE (r.status = 'Confirmed' OR r.status = 'Rejected') "
+                  "AND r.assigned_to_id = :my_empl_id;");
+    query.bindValue(":my_empl_id", CurrentUser::getCurrentEmployeeID());
     return query;
 }
 
 QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
-    QSqlQuery query(local_db);
+    QSqlQuery query(remote_db);
     if(page == PAGE::EMPLOYEES_DETAILS_PAGE){
-        query.prepare("SELECT id AS ID, date AS Date"
-                      ", request_type AS Type, cust_id AS \"Cust. ID\", "
+        query.prepare("SELECT id AS ID, "
+                      "TO_CHAR(r.date, 'YYYY-MM-DD HH24:MI') AS \"Date\", "
+                      "request_type AS Type, cust_id AS \"Cust. ID\", "
                       "status AS Status "
                       "FROM requests WHERE assigned_to_id = :id "
-                      "ORDER BY DATE(date) DESC;");
+                      "AND (status = 'Rejected' OR status = 'Confirmed') "
+                      "ORDER BY DATE(processing_date) DESC;");
         query.bindValue(":id", EmployeesDetailsPage::CurrentEmployee::id);
     }else if(page == PAGE::CUSTOMERS_DETAILS_PAGE){
         query.prepare("SELECT id AS ID, "
@@ -212,20 +218,21 @@ QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
         query.bindValue(":id", CustomersDetailsPage::CurrentCustomer::id);
     }else if(page == PAGE::REQUESTS_PAGE){
         query.prepare("SELECT r.id AS \"ID\", "
-                      "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '') "
+                      "((c.first_name || ' ' || c.last_name) "
                       "|| ' ID(' || c.id || ')') AS \"Customer\", "
                       "r.request_type AS \"Req. type\", "
                       "r.status AS \"Status\", "
-                      "REPLACE(SUBSTR(r.date, 1, 19), 'T', ' ') AS \"Date\", "
-                      "(COALESCE(e.first_name, '') || ' ' || COALESCE(e.last_name, '') "
-                      "|| ' ID(' || e.id  || ')') AS \"Handled by\" "
+                      "TO_CHAR(r.date, 'YYYY-MM-DD HH24:MI') AS \"Date\", "
+                      "((e.first_name || ' ' || e.last_name) "
+                      "|| ' ID(' || e.id  || ')') AS \"Handled by\", "
+                      "COALESCE(TO_CHAR(r.processing_date, 'YYYY-MM-DD HH24:MI'), 'Pending...') AS \"Processing date\" "
                       "FROM requests r "
                       "LEFT JOIN employees e ON e.id = r.assigned_to_id "
                       "LEFT JOIN customers c ON c.id = r.cust_id;");
     }else if(page == PAGE::DASHBOARD_PAGE && !period.isEmpty()){
         query.prepare("SELECT r.id AS \"ID\", "
                       "c.phone AS \"Phone\", "
-                      "REPLACE(SUBSTR(r.date, 1, 19), 'T', ' ') AS \"Date\" "
+                      "TO_CHAR(r.date, 'YYYY-MM-DD HH24:MI') AS \"Date\" "
                       "FROM requests r "
                       "JOIN customers c ON c.id = r.cust_id "
                       "ORDER BY r.id DESC LIMIT " + period + ";");
@@ -235,23 +242,23 @@ QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
 }
 
 QSqlQuery DatabaseManager::newCustomersByPeriod(const bool is_today, QString period){
-    QSqlQuery query(local_db);
+    QSqlQuery query(remote_db);
     if(is_today){
-        query.prepare("SELECT COUNT(id) AS cust_count, DATETIME(date) AS date "
+        query.prepare("SELECT COUNT(id) AS cust_count, DATE(date) AS date "
                       "FROM customers "
                       "WHERE DATE(date) = DATE(CURRENT_DATE) "
                       "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }else{
-        query.prepare("SELECT COUNT(id) AS cust_count, DATETIME(date) AS date "
+        query.prepare("SELECT COUNT(id) AS cust_count, DATE(date) AS date "
                       "FROM customers "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE,'" + period + "') "
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE + INTERVAL '-" + period + "') "
                       "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }
     return query;
 }
 
 QSqlQuery DatabaseManager::newRequestsByPeriod(const bool is_today, QString period){
-    QSqlQuery query(local_db);
+    QSqlQuery query(remote_db);
     if(is_today){
         query.prepare("SELECT COUNT(id) AS req_count, date "
                       "FROM requests "
@@ -260,14 +267,14 @@ QSqlQuery DatabaseManager::newRequestsByPeriod(const bool is_today, QString peri
     }else{
         query.prepare("SELECT COUNT(id) AS req_count, date "
                       "FROM requests "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE, '" + period + "') "
-                                 "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE + INTERVAL '-" + period + "') "
+                      "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }
     return query;
 }
 
 QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
-    QSqlQuery query(local_db);
+    QSqlQuery query(remote_db);
     query.prepare("SELECT c.id AS \"Cust. ID\", "
                   "c.first_name AS \"First name\", "
                   "c.last_name AS \"Last name\", "
@@ -327,7 +334,7 @@ QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
 }
 
 QSqlQuery DatabaseManager::currentEmployee(const uint curr_empl_id){
-    QSqlQuery query(local_db);
+    QSqlQuery query(remote_db);
     query.prepare("SELECT e.id AS \"Empl. ID\", "
                   "e.first_name AS \"First name\", "
                   "e.last_name AS \"Last name\", "
@@ -376,9 +383,15 @@ QSqlQuery DatabaseManager::currentEmployee(const uint curr_empl_id){
     return query;
 }
 
+extern bool is_all_chars_empty(QString);
+
 void DatabaseManager::saveCommentToDB(TABLE table, int entity_id, int comment_id
                                       , const QString& comment_text)
 {
+    if(comment_text.isEmpty() || is_all_chars_empty(comment_text)){
+        return;
+    }
+
     QString table_str = tableToString(table);
     QSqlQuery query(remote_db);
     qDebug() << "comment_id = " << comment_id;
@@ -412,21 +425,20 @@ void DatabaseManager::saveCommentToDB(TABLE table, int entity_id, int comment_id
     if(!query.exec())
         qDebug() << "update comments query fault: " << query.lastError();
     query.clear();
-
 }
 
 QSqlQuery DatabaseManager::departments(){
-    return QSqlQuery{"SELECT * FROM departments;", local_db};
+    return QSqlQuery{"SELECT * FROM departments;", remote_db};
 }
 
 QSqlQuery DatabaseManager::positions(){
-    return QSqlQuery{"SELECT * FROM positions;", local_db};
+    return QSqlQuery{"SELECT * FROM positions;", remote_db};
 }
 
 QSqlQuery DatabaseManager::MyAllCorporateChats(){
-    QSqlQuery query(local_db);
+    QSqlQuery query(remote_db);
     query.prepare("SELECT DISTINCT u.id AS user_id, c.id AS chat_id, "
-                  "e.first_name AS partner_fname, "
+                  "e.first_name AS partner_fname, e.id AS empl_id, "
                   "e.last_name AS partner_lname, e.photo AS profile_pic, "
                   "p2.id AS part_id "
                   "FROM chats c "

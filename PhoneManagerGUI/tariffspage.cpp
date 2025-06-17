@@ -25,7 +25,7 @@ TariffsPage::~TariffsPage()
 }
 
 void TariffsPage::setCurrentUser(){
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT p.position_name AS position "
                   "FROM employees e "
                   "JOIN positions p ON p.id = e.position_id "
@@ -58,11 +58,12 @@ void TariffsPage::setTariffsCards(QSqlQuery query){
         }
     }
 
-    //if(!query.exec()){
-    //    query.prepare("SELECT * FROM tariffs;");
+    if(!query.exec()){
+        query.prepare("SELECT * FROM tariffs "
+                      "WHERE is_visible = true;");
         if(!query.exec())
             qDebug() << "TariffsPage::setTariffsCards(QSqlQuery) query fault: " << query.lastError();
-    //}
+    }
 
     uint8_t cols = 0;
     uint8_t rows = 0;

@@ -46,6 +46,8 @@ signals:
     void open_chat(const QString&);
     void notify_employee()const;
     void hide_notifying_circle()const;
+    void hide_exit_button()const;
+    void show_exit_button()const;
 
 private:
     QStackedWidget* sWidget;

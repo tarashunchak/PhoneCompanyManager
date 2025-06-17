@@ -45,7 +45,7 @@ MainWidget::~MainWidget()
 }
 
 void MainWidget::SetCurrentUserInfo(){
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT e.photo AS profile_pic, "
                   "(COALESCE(e.first_name, '') "
                   "|| ' ' || COALESCE(e.last_name, '')) AS full_name "
@@ -96,11 +96,9 @@ void MainWidget::SetupConnections(){
         navigation_manager->showChatsPage();
     });
     connect(navigation_manager, &NavigationManager::show_small_buttons, ui->close_open_chat_btn, [this](){
-        ui->leave_session_btn->setVisible(false);
         ui->close_open_chat_btn->setVisible(true);
     });
     connect(navigation_manager, &NavigationManager::hide_small_buttons, ui->close_open_chat_btn, [this](){
-        ui->leave_session_btn->setVisible(true);
         chat->close();
         ui->close_open_chat_btn->setVisible(false);
     });
@@ -111,6 +109,8 @@ void MainWidget::SetupConnections(){
     connect(navigation_manager, &NavigationManager::notify_employee, this, [this](){
         ui->not_read_message_label->setVisible(!NavigationManager::is_chat_page);
     });
+    connect(navigation_manager, &NavigationManager::hide_exit_button, ui->leave_session_btn, &QPushButton::close);
+    connect(navigation_manager, &NavigationManager::show_exit_button, ui->leave_session_btn, &QPushButton::show);
 }
 
 void MainWidget::on_leave_session_btn_clicked()

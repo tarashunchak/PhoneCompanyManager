@@ -67,9 +67,13 @@ void InsertCustomerDialog::InsertCustomerToDB(){
         && !lname.isEmpty()
         && !phone.isEmpty())
     {
-        DatabaseManager::insertToDB(TABLE::CUSTOMERS
+        bool is_inserted = DatabaseManager::insertToDB(TABLE::CUSTOMERS
                                     , std::tie(fname, lname, phone, email, bday, tariff_id
                                                 , CurrentUser::getCurrentUserID()));
+        if(is_inserted)
+            ui->incorrect_data_label->setVisible(false);
+        else
+            ui->incorrect_data_label->setVisible(true);
     }else{
         ui->incorrect_data_label->setVisible(true);
     }

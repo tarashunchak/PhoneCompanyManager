@@ -50,7 +50,7 @@ bool PushButtonDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
         if (option.rect.contains(mouseEvent->pos())) {
             QSqlQuery query(QSqlDatabase::database("remote"));
             query.prepare("UPDATE requests SET status = 'In Progress', assigned_to_id = :empl_id WHERE id = :id;");
-            query.bindValue(":empl_id", CurrentUser::getCurrentUserID());
+            query.bindValue(":empl_id", CurrentUser::getCurrentEmployeeID());
             query.bindValue(":id", model->data(model->index(index.row(), 0)));
             if(!query.exec())
                 qDebug() << "Update requests assigned_to_id query fault: " << query.lastError().text();

@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <QSqlQuery>
 #include <QLabel>
-#include "messagechecker.h"
 
 namespace Ui {
 class EmployeesChatPage;
@@ -30,6 +29,7 @@ public:
         static uint chat_id;
         static uint my_participant_id;
         static uint partner_participant_id;
+        static uint partner_empl_id;
         static void reset();
     };
 private:

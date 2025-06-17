@@ -6,10 +6,12 @@ DatabaseSynchronizer::DatabaseSynchronizer(QObject* parent)
     : QObject{parent}
     , thread{new QThread{this}}
 {
-    connect(thread, &QThread::started, this, &DatabaseSynchronizer::syncAllTables);
+    connect(thread, &QThread::started, this, [this](){
+        QMetaObject::invokeMethod(this, "syncAllTables", Qt::QueuedConnection);
+    });
     connect(this, &DatabaseSynchronizer::sync_finished, this, [this]() {
         //qDebug() << "Sync finished, waiting to restart...";
-        QTimer::singleShot(5000, this, [this]() {
+        QTimer::singleShot(30000, this, [this]() {
             if (!thread->isRunning()) {
                 thread->start();
             }

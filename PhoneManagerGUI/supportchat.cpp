@@ -68,7 +68,7 @@ static void ScrollDown_ScrollBar(QScrollBar* sb){
     sb->setValue(sb->maximum());
 }
 
-static bool is_all_chars_empty(QString str){
+bool is_all_chars_empty(QString str){
     if(str.isEmpty()){
         return true;
     }else{

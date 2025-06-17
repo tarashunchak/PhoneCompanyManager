@@ -13,13 +13,14 @@ uint EmployeesChatPage::ChatUnits::partner_id = 0u;
 uint EmployeesChatPage::ChatUnits::chat_id = 0u;
 uint EmployeesChatPage::ChatUnits::my_participant_id = 0u;
 uint EmployeesChatPage::ChatUnits::partner_participant_id = 0u;
+uint EmployeesChatPage::ChatUnits::partner_empl_id = 0u;
 
 void EmployeesChatPage::ChatUnits::reset(){
     is_chat_exist = false;
-    partner_id = 0;
-    chat_id = 0;
-    my_participant_id = 0;
-    partner_participant_id = 0;
+    partner_id = 0u;
+    chat_id = 0u;
+    my_participant_id = 0u;
+    partner_participant_id = 0u;
 }
 
 void chatActive(Ui::EmployeesChatPage*, bool);
@@ -54,7 +55,8 @@ EmployeesChatPage::EmployeesChatPage(QWidget *parent)
             , &EmployeesChatPage::updateLastSeenTimestamp);
 
     connect(ui->profile_pic_btn, &QPushButton::clicked, this, [this](){
-        emit on_partner_profile_pic_btn_clicked(ChatUnits::partner_id);
+        if(ChatUnits::is_chat_exist)
+            emit on_partner_profile_pic_btn_clicked(ChatUnits::partner_empl_id);
     });
 
     chatActive(ui, false);
@@ -66,14 +68,6 @@ EmployeesChatPage::~EmployeesChatPage()
 }
 
 void EmployeesChatPage::updateLastSeenTimestamp(){
-    QSqlQuery update_query(QSqlDatabase::database("remote"));
-    update_query.prepare("UPDATE chat_participants "
-                         "SET last_seen = CURRENT_TIMESTAMP "
-                         "WHERE participants_id = :my_id;");
-    update_query.bindValue(":my_id", ChatUnits::my_participant_id);
-    if(!update_query.exec())
-        qDebug() << "updatelastseen error" << update_query.lastError();
-
     QSqlQuery select_query(QSqlDatabase::database("remote"));
     select_query.prepare("SELECT EXTRACT(EPOCH FROM(CURRENT_TIMESTAMP - last_seen)) AS second_ago "
                          "FROM chat_participants "
@@ -133,7 +127,7 @@ void chatActive(Ui::EmployeesChatPage* ui, bool is_active){
 }
 
 void EmployeesChatPage::closeCurrentChat(){
-    clearLayout(ui->chats_vLayout);
+    clearLayout(ui->messages_vLayout);
     chatActive(ui, false);
 }
 
@@ -149,7 +143,7 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query, bool is_search_res){
     clearLayout(ui->chats_vLayout);
 
     while(query.next()){
-        const int tmp_chat_id = !is_search_res ? query.value("chat_id").toInt() : 0;
+        const uint tmp_chat_id = !is_search_res ? query.value("chat_id").toInt() : 0u;
         QPushButton* chat_widget = new QPushButton{};
         chat_widget->setMinimumSize(QSize{340, 60});
         chat_widget->setMaximumSize(QSize{340, 60});
@@ -194,23 +188,26 @@ void EmployeesChatPage::fillChatsWidget(QSqlQuery query, bool is_search_res){
         partner_name->setStyleSheet(
             "QLabel{"
             "	background-color:transparent;"
-            "	font-family:Lato, Consolas;"
+            "	font-family:Lato, Arial, Consolas;"
             "	font-size:16px;"
             "	color:white;"
             "}"
             );
         const uint partner_part_id = query.value("part_id").toUInt();
         const uint partner_user_id = query.value("user_id").toUInt();
+        const uint partner_empl_id = query.value("empl_id").toUInt();
         qDebug() << "fillChatsWidget() partner_user_id = " << partner_user_id;
         qDebug() << "fillChatsWidget() partner_part_id = " << partner_part_id;
-        partner_name->setProperty("partner_user_id", partner_user_id);
         partner_name->setProperty("partner_part_id", partner_part_id);
+        partner_name->setProperty("partner_user_id", partner_user_id);
+        partner_name->setProperty("partner_empl_id", partner_empl_id);
 
         ui->chats_vLayout->addWidget(chat_widget);
 
         connect(chat_widget, &QPushButton::clicked, this, [this, tmp_chat_id, full_name, pixmap, partner_name](){
-            fillMessagesWidget(tmp_chat_id, full_name, partner_name
-                               , pixmap.scaled(50, 50, Qt::KeepAspectRatioByExpanding));
+            if(tmp_chat_id != ChatUnits::chat_id)
+                fillMessagesWidget(tmp_chat_id, full_name, partner_name
+                                , pixmap.scaled(50, 50, Qt::KeepAspectRatioByExpanding));
         });
     }
 
@@ -224,72 +221,91 @@ void EmployeesChatPage::fillMessagesWidget(const uint chat_id, const QString& fu
 {
     clearLayout(ui->messages_vLayout);
 
+    chatActive(ui, true);
     ChatUnits::is_chat_exist = static_cast<bool>(chat_id);
     ChatUnits::chat_id = chat_id;
+
+    if (!full_name.isEmpty())
+        ui->empl_full_name_label->setText(full_name);
+
+    if (pixmap.isNull())
+        ui->profile_pic_btn->setStyleSheet("background:url(./img/profile_chat.png);");
+    else
+        ui->profile_pic_btn->setIcon(pixmap);
 
     qDebug() << "fillMessagesWidget " << ChatUnits::chat_id;
 
     QSqlQuery message_query(QSqlDatabase::database("remote"));
-    message_query.prepare("SELECT m.text AS message_text, p.reference_id AS sender_id "
+    message_query.prepare("SELECT m.text AS message_text, "
+                          "TO_CHAR(m.timestamp, 'HH24:MI') AS timestamp, "
+                          "p.reference_id AS sender_id "
                           "FROM messages m "
                           "JOIN participants p ON p.id = m.sender_participant_id "
                           "WHERE m.chat_id = ?;");
     message_query.addBindValue(ChatUnits::chat_id);
+    if(partner_label){
+        ChatUnits::partner_id = partner_label->property("partner_user_id").toUInt();
+        ChatUnits::partner_participant_id = partner_label->property("partner_part_id").toUInt();
+        ChatUnits::partner_empl_id = partner_label->property("partner_empl_id").toUInt();
+    }
 
-    if (!message_query.exec()) {
+    if (!message_query.exec() && !message_query.next()) {
         ChatUnits::chat_id = 0;
-        //ChatUnits::is_chat_exist = false;
-        chatActive(ui, false);
-        ui->empty_chat_widget->setVisible(true);
-        qDebug() << "fillChatsWidget() const query fault: " << message_query.lastError();
-        return;
-    }else{
-        if(partner_label){
-            ChatUnits::partner_id = partner_label->property("partner_user_id").toUInt();
-            ChatUnits::partner_participant_id = partner_label->property("partner_part_id").toUInt();
-        }
-        //ChatUnits::is_chat_exist = false;
+        ChatUnits::is_chat_exist = false;
         chatActive(ui, true);
+        qDebug() << "fillChatsWidget() const query fault: " << message_query.lastError();
+    }else{
+        ChatUnits::is_chat_exist = true;
         qDebug() << "my_id = " << CurrentUser::getCurrentUserID();
         qDebug() << "partner_user_id messages = " << ChatUnits::partner_id;
         qDebug() << "partner_part_id messages = " << ChatUnits::partner_participant_id;
-    }
+        message_query.previous();
+        while (message_query.next()) {
+            QHBoxLayout* message_hLayout = new QHBoxLayout{};
+            QVBoxLayout* inner_message_vLayout = new QVBoxLayout{};
+            QLabel* text_label = new QLabel{message_query.value("message_text").toString()};
+            QLabel* time_label = new QLabel{message_query.value("timestamp").toString()};
+            time_label->setStyleSheet("font-size:14px;");
 
-    while (message_query.next()) {
-        QHBoxLayout* message_hLayout = new QHBoxLayout{};
-        QLabel* text_label = new QLabel{message_query.value("message_text").toString()};
-        text_label->setContentsMargins(10, 10, 10, 10);
-        text_label->setMaximumWidth(340);
-        text_label->setMinimumWidth(150);
-        text_label->setWordWrap(true);
-        QWidget* widget = new QWidget{};
-        if (message_query.value("sender_id").toUInt() == CurrentUser::getCurrentUserID()) {
-            message_hLayout->addStretch();
-            message_hLayout->addWidget(text_label);
-            text_label->setStyleSheet(
-                "QLabel{"
-                "	background-color: rgb(95, 85, 160);"
-                "	font-size:16px;"
-                "	font-family:Lato, Arial, Consolas;"
-                "	border-radius:6px;"
-                "   color:white;"
-                "}"
-                );
-        } else {
-            message_hLayout->addWidget(text_label);
-            message_hLayout->addStretch();
-            text_label->setStyleSheet(
-                "QLabel{"
-                "	background-color: #2b2b2b;"
-                "	font-size:16px;"
-                "	font-family:Lato, Arial, Consolas;"
-                "	border-radius:6px;"
-                "   color:white;"
-                "}"
-                );
+            QWidget* widget = new QWidget{};
+            inner_message_vLayout->setContentsMargins(10, 12, 10, 10);
+            widget->setMaximumWidth(400);
+            widget->setMinimumWidth(150);
+            widget->setMinimumHeight(50);
+            text_label->setWordWrap(true);
+            widget->setLayout(inner_message_vLayout);
+
+            if (message_query.value("sender_id").toUInt() == CurrentUser::getCurrentUserID()) {
+                message_hLayout->addStretch();
+                message_hLayout->addWidget(widget);
+                inner_message_vLayout->addWidget(text_label);
+                inner_message_vLayout->addWidget(time_label);
+                widget->setStyleSheet(
+                    "QWidget{"
+                    "	background-color: rgb(95, 85, 160);"
+                    "	font-size:16px;"
+                    "	font-family:Lato, Arial, Consolas;"
+                    "	border-radius:6px;"
+                    "   color:white;"
+                    "}"
+                    );
+            } else {
+                inner_message_vLayout->addWidget(text_label);
+                inner_message_vLayout->addWidget(time_label);
+                message_hLayout->addWidget(widget);
+                message_hLayout->addStretch();
+                widget->setStyleSheet(
+                    "QWidget{"
+                    "	background-color: #2b2b2b;"
+                    "	font-size:16px;"
+                    "	font-family:Lato, Arial, Consolas;"
+                    "	border-radius:6px;"
+                    "   color:white;"
+                    "}"
+                    );
+            }
+            ui->messages_vLayout->addLayout(message_hLayout);
         }
-        message_hLayout->addWidget(widget);
-        ui->messages_vLayout->addLayout(message_hLayout);
     }
     ui->messages_vLayout->setAlignment(Qt::AlignBottom);
 
@@ -304,26 +320,18 @@ void EmployeesChatPage::fillMessagesWidget(const uint chat_id, const QString& fu
     partner_query.addBindValue(ChatUnits::partner_id);
 
     if (!partner_query.exec() && !partner_query.next()) {
-        ui->empty_chat_widget->setVisible(true);
         ChatUnits::chat_id = 0;
-        //ChatUnits::is_chat_exist = false;
+        ChatUnits::is_chat_exist = false;
+        ui->empty_chat_widget->setVisible(true);
         qDebug() << "getting partner next id fault!!!";
         return;
     } else {
-        updateLastSeenTimestamp();
         ChatUnits::is_chat_exist = true;
         ui->empty_chat_widget->setVisible(false);
     }
 
-    if (!full_name.isEmpty())
-        ui->empl_full_name_label->setText(full_name);
 
-    if (pixmap.isNull())
-        ui->profile_pic_btn->setStyleSheet("background:url(./img/profile_chat.png);");
-    else
-        ui->profile_pic_btn->setIcon(pixmap);
 
-    //ui->profile_pic_btn->setStyleSheet("border-radius:25px;");
     qDebug() << "fill messages user_id: " << ChatUnits::partner_id;
 
     QTimer::singleShot(500, this, [this](){
@@ -336,13 +344,13 @@ void EmployeesChatPage::searchChats(){
     if(ui->search_lineEdit->text().isEmpty())
         return fillChatsWidget();
 
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare(
         "SELECT e.first_name AS partner_fname, "
         "e.last_name AS partner_lname, "
-        "e.photo AS profile_pic, "
-        "e.id AS empl_id, "
-        "u.id AS user_id, "
+        "COALESCE(e.photo, '') AS profile_pic, "
+        "u.id AS user_id,"
+        "u.empl_id AS empl_id, "
         "p.id AS part_id "
         "FROM participants p "
         "JOIN users u ON u.id = p.reference_id "
@@ -350,7 +358,7 @@ void EmployeesChatPage::searchChats(){
         "WHERE p.id != :my_part_id "
         "AND (LOWER(e.first_name) LIKE LOWER(:text) "
         "OR LOWER(e.last_name) LIKE LOWER(:text)) "
-        "AND e.is_visible = 'true';"
+        "AND e.is_visible = true;"
         );
     query.bindValue(":my_part_id", ChatUnits::my_participant_id);
     query.bindValue(":text", ui->search_lineEdit->text()+"%");
@@ -373,7 +381,7 @@ void EmployeesChatPage::sendMessage(){
     qDebug() << "send message to partner_id: " << ChatUnits::partner_id;
     fillChatsWidget();
     fillMessagesWidget(ChatUnits::chat_id, {});
-    QTimer::singleShot(200, this, [this](){
+    QTimer::singleShot(300, this, [this](){
         ui->messages_scrollArea->verticalScrollBar()->setValue(
             ui->messages_scrollArea->verticalScrollBar()->maximum());
     });

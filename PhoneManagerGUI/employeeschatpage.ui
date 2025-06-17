@@ -240,8 +240,10 @@ background-color:#A789DB;
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border:none;
-background-color:transparent;</string>
+    <string notr="true">QWidget{
+	background-color:transparent;
+	border:none;
+}</string>
    </property>
    <property name="widgetResizable">
     <bool>true</bool>

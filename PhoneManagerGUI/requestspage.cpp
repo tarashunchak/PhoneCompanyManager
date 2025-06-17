@@ -40,7 +40,8 @@ void RequestsPage::SetConnections(){
             index = model->index(i, model->columnCount()-1);
             QString value = model->data(index).toString();
             if(value != "Action" && value != "Do nothing"){
-                query.prepare("UPDATE requests SET status = :status "
+                query.prepare("UPDATE requests SET status = :status, "
+                              "processing_date = CURRENT_TIMESTAMP "
                       "WHERE id = :req_id;");
                 query.bindValue(":status", model->data(index).toString()+"ed");
                 index = model->index(i, 0);

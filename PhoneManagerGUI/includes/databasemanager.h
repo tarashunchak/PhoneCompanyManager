@@ -138,8 +138,8 @@ public:
     template <typename T> requires(HasChatUnits<T>)
     static void sendMessage(const QString& message_text){
         if(!initChatIfNeeded<T>()) return;
-        static bool is_message_sended;
-        is_message_sended = insertToDB<TABLE::MESSAGES, T>(message_text);
+
+        bool is_message_sended = insertToDB<TABLE::MESSAGES, T>(message_text);
 
         if(!is_message_sended)
             qDebug() << "sendMessage query error";

@@ -115,6 +115,7 @@ void NavigationManager::showLoginPage()const{
     CurrentUser::setCurrentUserID(-1);
     employeesChatPage->closeCurrentChat();
     sWidget->setCurrentWidget(loginPage);
+    emit show_exit_button();
     emit hide_small_buttons();
 }
 
@@ -125,6 +126,7 @@ void NavigationManager::showDashboardPage()const{
     dashboardPage->setCustomersStatistics();
     dashboardPage->setRequestsStatistics();
     sWidget->setCurrentWidget(dashboardPage);
+    emit hide_exit_button();
     emit show_small_buttons();
 }
 

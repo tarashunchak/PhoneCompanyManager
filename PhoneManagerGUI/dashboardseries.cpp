@@ -5,7 +5,7 @@
 #include "includes/databasemanager.h"
 
 void Dashboard::setCustomersStatistics(){
-    QString period{ui->cust_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
+    QString period{ui->cust_date_comboBox->currentIndex() > 1 ? "7 days" : "3 days"};
     bool is_today =  !ui->cust_date_comboBox->currentIndex();
     auto query = DatabaseManager::newCustomersByPeriod(is_today, period);
     bool is_empty = !cust_bar_chart->setQuery(std::move(query), "cust_count", "date");
@@ -14,7 +14,7 @@ void Dashboard::setCustomersStatistics(){
 }
 
 void Dashboard::setRequestsStatistics(){
-    QString period{ui->req_date_comboBox->currentIndex() > 1 ? "-7 days" : "-3 days"};
+    QString period{ui->req_date_comboBox->currentIndex() > 1 ? "7 days" : "3 days"};
     bool is_today = !ui->requests_period_comboBox->currentIndex();
     auto query = DatabaseManager::newRequestsByPeriod(is_today, period);
     ui->empty_req_stat->setVisible(!req_bar_chart->setQuery(std::move(query), "req_count"));
@@ -22,7 +22,7 @@ void Dashboard::setRequestsStatistics(){
 }
 
 void Dashboard::setTariffsStatistics(){
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT COUNT(c.id) AS count, t.tariff_name AS name "
                   "FROM tariffs t "
                   "JOIN customers c ON c.tariff_id = t.id "

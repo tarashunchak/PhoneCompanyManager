@@ -8,7 +8,7 @@ void CustomersPage::updateFilterWidgets(){
 }
 
 void CustomersPage::fillTariffsComboBox(){
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT * FROM tariffs;");
     if(!query.exec()){
         qDebug() << "fillTariffsComboBox() query fault!";
@@ -23,11 +23,9 @@ void CustomersPage::fillTariffsComboBox(){
 }
 
 void CustomersPage::fillEmployeesComboBox(){
-    QSqlQuery query(QSqlDatabase::database("local"));
-    query.prepare("SELECT e.id, "
-                  "(COALESCE(e.first_name, '') "
-                  "|| ' ' || "
-                  "COALESCE(e.last_name, '') "
+    QSqlQuery query(QSqlDatabase::database("remote"));
+    query.prepare("SELECT e.id AS id, "
+                  "((e.first_name || ' ' || e.last_name) "
                   "|| ' ' || ' ID(' || e.id || ')') AS full_name "
                   "FROM users u "
                   "JOIN employees e ON e.id = u.empl_id;");
@@ -36,9 +34,13 @@ void CustomersPage::fillEmployeesComboBox(){
         qDebug() << "fillEmployeesComboBox() query fault!";
         return;
     }
+    ui->added_by_comboBox->clear();
+    ui->added_by_comboBox->addItem("All", "");
     ui->employees_comboBox->clear();
     ui->employees_comboBox->addItem("All", "");
     while(query.next()){
+        ui->added_by_comboBox->addItem(query.value("full_name").toString(),
+                                      " added_by_id = " + query.value("id").toString());
         ui->employees_comboBox->addItem(query.value("full_name").toString(),
                                       " employee_id = " + query.value("id").toString());
     }
@@ -70,9 +72,11 @@ void CustomersPage::open_close_filter_widget(){
 void CustomersPage::apply_filters(){
     static QString tariff_id;
     static QString empl_id;
+    static QString added_by_id;
     static QString order_by;
     static QString phone;
     empl_id = ui->employees_comboBox->currentData().toString();
+    added_by_id = ui->added_by_comboBox->currentData().toString();
     tariff_id = ui->tariffs_comboBox->currentData().toString();
     order_by = ui->sort_by_comboBox->currentData().toString();
 
@@ -84,6 +88,7 @@ void CustomersPage::apply_filters(){
     bool is_active_btn = ui->all_by_activity_btn->property("status").toBool();
     QString query_str{"SELECT * FROM customers WHERE is_active = :status "};
     if(is_active_btn) query_str += " OR is_active != :status ";
+    if(!added_by_id.isEmpty()) query_str += " AND " + added_by_id;
     if(!empl_id.isEmpty()) query_str += " AND " + empl_id;
     if(!tariff_id.isEmpty()) query_str += " AND " + tariff_id;
     if(!phone.isEmpty()) query_str += " AND phone LIKE :phone";

@@ -41,7 +41,7 @@ void EmployeesPage::SetConnections(){
 }
 
 void EmployeesPage::setCurrentUser()const{
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT p.position_name AS POS_NAME "
                   "FROM users "
                   "JOIN employees e ON e.id = users.empl_id "
@@ -115,7 +115,7 @@ void EmployeesPage::SetEmployeesCards(QSqlQuery query){
     }
     if(!query.isActive()){
         query.prepare("SELECT * FROM employees "
-                      "WHERE is_visible = 'true';");
+                      "WHERE is_visible = true;");
         if(!query.exec()){
             qDebug() << "SetEmployeesCards query fault!" << query.lastError();
             return;

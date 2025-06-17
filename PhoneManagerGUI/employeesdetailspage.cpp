@@ -66,21 +66,26 @@ void EmployeesDetailsPage::SetConnections(){
 void EmployeesDetailsPage::SetEmployeeInfo(const uint empl_id){
     auto query = DatabaseManager::currentEmployee(empl_id);
     ui->empl_id_Label->setText(CurrentEmployee::id);
-    ui->phone_Label->setText(CurrentEmployee::first_name + " " + CurrentEmployee::last_name);
-    ui->email_Label->setText(CurrentEmployee::phone);
-    ui->full_name_Label->setText(CurrentEmployee::email);
+    ui->full_name_Label->setText(CurrentEmployee::first_name + " " + CurrentEmployee::last_name);
+    ui->phone_Label->setText(CurrentEmployee::phone);
+    ui->email_Label->setText(CurrentEmployee::email);
+    ui->hire_date_Label->setText(CurrentEmployee::hire_date);
     ui->department_Label->setText(CurrentEmployee::department_name);
     ui->position_Label->setText(CurrentEmployee::position_name);
     ui->comment_textEdit->setPlainText(CurrentEmployee::comment_text);
     SetRequestsHistory();
     SetCurrentCustomers();
     SetCustomersHistory();
+    bool is_curr_user = (CurrentEmployee::id.toUInt() == CurrentUser::getCurrentEmployeeID());
+    ui->delete_employee_btn->setVisible(!is_curr_user);
+    ui->comment_textEdit->setEnabled(!is_curr_user);
+    ui->save_comment_btn->setEnabled(!is_curr_user);
 }
 
 void EmployeesDetailsPage::SetCustomersHistory()const{
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT id AS ID, "
-                  "(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS \"Full name\", "
+                  "(first_name || ' ' || last_name) AS \"Full name\", "
                   "phone AS Phone "
                   "FROM customers "
                   "WHERE added_by_id = ?;");
@@ -127,21 +132,18 @@ void EmployeesDetailsPage::SetTableViewStyle(){
 }
 
 void EmployeesDetailsPage::SetCurrentCustomers()const{
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT id AS ID, phone AS Phone, "
                   "(first_name || ' ' || last_name) AS \"Full name\" "
                   "FROM customers WHERE employee_id = ?;");
-    query.addBindValue(CurrentUser::getCurrentEmployeeID());
-    if(!query.exec()){
+    query.addBindValue(CurrentEmployee::id);
+    if(!query.exec() && !query.first()){
         ui->no_curr_customers_label->setVisible(true);
         qDebug() << "ERROR IN SETCURRENTCUSTOMERS QUERY!!!";
     }else{
+        query.previous();
         QSqlQueryModel* model = TABLE_MODELS.cust_qmodel;
         model->setQuery(std::move(query));
-        model->canFetchMore();
-        if(TABLE_MODELS.cust_qmodel->rowCount())
-            ui->no_curr_customers_label->setVisible(false);
-        else
-            ui->no_curr_customers_label->setVisible(true);
+        ui->no_curr_customers_label->setVisible(false);
     }
 }
