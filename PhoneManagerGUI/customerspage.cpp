@@ -145,7 +145,7 @@ namespace {
         phone->setGeometry(80, 35, 200, 20);
         phone->setStyleSheet("background-color:transparent;color:white;font-size:18px;");
 
-        QLabel* full_name = new QLabel(record.value("first_name").toString()
+        QLabel* full_name = new QLabel(record.value("first_name").toString() + " "
                                            + record.value("last_name").toString(), card);
 
         full_name->setGeometry(80, 60, 250, 20);

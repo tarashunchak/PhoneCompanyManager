@@ -175,7 +175,7 @@ border:none;</string>
 border-radius:25px;</string>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string/>
     </property>
    </widget>
   </widget>

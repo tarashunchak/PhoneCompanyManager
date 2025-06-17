@@ -36,7 +36,8 @@ EmployeesDetailsPage::EmployeesDetailsPage(QWidget *parent)
     ui->customers_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->requests_statistic_tableView->setModel(TABLE_MODELS.req_qmodel);
     ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
+    ui->current_customers_tableView->setModel(TABLE_MODELS.curr_cust_qmodel);
+    ui->current_customers_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     SetTableViewStyle();
     SetConnections();
 }
@@ -57,9 +58,7 @@ void EmployeesDetailsPage::SetConnections(){
     connect(ui->cancel_btn, &QPushButton::clicked, ui->delete_employee_widget, &QWidget::close);
     connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
         ui->delete_employee_widget->close();
-        QtConcurrent::run([](){
-            DatabaseManager::deleteRecord<TABLE::EMPLOYEES>("id", CurrentEmployee::id.toUInt());
-        });
+        DatabaseManager::deleteRecord<TABLE::EMPLOYEES>("id", CurrentEmployee::id.toUInt());
         emit on_return_btn_clicked();
     });
 }
@@ -74,12 +73,14 @@ void EmployeesDetailsPage::SetEmployeeInfo(const uint empl_id){
     ui->position_Label->setText(CurrentEmployee::position_name);
     ui->comment_textEdit->setPlainText(CurrentEmployee::comment_text);
     SetRequestsHistory();
+    SetCurrentCustomers();
+    SetCustomersHistory();
 }
 
 void EmployeesDetailsPage::SetCustomersHistory()const{
     QSqlQuery query(QSqlDatabase::database("local"));
     query.prepare("SELECT id AS ID, "
-                  "(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS \"Full name\""
+                  "(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '')) AS \"Full name\", "
                   "phone AS Phone "
                   "FROM customers "
                   "WHERE added_by_id = ?;");
@@ -98,17 +99,14 @@ void EmployeesDetailsPage::SetRequestsHistory()const{
         return;
     }
     TABLE_MODELS.req_qmodel->setQuery(std::move(query));
+    TABLE_MODELS.req_qmodel->canFetchMore();
     bool is_model_empty = !TABLE_MODELS.req_qmodel->rowCount();
     ui->requests_statistic_tableView->setVisible(!is_model_empty);
     ui->no_requests_label->setVisible(is_model_empty);
 }
 
 void EmployeesDetailsPage::SetTableViewStyle(){
-    ui->requests_statistic_tableView->setModel(TABLE_MODELS.req_qmodel);
-    ui->requests_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    ui->requests_statistic_tableView->horizontalHeader()->setStyleSheet(
+    static QString header_style{
         "QHeaderView{"
         "   border:1px solid rgba(0, 0, 0, 0.4);"
         "   font-family:Lato, Arial, Consolas;"
@@ -116,5 +114,34 @@ void EmployeesDetailsPage::SetTableViewStyle(){
         "   color:black;"
         "   height:36px;"
         "}"
-        );
+    };
+    ui->requests_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->requests_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->requests_statistic_tableView->horizontalHeader()->setStyleSheet(header_style);
+    ui->customers_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->customers_statistic_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->customers_statistic_tableView->horizontalHeader()->setStyleSheet(header_style);
+    ui->current_customers_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->current_customers_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->current_customers_tableView->horizontalHeader()->setStyleSheet(header_style);
+}
+
+void EmployeesDetailsPage::SetCurrentCustomers()const{
+    QSqlQuery query(QSqlDatabase::database("local"));
+    query.prepare("SELECT id AS ID, phone AS Phone, "
+                  "(first_name || ' ' || last_name) AS \"Full name\" "
+                  "FROM customers WHERE employee_id = ?;");
+    query.addBindValue(CurrentUser::getCurrentEmployeeID());
+    if(!query.exec()){
+        ui->no_curr_customers_label->setVisible(true);
+        qDebug() << "ERROR IN SETCURRENTCUSTOMERS QUERY!!!";
+    }else{
+        QSqlQueryModel* model = TABLE_MODELS.cust_qmodel;
+        model->setQuery(std::move(query));
+        model->canFetchMore();
+        if(TABLE_MODELS.cust_qmodel->rowCount())
+            ui->no_curr_customers_label->setVisible(false);
+        else
+            ui->no_curr_customers_label->setVisible(true);
+    }
 }

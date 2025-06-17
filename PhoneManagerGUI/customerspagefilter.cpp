@@ -91,7 +91,7 @@ void CustomersPage::apply_filters(){
 
     /**/is_active_btn = ui->active_btn->property("status").toBool();
 
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare(query_str);
     query.bindValue(":status", is_active_btn);
     query.bindValue(":phone", phone);

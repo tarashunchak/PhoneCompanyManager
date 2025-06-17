@@ -26,6 +26,7 @@ void LoginPage::setConnections(){
         ui->incorrect_data_Label->setVisible(false);
     });
     connect(authManager, &AuthManager::incorrect_login_data, this, [this](){
+        ui->incorrect_data_Label->setText("Incorrect Username or Password!");
         ui->incorrect_data_Label->setVisible(true);
     });
     connect(ui->confirm_btn, &QPushButton::clicked, this, [this](){
@@ -44,5 +45,9 @@ void LoginPage::setConnections(){
             ui->password_LineEdit->setEchoMode(QLineEdit::Password);
             ui->pushButton->setIcon(QIcon{"./img/eye-closed.svg"});
         }
+    });
+    connect(authManager, &AuthManager::user_online, this, [this](){
+        ui->incorrect_data_Label->setText("This user allready online!");
+        ui->incorrect_data_Label->setVisible(true);
     });
 }

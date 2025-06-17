@@ -15,8 +15,7 @@ public:
 signals:
     void incorrect_login_data();
     void authSuccess();
-private:
-
+    void user_online();
 };
 
 #endif // AUTHMANAGER_H

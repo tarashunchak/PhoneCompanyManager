@@ -6,22 +6,24 @@
 class MessageChecker : public QObject {
     Q_OBJECT
 
-public:
+private:
     MessageChecker(QObject* parent = nullptr);
     ~MessageChecker();
-    void setChatID(const uint);
+    MessageChecker& operator=(const MessageChecker&) = default;
+public:
     void startCheck();
+    static const MessageChecker* getChecker();
 
 signals:
     void new_message_detected();
     void cycle_finished();
+    void notify_employee();
 
 private slots:
     void checkForNewMessages();
 
 private:
     std::atomic<uint> last_message_id = 0u;
-    std::atomic<uint> chat_id = 0u;
     QThread* thread;
 };
 

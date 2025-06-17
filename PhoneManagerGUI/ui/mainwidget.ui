@@ -394,20 +394,21 @@ QPushButton:hover {
       <x>0</x>
       <y>270</y>
       <width>250</width>
-      <height>30</height>
+      <height>34</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Lato</family>
-      <pointsize>20</pointsize>
+      <pointsize>-1</pointsize>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border:none;
 font-family:Lato, Arial, Consolas;
 color:black;
-background-color:transparent;</string>
+background-color:transparent;
+font-size:28px;</string>
     </property>
     <property name="text">
      <string>TextLabel</string>

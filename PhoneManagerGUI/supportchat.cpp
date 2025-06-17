@@ -8,6 +8,7 @@
 #include "includes/currentuser.h"
 #include <QTimer>
 #include "includes/databasemanager.h"
+#include "messagechecker.h"
 
 extern void clearLayout(QLayout* layout);
 
@@ -36,13 +37,18 @@ SupportChat::SupportChat(QFrame *parent)
     , scrollArea(new QScrollArea{})
     , mainWidget(new QWidget{})
     , innerVBoxLayout(new QVBoxLayout{})
-    , checker(new MessageChecker{})
 {
     ui->setupUi(this);
     ui->phone_lineEdit->setVisible(false);
     ui->send_btn->setIcon(QIcon{"./img/paper-plane.svg"});
     connect(ui->send_btn, &QPushButton::clicked, this, &SupportChat::SendMessage);
     connect(ui->lineEdit, &QLineEdit::editingFinished, this, &SupportChat::SendMessage);
+    connect(MessageChecker::getChecker(), &MessageChecker::new_message_detected, this, [this](){
+        static QSqlQuery query(QSqlDatabase::database("remote"));
+        query.prepare("SELECT * FROM messages WHERE chat_id = ?;");
+        query.addBindValue(ChatUnits::chat_id);
+        DisplayAllMessages(query);
+    });
     innerVBoxLayout->setAlignment(Qt::AlignBottom | Qt::AlignRight);
     mainWidget->setLayout(innerVBoxLayout);
     scrollArea->setWidgetResizable(true);
@@ -52,12 +58,6 @@ SupportChat::SupportChat(QFrame *parent)
     this->setWindowTitle("Support Chat");
     phone_choose_handler();
     this->setWindowFlags(Qt::Widget | Qt::CustomizeWindowHint);
-    connect(checker, &MessageChecker::new_message_detected, this, [this](){
-        static QSqlQuery query;
-        query = DatabaseManager::allMessagesFromCurrentChat<SupportChat>();
-        DisplayAllMessages(query);
-    });
-    checker->startCheck();
 }
 
 SupportChat::~SupportChat(){
@@ -189,7 +189,6 @@ bool SupportChat::is_exist(){
     ChatUnits::is_chat_exist = true;
     ChatUnits::chat_id = query.value("CHAT_ID").toUInt();
     qDebug() << "SUPPORT CHAT CHAT_ID = " << ChatUnits::chat_id;
-    checker->setChatID(ChatUnits::chat_id);
     query = DatabaseManager::allMessagesFromCurrentChat<SupportChat>();
     DisplayAllMessages(query);
     scrollArea->verticalScrollBar()->setValue(ui->verticalLayout->count());

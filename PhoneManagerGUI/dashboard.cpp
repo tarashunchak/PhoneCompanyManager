@@ -46,9 +46,9 @@ void Dashboard::setTableViewStyles(){
     ui->requests_statistic_tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->setColumnWidth(0, 80);
     ui->tableView->setColumnWidth(1, 223);
-    ui->tableView->setColumnWidth(2, 223);
+    ui->tableView->setColumnWidth(2, 180);
     ui->tableView->setColumnWidth(3, 81);
-    ui->tableView->setColumnWidth(4, 100);
+    ui->tableView->setColumnWidth(4, 143);
     ui->tableView->setColumnWidth(5, 223);
     ui->tableView->setColumnWidth(6, 80);
     ui->tableView->horizontalHeader()->setFixedHeight(30);
@@ -90,14 +90,14 @@ void Dashboard::setTableViewConnection(){
                   "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Full Name\", "
                   "c.phone AS \"Phone\", "
                   "c.tariff_id  AS \"Tariff ID\", "
-                  "c.date AS \"Reg. date\", "
+                  "SUBSTR(c.date, 1, 10) AS \"Reg. date\", "
                   "(COALESCE(e.first_name, '') || ' ' || COALESCE(e.last_name, '')) AS \"Added By\", "
                   "c.is_active AS \"Is Active\" "
                   "FROM customers c "
                   "LEFT JOIN employees e ON e.id = c.added_by_id "
                   "WHERE DATE(c.date) >= DATE(CURRENT_DATE, '-"
                   + QString::number((ui->customers_period_comboBox->currentIndex()+1)*10) + " days') "
-                  "AND c.is_visible = true "
+                  "AND c.is_visible = 'true' "
                   "ORDER BY DATE(c.date) DESC;"
         );
     if(!query.exec())

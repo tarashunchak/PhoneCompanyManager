@@ -99,13 +99,18 @@ void NavigationManager::setUpNavigation(){
     //Requests Page Signals/Slots connections
     connect(employeesChatPage, &EmployeesChatPage::on_partner_profile_pic_btn_clicked
             , this, &NavigationManager::showEmployeesDetailsPage);
-
     connect(employeesChatPage, &EmployeesChatPage::notify_employee, this, [this](){
         emit notify_employee();
     });
 }
 
 void NavigationManager::showLoginPage()const{
+    QSqlQuery query(QSqlDatabase::database("remote"));
+    query.prepare("UPDATE users "
+                  "SET is_online = false "
+                  "WHERE id = ?;");
+    query.addBindValue(CurrentUser::getCurrentUserID());
+    query.exec();
     hide_side_menu(left_side_menu, sWidget);
     CurrentUser::setCurrentUserID(-1);
     employeesChatPage->closeCurrentChat();
@@ -173,7 +178,6 @@ void NavigationManager::showChatsPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CHATS_BTN);
     show_side_menu(left_side_menu, sWidget);
     employeesChatPage->fillChatsWidget();
-    employeesChatPage->updateLastSeenTimestamp();
     sWidget->setCurrentWidget(employeesChatPage);
 }
 

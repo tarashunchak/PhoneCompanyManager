@@ -1,12 +1,14 @@
 #include "includes/registrationmanager.h"
 #include <QSqlQuery>
+#include <QCryptographicHash>
+#include <QSqlError>
 
 void RegistrationManager::is_exist(const QString& email){
     QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT e.id AS id, p.position_name AS position "
                   "FROM employees e "
                   "JOIN positions p ON p.id = e.position_id "
-                  "WHERE e.email = ?;");
+                  "WHERE e.email = ? AND e.is_visible = true;");
     query.addBindValue(email);
     if(!query.exec() || !query.next()){
         qDebug() << "Employee is not exist!";
@@ -33,13 +35,14 @@ void RegistrationManager::is_exist(const QString& email){
 }
 
 void RegistrationManager::registerNewUser(const QString& user, const QString& pass){
+    QByteArray hash = QCryptographicHash::hash(pass.toUtf8(), QCryptographicHash::Sha256);
+    QString hex_pass = hash.toHex();
     QSqlQuery user_query(QSqlDatabase::database("remote"));
-    user_query.prepare("INSERT INTO users(empl_id, username, password) "
-                  "VALUES(:e_id, :username, :pass) RETURNING id;");
+    user_query.prepare("INSERT INTO users(empl_id, username, password, is_online) "
+                  "VALUES(:e_id, :username, :pass, false) RETURNING id;");
     user_query.bindValue(":e_id", empl_id);
     user_query.bindValue(":username", user);
-    user_query.bindValue(":pass", pass);
-    empl_id = 0;
+    user_query.bindValue(":pass", hex_pass);
     uint inserted_user_id;
     if(user_query.exec() && user_query.next()){
         inserted_user_id = user_query.value("id").toUInt();
@@ -50,6 +53,7 @@ void RegistrationManager::registerNewUser(const QString& user, const QString& pa
         if(participant_query.exec()){
             emit successful_registration();
         }else{
+            qDebug() << "cannot insert participant to DB: " << participant_query.lastError();
             QSqlQuery delete_user_query(QSqlDatabase::database("remote"));
             delete_user_query.prepare("DELETE FROM users "
                                       "WHERE id = ?;");
@@ -59,6 +63,7 @@ void RegistrationManager::registerNewUser(const QString& user, const QString& pa
             emit unsuccessful_registration();
         }
     }else{
+        qDebug() << "cannot insert user to DB: " << user_query.lastError();
         emit unsuccessful_registration();
     }
 }

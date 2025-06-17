@@ -92,9 +92,9 @@ font-size:80px;</string>
    </property>
    <property name="geometry">
     <rect>
-     <x>850</x>
+     <x>795</x>
      <y>550</y>
-     <width>220</width>
+     <width>330</width>
      <height>20</height>
     </rect>
    </property>
@@ -106,10 +106,15 @@ font-size:80px;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:transparent;
-font-size:14px;</string>
+font-size:18px;
+color:red;
+font-family:Lato, Arial, Consolas, Roboto;</string>
    </property>
    <property name="text">
     <string>Incorrect Username or Password!</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="registration_btn">

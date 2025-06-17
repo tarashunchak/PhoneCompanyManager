@@ -109,9 +109,13 @@ void RequestsPage::showInProgressRequests(){
         while(query.next()){
             counter++;
             QList<QStandardItem*> items;
-            for(int col = 0; col < query.record().count(); ++col){
+            for(int col = 0; col < query.record().count()-2; ++col){
                 items.append(new QStandardItem{query.value(col).toString()});
                 items[col]->setFlags(Qt::ItemIsEnabled);
+                if(col == 1)
+                    items[col]->setData(query.value("cust_id").toUInt());
+                else if(col == 0)
+                    items[col]->setData(query.value("tariff_id").toUInt());
             }
             items.append(new QStandardItem{"Action"});
             model->appendRow(items);
@@ -122,7 +126,7 @@ void RequestsPage::showInProgressRequests(){
                                 , new ComboBoxDelegate{{"Do nothing", "Confirm", "Reject"}});
 
         QStringList headers{};
-        for (int i = 0; i < query.record().count(); ++i) {
+        for (int i = 0; i < query.record().count()-2; ++i) {
             headers << query.record().fieldName(i);
         }
         headers << "Action";

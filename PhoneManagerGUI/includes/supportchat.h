@@ -45,7 +45,6 @@ private:
     QScrollArea* scrollArea;
     QWidget* mainWidget;
     QVBoxLayout* innerVBoxLayout;
-    MessageChecker* checker;
     static bool is_valid_partner;
 };
 

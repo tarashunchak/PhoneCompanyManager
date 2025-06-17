@@ -2,7 +2,7 @@
 #define EMPLOYEESDETAILSPAGE_H
 
 #include <QWidget>
-#include <QSqlTableModel>
+#include <QSqlQueryModel>
 
 namespace Ui {
 class EmployeeDetailsPage;
@@ -36,19 +36,21 @@ public:
 
 public slots:
     void SetEmployeeInfo(const uint);
-    void SetRequestsHistory()const;
-    void SetCustomersHistory()const;
 
 signals:
     void on_return_btn_clicked();
 
 private:
+    void SetCustomersHistory()const;
+    void SetCurrentCustomers()const;
+    void SetRequestsHistory()const;
     void SetConnections();
     void SetTableViewStyle();
 
     struct TableModels{
-        QSqlTableModel* req_qmodel = new QSqlTableModel{};
-        QSqlTableModel* cust_qmodel = new QSqlTableModel{};
+        QSqlQueryModel* req_qmodel = new QSqlQueryModel{};
+        QSqlQueryModel* cust_qmodel = new QSqlQueryModel{};
+        QSqlQueryModel* curr_cust_qmodel = new QSqlQueryModel{};
     };
 
 private:

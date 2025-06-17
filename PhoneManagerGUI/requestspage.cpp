@@ -49,6 +49,18 @@ void RequestsPage::SetConnections(){
                 qDebug() << model->data(index).toString();
                 if(!query.exec())
                     qDebug() << "Update status fail!";
+                if(value == "Confirm"){
+                    uint tariff_id = model->index(0, 0).data().toUInt();
+                    uint cust_id = model->index(0, 1).data().toUInt();
+                    if(tariff_id){
+                        query.prepare("UPDATE customers "
+                                      "SET tariff_id = :tariff_id "
+                                      "WHERE id = :cust_id;");
+                        query.bindValue(":tariff_id", tariff_id);
+                        query.bindValue(":cust_id", cust_id);
+                        query.exec();
+                    }
+                }
             }
         }
         showInProgressRequests();

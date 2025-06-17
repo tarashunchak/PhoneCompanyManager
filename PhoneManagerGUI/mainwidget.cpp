@@ -36,7 +36,7 @@ MainWidget::MainWidget(QWidget *parent)
                       ,chat->size().width(), chat->size().height());
     ui->leave_session_btn->setIcon(QIcon{"./img/quit_icon.svg"});
     ui->leave_session_btn->setIconSize(QSize{50, 50});
-    //ui->not_read_message_label->setVisible(false);
+    ui->not_read_message_label->setVisible(false);
 }
 
 MainWidget::~MainWidget()

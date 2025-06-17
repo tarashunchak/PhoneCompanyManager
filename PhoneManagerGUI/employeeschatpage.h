@@ -43,7 +43,6 @@ signals:
 
 private:
     Ui::EmployeesChatPage *ui;
-    MessageChecker* checker;
 };
 
 #endif // EMPLOYEESCHATPAGE_H

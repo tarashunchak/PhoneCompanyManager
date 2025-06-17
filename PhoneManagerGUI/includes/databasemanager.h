@@ -139,14 +139,11 @@ public:
     static void sendMessage(const QString& message_text){
         if(!initChatIfNeeded<T>()) return;
         static bool is_message_sended;
-        //;::run([message_text](){
-            is_message_sended = insertToDB<TABLE::MESSAGES, T>(message_text);
-        //});
+        is_message_sended = insertToDB<TABLE::MESSAGES, T>(message_text);
 
         if(!is_message_sended)
             qDebug() << "sendMessage query error";
         ;
-        //;::run(&DatabaseManager::syncAllTables);
     };
 
     template <typename... Args>

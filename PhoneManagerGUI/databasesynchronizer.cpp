@@ -8,8 +8,8 @@ DatabaseSynchronizer::DatabaseSynchronizer(QObject* parent)
 {
     connect(thread, &QThread::started, this, &DatabaseSynchronizer::syncAllTables);
     connect(this, &DatabaseSynchronizer::sync_finished, this, [this]() {
-        qDebug() << "Sync finished, waiting to restart...";
-        QTimer::singleShot(6000, this, [this]() {
+        //qDebug() << "Sync finished, waiting to restart...";
+        QTimer::singleShot(5000, this, [this]() {
             if (!thread->isRunning()) {
                 thread->start();
             }
@@ -30,11 +30,11 @@ DatabaseSynchronizer::~DatabaseSynchronizer(){
 
 void DatabaseSynchronizer::startSync(const QList<TABLE>& tables){
     if(thread->isRunning()){
-        qDebug() << "thread is running";
+        //qDebug() << "thread is running";
         return;
     }
 
-    qDebug() << "startSync";
+    //qDebug() << "startSync";
     this->tables = tables;
     thread->start();
 }
@@ -58,10 +58,10 @@ void DatabaseSynchronizer::syncAllTables(){
 
     for (auto table : tables) {
         QString table_str = DatabaseManager::tableToString(table);
-        qDebug() << "sync table " + table_str;
+        //qDebug() << "sync table " + table_str;
 
         if (!remote_sync.isOpen() || !local_sync.isOpen()) {
-            qDebug() << "Database not opened: " << remote_sync.lastError();
+            //qDebug() << "Database not opened: " << remote_sync.lastError();
             return;
         }
 
@@ -70,14 +70,14 @@ void DatabaseSynchronizer::syncAllTables(){
         {
             QSqlQuery remote_query(remote_sync);
             if (!remote_query.prepare(query_str) || !remote_query.exec()) {
-                qDebug() << "Error to exec remote query";
+                //qDebug() << "Error to exec remote query";
                 return;
             }
 
             {
                 QSqlQuery clear_sqlite_query(local_sync);
                 if (!clear_sqlite_query.exec("DELETE FROM " + table_str + ";")) {
-                    qDebug() << "Clear " << table_str << " error";
+                    //qDebug() << "Clear " << table_str << " error";
                     local_sync.rollback();
                     return;
                 }
@@ -100,7 +100,7 @@ void DatabaseSynchronizer::syncAllTables(){
             while (remote_query.next()) {
                 QSqlQuery insert_query(local_sync);
                 if (!insert_query.prepare(insert_query_str)) {
-                    qDebug() << "Prepare insert query failed";
+                    //qDebug() << "Prepare insert query failed";
                     break;
                 }
 
@@ -110,14 +110,24 @@ void DatabaseSynchronizer::syncAllTables(){
 
                 if (!remote_sync.isOpen() || !local_sync.isOpen()) {
                     if (!remote_sync.open() || !local_sync.open()) {
-                        qDebug() << "Database reopen failed: " << remote_sync.lastError();
+                        //qDebug() << "Database reopen failed: " << remote_sync.lastError();
                         return;
                     }
                 }
 
                 if (!insert_query.exec()) {
-                    qDebug() << "insert " + table_str + " to SQLite error";
+                    //qDebug() << "insert " + table_str + " to SQLite error";
                     break;
+                }
+
+                {
+                    QSqlQuery update_query(remote_sync);
+                    update_query.prepare("UPDATE chat_participants "
+                                  "SET last_seen = CURRENT_TIMESTAMP "
+                                  "WHERE participants_id = :my_id;");
+                    update_query.bindValue(":my_id", EmployeesChatPage::ChatUnits::my_participant_id);
+                    if(!update_query.exec())
+                        qDebug() << "updatelastseen error" << update_query.lastError();
                 }
             }
         }
