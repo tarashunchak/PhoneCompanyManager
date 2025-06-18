@@ -698,6 +698,68 @@ font-size:24px;</string>
       </property>
      </widget>
     </widget>
+    <widget class="QPushButton" name="unassign_btn">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>430</y>
+       <width>130</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	background-color:#843C3D;
+	color:white;
+	font-family:Lato, Arial, Consolas;
+	font-size:18px;
+	border-radius:4px;
+	border:1px solid rgba(255, 255, 255, 0.5);
+}QPushButton:hover{
+	background-color:#A86E6F;
+}</string>
+     </property>
+     <property name="text">
+      <string>Unassign</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="assign_btn">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>430</y>
+       <width>130</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	background-color:rgb(37, 114, 97);
+	color:white;
+	font-family:Lato, Arial, Consolas;
+	font-size:18px;
+	border-radius:4px;
+	border:1px solid rgba(255, 255, 255, 0.5);
+}QPushButton:hover{
+	background-color:rgb(7, 84, 67);
+}</string>
+     </property>
+     <property name="text">
+      <string>Assign</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+    </widget>
     <zorder>payment_history_box</zorder>
     <zorder>full_name_Label</zorder>
     <zorder>phone_Label</zorder>
@@ -716,6 +778,8 @@ font-size:24px;</string>
     <zorder>request_history_box_2</zorder>
     <zorder>delete_customer_btn</zorder>
     <zorder>return_btn</zorder>
+    <zorder>unassign_btn</zorder>
+    <zorder>assign_btn</zorder>
    </widget>
   </widget>
  </widget>

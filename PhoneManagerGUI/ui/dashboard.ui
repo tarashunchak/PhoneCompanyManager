@@ -549,7 +549,7 @@ background-color:transparent;</string>
    <property name="styleSheet">
     <string notr="true">color:black;
 font-size:50px;
-background-color:transparent;</string>
+background-color:white;</string>
    </property>
    <property name="text">
     <string>No Info</string>

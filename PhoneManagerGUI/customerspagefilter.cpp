@@ -57,7 +57,6 @@ void CustomersPage::open_filter_widget(){
     ui->lineEdit->setGeometry(1060, 23, 290, 30);
     ui->close_open_filter_btn->setGeometry(1350, 23, 30, 30);
     filter_animation->setEndValue(QPoint{1390, 0});
-    updateFilterWidgets();
     filter_animation->start();
 }
 
@@ -91,8 +90,8 @@ void CustomersPage::apply_filters(){
     if(!added_by_id.isEmpty()) query_str += " AND " + added_by_id;
     if(!empl_id.isEmpty()) query_str += " AND " + empl_id;
     if(!tariff_id.isEmpty()) query_str += " AND " + tariff_id;
-    if(!phone.isEmpty()) query_str += " AND phone LIKE :phone";
-    query_str += order_by;
+    if(!phone.isEmpty()) query_str += " AND phone LIKE :phone ";
+    query_str += " AND is_visible = true " + order_by;
 
     /**/is_active_btn = ui->active_btn->property("status").toBool();
 

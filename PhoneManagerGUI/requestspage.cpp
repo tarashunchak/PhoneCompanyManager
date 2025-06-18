@@ -7,7 +7,7 @@ RequestsPage::RequestsPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::RequestsPage)
     , qmodel(new QSqlTableModel{})
-    , req_tableView(new RequestsTabelView{this})
+    , req_tableView(new QTableView{this})
 {
     ui->setupUi(this);
     ui->req_tableView->setParent(ui->scrollAreaWidgetContents);
@@ -15,7 +15,6 @@ RequestsPage::RequestsPage(QWidget *parent)
     ui->req_tableView->setModel(qmodel);
     ui->req_tableView->setMouseTracking(true);
     ui->req_tableView->viewport()->setMouseTracking(true);
-    //ui->req_tableView->horizontalHeader()->setStyleSheet("");
     ui->save_btn->raise();
     ui->save_btn->raise();
     ui->scrollArea->setWidgetResizable(true);
@@ -51,8 +50,8 @@ void RequestsPage::SetConnections(){
                 if(!query.exec())
                     qDebug() << "Update status fail!";
                 if(value == "Confirm"){
-                    uint tariff_id = model->index(0, 0).data().toUInt();
-                    uint cust_id = model->index(0, 1).data().toUInt();
+                    uint tariff_id = model->index(i, 0).data().toUInt();
+                    uint cust_id = model->index(i, 1).data().toUInt();
                     if(tariff_id){
                         query.prepare("UPDATE customers "
                                       "SET tariff_id = :tariff_id "

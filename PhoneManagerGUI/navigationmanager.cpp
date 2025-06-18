@@ -180,6 +180,7 @@ void NavigationManager::showChatsPage()const{
     ButtonsStyleManager::SetActiveButton(ButtonsStyleManager::LEFT_SIDE_MENU::CHATS_BTN);
     show_side_menu(left_side_menu, sWidget);
     employeesChatPage->fillChatsWidget();
+    employeesChatPage->closeCurrentChat();
     sWidget->setCurrentWidget(employeesChatPage);
 }
 

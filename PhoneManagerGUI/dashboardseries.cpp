@@ -17,7 +17,7 @@ void Dashboard::setRequestsStatistics(){
     QString period{ui->req_date_comboBox->currentIndex() > 1 ? "7 days" : "3 days"};
     bool is_today = !ui->requests_period_comboBox->currentIndex();
     auto query = DatabaseManager::newRequestsByPeriod(is_today, period);
-    ui->empty_req_stat->setVisible(!req_bar_chart->setQuery(std::move(query), "req_count"));
+    ui->empty_req_stat->setVisible(!req_bar_chart->setQuery(std::move(query), "req_count", "date"));
     req_bar_chart->resize(ui->requests_statistic->size());
 }
 

@@ -40,6 +40,9 @@ EmployeesDetailsPage::EmployeesDetailsPage(QWidget *parent)
     ui->current_customers_tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     SetTableViewStyle();
     SetConnections();
+    ui->no_curr_customers_label->setVisible(false);
+    ui->no_customers_label->setVisible(false);
+    ui->no_requests_label->setVisible(false);
 }
 
 EmployeesDetailsPage::~EmployeesDetailsPage()
@@ -97,17 +100,17 @@ void EmployeesDetailsPage::SetCustomersHistory()const{
 
 void EmployeesDetailsPage::SetRequestsHistory()const{
     auto query = DatabaseManager::requestsHistory(PAGE::EMPLOYEES_DETAILS_PAGE);
-    if(!query.exec() || !query.next()){
-        qDebug() << "In EmployeesDetailsPage::SetRequestsHistory::query fault!!!: " << query.lastError();
-        ui->requests_statistic_tableView->setVisible(false);
-        ui->no_customers_label->setVisible(true);
-        return;
-    }
+    //if(!query.exec() || !query.next()){
+        //qDebug() << "In EmployeesDetailsPage::SetRequestsHistory::query fault!!!: " << query.lastError();
+        //ui->requests_statistic_tableView->setVisible(false);
+        //ui->no_customers_label->setVisible(true);
+        //return;
+    //}
+    //query.previous();
+    query.exec();
     TABLE_MODELS.req_qmodel->setQuery(std::move(query));
-    TABLE_MODELS.req_qmodel->canFetchMore();
-    bool is_model_empty = !TABLE_MODELS.req_qmodel->rowCount();
-    ui->requests_statistic_tableView->setVisible(!is_model_empty);
-    ui->no_requests_label->setVisible(is_model_empty);
+    //ui->requests_statistic_tableView->setVisible(true);
+    //ui->no_requests_label->setVisible(false);
 }
 
 void EmployeesDetailsPage::SetTableViewStyle(){
@@ -138,12 +141,12 @@ void EmployeesDetailsPage::SetCurrentCustomers()const{
                   "FROM customers WHERE employee_id = ?;");
     query.addBindValue(CurrentEmployee::id);
     if(!query.exec() && !query.first()){
-        ui->no_curr_customers_label->setVisible(true);
+        //ui->no_curr_customers_label->setVisible(true);
         qDebug() << "ERROR IN SETCURRENTCUSTOMERS QUERY!!!";
     }else{
         query.previous();
-        QSqlQueryModel* model = TABLE_MODELS.cust_qmodel;
+        QSqlQueryModel* model = TABLE_MODELS.curr_cust_qmodel;
         model->setQuery(std::move(query));
-        ui->no_curr_customers_label->setVisible(false);
+        //ui->no_curr_customers_label->setVisible(false);
     }
 }

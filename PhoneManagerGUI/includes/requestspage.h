@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QSqlTableModel>
-#include "requeststabelview.h"
+#include <QTableView>
 
 namespace Ui {
 class RequestsPage;
@@ -30,7 +30,6 @@ private:
 private:
     Ui::RequestsPage *ui;
     QSqlTableModel* qmodel;
-    //RequestsTabelView* req_tableView;
     QTableView* req_tableView;
 };
 

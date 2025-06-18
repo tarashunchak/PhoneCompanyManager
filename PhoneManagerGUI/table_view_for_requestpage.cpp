@@ -30,7 +30,7 @@ namespace{
         "background-color:white;"
         "}"
         "QPushButton:hover{"
-        "background-color:rgb(180, 180, 180);"
+        "background-color:rgb(220, 220, 220);"
         "}");
     const QString inactive(both +
         "background-color:rgb(200, 200, 200);"

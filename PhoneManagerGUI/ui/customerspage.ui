@@ -30,7 +30,10 @@ background-color:white;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgba(200, 200, 200, 1);</string>
+    <string notr="true">font-family:Lato, Arial, Consolas;
+font-size:32px;
+color:black;
+background-color:rgb(240, 240, 240);</string>
    </property>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
@@ -164,7 +167,7 @@ background-color:rgb(27, 104, 87);</string>
   <widget class="QWidget" name="filter_widget" native="true">
    <property name="geometry">
     <rect>
-     <x>1390</x>
+     <x>1670</x>
      <y>0</y>
      <width>280</width>
      <height>1080</height>
@@ -214,7 +217,7 @@ background-color:rgb(7, 84, 67);
      <string/>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>11</x>

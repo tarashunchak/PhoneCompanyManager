@@ -71,6 +71,26 @@ void CustomersDetailsPage::SetConnections(){
         DatabaseManager::deleteRecord<TABLE::CUSTOMERS>("id", CurrentCustomer::id.toUInt());
         emit on_return_btn_clicked();
     });
+    connect(ui->assign_btn, &QPushButton::clicked, this, [this](){
+        QSqlQuery query{QSqlDatabase::database("remote")};
+        query.prepare("UPDATE customers "
+                      "SET employee_id = ? "
+                      "WHERE id = ?;");
+        query.addBindValue(CurrentUser::getCurrentEmployeeID());
+        query.addBindValue(CurrentCustomer::id);
+        query.exec();
+        SetCustomerInfo(CurrentCustomer::id.toUInt());
+    });
+
+    connect(ui->unassign_btn, &QPushButton::clicked, this, [this](){
+        QSqlQuery query{QSqlDatabase::database("remote")};
+        query.prepare("UPDATE customers "
+                      "SET employee_id = 0 "
+                      "WHERE id = ?;");
+        query.addBindValue(CurrentCustomer::id);
+        query.exec();
+        SetCustomerInfo(CurrentCustomer::id.toUInt());
+    });
 }
 
 void CustomersDetailsPage::SetCustomerInfo(const uint id){
@@ -82,7 +102,10 @@ void CustomersDetailsPage::SetCustomerInfo(const uint id){
     ui->reg_date_Label->setText(CurrentCustomer::reg_date);
     ui->current_tariff_label->setText(CurrentCustomer::tariff_name);
     ui->comment_textEdit->setPlainText(CurrentCustomer::comment_text);
-    ui->open_chat_btn->setVisible(CurrentCustomer::employee_id.toUInt() == CurrentUser::getCurrentEmployeeID());
+    bool is_assign_to_me = CurrentCustomer::employee_id.toUInt() == CurrentUser::getCurrentEmployeeID();
+    ui->open_chat_btn->setVisible(is_assign_to_me);
+    ui->unassign_btn->setVisible(is_assign_to_me);
+    ui->assign_btn->setVisible(!is_assign_to_me || CurrentCustomer::employee_id.toUInt() == 0);
     TABLE_MODELS.payments_qmodel->setQuery(std::move(query));
 
     SetCharts();

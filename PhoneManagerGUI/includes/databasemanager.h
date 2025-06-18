@@ -68,7 +68,7 @@ public:
         static QString table_str = tableToString(table);
         QString query_str{"SELECT * FROM " + table_str
                 + " WHERE " + row + " = ?;"};
-        QSqlQuery query(local_db);
+        QSqlQuery query(remote_db);
         query.prepare(query_str);
         query.addBindValue(identifier);
         return query;

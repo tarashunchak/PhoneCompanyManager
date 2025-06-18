@@ -121,35 +121,36 @@ void DatabaseManager::startSyncTables(){
 }
 
 QSqlQuery DatabaseManager::findByName(TABLE table, const QString& text){
+    QString query_str;
+    QString table_name = tableToString(table);
 
-    QString query_str{};
-    if(table == TABLE::CUSTOMERS || table == TABLE::EMPLOYEES)
-        query_str = {"SELECT * FROM " + tableToString(table) +
-                     " WHERE LOWER(first_name || ' ' || last_name) LIKE LOWER(:text) "};
-    else if(table == TABLE::TARIFFS)
+    if (table == TABLE::CUSTOMERS || table == TABLE::EMPLOYEES) {
+        query_str = "SELECT * FROM " + table_name
+                    + " WHERE (LOWER(first_name || ' ' || last_name) LIKE LOWER(:text) ";
+
+        if (table == TABLE::CUSTOMERS) {
+            query_str += "OR LOWER(phone) LIKE LOWER(:text) ";
+        } else if (table == TABLE::EMPLOYEES) {
+            query_str += "OR CAST(id AS TEXT) = :id ";
+        }
+        query_str += ")";
+    } else if (table == TABLE::TARIFFS) {
         query_str = "SELECT * FROM tariffs "
-                     "WHERE LOWER(tariff_name) LIKE LOWER(:text) "
-                     "OR id = :id;";
-
-    switch (table){
-    case TABLE::CUSTOMERS : {
-        query_str += "OR LOWER(phone) LIKE LOWER(:text);";
-        break;
+                    "WHERE LOWER(tariff_name) LIKE LOWER(:text) "
+                    "OR CAST(id AS TEXT) = :id";
     }
-    case TABLE::EMPLOYEES : {
-        query_str += "OR id = :id;";
-        break;
-    }
-    }
+    query_str += ";";
 
     QSqlQuery query(remote_db);
     query.prepare(query_str);
     query.bindValue(":text", text + "%");
-    if(table == TABLE::EMPLOYEES || table == TABLE::TARIFFS)
+    if (table == TABLE::EMPLOYEES || table == TABLE::TARIFFS)
         query.bindValue(":id", text);
+
     query.exec();
     return query;
 }
+
 
 QSqlQuery DatabaseManager::inProgressRequests(){
     QSqlQuery query(remote_db);
@@ -200,13 +201,15 @@ QSqlQuery DatabaseManager::completedRequests(){
 QSqlQuery DatabaseManager::requestsHistory(PAGE page, QString period){
     QSqlQuery query(remote_db);
     if(page == PAGE::EMPLOYEES_DETAILS_PAGE){
-        query.prepare("SELECT id AS ID, "
-                      "TO_CHAR(r.date, 'YYYY-MM-DD HH24:MI') AS \"Date\", "
-                      "request_type AS Type, cust_id AS \"Cust. ID\", "
-                      "status AS Status "
-                      "FROM requests WHERE assigned_to_id = :id "
+        query.prepare("SELECT id AS \"ID\", "
+                      "TO_CHAR(date, 'YYYY-MM-DD HH24:MI') AS \"Date\", "
+                      "request_type AS \"Type\", cust_id AS \"Cust. ID\", "
+                      "status AS \"Status\", "
+                      "TO_CHAR(processing_date, 'YYYY-MM-DD HH24:MI') AS \"Processing date\" "
+                      "FROM requests "
+                      "WHERE assigned_to_id = :id "
                       "AND (status = 'Rejected' OR status = 'Confirmed') "
-                      "ORDER BY DATE(processing_date) DESC;");
+                      "ORDER BY processing_date DESC;");
         query.bindValue(":id", EmployeesDetailsPage::CurrentEmployee::id);
     }else if(page == PAGE::CUSTOMERS_DETAILS_PAGE){
         query.prepare("SELECT id AS ID, "
@@ -251,7 +254,7 @@ QSqlQuery DatabaseManager::newCustomersByPeriod(const bool is_today, QString per
     }else{
         query.prepare("SELECT COUNT(id) AS cust_count, DATE(date) AS date "
                       "FROM customers "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE + INTERVAL '-" + period + "') "
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE - INTERVAL '" + period + "') "
                       "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }
     return query;
@@ -260,14 +263,14 @@ QSqlQuery DatabaseManager::newCustomersByPeriod(const bool is_today, QString per
 QSqlQuery DatabaseManager::newRequestsByPeriod(const bool is_today, QString period){
     QSqlQuery query(remote_db);
     if(is_today){
-        query.prepare("SELECT COUNT(id) AS req_count, date "
+        query.prepare("SELECT COUNT(id) AS req_count, DATE(date) AS date "
                       "FROM requests "
                       "WHERE DATE(date) = DATE(CURRENT_DATE) "
                       "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }else{
-        query.prepare("SELECT COUNT(id) AS req_count, date "
+        query.prepare("SELECT COUNT(id) AS req_count, DATE(date) AS date "
                       "FROM requests "
-                      "WHERE DATE(date) >= DATE(CURRENT_DATE + INTERVAL '-" + period + "') "
+                      "WHERE DATE(date) >= DATE(CURRENT_DATE - INTERVAL '" + period + "') "
                       "GROUP BY DATE(date) ORDER BY DATE(date) DESC;");
     }
     return query;
@@ -280,7 +283,7 @@ QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
                   "c.last_name AS \"Last name\", "
                   "c.phone AS \"Phone\", "
                   "COALESCE(c.email, '') AS \"Email\", "
-                  "c.date AS \"Reg. date\", "
+                  "DATE(c.date) AS \"Reg. date\", "
                   "c.balance AS \"Balance\", "
                   "c.date_of_B AS \"B-DAY\", "
                   "c.is_active AS \"Is active\", "
@@ -320,7 +323,7 @@ QSqlQuery DatabaseManager::currentCustomer(const uint curr_cust_id){
     query.prepare("SELECT c.id AS \"Cust. ID\", "
                   "(COALESCE(first_name, '') || ' ' || COALESCE(last_name, '') AS \"Full name\", "
                   "c.phone AS \"Phone\", "
-                  "c.date AS \"Reg. date\", "
+                  "DATE(c.date) AS \"Reg. date\", "
                   "c.balance AS \"Balance\", "
                   "t.id AS \"Tariff ID\", "
                   "t.tariff_name AS \"Tariff\", "
@@ -340,7 +343,7 @@ QSqlQuery DatabaseManager::currentEmployee(const uint curr_empl_id){
                   "e.last_name AS \"Last name\", "
                   "e.phone AS \"Phone\", "
                   "COALESCE(e.email, '') AS \"Email\", "
-                  "e.date_of_b AS \"B-DAY\", "
+                  "DATE(e.date_of_b) AS \"B-DAY\", "
                   "e.is_active AS \"Is active\", "
                   "e.hire_date AS \"Hire date\", "
                   "e.photo AS \"Photo\", "

@@ -57,6 +57,7 @@ border:1px solid rgba(0, 0, 0, 0.4);
 background-color:rgb(27, 104, 87);
 font-family:Lato, Arial, Consolas;
 font-size:24px;
+color:white;
 }QPushButton:hover{
 background-color:rgb(7, 84, 67);
 }
@@ -85,7 +86,7 @@ background-color:rgb(7, 84, 67);
 font-size:32px;
 padding-left:20px;
 color:black;
-background-color:rgb(200, 200, 200);</string>
+background-color:rgb(240, 240, 240);</string>
    </property>
    <property name="text">
     <string>Customers requests</string>
@@ -112,7 +113,7 @@ height:40px;
 color:black;
 font-family:Lato, Arial, Consolas;
 font-size:22px;
-background-color:rgb(220, 220, 220);
+background-color:rgb(200, 200, 200);
 border-top-left-radius:5px;
 border-top-right-radius:5px;
 }
@@ -133,7 +134,7 @@ height:40px;
 color:black;
 font-family:Lato, Arial, Consolas;
 font-size:22px;
-background-color:rgb(220, 220, 220);
+background-color:rgb(200, 200, 200);
 border-top-left-radius:5px;
 border-top-right-radius:5px;
 }
@@ -154,7 +155,7 @@ height:40px;
 color:black;
 font-family:Lato, Arial, Consolas;
 font-size:22px;
-background-color:rgb(220, 220, 220);
+background-color:rgb(200, 200, 200);
 border-top-left-radius:5px;
 border-top-right-radius:5px;
 }
@@ -175,7 +176,7 @@ height:40px;
 color:black;
 font-family:Lato, Arial, Consolas;
 font-size:22px;
-background-color:rgb(220, 220, 220);
+background-color:rgb(200, 200, 200);
 border-top-left-radius:5px;
 border-top-right-radius:5px;
 }

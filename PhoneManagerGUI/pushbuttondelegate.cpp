@@ -18,9 +18,9 @@ void PushButtonDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 {
     QRect rect = option.rect;
 
-    QColor fillcolor{(option.state & QStyle::State_MouseOver) ? QColor{"#ccee77"} : QColor{"#e0e0e0"}};
+    QColor fillcolor{"#3A3A3A"};
     QColor borderColor = QColor("#888888");
-    QColor textColor = QColor("#000000");
+    QColor textColor = QColor("#FFFFFF");
 
     painter->setBrush(fillcolor);
     painter->setPen(borderColor);
@@ -30,16 +30,6 @@ void PushButtonDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
     painter->drawText(rect, Qt::AlignCenter, "Take");
 
     painter->save();
-    /*QStyleOptionButton button_option;
-    button_option.text = "Take";
-    button_option.rect = rect;
-    button_option.state = QStyle::State_Enabled;
-
-    if (option.state & QStyle::State_MouseOver){
-        button_option.state |= QStyle::State_MouseOver;
-    }*/
-
-    //QApplication::style()->drawControl(QStyle::CE_PushButton, &button_option, painter);
 }
 
 bool PushButtonDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,

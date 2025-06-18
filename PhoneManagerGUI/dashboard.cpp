@@ -85,21 +85,21 @@ void Dashboard::setTableViewStyles(){
 }
 
 void Dashboard::setTableViewConnection(){
-    QSqlQuery query(QSqlDatabase::database("local"));
+    QSqlQuery query(QSqlDatabase::database("remote"));
     query.prepare("SELECT c.id AS \"Cust. ID\", "
-                  "(COALESCE(c.first_name, '') || ' ' || COALESCE(c.last_name, '')) AS \"Full Name\", "
+                  "(c.first_name || ' ' || c.last_name) AS \"Full Name\", "
                   "c.phone AS \"Phone\", "
                   "c.tariff_id  AS \"Tariff ID\", "
-                  "SUBSTR(c.date, 1, 10) AS \"Reg. date\", "
-                  "(COALESCE(e.first_name, '') || ' ' || COALESCE(e.last_name, '')) AS \"Added By\", "
+                  "TO_CHAR(c.date, 'YYYY-MM-DD HH24:MI') AS \"Reg. date\", "
+                  "(e.first_name || ' ' || e.last_name) AS \"Added By\", "
                   "c.is_active AS \"Is Active\" "
                   "FROM customers c "
                   "LEFT JOIN employees e ON e.id = c.added_by_id "
-                  "WHERE DATE(c.date) >= DATE(CURRENT_DATE, '-"
+                  "WHERE DATE(c.date) >= DATE(CURRENT_DATE - INTERVAL '"
                   + QString::number((ui->customers_period_comboBox->currentIndex()+1)*10) + " days') "
-                  "AND c.is_visible = 'true' "
+                  "AND c.is_visible = true "
                   "ORDER BY DATE(c.date) DESC;"
-        );
+    );
     if(!query.exec())
         qDebug() << "dashboard tableView fault" << query.lastError().text();
     cust_qmodel->setQuery(std::move(query));

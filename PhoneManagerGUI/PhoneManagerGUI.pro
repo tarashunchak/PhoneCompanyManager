@@ -42,7 +42,6 @@ SOURCES += \
     registrationmanager.cpp \
     registrationpage.cpp \
     requestspage.cpp \
-    requeststabelview.cpp \
     supportchat.cpp \
     table_view_for_requestpage.cpp \
     tariffcard.cpp \
@@ -90,8 +89,7 @@ HEADERS += \
     includes/messagebox.h \
     includes/pushbuttondelegate.h \
     includes/tariffeditwidget.h \
-    messagechecker.h \
-    requeststabelview.h
+    messagechecker.h
 
 FORMS += \
     employeeschatpage.ui \

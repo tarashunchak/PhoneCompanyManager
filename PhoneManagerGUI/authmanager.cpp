@@ -44,7 +44,7 @@ void AuthManager::authenticate(const QString& username, const QString& password)
         SupportChat::ChatUnits::my_participant_id = participant_id;
         CurrentUser::setCurrentUserID(userID);
         CurrentUser::setCurrentEmployeeID(emplID);
-        //DatabaseManager::startSyncTables();
+        DatabaseManager::startSyncTables();
         query.prepare("UPDATE users "
                       "SET is_online = true "
                       "WHERE id = ?;");

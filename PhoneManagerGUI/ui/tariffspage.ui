@@ -27,7 +27,10 @@ font-family:Lato, Consolas;</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgba(200, 200, 200, 1);</string>
+    <string notr="true">font-family:Lato, Arial, Consolas;
+font-size:32px;
+color:black;
+background-color:rgb(240, 240, 240);</string>
    </property>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
@@ -93,7 +96,7 @@ QPushButton:hover{
 font-size:32px;
 padding-left:20px;
 color:black;
-background-color:rgb(200, 200, 200);</string>
+background-color:rgb(240, 240, 240);</string>
     </property>
     <property name="text">
      <string>Tariffs list page</string>

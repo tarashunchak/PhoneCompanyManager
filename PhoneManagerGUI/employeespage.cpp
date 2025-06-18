@@ -32,7 +32,7 @@ EmployeesPage::~EmployeesPage()
 }
 
 void EmployeesPage::SetConnections(){
-    connect(ui->lineEdit, &QLineEdit::textEdited
+    connect(ui->lineEdit, &QLineEdit::editingFinished
             , this, &EmployeesPage::FindEmployeesByName);
     connect(ui->add_empl_btn, &QPushButton::clicked, insert_employee_dialog
             , &InsertEmployeeDialog::exec);

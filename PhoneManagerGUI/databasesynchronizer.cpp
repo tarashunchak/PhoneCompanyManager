@@ -1,17 +1,17 @@
 #include "databasesynchronizer.h"
-#include "includes/databasemanager.h"
+//#include "includes/databasemanager.h"
 #include <QTimer>
+#include <QDebug>
 
 DatabaseSynchronizer::DatabaseSynchronizer(QObject* parent)
     : QObject{parent}
     , thread{new QThread{this}}
 {
-    connect(thread, &QThread::started, this, [this](){
-        QMetaObject::invokeMethod(this, "syncAllTables", Qt::QueuedConnection);
-    });
+    connect(thread, &QThread::started, this, &DatabaseSynchronizer::syncAllTables);
+        //QMetaObject::invokeMethod(this, "syncAllTables", Qt::QueuedConnection);
     connect(this, &DatabaseSynchronizer::sync_finished, this, [this]() {
-        //qDebug() << "Sync finished, waiting to restart...";
-        QTimer::singleShot(30000, this, [this]() {
+        qDebug() << "Sync finished, waiting to restart...";
+        QTimer::singleShot(3000, this, [this]() {
             if (!thread->isRunning()) {
                 thread->start();
             }
@@ -19,7 +19,6 @@ DatabaseSynchronizer::DatabaseSynchronizer(QObject* parent)
             syncAllTables();
         });
     });
-
     moveToThread(thread);
 }
 
@@ -42,7 +41,7 @@ void DatabaseSynchronizer::startSync(const QList<TABLE>& tables){
 }
 
 void DatabaseSynchronizer::syncAllTables(){
-    static QString remote_conn_name = QString{"remote_sync"};
+    /*static QString remote_conn_name = QString{"remote_sync"};
     static QString local_conn_name = QString{"local_sync"};
     QSqlDatabase local_sync = QSqlDatabase::addDatabase("QSQLITE", local_conn_name);
     local_sync.setDatabaseName("./database/database.db");
@@ -141,7 +140,7 @@ void DatabaseSynchronizer::syncAllTables(){
     if (QSqlDatabase::contains(remote_conn_name))
         QSqlDatabase::removeDatabase(remote_conn_name);
     if (QSqlDatabase::contains(local_conn_name))
-        QSqlDatabase::removeDatabase(local_conn_name);
+        QSqlDatabase::removeDatabase(local_conn_name);*/
 
     emit sync_finished();
 }
